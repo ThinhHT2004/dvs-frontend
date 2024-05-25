@@ -13,7 +13,7 @@ const Navbar = () => {
         <div>
             <ul>
                 <li>VAULT</li>
-                <button>Sign in</button>
+                <li><button className='signin-button'>Sign in</button></li>
             </ul>
         </div>
     </div>
