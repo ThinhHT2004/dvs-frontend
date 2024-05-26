@@ -1,6 +1,7 @@
 import React from 'react'
 import "./Navbar.css"
 import logoWeb from '../../assets/logo_v4.png'
+
 const Navbar = () => {
   return (
     <div className='navbar'>
@@ -8,7 +9,9 @@ const Navbar = () => {
         <ul>
             <li>CALCULATE</li>
             <li>DIAMONDS CHECK</li>
-            <li>APPRAISAL</li>
+            <li>
+              <a href="/diamond-appraisal">APPRAISAL</a>
+            </li>
         </ul>
         <div>
             <ul>
