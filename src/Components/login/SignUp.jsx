@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from '../Navbar/Navbar'
 import { Box, Grid, Paper, TextField , Button, Typography, Link } from '@mui/material'
 const SignUp = () => {
-    const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto"}
+    const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px'}
   return (
     
     <>

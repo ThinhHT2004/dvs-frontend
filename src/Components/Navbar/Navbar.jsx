@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <nav className='navbar'>
-        <img src= {logoWeb} alt="" className='logo'/>
+        <Link href="/"><img src= {logoWeb} alt="" className='logo'/></Link>
         <ul>
             <li>
               <Link href="/diamond-appraisal" underline='none' sx={{color: '#000'}}>Calculate</Link>

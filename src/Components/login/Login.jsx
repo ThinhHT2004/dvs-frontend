@@ -5,7 +5,7 @@ import { Box, Grid, Paper, TextField , Button, Typography, Link } from '@mui/mat
 
 const Login = () => {
 
-    const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto"}
+    const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px'}
   return (
     <div>
 
