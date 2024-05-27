@@ -15,7 +15,7 @@ const Navbar = () => {
 
 
   return (
-    <div className='navbar'>
+    <nav className='navbar'>
         <img src= {logoWeb} alt="" className='logo'/>
         <ul>
             <li>
@@ -28,17 +28,27 @@ const Navbar = () => {
               <Link href="/diamond-appraisal" underline='none' sx={{color: '#000'}}>Appraisal</Link>
             </li>
         </ul>
-        <div>
+        
             <ul>
-                <li>VAULT</li>
+                <li>Vault</li>
                 <li>
-                  <Button variant="contained" sx={{background: '#69CEE2', borderRadius: '8px'}} onClick={() => signIn()}>
+                  <Button 
+                    variant="contained" 
+                    onClick={() => signIn()}
+                    sx={{
+                      backgroundColor: '#69CEE2',
+                      borderRadius: '8px',
+                      textTransform: 'none',
+                      marginRight: '30px'
+                    }}
+                    
+                  >
                     Sign In
                   </Button>
                   </li>
             </ul>
-        </div>
-    </div>
+  
+    </nav>
   )
 }
 
