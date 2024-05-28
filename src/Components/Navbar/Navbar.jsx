@@ -27,14 +27,26 @@ const Navbar = () => {
               <Link href="/diamond-appraisal" underline='none' sx={{color: '#000'}}>Appraisal</Link>
             </li>
         </ul>
-        <ul>
-            <li>
-              <Link href="/diamond-appraisal" sx={{color: "#000"}} underline='none'>Vault</Link>
-            </li>
-            <li>
-              <UserComponent></UserComponent>
-            </li>
-        </ul>
+        
+            <ul>
+                <li>Vault</li>
+                <li>
+                  <Button 
+                    variant="contained" 
+                    onClick={() => signIn()}
+                    sx={{
+                      backgroundColor: '#69CEE2',
+                      borderRadius: '8px',
+                      textTransform: 'none',
+                      marginRight: '30px'
+                    }}
+                    
+                  >
+                    Sign In
+                  </Button>
+                  </li>
+            </ul>
+  
     </nav>
   )
 }
