@@ -13,6 +13,7 @@
 .body-text{
     text-align: center;
     max-width: 800px;
+    margin-top: -300px;
 }
 .body-text h1{
     display: flex;
@@ -37,6 +38,7 @@ font-style: normal;
 font-weight: 400;
 line-height: 150%; /* 36px */
 text-align: left;
+padding-bottom: 5px;
 }
 .change-blue{
     color: #69cee2;
