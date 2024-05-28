@@ -11,7 +11,7 @@ const DiamondAppraisalBody = () => {
 below and we will promptly with my appointment availability.</p>
         <p>You can also email us directly at : <span style={{color: '#69CEE2'}}>diasecurappraiser@gmail.com</span></p>
         <p>You can also set up an appointment by calling us directly at : <span style={{color: '#69CEE2'}}>(+84)84913-5986</span></p>
-        <p style={{textAlign:'center'}}>Please <span><Link href="/diamond-appraisal" underline='none' sx={{color: '#69CEE2', textDecoration: 'underline'}}>Sign in</Link></span> to send request</p>
+        <p style={{textAlign:'center'}}>Please <span><Link href="/accounts/signin" underline='none' sx={{color: '#69CEE2', textDecoration: 'underline'}}>Sign in</Link></span> to send request</p>
       </div>
     </div>
   )
