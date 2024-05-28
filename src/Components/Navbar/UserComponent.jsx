@@ -27,6 +27,12 @@ const UserComponent = () => {
     setAnchorElUser(null);
   };
 
+  function handleLogOut(){
+    sessionStorage.clear();
+    navigator('/');
+  }
+
+
   if (username === null) {
     return (
       <div>
@@ -68,12 +74,15 @@ const UserComponent = () => {
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {settings.map((setting) => (
-            <MenuItem key={setting}>
-              <Typography textAlign="center">{setting}</Typography>
-            </MenuItem>
-          ))}
-          
+        <MenuItem>
+          <Typography textAlign="center">Vault</Typography>
+        </MenuItem>
+        <MenuItem >
+          <Typography textAlign="center">Edit Profile</Typography>
+        </MenuItem>
+        <MenuItem>
+          <Typography textAlign="center" onClick={() => handleLogOut()}>Log Out</Typography>
+        </MenuItem>
         </Menu>
       </div>
     );
