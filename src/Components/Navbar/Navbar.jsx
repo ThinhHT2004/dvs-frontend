@@ -41,7 +41,6 @@ const Navbar = () => {
                       textTransform: 'none',
                       marginRight: '30px'
                     }}
-                    
                   >
                     Sign In
                   </Button>
