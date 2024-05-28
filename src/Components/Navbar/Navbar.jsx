@@ -29,9 +29,7 @@ const Navbar = () => {
             </li>
         </ul>
         
-            <ul>
-                <li>Vault</li>
-                <li>
+            
                   <Button 
                     variant="contained" 
                     onClick={() => signIn()}
@@ -39,13 +37,15 @@ const Navbar = () => {
                       backgroundColor: '#69CEE2',
                       borderRadius: '8px',
                       textTransform: 'none',
-                      marginRight: '30px'
+                      padding: '6px 16px',
+                      marginRight: '30px',
+                      marginLeft: '42.71px',
+                      textAlign: 'center'
                     }}
                   >
                     Sign In
                   </Button>
-                  </li>
-            </ul>
+                  
   
     </nav>
   )

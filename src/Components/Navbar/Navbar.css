@@ -25,7 +25,10 @@
 }
 .logo{
     width: 130px;
-    margin: 0px 30px;
+    margin-top: -20px;
+    margin-bottom: -20px;
+    margin-left: 30px;
+    margin-right: -2.9px;
     cursor: pointer;
 }
 
