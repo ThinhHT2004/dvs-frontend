@@ -3,6 +3,7 @@ import Navbar from '../Navbar/Navbar'
 import { Box, Grid, Paper, TextField , Button, Typography, Link } from '@mui/material'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { Toaster, toast } from 'sonner'
 
 
 const Login = () => {
@@ -21,6 +22,8 @@ const Login = () => {
             if(response.data.status === true){
                 sessionStorage.setItem('username', username);
                 navigator('/');
+            }else{
+                return toast.error(response.data.message)
             }
         }        
         )
@@ -28,7 +31,7 @@ const Login = () => {
     }
   return (
     <div>
-
+        <Toaster position="top-center" richColors></Toaster>
         <Navbar></Navbar>
         <Grid>
             <Paper elevation={10} style={paperStyle}>
