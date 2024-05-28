@@ -31,19 +31,7 @@ const Navbar = () => {
             <ul>
                 <li>Vault</li>
                 <li>
-                  <Button 
-                    variant="contained" 
-                    onClick={() => signIn()}
-                    sx={{
-                      backgroundColor: '#69CEE2',
-                      borderRadius: '8px',
-                      textTransform: 'none',
-                      marginRight: '30px'
-                    }}
-                    
-                  >
-                    Sign In
-                  </Button>
+                  <UserComponent></UserComponent>
                   </li>
             </ul>
   
