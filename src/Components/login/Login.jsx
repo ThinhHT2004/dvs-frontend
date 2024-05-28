@@ -12,8 +12,6 @@ const Login = () => {
 
     const navigator = useNavigate();
 
-    const [status, setStatus] = useState('');
-
     const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px'}
 
     function handleLogin(){
