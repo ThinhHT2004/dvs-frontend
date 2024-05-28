@@ -1,0 +1,11 @@
+.body{
+    opacity: 50%;
+    min-height: 100vh;
+    background: url('../../assets/background.jpg');
+    background-position: 'center';
+    background-size: 'cover';
+    background-repeat: 'no-repeat';
+    width: '100vw';
+    height: '100vh';
+    
+}
