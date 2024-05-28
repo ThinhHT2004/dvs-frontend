@@ -3,16 +3,15 @@ import "./Navbar.css"
 import logoWeb from '../../assets/logo_v4.png'
 import { useNavigate } from 'react-router-dom'
 import { Button, Link } from '@mui/material'
+import UserComponent from './UserComponent'
 
 const Navbar = () => {
   
   const navigator = useNavigate();
 
-  function signIn(){
-    navigator('/accounts/signin')
-  }
+  
 
-
+  const username = sessionStorage.getItem('username');
 
   return (
     <nav className='navbar'>
@@ -28,26 +27,14 @@ const Navbar = () => {
               <Link href="/diamond-appraisal" underline='none' sx={{color: '#000'}}>Appraisal</Link>
             </li>
         </ul>
-        
-            <ul>
-                <li>Vault</li>
-                <li>
-                  <Button 
-                    variant="contained" 
-                    onClick={() => signIn()}
-                    sx={{
-                      backgroundColor: '#69CEE2',
-                      borderRadius: '8px',
-                      textTransform: 'none',
-                      marginRight: '30px'
-                    }}
-                    
-                  >
-                    Sign In
-                  </Button>
-                  </li>
-            </ul>
-  
+        <ul>
+            <li>
+              <Link href="/diamond-appraisal" sx={{color: "#000"}} underline='none'>Vault</Link>
+            </li>
+            <li>
+              <UserComponent></UserComponent>
+            </li>
+        </ul>
     </nav>
   )
 }
