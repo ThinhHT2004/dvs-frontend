@@ -1,20 +1,33 @@
 import React from 'react'
-import './DiamondAppraisalBody.css'
-import { Link } from '@mui/material'
 
-const DiamondAppraisalBody = () => {
+const UserDiamondAppraisalBody = () => {
+  const username = sessionStorage.getItem("username");
+  const navigator = useNavigate();
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+  if (username === null) {
+    return (
+      <div>
+        <Button
+          variant="contained"
+          onClick={() => signIn()}
+          sx={{
+            backgroundColor: "#69CEE2",
+            borderRadius: "8px",
+            textTransform: "none",
+            marginRight: "30px",
+          }}
+        >
+          Sign In
+        </Button>
+      </div>
+    );
+  }
   return (
     <div className='body'>
-      <div className='body-text'>
-        <h1>REQUEST AN APPOINTMENT</h1>
-        <p>You can request an appraisal appointment by submitting the form
-below and we will promptly with my appointment availability.</p>
-        <p>You can also email us directly at : <span style={{color: '#69CEE2'}}>diasecurappraiser@gmail.com</span></p>
-        <p>You can also set up an appointment by calling us directly at : <span style={{color: '#69CEE2'}}>(+84)84913-5986</span></p>
-        <p style={{textAlign:'center'}}>Please <span><Link href="/accounts/signin" underline='none' sx={{color: '#69CEE2', textDecoration: 'underline'}}>Sign in</Link></span> to send request</p>
-      </div>
+
     </div>
   )
 }
 
-export default DiamondAppraisalBody
+export default UserDiamondAppraisalBody

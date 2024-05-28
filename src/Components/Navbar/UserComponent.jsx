@@ -54,7 +54,7 @@ const UserComponent = () => {
     return (
       <div>
         <Tooltip title="Open settings">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 ,paddingLeft: '45px',paddingRight: '45px' }}>
             <Avatar alt="Remy Sharp" src={user_icon} />
           </IconButton>
         </Tooltip>
