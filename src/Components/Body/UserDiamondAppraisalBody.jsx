@@ -9,25 +9,21 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Link, Stack, Button } from '@mui/material';
+import { Link, Grid, Button, Select, FormControl } from '@mui/material';
+import tickXanh from '../../assets/tichxanh.png';
 import './DiamondAppraisalBody.css';
 
 const UserDiamondAppraisalBody = () => {
   const username = sessionStorage.getItem("username");
   const services = [
-    { value: 'label', label: '----Select Type of Service----' },
     { value: '10h', label: 'Normal Diamonds Appraisal - 10h' },
     { value: '3h', label: 'Fast Diamonds Appraisal - 3h' },
   ];
 
+  const [service, setService] = useState('');
   const [value, setValue] = useState('');
   const [date, setDate] = useState(null);
   const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    // Clear message state when the component mounts
-    setMessage('');
-  }, []);
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
@@ -48,12 +44,12 @@ const UserDiamondAppraisalBody = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setMessage('hello');
+    setMessage('Request sent');
   };
 
   if (username === null) {
     return (
-      <div>
+      <div className='boxi'>
         <p style={{ textAlign: 'center' }}>
           Please <span>
             <Link href="/accounts/signin" underline='none' sx={{ color: '#69CEE2', textDecoration: 'underline' }}>
@@ -65,33 +61,46 @@ const UserDiamondAppraisalBody = () => {
     );
   } else {
     return (
-      <Stack component="form" onSubmit={handleSubmit} noValidate autoComplete="off">
-        {message ? (
-          <Box textAlign="center" mt={2}>{message}</Box>
+      <Box className='boxi' component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ width: '800px', maxWidth: '100%' }}>
+        {message === 'Request sent' ? (
+          <Box display="grid" gridTemplateColumns="auto auto" gap={1} alignItems="center" justifyContent="center" mt={2}>
+          <img src={tickXanh} alt="" style={{ width: '150px', height: '150px' }} />
+          <p>Request had been sent</p>
+        </Box>
+          
+        
         ) : (
-          <>
-            <Box
-              sx={{
-                '& .MuiTextField-root': { m: 1, width: '800px', backgroundColor: '#fff', textAlign: 'left', fontSize: '20px', marginLeft: '0px' },
-              }}
-            >
-              <div>
-                <TextField
-                  select
-                  defaultValue="label"
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12}>
+              <FormControl fullWidth sx={{ backgroundColor: '#fff', fontSize: '20px'}}>
+                <Select
+                  id="service-select"
+                  value={service}
+                  onChange={(e) => setService(e.target.value)}
+                  displayEmpty
+                  renderValue={(selected) => {
+                    if (selected === '') {
+                      return <em style={{color:'#989898', fontStyle:'normal'}}>Select Type of Appraisal</em>;
+                    }
+                    return services.find(option => option.value === selected)?.label;
+                  }}
+                  sx={{
+                    '& .MuiSelect-select': {
+                      textAlign: 'left',
+                    },
+                  }}
                 >
                   {services.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
                   ))}
-                </TextField>
-              </div>
-            </Box>
-            <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={2}>
-              <div>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
               <TextField
-                variant="outlined"
+                fullWidth
                 value={value}
                 onChange={handleInputChange}
                 placeholder="Number"
@@ -100,56 +109,57 @@ const UserDiamondAppraisalBody = () => {
                   endAdornment: (
                     <InputAdornment position="end">
                       <Box display="flex" flexDirection="column">
-                        <IconButton onClick={increment} color="primary">
+                        <IconButton onClick={increment} sx={{padding: '0px'}}>
                           <ArrowDropUpIcon />
                         </IconButton>
-                        <IconButton onClick={decrement} color="secondary">
+                        <IconButton onClick={decrement}  sx={{padding: '0px'}}>
                           <ArrowDropDownIcon />
                         </IconButton>
                       </Box>
                     </InputAdornment>
                   ),
                 }}
-                sx={{ width: '800px', backgroundColor: '#fff', textAlign: 'left', fontSize: '20px', marginLeft: '0px', m: 1 }}
+                sx={{ backgroundColor: '#fff', fontSize: '20px' }}
               />
-              </div>
-            </Box>
-            <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={2}>
+            </Grid>
+            <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   inputFormat="dd/MM/yyyy"
                   value={date}
                   onChange={(newValue) => setDate(newValue)}
                   renderInput={(params) => (
-                  <div>
                     <TextField
                       {...params}
+                      fullWidth
                       variant="outlined"
                       placeholder="dd/MM/yyyy"
-                      sx={{ width: '800px', backgroundColor: '#fff', textAlign: 'left', fontSize: '20px', marginLeft: '0px', m: 1 ,padding:'0px'}}
+                      sx={{ backgroundColor: '#fff', fontSize: '20px' }}
                     />
-                  </div>
                   )}
                 />
               </LocalizationProvider>
-            </Box>
-            <Box display="flex" alignItems="left" justifyContent="left" p={2} marginLeft= "-16px">
+            </Grid>
+            <Grid item xs={12}>
               <Button
                 variant="contained"
                 type="submit"
+                fullWidth
                 sx={{
                   backgroundColor: "#69CEE2",
                   borderRadius: "8px",
                   textTransform: "none",
-                  
+                  width: "100px",
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
               >
                 Submit
               </Button>
-            </Box>
-          </>
+            </Grid>
+          </Grid>
         )}
-      </Stack>
+      </Box>
     );
   }
 }
