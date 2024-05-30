@@ -2,19 +2,12 @@ import React from "react";
 import StaffDrawer from "../StaffDrawer";
 import {
   Box,
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
 } from "@mui/material";
+import { consulting__staff_navigator } from "../Naviate";
 
 const ConsultingStaff_Home = () => {
-  const drawerWidth = 240;
+
+
   return (
     <div>
       <Box sx={{ display: "flex" }}>
@@ -27,7 +20,7 @@ const ConsultingStaff_Home = () => {
             "Form",
             "Sign Out",
           ]}
-          state="Home"
+          state="Home" handleClick={consulting__staff_navigator}
         ></StaffDrawer>
         
       </Box>

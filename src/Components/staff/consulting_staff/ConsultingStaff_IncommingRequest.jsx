@@ -12,9 +12,10 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
+import { consulting__staff_navigator } from "../Naviate";
 const ConsultingStaff_IncommingRequest = () => {
   const drawerWidth = 240;
+
   return (
     <div>
       <Box sx={{ display: "flex" }}>
@@ -28,6 +29,7 @@ const ConsultingStaff_IncommingRequest = () => {
             "Sign Out",
           ]}
           state="Incomming Request"
+          handleClick = {consulting__staff_navigator}
         ></StaffDrawer>
         <Box
           sx={{

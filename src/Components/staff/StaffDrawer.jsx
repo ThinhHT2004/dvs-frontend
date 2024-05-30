@@ -9,38 +9,21 @@ import {
 import React from "react";
 import logoWeb from "../../assets/logo_v4.png";
 import { useNavigate } from "react-router-dom";
-const StaffDrawer = ({ mylist, state }) => {
+
+const StaffDrawer = ({ mylist, state , handleClick}) => {
   const drawerWidth = 240;
-  const navigator = useNavigate();
-
-
-  function handleSignOut(){
-    sessionStorage.clear();
-    navigator('/');
-  }
-
-  function handleNavigate(text){
-    switch(text){
-      case 'Home': navigator('/consulting-staff/home'); break;
-      case "Incomming Request": navigator('/consulting-staff/incomming-request'); break;
-      case 'Manage Request': navigator('/consulting-staff/manage-request'); break;
-      case 'Report': navigator('/consulting-staff/report'); break;
-      case 'Form': navigator('consulting-staff/form'); break;
-      case 'Sign Out': handleSignOut(); break;
-    }
-  }
-
+  const navigate = useNavigate();
 
   function handleState(text) {
     if (state === text) {
       return (
-        <ListItemButton sx={{backgroundColor: 'lightgrey'}} onClick={()=> handleNavigate(text)}>
+        <ListItemButton sx={{backgroundColor: 'lightgrey'}} onClick={() => handleClick(text, navigate)}>
           <ListItemText primary={text}></ListItemText>
         </ListItemButton>
       );
     }else{
       return (
-        <ListItemButton onClick={() => handleNavigate(text)}>
+        <ListItemButton onClick={() => handleClick(text, navigate)}>
           <ListItemText primary={text}></ListItemText>
         </ListItemButton>
       );
