@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ManagerDrawer from "./ManagerDrawer";
 import {
   Box,
   Button,
@@ -14,7 +13,8 @@ import {
   Typography,
   colors,
 } from "@mui/material";
-
+import { manager_navigator } from '../Naviate';
+import StaffDrawer from '../StaffDrawer';
 const initRequestList = [
   { id: '#00001', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
   { id: '#00002', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
@@ -32,17 +32,15 @@ const Manager_PendingRequest = () => {
   return (
     <div>
       <Box sx={{ display: "flex" }}>
-        <ManagerDrawer
+      <StaffDrawer
           mylist={[
             "Home",
             "Pending Request",
-            "Receipt Management",
-            "Report Management",
-            "Chat",
             "Sign Out",
           ]}
-          state="Pending Request"
-        ></ManagerDrawer>
+          state="Pending Request" 
+          handleClick={manager_navigator}
+        ></StaffDrawer>
         <Box
           sx={{
             flexGrow: 1,

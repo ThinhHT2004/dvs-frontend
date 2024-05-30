@@ -1,5 +1,4 @@
 import React from "react";
-import ManagerDrawer from "./ManagerDrawer";
 import {
     Box,
     Button,
@@ -12,23 +11,22 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-
+import { manager_navigator } from "../Naviate";
+import StaffDrawer from "../StaffDrawer";
 const Manager_Home = () => {
     const drawerWidth = 240;
     return (
         <div>
             <Box sx={{ display: "flex" }}>
-                <ManagerDrawer
-                    mylist={[
-                        "Home",
-                        "Pending Request",
-                        "Receipt Management",
-                        "Report Management",
-                        "Chat",
-                        "Sign Out",
-                    ]}
-                    state="Home"
-                ></ManagerDrawer>
+            <StaffDrawer
+          mylist={[
+            "Home",
+            "Pending Request",
+            "Sign Out",
+          ]}
+          state="Home" 
+          handleClick={manager_navigator}
+        ></StaffDrawer>
             </Box>
         </div>
     );

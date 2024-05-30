@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import React from 'react'
 import StaffDrawer from '../StaffDrawer'
-import { consulting__staff_navigator } from '../Naviate'
+import { consulting_staff_navigator } from '../Naviate'
 
 const ConsultingStaff_ManageRequest = () => {
   return (
@@ -17,7 +17,7 @@ const ConsultingStaff_ManageRequest = () => {
             "Sign Out",
           ]}
           state="Manage Request"
-          handleClick={consulting__staff_navigator}
+          handleClick={consulting_staff_navigator}
           ></StaffDrawer>
             </Box>
         </Box>
