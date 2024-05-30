@@ -21,12 +21,12 @@ import {
   
     function handleNavigate(text){
       switch(text){
-        case 'Home': navigator('/manage/home'); break;
-        case "Incomming Request": navigator('/consulting-staff/incomming-request'); break;
-        case 'Manage Request': navigator('/consulting-staff/manage-request'); break;
-        case 'Report': navigator('/consulting-staff/report'); break;
-        case 'Form': navigator('consulting-staff/form'); break;
-        case 'Sign Out': handleSignOut(); break;
+        case 'Home': navigator('/manager/home'); break;
+        case "Pending Request": navigator('/manager/pending-request'); break;
+        // case 'Manage Request': navigator('/consulting-staff/manage-request'); break;
+        // case 'Report': navigator('/consulting-staff/report'); break;
+        // case 'Form': navigator('consulting-staff/form'); break;
+        // case 'Sign Out': handleSignOut(); break;
       }
     }
   
