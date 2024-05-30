@@ -6,13 +6,8 @@ import Login from './Components/login/Login'
 import SignUp from './Components/login/SignUp'
 import ConsultingStaff_Home from './Components/staff/consulting_staff/ConsultingStaff_Home'
 import ConsultingStaff_IncommingRequest from './Components/staff/consulting_staff/ConsultingStaff_IncommingRequest'
-<<<<<<< Updated upstream
 import Manager_Home from './Components/staff/manager/Manager_Home'
 import Manager_PendingRequest from './Components/staff/manager/Manager_PendingRequest'
-=======
-import ConsultingStaff_ManageRequest from './Components/staff/consulting_staff/ConsultingStaff_ManageRequest'
-
->>>>>>> Stashed changes
 const App = () => {
   
   return (
@@ -25,12 +20,8 @@ const App = () => {
         <Route path='/accounts/signup' element={<SignUp></SignUp>}></Route>
         <Route path='/consulting-staff/home' element={<ConsultingStaff_Home></ConsultingStaff_Home>}></Route>
         <Route path='/consulting-staff/incomming-request' element={<ConsultingStaff_IncommingRequest></ConsultingStaff_IncommingRequest>}></Route>
-<<<<<<< Updated upstream
         <Route path='/manager/home' element={<Manager_Home></Manager_Home>}></Route>
         <Route path='/manager/pending-request' element={<Manager_PendingRequest></Manager_PendingRequest>}></Route>
-=======
-        <Route path='/consulting-staff/manage-request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
->>>>>>> Stashed changes
       </Routes>
       </BrowserRouter>
     </>

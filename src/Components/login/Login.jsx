@@ -21,6 +21,7 @@ const Login = () => {
         .then(response => {
             if(response.data.status === true){
                 sessionStorage.setItem('username', username);
+                sessionStorage.setItem('customerId', response.data.id);
                 navigator('/');
             }else{
                 return toast.error(response.data.message)

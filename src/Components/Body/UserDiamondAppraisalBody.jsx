@@ -12,30 +12,37 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Link, Grid, Button, Select, FormControl } from '@mui/material';
 import tickXanh from '../../assets/tichxanh.png';
 import './DiamondAppraisalBody.css';
+import axios from 'axios';
 
 const UserDiamondAppraisalBody = () => {
   const username = sessionStorage.getItem("username");
+  const customerId = sessionStorage.getItem("customerId"); 
   const services = [
-    { value: '10h', label: 'Normal Diamonds Appraisal - 10h' },
-    { value: '3h', label: 'Fast Diamonds Appraisal - 3h' },
+    {value: 1, label: 'Normal Diamonds Appraisal - 10h' },
+    {value: 2, label: 'Fast Diamonds Appraisal - 3h' },
   ];
 
   const [service, setService] = useState('');
-  const [value, setValue] = useState('');
+  const [quantity, setQuantity] = useState('');
   const [date, setDate] = useState(null);
   const [message, setMessage] = useState('');
+
+  console.log(service);
+  const request = {consultingStaffId: null, customerId: customerId,serviceId: service, quantity: quantity, status: 'WAITING', appointmentDate: date, receivingDate: null, requestDate: new Date()};
+
+  console.log(request);
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
     if (!isNaN(newValue) && newValue !== '') {
-      setValue(Number(newValue));
+      setQuantity(Number(newValue));
     } else if (newValue === '') {
-      setValue('');
+      setQuantity('');
     }
   };
 
   const increment = () => {
-    setValue((prevValue) => (prevValue !== '' ? prevValue + 1 : 1));
+    setQuantity((prevValue) => (prevValue !== '' ? prevValue + 1 : 1));
   };
 
   const decrement = () => {
@@ -46,6 +53,12 @@ const UserDiamondAppraisalBody = () => {
     event.preventDefault();
     setMessage('Request sent');
   };
+
+  const submitRequest = () =>{
+    
+    axios.post('http://localhost:8080/api/request/create', request)
+    .catch(error => console.log(error))
+  }
 
   if (username === null) {
     return (
@@ -101,7 +114,7 @@ const UserDiamondAppraisalBody = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                value={value}
+                value={quantity}
                 onChange={handleInputChange}
                 placeholder="Number"
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -152,7 +165,7 @@ const UserDiamondAppraisalBody = () => {
                   width: "100px",
                   display: 'flex',
                   justifyContent: 'center',
-                }}
+                }} onClick={() => submitRequest()}
               >
                 Submit
               </Button>
