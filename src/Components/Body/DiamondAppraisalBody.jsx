@@ -1,6 +1,7 @@
 import React from 'react'
 import './DiamondAppraisalBody.css'
 import { Link } from '@mui/material'
+import UserDiamondAppraisalBody from './UserDiamondAppraisalBody'
 
 const DiamondAppraisalBody = () => {
   return (
@@ -13,8 +14,7 @@ const DiamondAppraisalBody = () => {
           <p>You can also set up an appointment by calling us <br/>directly at : <span style={{color: '#69CEE2'}}>(+84)84913-5986</span></p>
         </div>
         <div className='body-text'>
-          <p style={{textAlign:'center'}}>Please <span><Link href="/accounts/signin" underline='none' sx={{color: '#69CEE2', textDecoration: 'underline'}}>Sign in</Link></span> to send request</p>
-
+            <UserDiamondAppraisalBody></UserDiamondAppraisalBody>
         </div>
       </div>
     </div>

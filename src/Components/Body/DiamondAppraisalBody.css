@@ -50,4 +50,7 @@ body, html {
   .change-blue {
     color: #69cee2;
   }
+.box {
+  padding: 100px;
+}
   
