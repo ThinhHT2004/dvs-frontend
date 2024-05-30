@@ -8,20 +8,39 @@ import {
 } from "@mui/material";
 import React from "react";
 import logoWeb from "../../assets/logo_v4.png";
+import { useNavigate } from "react-router-dom";
 const StaffDrawer = ({ mylist, state }) => {
   const drawerWidth = 240;
+  const navigator = useNavigate();
+
+
+  function handleSignOut(){
+    sessionStorage.clear();
+    navigator('/');
+  }
+
+  function handleNavigate(text){
+    switch(text){
+      case 'Home': navigator('/consulting-staff/home'); break;
+      case "Incomming Request": navigator('/consulting-staff/incomming-request'); break;
+      case 'Manage Request': navigator('/consulting-staff/manage-request'); break;
+      case 'Report': navigator('/consulting-staff/report'); break;
+      case 'Form': navigator('consulting-staff/form'); break;
+      case 'Sign Out': handleSignOut(); break;
+    }
+  }
+
 
   function handleState(text) {
     if (state === text) {
       return (
-        <ListItemButton sx={{backgroundColor: 'red'}}>
+        <ListItemButton sx={{backgroundColor: 'lightgrey'}} onClick={()=> handleNavigate(text)}>
           <ListItemText primary={text}></ListItemText>
         </ListItemButton>
       );
     }else{
-      console.log(state)
       return (
-        <ListItemButton>
+        <ListItemButton onClick={() => handleNavigate(text)}>
           <ListItemText primary={text}></ListItemText>
         </ListItemButton>
       );
