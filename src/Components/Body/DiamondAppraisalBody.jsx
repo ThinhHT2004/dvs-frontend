@@ -1,6 +1,5 @@
 import React from 'react'
 import './DiamondAppraisalBody.css'
-import { Link } from '@mui/material'
 import UserDiamondAppraisalBody from './UserDiamondAppraisalBody'
 
 const DiamondAppraisalBody = () => {
