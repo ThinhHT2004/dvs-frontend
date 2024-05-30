@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from 'react';
 import ManagerDrawer from "./ManagerDrawer";
 import {
   Box,
   Button,
+  Link,
   Paper,
   Table,
   TableBody,
@@ -14,7 +15,19 @@ import {
   colors,
 } from "@mui/material";
 
+const initRequestList = [
+  { id: '#00001', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
+  { id: '#00002', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
+  { id: '#00003', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Sealed' },
+  { id: '#00004', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Sealed' }
+];
+
+const handleAction = (id) => {
+  setData(prevData => prevData.filter(row => row.id !== id));
+};
+
 const Manager_PendingRequest = () => {
+  const [data, setData] = useState(initRequestList);
   const drawerWidth = 240;
   return (
     <div>
@@ -48,104 +61,21 @@ const Manager_PendingRequest = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-
-                {/* ROW 1 ---------------------------------------- */}
-
-                <TableRow>
-                  <TableCell>#00001</TableCell>
-                  <TableCell>Hua Tan Thinh</TableCell>
-                  <TableCell>13/6/2024</TableCell>
-                  <TableCell>Commitment</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Approve
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Decline
-                    </Button>
-                  </TableCell>
-                </TableRow>
-
-                {/* ROW 2 ---------------------------------------- */}
-
-                <TableRow>
-                  <TableCell>#00002</TableCell>
-                  <TableCell>Hua Tan Thinh</TableCell>
-                  <TableCell>13/6/2024</TableCell>
-                  <TableCell>Commitment</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Approve
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Decline
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                {/* ROW 3 ---------------------------------------- */}
-
-                <TableRow>
-                  <TableCell>#00003</TableCell>
-                  <TableCell>Hua Tan Thinh</TableCell>
-                  <TableCell>13/6/2024</TableCell>
-                  <TableCell>Sealed</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Approve
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Decline
-                    </Button>
-                  </TableCell>
-                </TableRow>
-                {/* ROW 4 ---------------------------------------- */}
-
-                <TableRow>
-                  <TableCell>#00004</TableCell>
-                  <TableCell>Hua Tan Thinh</TableCell>
-                  <TableCell>13/6/2024</TableCell>
-                  <TableCell>Sealed</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Approve
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      variant="contained"
-                      sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                    >
-                      Decline
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                {data.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell>{row.id}</TableCell>
+                    <TableCell>{row.name}</TableCell>
+                    <TableCell>{row.date}</TableCell>
+                    <TableCell>{row.status}</TableCell>
+                    <TableCell>
+                      <Link href="#" sx={{ color: "#32D82E", paddingLeft: "16px" }} underline="none"
+                      onClick={() => handleAction(row.id)}>Approve</Link>
+                    </TableCell>
+                    <TableCell>
+                      <Link href="#" sx={{ color: "#F00", paddingLeft: "16px" }} underline="none">Decline</Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
