@@ -11,7 +11,7 @@ import Manager_PendingRequest from './Components/staff/manager/Manager_PendingRe
 import ValuationStaff_Home from './Components/staff/valuation_staff/ValuationStaff_Home'
 import ConsultingStaff_ManageRequest from './Components/staff/consulting_staff/ConsultingStaff_ManageRequest'
 import ValuationStaff_DiamondsAppraisal from './Components/staff/valuation_staff/ValuationStaff_DiamondsAppraisal'
-
+import Manager_ReceiptManagement from './Components/staff/manager/Manager_ReceiptManagement'
 const App = () => {
   
   return (
