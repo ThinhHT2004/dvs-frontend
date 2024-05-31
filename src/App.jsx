@@ -29,6 +29,7 @@ const App = () => {
         <Route path='/valuation-staff/home' element={<ValuationStaff_Home></ValuationStaff_Home>}></Route>
         <Route path='/manager/pending-request' element={<Manager_PendingRequest></Manager_PendingRequest>}></Route>
         <Route path='/consulting-staff/manage-request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
+        <Route path='/manager/receipt-management' element={<Manager_ReceiptManagement></Manager_ReceiptManagement>}></Route>
       </Routes>
       </BrowserRouter>
     </>
