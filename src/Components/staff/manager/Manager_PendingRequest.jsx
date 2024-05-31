@@ -22,23 +22,27 @@ const initRequestList = [
   { id: '#00004', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Sealed' }
 ];
 
-const handleAction = (id) => {
-  setData(prevData => prevData.filter(row => row.id !== id));
-};
+
 
 const Manager_PendingRequest = () => {
   const [data, setData] = useState(initRequestList);
   const drawerWidth = 240;
+
+  const handleAction = (id) => {
+    setData(prevData => prevData.filter(row => row.id !== id));
+  };
+
   return (
     <div>
       <Box sx={{ display: "flex" }}>
-      <StaffDrawer
+        <StaffDrawer
           mylist={[
             "Home",
             "Pending Request",
+            "Receipt Management",
             "Sign Out",
           ]}
-          state="Pending Request" 
+          state="Pending Request"
           handleClick={manager_navigator}
         ></StaffDrawer>
         <Box
@@ -67,10 +71,11 @@ const Manager_PendingRequest = () => {
                     <TableCell>{row.status}</TableCell>
                     <TableCell>
                       <Link href="#" sx={{ color: "#32D82E", paddingLeft: "16px" }} underline="none"
-                      onClick={() => handleAction(row.id)}>Approve</Link>
+                        onClick={() => handleAction(row.id)}>Approve</Link>
                     </TableCell>
                     <TableCell>
-                      <Link href="#" sx={{ color: "#F00", paddingLeft: "16px" }} underline="none">Decline</Link>
+                      <Link href="#" sx={{ color: "#F00", paddingLeft: "16px" }} underline="none"
+                        onClick={() => handleAction(row.id)}>Decline</Link>
                     </TableCell>
                   </TableRow>
                 ))}

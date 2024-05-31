@@ -19,45 +19,44 @@ import StaffDrawer from '../StaffDrawer';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-function createData(id, amount, status, diamondList = []) {
-    diamondList = diamondList || [];
-    return {
-        id,
-        amount,
-        status,
-        diamondList,
-    };
-}
+// Moved createData function here or to a separate utility file
+// ...
 
-function createDiamond(diamondID, appraiser1, appraiser2, appraiser3) {
-    return {
-        diamondID,
-        appraiser1,
-        appraiser2,
-        appraiser3,
-    };
-}
-// const initRequestList = [
-//     { id: '#00001', amount: '5', status: 'Appraising' },
-//     { id: '#00002', amount: '5', status: 'Appraising' },
-//     { id: '#00003', amount: '5', status: 'Appraising' },
-//     { id: '#00004', amount: '5', status: 'Appraising' },
-//     { id: '#00005', amount: '5', status: 'Appraising' },
-// ];
-const diamondList = [
-    createDiamond("#DIA01", "T.Thinh", "H.Thinh", "T.Liem"),
-    createDiamond("#DIA02", "None", "None", "None"),
-    createDiamond("#DIA03", "None", "None", "None"),
-];
+// function Row({ row }) {
+//     const [open, setOpen] = useState(false);
+
+//     return (
+//         <>
+//             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+//                 {/* Table cells */}
+//             </TableRow>
+//             <TableRow>
+//                 {/* Collapsible content */}
+//             </TableRow>
+//         </>
+//     );
+// }
+
+// Row.propTypes = {
+//     // propTypes definition
+// };
+
+// rows array
+// ...
 
 const initRequestList = [
-    createData("#00001", "5", "Appraising", diamondList),
-    createData("#00002", "5", "Appraising", diamondList),
-    createData("#00003", "5", "Appraising", diamondList),
+    { id: '#00001', amount: '5', status: 'Appraising' },
+    { id: '#00002', amount: '5', status: 'Appraising' },
+    { id: '#00003', amount: '5', status: 'Appraising' },
+    { id: '#00004', amount: '5', status: 'Appraising' },
+    { id: '#00005', amount: '5', status: 'Appraising' },
 ];
 
+const handleAction = (id) => {
+    setData(prevData => prevData.filter(row => row.id !== id));
+};
 
-const Manager_ReceiptManagement = () => {
+const Manager_ReportManagement = () => {
     const [data, setData] = useState(initRequestList);
     const drawerWidth = 240;
     const [open, setOpen] = useState(false);
@@ -97,7 +96,7 @@ const Manager_ReceiptManagement = () => {
                         <Table sx={{ minWidth: 700, borderRadius: 10 }}>
                             <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                                 <TableRow>
-                                    <TableCell colSpan={4} sx={{ color: 'white', fontSize: '25px' }}>Receipt Management</TableCell>
+                                    <TableCell colSpan={4} sx={{ color: 'white', fontSize: '25px' }}>Report Management</TableCell>
                                 </TableRow>
                             </TableHead>
                             <React.Fragment>
@@ -106,7 +105,7 @@ const Manager_ReceiptManagement = () => {
                                         <TableCell>{row.id}</TableCell>
                                         <TableCell>{row.amount}</TableCell>
                                         <TableCell>{row.status}</TableCell>
-                                        <TableCell>View Details
+                                        <TableCell sx={{}}>View Details
                                             <IconButton
                                                 aria-label="expand row"
                                                 size="small"
@@ -120,19 +119,22 @@ const Manager_ReceiptManagement = () => {
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                             <Collapse in={open[row.id]} timeout="auto" unmountOnExit>
                                                 <Box sx={{ margin: 1 }}>
+                                                    <Typography variant="h6" gutterBottom component="div">
+                                                        History
+                                                    </Typography>
                                                     <Table size="small" aria-label="purchases">
-                                                        {row.diamondList.map((diamondRow) => (
-                                                            <TableRow key={diamondRow.id}>
-                                                                <TableCell>{diamondRow.diamondID}</TableCell>
-                                                                <TableCell>Appraiser#1: {diamondRow.appraiser1}</TableCell>
-                                                                <TableCell>Appraiser#2:{diamondRow.appraiser2}</TableCell>
-                                                                <TableCell>Appraiser#3:{diamondRow.appraiser3}</TableCell>
-                                                                <TableCell><Link href="#" sx={{ color: "#69CEE2", paddingLeft: "16px" }} underline="none"
-                                                                    onClick={() => handleAction(row.id)}>Save</Link>
-                                                                </TableCell>
+                                                        <TableHead>
+                                                            <TableRow>
+                                                                <TableCell>Date</TableCell>
+                                                                <TableCell>Customer</TableCell>
+                                                                <TableCell align="right">Amount</TableCell>
+                                                                <TableCell align="right">Total price ($)</TableCell>
                                                             </TableRow>
-                                                        ))}
-                                                    </Table><div></div>
+                                                        </TableHead>
+                                                        <TableBody>
+                                                            <h1>ádas</h1>
+                                                        </TableBody>
+                                                    </Table>
                                                 </Box>
                                             </Collapse>
                                         </TableCell>
@@ -148,4 +150,4 @@ const Manager_ReceiptManagement = () => {
     );
 };
 
-export default Manager_ReceiptManagement;
+export default Manager_ReportManagement;
