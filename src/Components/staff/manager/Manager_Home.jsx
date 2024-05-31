@@ -18,15 +18,16 @@ const Manager_Home = () => {
     return (
         <div>
             <Box sx={{ display: "flex" }}>
-            <StaffDrawer
-          mylist={[
-            "Home",
-            "Pending Request",
-            "Sign Out",
-          ]}
-          state="Home" 
-          handleClick={manager_navigator}
-        ></StaffDrawer>
+                <StaffDrawer
+                    mylist={[
+                        "Home",
+                        "Pending Request",
+                        "Receipt Management",
+                        "Sign Out",
+                    ]}
+                    state="Home"
+                    handleClick={manager_navigator}
+                ></StaffDrawer>
             </Box>
         </div>
     );
