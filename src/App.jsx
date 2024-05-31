@@ -8,9 +8,9 @@ import ConsultingStaff_Home from './Components/staff/consulting_staff/Consulting
 import ConsultingStaff_IncommingRequest from './Components/staff/consulting_staff/ConsultingStaff_IncommingRequest'
 import Manager_Home from './Components/staff/manager/Manager_Home'
 import Manager_PendingRequest from './Components/staff/manager/Manager_PendingRequest'
-
+import ValuationStaff_Home from './Components/staff/valuation_staff/ValuationStaff_Home'
 import ConsultingStaff_ManageRequest from './Components/staff/consulting_staff/ConsultingStaff_ManageRequest'
-
+import ValuationStaff_DiamondsAppraisal from './Components/staff/valuation_staff/ValuationStaff_DiamondsAppraisal'
 
 const App = () => {
   
