@@ -57,6 +57,7 @@ const UserDiamondAppraisalBody = () => {
   const submitRequest = () =>{
     
     axios.post('http://localhost:8080/api/request/create', request)
+    .then(response => console.log(response.data))
     .catch(error => console.log(error))
   }
 
