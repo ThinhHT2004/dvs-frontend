@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
     Box,
-    Button,
     Link,
     Paper,
     Table,
@@ -10,9 +9,12 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography,
     IconButton,
     Collapse,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import { manager_navigator } from '../Naviate';
 import StaffDrawer from '../StaffDrawer';
@@ -29,38 +31,51 @@ function createData(id, amount, status, diamondList = []) {
     };
 }
 
-function createDiamond(diamondID, appraiser1, appraiser2, appraiser3) {
+function createDiamond(diamondID) {
     return {
         diamondID,
-        appraiser1,
-        appraiser2,
-        appraiser3,
+        appraiser1: '',
+        appraiser2: '',
+        appraiser3: '',
     };
 }
-// const initRequestList = [
-//     { id: '#00001', amount: '5', status: 'Appraising' },
-//     { id: '#00002', amount: '5', status: 'Appraising' },
-//     { id: '#00003', amount: '5', status: 'Appraising' },
-//     { id: '#00004', amount: '5', status: 'Appraising' },
-//     { id: '#00005', amount: '5', status: 'Appraising' },
-// ];
+
+
+
 const diamondList = [
-    createDiamond("#DIA01", "T.Thinh", "H.Thinh", "T.Liem"),
-    createDiamond("#DIA02", "None", "None", "None"),
-    createDiamond("#DIA03", "None", "None", "None"),
+    createDiamond("#DIA01"),
+    createDiamond("#DIA02"),
+    createDiamond("#DIA03"),
 ];
 
 const initRequestList = [
     createData("#00001", "5", "Appraising", diamondList),
     createData("#00002", "5", "Appraising", diamondList),
     createData("#00003", "5", "Appraising", diamondList),
+    createData("#00004", "5", "Appraising", diamondList),
+    createData("#00005", "5", "Appraising", diamondList),
 ];
+
+const appraiserList = ["T.Thinh", "H.Thinh", "T.Liem", "T.Khang"];
 
 
 const Manager_ReceiptManagement = () => {
+
     const [data, setData] = useState(initRequestList);
-    const drawerWidth = 240;
     const [open, setOpen] = useState(false);
+    const [appraisers, setAppraisers] = useState(() => {
+        const initialAppraisers = {};
+        diamondList.forEach(diamond => {
+            initialAppraisers[diamond.diamondID] = {
+                appraiser1: '',
+                appraiser2: '',
+                appraiser3: '',
+            };
+        });
+        return initialAppraisers;
+    });
+
+    const drawerWidth = 240;
 
     const handleToggle = (id) => {
         setOpen(prevOpen => ({
@@ -68,6 +83,19 @@ const Manager_ReceiptManagement = () => {
             // Toggle the state for the clicked row and set others to false
             [id]: !prevOpen[id],
         }));
+    };
+
+    const handleAppraiserChange = (diamondID, appraiserNumber, event) => {
+        setAppraisers(prevAppraisers => {
+            const updatedAppraisers = {
+                ...prevAppraisers,
+                [diamondID]: {
+                    ...prevAppraisers[diamondID],
+                    [appraiserNumber]: event.target.value,
+                },
+            };
+            return updatedAppraisers;
+        });
     };
 
     return (
@@ -78,6 +106,7 @@ const Manager_ReceiptManagement = () => {
                         "Home",
                         "Pending Request",
                         "Receipt Management",
+                        "Report Management",
                         "Sign Out",
                     ]}
                     state="Receipt Management"
@@ -97,16 +126,16 @@ const Manager_ReceiptManagement = () => {
                         <Table sx={{ minWidth: 700, borderRadius: 10 }}>
                             <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                                 <TableRow>
-                                    <TableCell colSpan={4} sx={{ color: 'white', fontSize: '25px' }}>Receipt Management</TableCell>
+                                    <TableCell colSpan={4} sx={{ color: 'white', fontSize: '25px' }}>Report Management</TableCell>
                                 </TableRow>
                             </TableHead>
                             <React.Fragment>
                                 {data.map((row) => (<TableBody>
-                                    <TableRow key={row.id}>
-                                        <TableCell>{row.id}</TableCell>
-                                        <TableCell>{row.amount}</TableCell>
-                                        <TableCell>{row.status}</TableCell>
-                                        <TableCell>View Details
+                                    <TableRow key={row.id} style={{ display: 'flex' }}>
+                                        <TableCell style={{ flex: 1 }}>{row.id}</TableCell>
+                                        <TableCell style={{ flex: 1 }}>{row.amount}</TableCell>
+                                        <TableCell style={{ flex: 1 }}>{row.status}</TableCell>
+                                        <TableCell style={{ flex: 1, textAlign: 'right' }}>View Details
                                             <IconButton
                                                 aria-label="expand row"
                                                 size="small"
@@ -119,14 +148,65 @@ const Manager_ReceiptManagement = () => {
                                     <TableRow>
                                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                                             <Collapse in={open[row.id]} timeout="auto" unmountOnExit>
-                                                <Box sx={{ margin: 1 }}>
+                                                <Box sx={{ margin: 0 }}>
                                                     <Table size="small" aria-label="purchases">
                                                         {row.diamondList.map((diamondRow) => (
                                                             <TableRow key={diamondRow.id}>
                                                                 <TableCell>{diamondRow.diamondID}</TableCell>
-                                                                <TableCell>Appraiser#1: {diamondRow.appraiser1}</TableCell>
-                                                                <TableCell>Appraiser#2:{diamondRow.appraiser2}</TableCell>
-                                                                <TableCell>Appraiser#3:{diamondRow.appraiser3}</TableCell>
+                                                                <TableCell>
+                                                                    <FormControl fullWidth>
+                                                                        <InputLabel id={`appraiser1-label-${diamondRow.diamondID}`}>Appraiser 1</InputLabel>
+                                                                        <Select
+                                                                            labelId={`appraiser1-label-${diamondRow.diamondID}`}
+                                                                            id={`appraiser1-select-${diamondRow.diamondID}`}
+                                                                            value={appraisers[diamondRow.diamondID]?.appraiser1 || ''}
+                                                                            label="Appraiser 1"
+                                                                            onChange={(event) => handleAppraiserChange(diamondRow.diamondID, 'appraiser1', event)}
+                                                                        >
+                                                                            {appraiserList.map((name) => (
+                                                                                <MenuItem key={name} value={name}>
+                                                                                    {name}
+                                                                                </MenuItem>
+                                                                            ))}
+                                                                        </Select>
+                                                                    </FormControl>
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <FormControl fullWidth>
+                                                                        <InputLabel id={`appraiser2-label-${diamondRow.diamondID}`}>Appraiser 2</InputLabel>
+                                                                        <Select
+                                                                            labelId={`appraiser2-label-${diamondRow.diamondID}`}
+                                                                            id={`appraiser2-select-${diamondRow.diamondID}`}
+                                                                            value={appraisers[diamondRow.diamondID]?.appraiser2 || ''}
+                                                                            label="Appraiser 2"
+                                                                            onChange={(event) => handleAppraiserChange(diamondRow.diamondID, 'appraiser2', event)}
+                                                                        >
+                                                                            {appraiserList.map((name) => (
+                                                                                <MenuItem key={name} value={name}>
+                                                                                    {name}
+                                                                                </MenuItem>
+                                                                            ))}
+                                                                        </Select>
+                                                                    </FormControl>
+                                                                </TableCell>
+                                                                <TableCell>
+                                                                    <FormControl fullWidth>
+                                                                        <InputLabel id={`appraiser3-label-${diamondRow.diamondID}`}>Appraiser 3</InputLabel>
+                                                                        <Select
+                                                                            labelId={`appraiser3-label-${diamondRow.diamondID}`}
+                                                                            id={`appraiser3-select-${diamondRow.diamondID}`}
+                                                                            value={appraisers[diamondRow.diamondID]?.appraiser3 || ''}
+                                                                            label="Appraiser 1"
+                                                                            onChange={(event) => handleAppraiserChange(diamondRow.diamondID, 'appraiser3', event)}
+                                                                        >
+                                                                            {appraiserList.map((name) => (
+                                                                                <MenuItem key={name} value={name}>
+                                                                                    {name}
+                                                                                </MenuItem>
+                                                                            ))}
+                                                                        </Select>
+                                                                    </FormControl>
+                                                                </TableCell>
                                                                 <TableCell><Link href="#" sx={{ color: "#69CEE2", paddingLeft: "16px" }} underline="none"
                                                                     onClick={() => handleAction(row.id)}>Save</Link>
                                                                 </TableCell>
@@ -147,5 +227,6 @@ const Manager_ReceiptManagement = () => {
         </div>
     );
 };
+
 
 export default Manager_ReceiptManagement;

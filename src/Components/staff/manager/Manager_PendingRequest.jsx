@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   Box,
-  Button,
   Link,
   Paper,
   Table,
@@ -10,8 +9,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  colors,
 } from "@mui/material";
 import { manager_navigator } from '../Naviate';
 import StaffDrawer from '../StaffDrawer';
@@ -40,6 +37,7 @@ const Manager_PendingRequest = () => {
             "Home",
             "Pending Request",
             "Receipt Management",
+            "Report Management",
             "Sign Out",
           ]}
           state="Pending Request"
