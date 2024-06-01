@@ -47,7 +47,8 @@ export const manager_navigator = (text, navigate) => {
   switch (text) {
     case 'Home': navigate('/manager/home'); break;
     case "Pending Request": navigate('/manager/pending-request'); break;
-    case 'Receipt Management': navigator('/manager/receipt-management'); break; 
+    case 'Receipt Management': navigate('/manager/receipt-management'); break;
+    case 'Report Management': navigate('/manager/report-management'); break;
     case "Sign Out":
       handleSignOut(navigate);
       break;

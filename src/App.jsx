@@ -12,6 +12,7 @@ import ValuationStaff_Home from './Components/staff/valuation_staff/ValuationSta
 import ConsultingStaff_ManageRequest from './Components/staff/consulting_staff/ConsultingStaff_ManageRequest'
 import ValuationStaff_DiamondsAppraisal from './Components/staff/valuation_staff/ValuationStaff_DiamondsAppraisal'
 import Manager_ReceiptManagement from './Components/staff/manager/Manager_ReceiptManagement'
+import Manager_ReportManagement from './Components/staff/manager/Manager_ReportManagement'
 const App = () => {
   
   return (
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/manager/pending-request' element={<Manager_PendingRequest></Manager_PendingRequest>}></Route>
         <Route path='/consulting-staff/manage-request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
         <Route path='/manager/receipt-management' element={<Manager_ReceiptManagement></Manager_ReceiptManagement>}></Route>
+       < Route path='/manager/report-management' element={<Manager_ReportManagement></Manager_ReportManagement>}></Route>
       </Routes>
       </BrowserRouter>
     </>
