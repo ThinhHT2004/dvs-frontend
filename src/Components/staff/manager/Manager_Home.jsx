@@ -23,6 +23,7 @@ const Manager_Home = () => {
                         "Home",
                         "Pending Request",
                         "Receipt Management",
+                        "Report Management",
                         "Sign Out",
                     ]}
                     state="Home"
