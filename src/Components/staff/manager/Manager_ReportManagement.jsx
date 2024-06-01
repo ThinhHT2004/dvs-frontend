@@ -11,7 +11,12 @@ import {
     TableRow,
     IconButton,
     Collapse,
+    Button,
+    FormControl,
+    InputLabel,
+    InputBase,
 } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import { manager_navigator } from '../Naviate';
 import StaffDrawer from '../StaffDrawer';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -33,22 +38,22 @@ function createDiamond(diamondID, price1, price2, price3) {
         price1,
         price2,
         price3,
-        final_price: '0',
+        final_price: 'none',
     };
 }
 
 function diamondAveragePrice(diamond) {
     const prices = [diamond.price1, diamond.price2, diamond.price3]
-        .filter(price => price !== "None")
+        .filter(price => price !== "none")
         .map(price => parseFloat(price));
-    const finalPrice = prices.length > 0 ? (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2) : "None";
+    const finalPrice = prices.length > 0 ? (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2) : "none";
     return finalPrice;
 }
 
 const diamondList = [
     createDiamond("#DIA01", "4000", "5000", "4500"),
-    createDiamond("#DIA02", "None", "None", "None"),
-    createDiamond("#DIA03", "None", "None", "None"),
+    createDiamond("#DIA02", "none", "none", "none"),
+    createDiamond("#DIA03", "none", "none", "none"),
 ];
 
 const initRequestList = [
@@ -60,17 +65,19 @@ const initRequestList = [
 const Manager_ReportManagement = () => {
     const [data, setData] = useState(initRequestList);
     const [open, setOpen] = useState(false);
-    const [appraisers, setAppraisers] = useState(() => {
-        const initialAppraisers = {};
-        diamondList.forEach(diamond => {
-            initialAppraisers[diamond.diamondID] = {
-                appraiser1: '',
-                appraiser2: '',
-                appraiser3: '',
-            };
+    const [editPriceOpen, setEditPriceOpen] = useState(false);
+    const [currentDiamond, setCurrentDiamond] = useState(null);
+    const handlePriceChange = (event, priceType) => {
+        setCurrentDiamond({
+            ...currentDiamond,
+            [priceType]: event.target.value,
         });
-        return initialAppraisers;
-    });
+    };
+
+    const handleEditPriceClick = (diamond) => {
+        setCurrentDiamond(diamond);
+        setEditPriceOpen(true);
+    };
 
     const drawerWidth = 240;
 
@@ -82,22 +89,43 @@ const Manager_ReportManagement = () => {
         }));
     };
 
-    const handleAppraiserChange = (diamondID, appraiserNumber, event) => {
-        setAppraisers(prevAppraisers => {
-            const updatedAppraisers = {
-                ...prevAppraisers,
-                [diamondID]: {
-                    ...prevAppraisers[diamondID],
-                    [appraiserNumber]: event.target.value,
-                },
-            };
-            return updatedAppraisers;
-        });
-    };
+    const BootstrapInput = styled(InputBase)(({ theme }) => ({
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+        '& .MuiInputBase-input': {
+            borderRadius: 4,
+            position: 'relative',
+            backgroundColor: theme.palette.background.paper,
+            border: '1px solid #ced4da',
+            fontSize: 16,
+            padding: '10px 26px 10px 12px',
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            // Use the system font instead of the default Roboto font.
+            fontFamily: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"Segoe UI"',
+                'Roboto',
+                '"Helvetica Neue"',
+                'Arial',
+                'sans-serif',
+                '"Apple Color Emoji"',
+                '"Segoe UI Emoji"',
+                '"Segoe UI Symbol"',
+            ].join(','),
+            '&:focus': {
+                borderRadius: 4,
+                borderColor: '#80bdff',
+                boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+            },
+        },
+    }));
+
 
     return (
         <div>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
                 <StaffDrawer
                     mylist={[
                         "Home",
@@ -116,23 +144,28 @@ const Manager_ReportManagement = () => {
                         width: { sm: `calc(100% - ${drawerWidth}px)` },
                         marginTop: "5%",
                         display: "flex",
-                        // justifyContent: "center",
+                        alignItems: 'flex-start', // Aligns children to the start of the cross axis
+                        gap: "16px",
                     }}
                 >
-                    <TableContainer component={Paper} sx={{ width: 700 }}>
+                    <TableContainer component={Paper} sx={{ width: '65%', marginRight: '8px' }}>
                         <Table sx={{ minWidth: 550, borderRadius: 10 }}>
                             <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                                 <TableRow>
-                                    <TableCell colSpan={4} sx={{ color: 'white', fontSize: '25px' }}>Report Management</TableCell>
+                                    <TableCell style={{ width: '25%' }}>Request ID</TableCell>
+                                    <TableCell style={{ width: '25%' }}>Diamond Amount</TableCell>
+                                    <TableCell style={{ width: '25%' }}>Status</TableCell>
+                                    <TableCell style={{ width: '25%' }}></TableCell>
                                 </TableRow>
                             </TableHead>
                             <React.Fragment>
                                 {data.map((row) => (<TableBody>
-                                    <TableRow key={row.id} style={{ display: 'flex' }}>
-                                        <TableCell style={{ flex: 1 }}>{row.id}</TableCell>
-                                        <TableCell style={{ flex: 1 }}>{row.amount}</TableCell>
-                                        <TableCell style={{ flex: 1 }}>{row.status}</TableCell>
-                                        <TableCell style={{ flex: 1, textAlign: 'right' }}>View Details
+                                    <TableRow >
+                                        <TableCell style={{ width: '25%' }}>{row.id}</TableCell>
+                                        <TableCell style={{ width: '25%', paddingLeft: '65px' }}>{row.amount}</TableCell>
+                                        <TableCell style={{ width: '25%' }}>{row.status}</TableCell>
+
+                                        <TableCell style={{ width: '25%' }}>View Details
                                             <IconButton
                                                 aria-label="expand row"
                                                 size="small"
@@ -152,10 +185,18 @@ const Manager_ReportManagement = () => {
                                                                 display: 'flex',
                                                                 borderBottom: index === row.diamondList.length - 1 ? 'none' : ''
                                                             }}>
-                                                                <TableCell style={{flex: '6'}}>{diamondRow.diamondID}</TableCell>
-                                                                <TableCell style={{flex: '6'}}>Price: {diamondAveragePrice(diamondRow)}</TableCell>
-                                                                <TableCell style={{flex: '1', textAlign: 'right'}}><Link href="#" sx={{ color: "#69CEE2", paddingLeft: "16px" }} underline="none"
-                                                                    onClick={() => handleAction(row.id)}>Edit</Link>
+                                                                <TableCell style={{ flex: '3' }}>{diamondRow.diamondID}</TableCell>
+                                                                <TableCell style={{ flex: '3' }}>Price: {diamondAveragePrice(diamondRow)}</TableCell>
+                                                                <TableCell style={{ flex: '1', textAlign: 'right' }}>
+                                                                    <Link
+                                                                        href="#"
+                                                                        sx={{ color: "#69CEE2", paddingLeft: "16px" }}
+                                                                        underline="none"
+                                                                        onClick={() => handleEditPriceClick(diamondRow)}
+                                                                    >
+                                                                        Edit Price
+                                                                    </Link>
+
                                                                 </TableCell>
                                                             </TableRow>
                                                         ))}
@@ -169,6 +210,83 @@ const Manager_ReportManagement = () => {
                             </React.Fragment>
                         </Table>
                     </TableContainer>
+                    {editPriceOpen && (
+                        <Box>
+                            <TableContainer component={Paper} sx={{ width: 400 }}>
+                                <Table sx={{ minWidth: 300, borderRadius: 10 }}>
+                                    <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                                        <TableRow>
+                                            <TableCell colSpan={5} sx={{ color: 'white', fontSize: '25px' }}>{currentDiamond.diamondID}</TableCell>
+                                            <TableCell></TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell sx={{ borderBottom: 'none' }}>
+                                                Appraiser#1 Price: {currentDiamond.price1}
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell sx={{ flex: 100, borderBottom: 'none' }}>
+                                                Appraiser#2 Price: {currentDiamond.price2}
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell sx={{ borderBottom: 'none' }}>
+                                                Appraiser#3 Price: {currentDiamond.price3}
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell sx={{ borderBottom: 'none' }}>
+                                                {/* Final Price: {currentDiamond.final_price} */}
+                                                Final Price:
+                                                <FormControl sx={{ m: 1 }} variant="standard">
+                                                    <InputLabel htmlFor="final-price-input"></InputLabel>
+                                                    <BootstrapInput
+                                                        id="final-price-input"
+                                                        placeholder={currentDiamond.final_price ? currentDiamond.final_price.toString() : 'Enter final price'}
+                                                        onChange={(event) => setCurrentDiamond({ ...currentDiamond, final_price: event.target.value })}
+                                                    />
+                                                </FormControl>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow >
+                                            <TableCell colSpan={3} style={{ borderBottom: 'none' }}>
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{ background: "#69CEE2", borderRadius: "8px", mr: 5, ml: 3 }}
+                                                >
+                                                    Min
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{ background: "#69CEE2", borderRadius: "8px" }}
+                                                >
+                                                    Average
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{ background: "#69CEE2", borderRadius: "8px", ml: 6 }}
+                                                >
+                                                    Max
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                        <TableRow sx={{ backgroundColor: '#FFF', borderBottom: 'none' }}>
+                                            <TableCell sx={{ borderBottom: 'none', textAlign: 'right' }}>
+                                                <Link
+                                                    href="#"
+                                                    sx={{ color: "#69CEE2", fontWeight: 'bold', fontSize: '20px', textDecoration: 'none' }}
+                                                    onClick={() => handleEditPriceClick(diamondRow)}
+                                                >
+                                                    Save
+                                                </Link>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Box>)}
                 </Box>
             </Box>
         </div>
