@@ -12,7 +12,8 @@ import {
   TableRow,
   Typography,
   Link,
-  TextField
+  TextField,
+  Grid
 } from "@mui/material";
 import { valuation_staff_navigator } from '../Naviate';
 
@@ -140,112 +141,49 @@ const ValuationStaff_DiamondsAppraisal = () => {
             alignItems: "center",
           }}
         >
-          <TableContainer component={Paper} sx={{ width: 1000, marginBottom: 4 }}>
-            <Table sx={{ minWidth: 700, borderRadius: 10 }}>
-              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
-                <TableRow>
-                  <TableCell>ID Request</TableCell>
-                  <TableCell>ID Diamond</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Note</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {diamonds.map((diamond) => (
-                  <TableRow key={diamond.idDiamond}>
-                    <TableCell>{diamond.idRequest}</TableCell>
-                    <TableCell>{diamond.idDiamond}</TableCell>
-                    <TableCell>{diamond.price}</TableCell>
-                    <TableCell>{diamond.notes}</TableCell>
-                    <TableCell>
-                    <Link
-                        href="#"
-                        sx={{
-                          color: selectedDiamond && selectedDiamond.idDiamond === diamond.idDiamond ? "grey" : "#69CEE2",
-                          paddingLeft: "16px"
-                        }}
-                        underline="none"
-                        onClick={() => handleAction(diamond.idDiamond)}
-                      >
-                        Edit
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          {selectedDiamond && (
-            <>
-              <TableContainer component={Paper} sx={{ width: 1000 }}>
+          <Grid container spacing={3} >
+            <Grid item xs={7} >
+              <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
                 <Table sx={{ minWidth: 700, borderRadius: 10 }}>
                   <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                     <TableRow>
-                      <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px' }}>Diamond Details - {selectedDiamond.idDiamond}</TableCell>
+                      <TableCell>ID Request</TableCell>
+                      <TableCell>ID Diamond</TableCell>
+                      <TableCell>Price</TableCell>
+                      <TableCell>Note</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    
-                    <TableRow>
-                      <TableCell>Carat Weight</TableCell>
-                      <TableCell>{selectedDiamond.carat_weight}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Clarity</TableCell>
-                      <TableCell>{selectedDiamond.clarity}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Origin</TableCell>
-                      <TableCell>{selectedDiamond.origin}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Polish</TableCell>
-                      <TableCell>{selectedDiamond.polish}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Color</TableCell>
-                      <TableCell>{selectedDiamond.color}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Symmetry</TableCell>
-                      <TableCell>{selectedDiamond.symmetry}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Fluorescence</TableCell>
-                      <TableCell>{selectedDiamond.fluorescence}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Shape</TableCell>
-                      <TableCell>{selectedDiamond.shape}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Measurement</TableCell>
-                      <TableCell>{selectedDiamond.measurement}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Proportion</TableCell>
-                      <TableCell>{selectedDiamond.proportion}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Market price</TableCell>
-                      <TableCell>{selectedDiamond.market_price}</TableCell>
-                    </TableRow>
+                    {diamonds.map((diamond) => (
+                      <TableRow key={diamond.idDiamond}>
+                        <TableCell>{diamond.idRequest}</TableCell>
+                        <TableCell>{diamond.idDiamond}</TableCell>
+                        <TableCell>{diamond.price}</TableCell>
+                        <TableCell>{diamond.notes}</TableCell>
+                        <TableCell>
+                          <Link
+                            href="#"
+                            sx={{
+                              color: selectedDiamond && selectedDiamond.idDiamond === diamond.idDiamond ? "grey" : "#69CEE2",
+                              paddingLeft: "16px"
+                            }}
+                            underline="none"
+                            onClick={() => handleAction(diamond.idDiamond)}
+                          >
+                            Edit
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  width: 1000,
-                  marginBottom: 4,
-                }}
-              >
-                <Box sx={{ width: '50%', marginTop:'20px'}}>
+            </Grid>
+            {selectedDiamond && (
+              <Grid item xs={5} >
+                <Box sx={{ marginBottom: 4 }}>
                   <Typography variant="h6">Edit Diamond - {selectedDiamond.idDiamond}</Typography>
-                  
                   <TextField
                     fullWidth
                     margin="normal"
@@ -264,29 +202,88 @@ const ValuationStaff_DiamondsAppraisal = () => {
                       setSelectedDiamond({ ...selectedDiamond, notes: e.target.value })
                     }
                   />
-                  <Button
-                    variant="contained"
-     
-                    sx={{ mt: 2, backgroundColor: '#69CEE2'}}
-                    onClick={() => {
-                      setDiamonds(diamonds.map(d => d.idDiamond === selectedDiamond.idDiamond ? selectedDiamond : d));
-                      setSelectedDiamond(null);
-                    }}
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    
-                    sx={{ mt: 2, ml: 2, color: "red", borderColor:'red'}}
-                    onClick={() => setSelectedDiamond(null)}
-                  >
-                    Cancel
-                  </Button>
+                  <Box sx={{ marginTop: 2 }}>
+                    <Button
+                      variant="contained"
+                      sx={{ backgroundColor: '#69CEE2' }}
+                      onClick={() => {
+                        setDiamonds(diamonds.map(d => d.idDiamond === selectedDiamond.idDiamond ? selectedDiamond : d));
+                        setSelectedDiamond(null);
+                      }}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      sx={{ marginLeft: 2, color: "red", borderColor: 'red' }}
+                      onClick={() => setSelectedDiamond(null)}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
                 </Box>
-              </Box>
-            </>
-          )}
+              </Grid>
+            )}
+            {selectedDiamond && (
+              <Grid item xs={12} >
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 700, borderRadius: 10 }}>
+                    <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                      <TableRow>
+                        <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px' }}>Diamond Details - {selectedDiamond.idDiamond}</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>Carat Weight</TableCell>
+                        <TableCell>{selectedDiamond.carat_weight}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Clarity</TableCell>
+                        <TableCell>{selectedDiamond.clarity}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Origin</TableCell>
+                        <TableCell>{selectedDiamond.origin}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Polish</TableCell>
+                        <TableCell>{selectedDiamond.polish}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Color</TableCell>
+                        <TableCell>{selectedDiamond.color}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Symmetry</TableCell>
+                        <TableCell>{selectedDiamond.symmetry}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Fluorescence</TableCell>
+                        <TableCell>{selectedDiamond.fluorescence}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Shape</TableCell>
+                        <TableCell>{selectedDiamond.shape}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Measurement</TableCell>
+                        <TableCell>{selectedDiamond.measurement}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Proportion</TableCell>
+                        <TableCell>{selectedDiamond.proportion}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Market price</TableCell>
+                        <TableCell>{selectedDiamond.market_price}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+            )}
+          </Grid>
         </Box>
       </Box>
     </div>
