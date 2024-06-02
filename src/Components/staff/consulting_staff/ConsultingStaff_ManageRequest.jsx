@@ -57,11 +57,11 @@ const ConsultingStaff_ManageRequest = () => {
   const [returnFluorescence, setReturnFluorescence] = useState("");
 
   const rows = [
-    createData("#1212321", "Tan Thinh", "3h", 2, "1st June"),
-    createData("#1212324", "Tuan Khang", "5h", 3, "12th Jyly"),
-    createData("#1211321", "Truong Thinh", "3h", 2, "23th June"),
-    createData("#4212321", "The Anh", "3h", 2, "2nd August"),
-    createData("#1252321", "Moc Nguyen", "5h", 1, "3rd July"),
+    createData("#1212321", "Tan Thinh", "3h", 2, "Received Sample" ,"1st June"),
+    createData("#1212324", "Tuan Khang", "5h", 3, "Received Sample","12th Jyly"),
+    createData("#1211321", "Truong Thinh", "3h", 20, "Received Sample","23th June"),
+    createData("#4212321", "The Anh", "3h", 2, "Received Sample","2nd August"),
+    createData("#1252321", "Moc Nguyen", "5h", 1, "Received Sample","3rd July"),
   ];
 
   function changeColor(text) {
@@ -85,6 +85,7 @@ const ConsultingStaff_ManageRequest = () => {
     customerName,
     service,
     quantity,
+    status,
     appointmentDate
   ) {
     return {
@@ -92,6 +93,7 @@ const ConsultingStaff_ManageRequest = () => {
       customerName,
       service,
       quantity,
+      status,
       appointmentDate,
       sample: [
         {
@@ -290,9 +292,17 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <Box display={"flex"} justifyContent={"center"} sx={{marginTop: '5%'}}>
-                  <Button variant="contained" sx={{marginRight: '10%'}}>Save</Button>
-                  <Button variant="contained" color="error">Deny</Button>
+                <Box
+                  display={"flex"}
+                  justifyContent={"center"}
+                  sx={{ marginTop: "5%" }}
+                >
+                  <Button variant="contained" sx={{ marginRight: "10%" }}>
+                    Save
+                  </Button>
+                  <Button variant="contained" color="error">
+                    Deny
+                  </Button>
                 </Box>
               </TableRow>
             </TableBody>
@@ -314,6 +324,7 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell>{row.customerName}</TableCell>
           <TableCell>{row.service}</TableCell>
           <TableCell>{row.quantity}</TableCell>
+          <TableCell>{row.status}</TableCell>
           <TableCell>{row.appointmentDate}</TableCell>
           <TableCell>
             <IconButton
@@ -397,7 +408,9 @@ const ConsultingStaff_ManageRequest = () => {
                     <TableCell>Customer Name</TableCell>
                     <TableCell>Service</TableCell>
                     <TableCell>Quantity</TableCell>
+                    <TableCell>Status</TableCell>
                     <TableCell>Appointment Date</TableCell>
+                    
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
