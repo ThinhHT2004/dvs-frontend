@@ -18,6 +18,7 @@ import moment from "moment";
 const ConsultingStaff_IncommingRequest = () => {
   const drawerWidth = 240;
   const [requests, setRequests] = useState([]);
+  const staffId = 3;
 
   useEffect(() => {
     getAllWaitingRequests();
@@ -29,6 +30,13 @@ const ConsultingStaff_IncommingRequest = () => {
       .then((response) => setRequests(response.data))
       .catch((error) => console.log(error));
   }
+
+  function acceptRequest(requestId){
+    axios
+    .put("http://localhost:8080/api/request/" + requestId + "/assign/" + staffId)
+    .catch(err => console.log(err))
+  }
+
 
   return (
     <div>
@@ -79,6 +87,7 @@ const ConsultingStaff_IncommingRequest = () => {
                       <Button
                         variant="contained"
                         sx={{ background: "#69CEE2", borderRadius: "8px" }}
+                        onClick={() => acceptRequest(request.id)}
                       >
                         Accept
                       </Button>
