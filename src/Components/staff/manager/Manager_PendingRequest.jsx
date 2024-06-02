@@ -57,7 +57,10 @@ const Manager_PendingRequest = () => {
             <Table sx={{ minWidth: 700, borderRadius: 10 }}>
               <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                 <TableRow>
-                  <TableCell colSpan={6} sx={{ color: 'white', fontSize: '25px' }}>Diamond Appraisal</TableCell>
+                  <TableCell>Request ID</TableCell>
+                  <TableCell>Customer</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell colSpan={3}>Status</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
