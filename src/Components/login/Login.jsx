@@ -17,9 +17,10 @@ const Login = () => {
 
     function handleLogin(){
         axios
-        .post('http://localhost:8080/api/accounts/login', {username: username, password: password})
+        .post('http://localhost:8080/api/auth/login', {username: username, password: password})
         .then(response => {
-            if(response.data.status === true){
+            console.log(response.data)
+            if(response.data.role === 'CUSTOMER'){
                 sessionStorage.setItem('username', username);
                 sessionStorage.setItem('customerId', response.data.id);
                 navigator('/');

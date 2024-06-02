@@ -13,7 +13,7 @@ import ConsultingStaff_ManageRequest from './Components/staff/consulting_staff/C
 import ValuationStaff_DiamondsAppraisal from './Components/staff/valuation_staff/ValuationStaff_DiamondsAppraisal'
 import Manager_ReceiptManagement from './Components/staff/manager/Manager_ReceiptManagement'
 import Manager_ReportManagement from './Components/staff/manager/Manager_ReportManagement'
-import ConsultingStaff_Form from './Components/staff/consulting_staff/ConsultingStaff_Form'
+import ConsultingStaff_Form from './Components/staff/consulting_staff/ConsultingStaff_Form.jsx'
 const App = () => {
   
   return (
