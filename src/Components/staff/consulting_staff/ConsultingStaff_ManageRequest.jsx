@@ -19,15 +19,18 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Label } from "@mui/icons-material";
+import axios from "axios";
+import moment from "moment";
 
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
+  const staffId = 3;
 
   const [requestId, setRequestId] = useState("");
 
@@ -55,14 +58,18 @@ const ConsultingStaff_ManageRequest = () => {
   const [returnColorGrade, setReturnColorGrade] = useState("");
   const [returnShape, setReturnShape] = useState("");
   const [returnFluorescence, setReturnFluorescence] = useState("");
+  const [rows, setRows] = useState([])
 
-  const rows = [
-    createData("#1212321", "Tan Thinh", "3h", 2, "Received Sample" ,"1st June"),
-    createData("#1212324", "Tuan Khang", "5h", 3, "Received Sample","12th Jyly"),
-    createData("#1211321", "Truong Thinh", "3h", 20, "Received Sample","23th June"),
-    createData("#4212321", "The Anh", "3h", 2, "Received Sample","2nd August"),
-    createData("#1252321", "Moc Nguyen", "5h", 1, "Received Sample","3rd July"),
-  ];
+  useEffect(() =>{
+    getAcceptedRequest();
+  })
+
+  function getAcceptedRequest(){
+    axios
+    .get("http://localhost:8080/api/request/valuation-request/" + staffId + "/ACCEPTED")
+    .then(resp => setRows(resp.data))
+    .catch(err => console.log(err));
+  }
 
   function changeColor(text) {
     if (text === "EMPTY") {
@@ -78,34 +85,6 @@ const ConsultingStaff_ManageRequest = () => {
         </TableCell>
       );
     }
-  }
-
-  function createData(
-    requestId,
-    customerName,
-    service,
-    quantity,
-    status,
-    appointmentDate
-  ) {
-    return {
-      requestId,
-      customerName,
-      service,
-      quantity,
-      status,
-      appointmentDate,
-      sample: [
-        {
-          idSample: "#DA123",
-          status: "FILLED",
-        },
-        {
-          idSample: "#DA312",
-          status: "EMPTY",
-        },
-      ],
-    };
   }
 
   function displayBox(text) {
@@ -282,7 +261,7 @@ const ConsultingStaff_ManageRequest = () => {
                       label="Fluorescence"
                       onChange={(e) => setReturnFluorescence(e.target.value)}
                     >
-                      {clarityGrade.map((fl) => (
+                      {fluorescence.map((fl) => (
                         <MenuItem key={fl} value={fl}>
                           {fl}
                         </MenuItem>
@@ -320,12 +299,13 @@ const ConsultingStaff_ManageRequest = () => {
     return (
       <Fragment>
         <TableRow>
-          <TableCell>{row.requestId}</TableCell>
-          <TableCell>{row.customerName}</TableCell>
-          <TableCell>{row.service}</TableCell>
+          <TableCell>{row.id}</TableCell>
+          <TableCell>{row.customer.first_name}</TableCell>
+          <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
           <TableCell>{row.status}</TableCell>
-          <TableCell>{row.appointmentDate}</TableCell>
+          <TableCell>{moment(row.appointmentDate).format("Do, MMM")}
+          </TableCell>
           <TableCell>
             <IconButton
               aria-label="expand row"
@@ -349,14 +329,14 @@ const ConsultingStaff_ManageRequest = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {row.sample.map((sample) => (
-                      <TableRow key={sample.idSample}>
+                    {row.valuationRequestDetailList.map((sample) => (
+                      <TableRow key={sample.id}>
                         <TableCell component="th" scope="row">
-                          {sample.idSample}
+                          {sample.id}
                         </TableCell>
                         {changeColor(sample.status)}
                         <TableCell align="right">
-                          <Button onClick={() => setRequestId(sample.idSample)}>
+                          <Button onClick={() => setRequestId(sample.id)}>
                             Edit Information
                           </Button>
                         </TableCell>
@@ -416,7 +396,8 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => (
-                    <Row key={row.requestId} row={row}></Row>
+                    <Row key={row.id} row={row}></Row>
+                    
                   ))}
                 </TableBody>
               </Table>
