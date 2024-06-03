@@ -29,12 +29,12 @@ const diamondData = [
       {
         idDiamond: 'D001',
         carat_weight: 1.25,
-        size: '', // Add size field
+        size: '', 
       },
       {
         idDiamond: 'D002',
         carat_weight: 1.50,
-        size: '', // Add size field
+        size: '', 
       },
     ],
   },
@@ -48,12 +48,12 @@ const diamondData = [
       {
         idDiamond: 'D003',
         carat_weight: 1.00,
-        size: '', // Add size field
+        size: '', 
       },
       {
         idDiamond: 'D004',
         carat_weight: 2.00,
-        size: '', // Add size field
+        size: '', 
       },
     ],
   },
