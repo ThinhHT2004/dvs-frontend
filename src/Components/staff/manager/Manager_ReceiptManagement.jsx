@@ -122,8 +122,8 @@ const Manager_ReceiptManagement = () => {
                         justifyContent: "center",
                     }}
                 >
-                    <TableContainer component={Paper} sx={{ width: 1000 }}>
-                        <Table sx={{ minWidth: 700, borderRadius: 10 }}>
+                    <TableContainer component={Paper} sx={{ width: 800 }}>
+                        <Table sx={{ minWidth: 600, borderRadius: 10 }}>
                             <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                                 <TableRow>
                                     <TableCell>Request ID</TableCell>

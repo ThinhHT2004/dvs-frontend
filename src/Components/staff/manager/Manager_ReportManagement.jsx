@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
     Box,
     Link,
@@ -67,12 +67,6 @@ const Manager_ReportManagement = () => {
     const [open, setOpen] = useState(false);
     const [editPriceOpen, setEditPriceOpen] = useState(false);
     const [currentDiamond, setCurrentDiamond] = useState(null);
-    const handlePriceChange = (event, priceType) => {
-        setCurrentDiamond({
-            ...currentDiamond,
-            [priceType]: event.target.value,
-        });
-    };
 
     const handleEditPriceClick = (diamond) => {
         setCurrentDiamond(diamond);
@@ -84,7 +78,6 @@ const Manager_ReportManagement = () => {
     const handleToggle = (id) => {
         setOpen(prevOpen => ({
             ...prevOpen,
-            // Toggle the state for the clicked row and set others to false
             [id]: !prevOpen[id],
         }));
     };
@@ -101,7 +94,6 @@ const Manager_ReportManagement = () => {
             fontSize: 16,
             padding: '10px 26px 10px 12px',
             transition: theme.transitions.create(['border-color', 'box-shadow']),
-            // Use the system font instead of the default Roboto font.
             fontFamily: [
                 '-apple-system',
                 'BlinkMacSystemFont',
@@ -121,7 +113,9 @@ const Manager_ReportManagement = () => {
             },
         },
     }));
-
+    const handleFinalPriceChange = useCallback((event) => {
+        setCurrentDiamond({ ...currentDiamond, final_price: event.target.value });
+    }, [currentDiamond]);
 
     return (
         <div>
@@ -163,8 +157,9 @@ const Manager_ReportManagement = () => {
                                     <TableRow >
                                         <TableCell style={{ width: '25%' }}>{row.id}</TableCell>
                                         <TableCell style={{ width: '25%', paddingLeft: '65px' }}>{row.amount}</TableCell>
-                                        <TableCell style={{ width: '25%' }}>{row.status}</TableCell>
-
+                                        <TableCell style={{ width: '25%', color: row.status === 'Appraised' ? '#32D82E' : 'inherit' }}>
+                                            {row.status}
+                                        </TableCell>
                                         <TableCell style={{ width: '25%' }}>View Details
                                             <IconButton
                                                 aria-label="expand row"
@@ -232,20 +227,20 @@ const Manager_ReportManagement = () => {
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{ borderBottom: 'none' }}>
+                                            <TableCell sx={{ borderBottom: 'none', margin: 'none', pb: 0 }}>
                                                 Appraiser#3 Price: {currentDiamond.price3}
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow>
-                                            <TableCell sx={{ borderBottom: 'none' }}>
-                                                {/* Final Price: {currentDiamond.final_price} */}
-                                                Final Price:
-                                                <FormControl sx={{ m: 1 }} variant="standard">
-                                                    <InputLabel htmlFor="final-price-input"></InputLabel>
+                                        <TableRow sx={{ mb: -2, p: 0 }}>
+                                            <TableCell sx={{ borderBottom: 'none', display: 'flex', alignItems: 'center', p: 0, pl: 2 }}>
+                                                <div style={{ marginRight: 8 }}>Final Price:</div>
+                                                <FormControl variant="standard" sx={{ display: 'flex', width: '50%', height: 'auto', pb: 2.5 }}>
+                                                    <InputLabel htmlFor="final-price-input" />
                                                     <BootstrapInput
                                                         id="final-price-input"
-                                                        placeholder={currentDiamond.final_price ? currentDiamond.final_price.toString() : 'Enter final price'}
-                                                        onChange={(event) => setCurrentDiamond({ ...currentDiamond, final_price: event.target.value })}
+                                                        value={currentDiamond.final_price ? currentDiamond.final_price.toString() : ''}
+                                                        placeholder='Enter final price'
+                                                        onChange={handleFinalPriceChange}
                                                     />
                                                 </FormControl>
                                             </TableCell>

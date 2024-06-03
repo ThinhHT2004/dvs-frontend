@@ -17,20 +17,47 @@ import axios from 'axios';
 const UserDiamondAppraisalBody = () => {
   const username = sessionStorage.getItem("username");
   const customerId = sessionStorage.getItem("customerId"); 
-  const services = [
-    {value: 1, label: 'Normal Diamonds Appraisal - 10h' },
-    {value: 2, label: 'Fast Diamonds Appraisal - 3h' },
-  ];
-
+  const [services, setServices] = useState([]) 
   const [service, setService] = useState('');
   const [quantity, setQuantity] = useState('');
   const [date, setDate] = useState(null);
   const [message, setMessage] = useState('');
+  const [customer, setCustomer] = useState(() => {
+    axios.get('http://localhost:8080/api/customers/' + customerId)
+    .then(response => {
+      console.log(response.data);
+      setCustomer(response.data);
+    })
+    .catch(error => console.log(error));
+  });
+  const [serviceObject, setServiceObject] = useState(null);
 
-  console.log(service);
-  const request = {consultingStaffId: null, customerId: customerId,serviceId: service, quantity: quantity, status: 'WAITING', appointmentDate: date, receivingDate: null, requestDate: new Date()};
+  function getAllServices(){
+    axios
+    .get('http://localhost:8080/api/services/')
+    .then(resp => setServices(resp.data))
+    .catch(err => console.log(err));
+  }
 
-  console.log(request);
+
+  useEffect(() => {
+    getAllServices();
+    fetchService();
+  });
+
+  function fetchService(){
+    axios.get('http://localhost:8080/api/services/' + service)
+    .then(response =>{
+      setServiceObject(response.data);
+    })
+    .catch(error => console.log(error));
+  }
+  
+
+
+
+  const request = {consultingStaffId: null, customer: customer ,service: serviceObject, quantity: quantity, status: 'WAITING', appointmentDate: date, receivingDate: null, requestDate: new Date()};
+
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
@@ -40,6 +67,8 @@ const UserDiamondAppraisalBody = () => {
       setQuantity('');
     }
   };
+
+  
 
   const increment = () => {
     setQuantity((prevValue) => (prevValue !== '' ? prevValue + 1 : 1));
@@ -60,6 +89,7 @@ const UserDiamondAppraisalBody = () => {
     .then(response => console.log(response.data))
     .catch(error => console.log(error))
   }
+
 
   if (username === null) {
     return (
@@ -96,7 +126,7 @@ const UserDiamondAppraisalBody = () => {
                     if (selected === '') {
                       return <em style={{color:'#989898', fontStyle:'normal'}}>Select Type of Appraisal</em>;
                     }
-                    return services.find(option => option.value === selected)?.label;
+                    return services.find(option => option.id === selected)?.name;
                   }}
                   sx={{
                     '& .MuiSelect-select': {
@@ -105,8 +135,8 @@ const UserDiamondAppraisalBody = () => {
                   }}
                 >
                   {services.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
                     </MenuItem>
                   ))}
                 </Select>
