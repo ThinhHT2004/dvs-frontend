@@ -15,6 +15,7 @@ import {
   MenuItem,
   Button,
   Grid,
+  TextField,
 } from '@mui/material';
 
 const diamondData = [
@@ -28,10 +29,12 @@ const diamondData = [
       {
         idDiamond: 'D001',
         carat_weight: 1.25,
+        size: '', // Add size field
       },
       {
         idDiamond: 'D002',
         carat_weight: 1.50,
+        size: '', // Add size field
       },
     ],
   },
@@ -45,10 +48,12 @@ const diamondData = [
       {
         idDiamond: 'D003',
         carat_weight: 1.00,
+        size: '', // Add size field
       },
       {
         idDiamond: 'D004',
         carat_weight: 2.00,
+        size: '', // Add size field
       },
     ],
   },
@@ -101,7 +106,7 @@ const ConsultingStaff_Form = () => {
         <Grid item xs={12} md={8}>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }}>
-              <TableHead sx={{backgroundColor: "#69CEE2"}}>
+              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                 <TableRow>
                   <TableCell>ID Request</TableCell>
                   <TableCell>Name</TableCell>
@@ -142,15 +147,11 @@ const ConsultingStaff_Form = () => {
         </Grid>
         <Grid item xs={12} md={4}>
           {open && (
-            <Box
-              sx={{border: "1px"}}
-            >
+            <Box sx={{ border: "1px" }}>
               <Box>
-                
-                <TableContainer component={Paper} >
-                  <Table 
-                  sx={{ minWidth: 200}}>
-                    <TableHead sx={{backgroundColor: "#69CEE2"}}>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 200 }}>
+                    <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                       {selectedOption} Form
                       <TableCell></TableCell>
                     </TableHead>
@@ -163,22 +164,24 @@ const ConsultingStaff_Form = () => {
                         <TableCell>Phone:</TableCell>
                         <TableCell>{currentRequest?.phone}</TableCell>
                       </TableRow>
-                    </TableBody>
-                  </Table>
-                  <Table >
-                    <TableBody>
                       {currentRequest?.diamonds.map((diamond) => (
                         <TableRow key={diamond.idDiamond} sx={{ '& td': { borderBottom: 'none' } }}>
                           <TableCell>ID Sample: {diamond.idDiamond}</TableCell>
-                          <TableCell>Size: {diamond.carat_weight}</TableCell>
+                          <TableCell sx={{ verticalAlign: 'middle' }}>Size:
+                            <TextField
+                            sx={{ width: 100, height: 32}}
+                              onChange={(e) => {
+                                diamond.size = e.target.value;
+                              }}
+                              value={diamond.size}
+                            />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
                   <Button onClick={handleClose}>Create</Button>
                 </TableContainer>
-                
-                
               </Box>
             </Box>
           )}
