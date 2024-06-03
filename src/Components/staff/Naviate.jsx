@@ -21,7 +21,7 @@ export const consulting_staff_navigator = (text, navigate) => {
       navigate("/consulting-staff/report");
       break;
     case "Form":
-      navigate("consulting-staff/form");
+      navigate("/consulting-staff/form");
       break;
     case "Sign Out":
       handleSignOut(navigate);
