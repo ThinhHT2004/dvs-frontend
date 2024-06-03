@@ -33,6 +33,7 @@ const ConsultingStaff_ManageRequest = () => {
   const staffId = 3;
 
   const [requestId, setRequestId] = useState("");
+  const [sampleId, setSampleId] = useState("");
 
   const polish = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const symmetry = ["FAIR", "GOOD", "V.GOOD", "EX."];
@@ -52,23 +53,42 @@ const ConsultingStaff_ManageRequest = () => {
     "HEART",
   ];
 
+
+  const [measurement, setMeausurement] = useState("");
+  const [caratWeight, setCaratWeight] = useState("");
   const [returnPolish, setReturnPolish] = useState("");
   const [returnSymmetry, setReturnSymmetry] = useState("");
   const [returnClarity, setReturnClarity] = useState("");
   const [returnColorGrade, setReturnColorGrade] = useState("");
   const [returnShape, setReturnShape] = useState("");
   const [returnFluorescence, setReturnFluorescence] = useState("");
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
 
-  useEffect(() =>{
+  const valuationReport = {measurement: measurement, caratWeight: caratWeight, 
+                        polish: returnPolish, symmetry: returnSymmetry, clarity: returnClarity,
+                        color: returnColorGrade, shape: returnShape, fluorescence: returnFluorescence};
+
+
+  useEffect(() => {
     getAcceptedRequest();
-  })
+  }, []);
 
-  function getAcceptedRequest(){
+  function getAcceptedRequest() {
     axios
-    .get("http://localhost:8080/api/request/valuation-request/" + staffId + "/ACCEPTED")
-    .then(resp => setRows(resp.data))
-    .catch(err => console.log(err));
+      .get(
+        "http://localhost:8080/api/request/valuation-request/" +
+          staffId +
+          "/WAITING"
+      )
+      .then((resp) => setRows(resp.data))
+      .catch((err) => console.log(err));
+  }
+
+  function saveReport(requestId, sampleId, report){
+    axios
+      .put("http://localhost:8080/api/reports/update/" + requestId + "/" + sampleId, report)
+      .then(resp => console.log(resp.data))
+      .catch(err => console.log(err));
   }
 
   function changeColor(text) {
@@ -87,7 +107,23 @@ const ConsultingStaff_ManageRequest = () => {
     }
   }
 
-  function displayBox(text) {
+  function displayButton(status, sample, requestId) {
+    if (status !== "ACCEPTED") {
+      return (
+        <Button onClick={() => {setSampleId(sample.id); setRequestId(requestId)}}>
+          Edit Information
+        </Button>
+      );
+    } else {
+      return (
+        <Button onClick={() => {setSampleId(sample.id); setRequestId(requestId)}} disabled>
+          Edit Information
+        </Button>
+      );
+    }
+  }
+
+  function displayBox(text, requestId) {
     if (text !== "") {
       return (
         <Box
@@ -113,6 +149,7 @@ const ConsultingStaff_ManageRequest = () => {
                     placeholder="Measurements"
                     fullWidth
                     variant="standard"
+                    onChange={(e) => setMeausurement(e.target.value)}
                   ></TextField>
                 </TableCell>
               </TableRow>
@@ -123,46 +160,7 @@ const ConsultingStaff_ManageRequest = () => {
                     placeholder="Carat Weight"
                     fullWidth
                     variant="standard"
-                  ></TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    type="text"
-                    placeholder="Depth"
-                    fullWidth
-                    variant="standard"
-                  ></TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    type="text"
-                    placeholder="Table"
-                    fullWidth
-                    variant="standard"
-                  ></TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    type="text"
-                    placeholder="Girdle"
-                    fullWidth
-                    variant="standard"
-                  ></TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <TextField
-                    type="text"
-                    placeholder="Culet"
-                    fullWidth
-                    variant="standard"
+                    onChange={(e) => setCaratWeight(e.target.value)}
                   ></TextField>
                 </TableCell>
               </TableRow>
@@ -276,7 +274,7 @@ const ConsultingStaff_ManageRequest = () => {
                   justifyContent={"center"}
                   sx={{ marginTop: "5%" }}
                 >
-                  <Button variant="contained" sx={{ marginRight: "10%" }}>
+                  <Button variant="contained" sx={{ marginRight: "10%" }} onClick={() => saveReport(requestId, text, valuationReport)}>
                     Save
                   </Button>
                   <Button variant="contained" color="error">
@@ -304,8 +302,7 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
           <TableCell>{row.status}</TableCell>
-          <TableCell>{moment(row.appointmentDate).format("Do, MMM")}
-          </TableCell>
+          <TableCell>{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
           <TableCell>
             <IconButton
               aria-label="expand row"
@@ -336,9 +333,7 @@ const ConsultingStaff_ManageRequest = () => {
                         </TableCell>
                         {changeColor(sample.status)}
                         <TableCell align="right">
-                          <Button onClick={() => setRequestId(sample.id)}>
-                            Edit Information
-                          </Button>
+                          {displayButton(row.status, sample, row.id)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -390,14 +385,12 @@ const ConsultingStaff_ManageRequest = () => {
                     <TableCell>Quantity</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Appointment Date</TableCell>
-                    
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {rows.map((row) => (
                     <Row key={row.id} row={row}></Row>
-                    
                   ))}
                 </TableBody>
               </Table>
@@ -405,7 +398,7 @@ const ConsultingStaff_ManageRequest = () => {
           </Box>
         </Grid>
         <Grid item xs={4}>
-          {displayBox(requestId)}
+          {displayBox(sampleId, requestId)}
         </Grid>
       </Grid>
     </div>
