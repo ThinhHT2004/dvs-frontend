@@ -76,7 +76,7 @@ const ConsultingStaff_ManageRequest = () => {
   function getAcceptedRequest() {
     axios
       .get(
-        "http://localhost:8080/api/request/valuation-request/" +
+        "http://localhost:8080/api/request/valuation-request/not/" +
           staffId +
           "/WAITING"
       )

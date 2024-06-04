@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { consulting_staff_navigator } from '../Naviate';
-import StaffDrawer from '../StaffDrawer';
+import React, { useEffect, useState } from "react";
+import { consulting_staff_navigator } from "../Naviate";
+import StaffDrawer from "../StaffDrawer";
 import {
   Box,
   Paper,
@@ -16,54 +16,41 @@ import {
   Button,
   Grid,
   TextField,
-} from '@mui/material';
-
-const diamondData = [
-  {
-    idRequest: '#00001',
-    name: 'hua tan thinh',
-    phone: '0877962524',
-    status: 'Completed',
-    completeDate: '2023-12-31',
-    diamonds: [
-      {
-        idDiamond: 'D001',
-        carat_weight: 1.25,
-        size: '', 
-      },
-      {
-        idDiamond: 'D002',
-        carat_weight: 1.50,
-        size: '', 
-      },
-    ],
-  },
-  {
-    idRequest: '#00002',
-    status: 'Completed',
-    name: 'hua tan thinh',
-    phone: '0877962524',
-    completeDate: '2023-12-31',
-    diamonds: [
-      {
-        idDiamond: 'D003',
-        carat_weight: 1.00,
-        size: '', 
-      },
-      {
-        idDiamond: 'D004',
-        carat_weight: 2.00,
-        size: '', 
-      },
-    ],
-  },
-];
+} from "@mui/material";
+import axios from "axios";
 
 const ConsultingStaff_Form = () => {
+  const consultignStaffId = 3;
   const [open, setOpen] = useState(false);
   const [currentRequest, setCurrentRequest] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedOption, setSelectedOption] = useState('');
+  const [selectedOption, setSelectedOption] = useState("");
+  const [requests, setRequests] = useState([]);
+
+  useEffect(() => {
+    getAcceptedRquest();
+  });
+
+  function getAcceptedRquest() {
+    axios
+      .get(
+        "http://localhost:8080/api/request/valuation-request/" +
+          consultignStaffId +
+          "/ACCEPTED"
+      )
+      .then((resp) => setRequests(resp.data))
+      .catch((err) => console.log(err));
+  }
+
+  function createReceipt(requestDetailList, requestId) {
+    axios
+      .post(
+        "http://localhost:8080/api/request/create-receipt/" + requestId,
+        requestDetailList
+      )
+      .then((resp) => handleClose())
+      .catch((err) => console.log(err));
+  }
 
   const handleClickOpen = (event, request) => {
     setCurrentRequest(request);
@@ -83,7 +70,7 @@ const ConsultingStaff_Form = () => {
   const handleClose = () => {
     setOpen(false);
     setCurrentRequest(null);
-    setSelectedOption('');
+    setSelectedOption("");
   };
 
   return (
@@ -91,12 +78,12 @@ const ConsultingStaff_Form = () => {
       <Box>
         <StaffDrawer
           mylist={[
-            'Home',
-            'Incomming Request',
-            'Manage Request',
-            'Report',
-            'Form',
-            'Sign Out',
+            "Home",
+            "Incomming Request",
+            "Manage Request",
+            "Report",
+            "Form",
+            "Sign Out",
           ]}
           state="Form"
           handleClick={consulting_staff_navigator}
@@ -115,13 +102,16 @@ const ConsultingStaff_Form = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {diamondData.map((request) => (
-                  <TableRow key={request.idRequest}>
-                    <TableCell>{request.idRequest}</TableCell>
-                    <TableCell>{request.name}</TableCell>
+                {requests.map((request) => (
+                  <TableRow key={request.id}>
+                    <TableCell>{request.id}</TableCell>
+                    <TableCell>{request.customer.first_name}</TableCell>
                     <TableCell>{request.status}</TableCell>
                     <TableCell>
-                      <Link href="#" onClick={(event) => handleClickOpen(event, request)}>
+                      <Link
+                        href="#"
+                        onClick={(event) => handleClickOpen(event, request)}
+                      >
                         Create Form
                       </Link>
                       <Menu
@@ -129,14 +119,16 @@ const ConsultingStaff_Form = () => {
                         open={Boolean(anchorEl)}
                         onClose={handleMenuClose}
                       >
-                        {['Receipt', 'Sealed', 'Committed', 'Handover'].map((option) => (
-                          <MenuItem
-                            key={option}
-                            onClick={() => handleMenuItemClick(option)}
-                          >
-                            {option}
-                          </MenuItem>
-                        ))}
+                        {["Receipt", "Sealed", "Committed", "Handover"].map(
+                          (option) => (
+                            <MenuItem
+                              key={option}
+                              onClick={() => handleMenuItemClick(option)}
+                            >
+                              {option}
+                            </MenuItem>
+                          )
+                        )}
                       </Menu>
                     </TableCell>
                   </TableRow>
@@ -156,31 +148,50 @@ const ConsultingStaff_Form = () => {
                       <TableCell></TableCell>
                     </TableHead>
                     <TableBody>
-                      <TableRow sx={{ '& td': { borderBottom: 'none' } }}>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>Name:</TableCell>
-                        <TableCell>{currentRequest?.name}</TableCell>
+                        <TableCell>
+                          {currentRequest.customer.first_name}
+                        </TableCell>
                       </TableRow>
-                      <TableRow sx={{ '& td': { borderBottom: 'none' } }}>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>Phone:</TableCell>
-                        <TableCell>{currentRequest?.phone}</TableCell>
+                        <TableCell>
+                          {currentRequest.customer.phoneNumber}
+                        </TableCell>
                       </TableRow>
-                      {currentRequest?.diamonds.map((diamond) => (
-                        <TableRow key={diamond.idDiamond} sx={{ '& td': { borderBottom: 'none' } }}>
-                          <TableCell>ID Sample: {diamond.idDiamond}</TableCell>
-                          <TableCell sx={{ verticalAlign: 'middle' }}>Size:
-                            <TextField
-                            sx={{ width: 100, height: 32}}
-                              onChange={(e) => {
-                                diamond.size = e.target.value;
-                              }}
-                              value={diamond.size}
-                            />
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {currentRequest.valuationRequestDetailList.map(
+                        (sample) => (
+                          <TableRow
+                            key={sample.id}
+                            sx={{ "& td": { borderBottom: "none" } }}
+                          >
+                            <TableCell>ID Sample: {sample.id}</TableCell>
+                            <TableCell sx={{ verticalAlign: "middle" }}>
+                              <TextField
+                                sx={{ width: 100, height: 32 }}
+                                onChange={(e) => {
+                                  sample.size = e.target.value;
+                                }}
+                                value={sample.size}
+                                label="Size"
+                              />
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
                     </TableBody>
                   </Table>
-                  <Button onClick={handleClose}>Create</Button>
+                  <Button
+                    onClick={() =>
+                      createReceipt(
+                        currentRequest.valuationRequestDetailList,
+                        currentRequest.id
+                      )
+                    }
+                  >
+                    Create
+                  </Button>
                 </TableContainer>
               </Box>
             </Box>
