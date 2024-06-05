@@ -24,7 +24,17 @@ const Login = () => {
                 sessionStorage.setItem('username', username);
                 sessionStorage.setItem('customerId', response.data.id);
                 navigator('/');
-            }else{
+            }else if(response.data.role === 'CONSULTING_STAFF'){
+                sessionStorage.setItem("consultingStaffId", response.data.id);
+                navigator('/consulting-staff/home');
+            }else if(response.data.role === 'VALUATION_STAFF'){
+                sessionStorage.setItem("valuationStaffId", response.data.id);
+                navigator('/valuation-staff/home');
+            }else if(response.data.role === 'MANAGER'){
+                sessionStorage.setItem("managerId", response.data.id);
+                navigator('/manager/home');
+            }
+            else{
                 return toast.error(response.data.message)
             }
         }        
