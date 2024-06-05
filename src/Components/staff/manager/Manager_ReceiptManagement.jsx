@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Link,
@@ -23,61 +23,39 @@ import { manager_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
-function createData(id, amount, status, diamondList = []) {
-  diamondList = diamondList || [];
-  return {
-    id,
-    amount,
-    status,
-    diamondList,
-  };
-}
-
-function createDiamond(diamondID) {
-  return {
-    diamondID,
-    appraiser1: "",
-    appraiser2: "",
-    appraiser3: "",
-  };
-}
-
-const diamondList = [
-  createDiamond("#DIA01"),
-  createDiamond("#DIA02"),
-  createDiamond("#DIA03"),
-];
-
-const initRequestList = [
-  createData("#00001", "5", "Appraising", diamondList),
-  createData("#00002", "5", "Appraising", diamondList),
-  createData("#00003", "5", "Appraising", diamondList),
-  createData("#00004", "5", "Appraising", diamondList),
-  createData("#00005", "5", "Appraising", diamondList),
-];
-
-const appraiserList = ["T.Thinh", "H.Thinh", "T.Liem", "T.Khang"];
+import axios from "axios";
 
 const Manager_ReceiptManagement = () => {
-  const [data, setData] = useState(initRequestList);
   const [open, setOpen] = useState({});
-  const [appraisers, setAppraisers] = useState(() => {
-    const initialAppraisers = {};
-    diamondList.forEach((diamond) => {
-      initialAppraisers[diamond.diamondID] = {
-        appraiser1: "",
-        appraiser2: "",
-        appraiser3: "",
-      };
-    });
-    return initialAppraisers;
-  });
+  const [rows, setRows] = useState([]);
+  const [appraiserList, setAppraiserList] = useState(() => getAppraisers());
+  const [staff1, setStaff1] = useState();
+  const [staff2, setStaff2] = useState();
+  const [staff3, setStaff3] = useState();
+
+  useEffect(() => {
+    getProcessingRequest();
+  }, []);
+
+  function getProcessingRequest() {
+    axios
+      .get(
+        "http://localhost:8080/api/request/valuation-request/status/PROCESSING"
+      )
+      .then((resp) => setRows(resp.data))
+      .catch((err) => console.log(err));
+  }
+
+  function getAppraisers() {
+    axios
+      .get("http://localhost:8080/api/staff/valuation-staffs")
+      .then((resp) => setAppraiserList(resp.data))
+      .catch((err) => console.log(err));
+  }
 
   const [boxOpen, setBoxOpen] = useState(false);
   const [currentDiamond, setCurrentDiamond] = useState(null);
-
-  const drawerWidth = 240;
+  const appraisers = [staff1, staff2, staff3];
 
   const handleToggle = (id) => {
     setOpen((prevOpen) => ({
@@ -86,18 +64,7 @@ const Manager_ReceiptManagement = () => {
     }));
   };
 
-  const handleAppraiserChange = (diamondID, appraiserNumber, event) => {
-    setAppraisers((prevAppraisers) => {
-      const updatedAppraisers = {
-        ...prevAppraisers,
-        [diamondID]: {
-          ...prevAppraisers[diamondID],
-          [appraiserNumber]: event.target.value,
-        },
-      };
-      return updatedAppraisers;
-    });
-  };
+  console.log(appraisers);
 
   const handleBoxOpen = (diamond) => {
     setCurrentDiamond(diamond);
@@ -107,7 +74,57 @@ const Manager_ReceiptManagement = () => {
   const handleBoxClose = () => {
     setBoxOpen(false);
     setCurrentDiamond(null);
+    setStaff1(undefined);
+    setStaff2(undefined);
+    setStaff3(undefined);
   };
+
+  const handleSave = (currentSample, staffList) => {
+    axios
+      .put(
+        "http://localhost:8080/api/assignment/assign/" + currentSample.id,
+        staffList
+      )
+      .then((resp) => {
+        handleBoxClose();
+        console.log(resp.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  function displayLink(sample) {
+    if (sample.status === "FILLED") {
+      return (
+        <Link
+          href="#"
+          sx={{
+            color: "#69CEE2",
+            paddingLeft: "16px",
+          }}
+          underline="none"
+          onClick={() => handleBoxOpen(sample)}
+        >
+          Edit
+        </Link>
+      );
+    } else {
+      return (
+        <Link
+          component="button"
+          href="#"
+          sx={{
+            color: "grey",
+            paddingLeft: "16px",
+          }}
+          underline="none"
+          onClick={() => handleBoxOpen(sample)}
+          disabled
+        >
+          Edit
+        </Link>
+      );
+    }
+  }
 
   return (
     <Grid container spacing={0}>
@@ -143,11 +160,11 @@ const Manager_ReceiptManagement = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row, rowIndex) => (
+                {rows.map((row) => (
                   <React.Fragment key={row.id}>
                     <TableRow>
                       <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.amount}</TableCell>
+                      <TableCell>{row.quantity}</TableCell>
                       <TableCell>{row.status}</TableCell>
                       <TableCell>
                         <IconButton
@@ -176,55 +193,22 @@ const Manager_ReceiptManagement = () => {
                           <Box sx={{ margin: 0 }}>
                             <Table size="small" aria-label="purchases">
                               <TableBody>
-                                {row.diamondList.map(
+                                {row.valuationRequestDetailList.map(
                                   (diamondRow, diamondIndex) => (
                                     <TableRow
-                                      key={diamondRow.diamondID}
+                                      key={diamondRow.id}
                                       sx={
                                         diamondIndex ===
-                                        row.diamondList.length - 1
+                                        row.valuationRequestDetailList.length -
+                                          1
                                           ? { borderBottom: 0 }
                                           : {}
                                       }
                                     >
+                                      <TableCell>{diamondRow.id}</TableCell>
+                                      <TableCell>{diamondRow.status}</TableCell>
                                       <TableCell>
-                                        {diamondRow.diamondID}
-                                      </TableCell>
-                                      <TableCell>
-                                        <Typography>
-                                          Appraiser 1 :{" "}
-                                          {appraisers[diamondRow.diamondID]
-                                            ?.appraiser1 || "None"}
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell>
-                                        <Typography>
-                                          Appraiser 2 :{" "}
-                                          {appraisers[diamondRow.diamondID]
-                                            ?.appraiser2 || "None"}
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell>
-                                        <Typography>
-                                          Appraiser 3 :{" "}
-                                          {appraisers[diamondRow.diamondID]
-                                            ?.appraiser3 || "None"}
-                                        </Typography>
-                                      </TableCell>
-                                      <TableCell>
-                                        <Link
-                                          href="#"
-                                          sx={{
-                                            color: "#69CEE2",
-                                            paddingLeft: "16px",
-                                          }}
-                                          underline="none"
-                                          onClick={() =>
-                                            handleBoxOpen(diamondRow)
-                                          }
-                                        >
-                                          Edit
-                                        </Link>
+                                        {displayLink(diamondRow)}
                                       </TableCell>
                                     </TableRow>
                                   )
@@ -256,7 +240,7 @@ const Manager_ReceiptManagement = () => {
                 <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                   <TableRow>
                     <TableCell colSpan={2}>
-                      Edit Appraiser - {currentDiamond.diamondID}
+                      Edit Appraiser - {currentDiamond.id}
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -264,26 +248,38 @@ const Manager_ReceiptManagement = () => {
                   <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                     <TableCell>
                       <FormControl fullWidth margin="normal">
-                        <InputLabel id="appraiser1-box-label">
+                        <InputLabel id="demo-simple-select-label">
                           Appraiser 1
                         </InputLabel>
                         <Select
-                          labelId="appraiser1-box-label"
-                          value={
-                            appraisers[currentDiamond.diamondID]?.appraiser1 ||
-                            ""
-                          }
-                          onChange={(event) =>
-                            handleAppraiserChange(
-                              currentDiamond.diamondID,
-                              "appraiser1",
-                              event
-                            )
-                          }
+                          defaultValue=""
+                          labelId="demo-simple-select-label"
+                          value={staff1?.firstName ?? ""}
+                          onChange={(event) => {
+                            setStaff1(event.target.value);
+                          }}
+                          label="Appraiser 1"
+                          renderValue={(selected) => {
+                            if (selected === "") {
+                              return (
+                                <em
+                                  style={{
+                                    color: "#989898",
+                                    fontStyle: "normal",
+                                  }}
+                                >
+                                  Appraiser 1
+                                </em>
+                              );
+                            }
+                            return appraisers.find(
+                              (option) => option.firstName === selected
+                            )?.firstName;
+                          }}
                         >
-                          {appraiserList.map((name) => (
-                            <MenuItem key={name} value={name}>
-                              {name}
+                          {appraiserList.map((appraiser) => (
+                            <MenuItem key={appraiser.id} value={appraiser}>
+                              {appraiser.firstName}
                             </MenuItem>
                           ))}
                         </Select>
@@ -293,26 +289,38 @@ const Manager_ReceiptManagement = () => {
                   <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                     <TableCell>
                       <FormControl fullWidth margin="normal">
-                        <InputLabel id="appraiser2-box-label">
+                        <InputLabel id="demo-simple-select-label">
                           Appraiser 2
                         </InputLabel>
                         <Select
-                          labelId="appraiser2-box-label"
-                          value={
-                            appraisers[currentDiamond.diamondID]?.appraiser2 ||
-                            ""
-                          }
-                          onChange={(event) =>
-                            handleAppraiserChange(
-                              currentDiamond.diamondID,
-                              "appraiser2",
-                              event
-                            )
-                          }
+                          defaultValue=""
+                          labelId="demo-simple-select-label"
+                          value={staff2?.firstName ?? ""}
+                          onChange={(event) => {
+                            setStaff2(event.target.value);
+                          }}
+                          label="Appraiser 2"
+                          renderValue={(selected) => {
+                            if (selected === "") {
+                              return (
+                                <em
+                                  style={{
+                                    color: "#989898",
+                                    fontStyle: "normal",
+                                  }}
+                                >
+                                  Appraiser 2
+                                </em>
+                              );
+                            }
+                            return appraisers.find(
+                              (option) => option.firstName === selected
+                            )?.firstName;
+                          }}
                         >
-                          {appraiserList.map((name) => (
-                            <MenuItem key={name} value={name}>
-                              {name}
+                          {appraiserList.map((appraiser) => (
+                            <MenuItem key={appraiser.id} value={appraiser}>
+                              {appraiser.firstName}
                             </MenuItem>
                           ))}
                         </Select>
@@ -322,26 +330,38 @@ const Manager_ReceiptManagement = () => {
                   <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                     <TableCell>
                       <FormControl fullWidth margin="normal">
-                        <InputLabel id="appraiser3-box-label">
+                        <InputLabel id="demo-simple-select-label">
                           Appraiser 3
                         </InputLabel>
                         <Select
-                          labelId="appraiser3-box-label"
-                          value={
-                            appraisers[currentDiamond.diamondID]?.appraiser3 ||
-                            ""
-                          }
-                          onChange={(event) =>
-                            handleAppraiserChange(
-                              currentDiamond.diamondID,
-                              "appraiser3",
-                              event
-                            )
-                          }
+                          defaultValue=""
+                          labelId="demo-simple-select-label"
+                          value={staff3?.firstName ?? ""}
+                          onChange={(event) => {
+                            setStaff3(event.target.value);
+                          }}
+                          label="Appraiser 3"
+                          renderValue={(selected) => {
+                            if (selected === "") {
+                              return (
+                                <em
+                                  style={{
+                                    color: "#989898",
+                                    fontStyle: "normal",
+                                  }}
+                                >
+                                  Appraiser 3
+                                </em>
+                              );
+                            }
+                            return appraisers.find(
+                              (option) => option.firstName === selected
+                            )?.firstName;
+                          }}
                         >
-                          {appraiserList.map((name) => (
-                            <MenuItem key={name} value={name}>
-                              {name}
+                          {appraiserList.map((appraiser) => (
+                            <MenuItem key={appraiser.id} value={appraiser}>
+                              {appraiser.firstName}
                             </MenuItem>
                           ))}
                         </Select>
@@ -358,7 +378,7 @@ const Manager_ReceiptManagement = () => {
                       }}
                     >
                       <Button
-                        onClick={handleBoxClose}
+                        onClick={() => handleSave(currentDiamond, appraisers)}
                         sx={{ backgroundColor: "#69CEE2" }}
                         variant="contained"
                       >
