@@ -27,7 +27,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Label } from "@mui/icons-material";
 import axios from "axios";
 import moment from "moment";
-
+import '../../staff/StaffStyle.css'
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const staffId = 3;
@@ -301,7 +301,7 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell>{row.customer.first_name}</TableCell>
           <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
-          <TableCell>{row.status}</TableCell>
+          <TableCell className="status">{row.status}</TableCell>
           <TableCell>{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
           <TableCell>
             <IconButton

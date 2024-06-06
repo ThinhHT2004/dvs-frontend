@@ -18,7 +18,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-
+import '../../staff/StaffStyle.css'
 const ConsultingStaff_Form = () => {
   const consultignStaffId = 3;
   const [open, setOpen] = useState(false);
@@ -106,7 +106,7 @@ const ConsultingStaff_Form = () => {
                   <TableRow key={request.id}>
                     <TableCell>{request.id}</TableCell>
                     <TableCell>{request.customer.first_name}</TableCell>
-                    <TableCell>{request.status}</TableCell>
+                    <TableCell className="status">{request.status}</TableCell>
                     <TableCell>
                       <Link
                         href="#"
