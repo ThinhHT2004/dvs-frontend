@@ -15,7 +15,7 @@ const ConsultingStaff_Home = () => {
           mylist={[
             "Home",
             "Incomming Request",
-            "Manage Request",
+            "Request",
             "Report",
             "Form",
             "Sign Out",

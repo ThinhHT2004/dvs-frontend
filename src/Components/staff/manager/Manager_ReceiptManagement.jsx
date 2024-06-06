@@ -132,11 +132,11 @@ const Manager_ReceiptManagement = () => {
         mylist={[
           "Home",
           "Pending Request",
-          "Receipt Management",
-          "Report Management",
+          "Receipt",
+          "Report",
           "Sign Out",
         ]}
-        state="Receipt Management"
+        state="Receipt"
         handleClick={manager_navigator}
       />
 

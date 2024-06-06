@@ -31,9 +31,9 @@ const App = () => {
         <Route path='/valuation-staff/diamonds-appraisal' element={<ValuationStaff_DiamondsAppraisal></ValuationStaff_DiamondsAppraisal>}></Route>
         <Route path='/valuation-staff/home' element={<ValuationStaff_Home></ValuationStaff_Home>}></Route>
         <Route path='/manager/pending-request' element={<Manager_PendingRequest></Manager_PendingRequest>}></Route>
-        <Route path='/consulting-staff/manage-request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
-        <Route path='/manager/receipt-management' element={<Manager_ReceiptManagement></Manager_ReceiptManagement>}></Route>
-        <Route path='/manager/report-management' element={<Manager_ReportManagement></Manager_ReportManagement>}></Route>
+        <Route path='/consulting-staff/request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
+        <Route path='/manager/receipt' element={<Manager_ReceiptManagement></Manager_ReceiptManagement>}></Route>
+        <Route path='/manager/report' element={<Manager_ReportManagement></Manager_ReportManagement>}></Route>
         <Route path='/consulting-staff/report' element={<ConsultingStaff_Report></ConsultingStaff_Report>}></Route>
         <Route path='/consulting-staff/form' element={<ConsultingStaff_Form></ConsultingStaff_Form>}></Route>
 

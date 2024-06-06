@@ -59,7 +59,7 @@ const ConsultingStaff_IncommingRequest = () => {
           mylist={[
             "Home",
             "Incomming Request",
-            "Manage Request",
+            "Request",
             "Report",
             "Form",
             "Sign Out",

@@ -36,8 +36,8 @@ const Manager_PendingRequest = () => {
           mylist={[
             "Home",
             "Pending Request",
-            "Receipt Management",
-            "Report Management",
+            "Receipt",
+            "Report",
             "Sign Out",
           ]}
           state="Pending Request"

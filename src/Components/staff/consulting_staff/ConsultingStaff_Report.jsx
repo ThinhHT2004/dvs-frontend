@@ -268,7 +268,7 @@ const ConsultingStaff_Report = () => {
           mylist={[
             "Home",
             "Incomming Request",
-            "Manage Request",
+            "Request",
             "Report",
             "Form",
             "Sign Out",

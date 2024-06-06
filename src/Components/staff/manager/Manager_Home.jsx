@@ -22,8 +22,8 @@ const Manager_Home = () => {
                     mylist={[
                         "Home",
                         "Pending Request",
-                        "Receipt Management",
-                        "Report Management",
+                        "Receipt",
+                        "Report",
                         "Sign Out",
                     ]}
                     state="Home"

@@ -355,12 +355,12 @@ const ConsultingStaff_ManageRequest = () => {
             mylist={[
               "Home",
               "Incomming Request",
-              "Manage Request",
+              "Request",
               "Report",
               "Form",
               "Sign Out",
             ]}
-            state="Manage Request"
+            state="Request"
             handleClick={consulting_staff_navigator}
           ></StaffDrawer>
         </Grid>

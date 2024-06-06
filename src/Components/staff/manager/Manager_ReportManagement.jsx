@@ -124,11 +124,11 @@ const Manager_ReportManagement = () => {
                     mylist={[
                         "Home",
                         "Pending Request",
-                        "Receipt Management",
-                        "Report Management",
+                        "Receipt",
+                        "Report",
                         "Sign Out",
                     ]}
-                    state="Report Management"
+                    state="Report"
                     handleClick={manager_navigator}
                 ></StaffDrawer>
                 <Box

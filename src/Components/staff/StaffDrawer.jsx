@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import DiamondIcon from '@mui/icons-material/Diamond';
 import RequestIcon from '@mui/icons-material/Assignment';
 import ManageIcon from '@mui/icons-material/ManageAccounts';
 import ReportIcon from '@mui/icons-material/Assessment';
@@ -22,7 +24,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import logoWeb from '../../assets/logo_v4.png';
 import smallLogo from '../../assets/SmallLogo.png';
-
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
@@ -72,12 +74,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const iconMapping = {
-  Home: <HomeIcon />,
+  "Home": <HomeIcon />,
   "Incomming Request": <RequestIcon />,
-  "Manage Request": <ManageIcon />,
-  Report: <ReportIcon />,
-  Form: <FormIcon />,
+  "Diamonds Appraisal": <DiamondIcon />,
+  "Pending Request": <PendingActionsIcon />,
+  "Request": <ManageIcon />,
+  "Receipt": <ReceiptLongIcon />,
+  "Report": <ReportIcon />,
+  "Form": <FormIcon />,
   "Sign Out": <SignOutIcon />,
+
 };
 
 const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {

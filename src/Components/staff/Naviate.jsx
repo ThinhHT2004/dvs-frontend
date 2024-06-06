@@ -14,8 +14,8 @@ export const consulting_staff_navigator = (text, navigate) => {
     case "Incomming Request":
       navigate("/consulting-staff/incomming-request");
       break;
-    case "Manage Request":
-      navigate("/consulting-staff/manage-request");
+    case "Request":
+      navigate("/consulting-staff/request");
       break;
     case "Report":
       navigate("/consulting-staff/report");
@@ -55,11 +55,11 @@ export const manager_navigator = (text, navigate) => {
     case "Pending Request": 
       navigate('/manager/pending-request'); 
       break;
-    case 'Receipt Management': 
-      navigate('/manager/receipt-management'); 
+    case 'Receipt': 
+      navigate('/manager/receipt'); 
       break;
-    case 'Report Management': 
-      navigate('/manager/report-management'); 
+    case 'Report': 
+      navigate('/manager/report'); 
       break;
     case "Sign Out":
       handleSignOut(navigate);
