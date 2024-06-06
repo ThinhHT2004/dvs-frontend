@@ -278,7 +278,7 @@ const ConsultingStaff_ManageRequest = () => {
                     Save
                   </Button>
                   <Button variant="contained" color="error">
-                    Deny
+                    Cancel
                   </Button>
                 </Box>
               </TableRow>

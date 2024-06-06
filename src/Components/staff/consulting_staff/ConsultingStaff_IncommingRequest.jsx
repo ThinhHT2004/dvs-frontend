@@ -15,28 +15,42 @@ import {
 import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
 import moment from "moment";
+
 const ConsultingStaff_IncommingRequest = () => {
   const drawerWidth = 240;
   const [requests, setRequests] = useState([]);
+  const [newRequestCount, setNewRequestCount] = useState(0);
   const staffId = 3;
 
   useEffect(() => {
-    getAllWaitingRequests();
-  });
+    const interval = setInterval(() => {
+      getAllWaitingRequests();
+    }, 1000);
 
-  function getAllWaitingRequests() {
+    return () => clearInterval(interval);
+  }, []);
+
+  const getAllWaitingRequests = () => {
     axios
       .get("http://localhost:8080/api/request/waiting")
-      .then((response) => setRequests(response.data))
+      .then((response) => {
+        if (response.data.length > requests.length) {
+          setNewRequestCount(response.data.length - requests.length);
+        }
+        setRequests(response.data);
+      })
       .catch((error) => console.log(error));
-  }
+  };
 
-  function acceptRequest(requestId){
+  const acceptRequest = (requestId) => {
     axios
-    .put("http://localhost:8080/api/request/" + requestId + "/assign/" + staffId)
-    .catch(err => console.log(err))
-  }
-
+      .put("http://localhost:8080/api/request/" + requestId + "/assign/" + staffId)
+      .then(() => {
+        setRequests((prevRequests) => prevRequests.filter((req) => req.id !== requestId));
+        setNewRequestCount((prevCount) => Math.max(prevCount - 1, 0));
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -52,7 +66,8 @@ const ConsultingStaff_IncommingRequest = () => {
           ]}
           state="Incomming Request"
           handleClick={consulting_staff_navigator}
-        ></StaffDrawer>
+          badgeCount={newRequestCount}
+        />
         <Box
           sx={{
             flexGrow: 1,
@@ -65,7 +80,7 @@ const ConsultingStaff_IncommingRequest = () => {
         >
           <TableContainer component={Paper} sx={{ width: 1000 }}>
             <Table sx={{ minWidth: 700, borderRadius: 10 }}>
-              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+              <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                 <TableRow>
                   <TableCell>Customer Name</TableCell>
                   <TableCell>Service</TableCell>
@@ -76,7 +91,7 @@ const ConsultingStaff_IncommingRequest = () => {
               </TableHead>
               <TableBody>
                 {requests.map((request) => (
-                  <TableRow>
+                  <TableRow key={request.id}>
                     <TableCell>{request.customer.first_name}</TableCell>
                     <TableCell>{request.service.duration}</TableCell>
                     <TableCell>{request.quantity}</TableCell>
@@ -86,7 +101,7 @@ const ConsultingStaff_IncommingRequest = () => {
                     <TableCell>
                       <Button
                         variant="contained"
-                        sx={{ background: "#69CEE2", borderRadius: "8px" }}
+                        sx={{ background: "#30D5C8", borderRadius: "8px" }}
                         onClick={() => acceptRequest(request.id)}
                       >
                         Accept

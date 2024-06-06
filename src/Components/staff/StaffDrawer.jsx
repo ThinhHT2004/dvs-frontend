@@ -1,28 +1,29 @@
-import React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
 import {
-  Box,
-  CssBaseline,
-  Divider,
-  IconButton,
+  Button,
+  Drawer as MuiDrawer,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Drawer as MuiDrawer,
-  Button,
+  Badge,
+  Divider,
+  Box,
+  CssBaseline,
 } from '@mui/material';
+import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
 import RequestIcon from '@mui/icons-material/Assignment';
 import ManageIcon from '@mui/icons-material/ManageAccounts';
 import ReportIcon from '@mui/icons-material/Assessment';
 import FormIcon from '@mui/icons-material/Description';
 import SignOutIcon from '@mui/icons-material/ExitToApp';
+import { styled, useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import logoWeb from '../../assets/logo_v4.png';
 import smallLogo from '../../assets/SmallLogo.png';
-const drawerWidth = 240;
+
+const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -44,7 +45,6 @@ const closedMixin = (theme) => ({
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
 });
-
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -68,7 +68,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       ...closedMixin(theme),
       '& .MuiDrawer-paper': closedMixin(theme),
     }),
-  }),
+  })
 );
 
 const iconMapping = {
@@ -80,11 +80,10 @@ const iconMapping = {
   "Sign Out": <SignOutIcon />,
 };
 
-const StaffDrawer = ({ mylist, state, handleClick }) => {
+const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-
 
   const handleMouseEnter = () => {
     setOpen(true);
@@ -95,6 +94,8 @@ const StaffDrawer = ({ mylist, state, handleClick }) => {
   };
 
   function handleState(text) {
+    const showBadge = text === "Incomming Request";
+    
     return (
       <ListItemButton
         sx={{
@@ -111,9 +112,20 @@ const StaffDrawer = ({ mylist, state, handleClick }) => {
             justifyContent: 'center',
           }}
         >
-          {iconMapping[text]}
+          {showBadge && !open ? (
+            <Badge badgeContent={badgeCount} color="error">
+              {iconMapping[text]}
+            </Badge>
+          ) : (
+            iconMapping[text]
+          )}
         </ListItemIcon>
         <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+        {showBadge && open && (
+          <Badge badgeContent={badgeCount} color="error">
+            <h1></h1>
+          </Badge>
+        )}
       </ListItemButton>
     );
   }
@@ -138,7 +150,6 @@ const StaffDrawer = ({ mylist, state, handleClick }) => {
                   cursor: 'pointer',
                   marginBottom: '-20px',
                   marginTop: '-20px',
-                  
                 }}
               />
             </Button>
@@ -151,12 +162,10 @@ const StaffDrawer = ({ mylist, state, handleClick }) => {
                   width: '30px',
                   height: '30px',
                   cursor: 'pointer',
-                  
                 }}
               />
             </Button>
           )}
-          
         </DrawerHeader>
         <Divider />
         <List>
