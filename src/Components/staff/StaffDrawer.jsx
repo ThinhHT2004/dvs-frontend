@@ -1,71 +1,176 @@
+import React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import {
-  Button,
-  Drawer,
+  Box,
+  CssBaseline,
+  Divider,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
-} from "@mui/material";
-import React from "react";
-import logoWeb from "../../assets/logo_v4.png";
-import { useNavigate } from "react-router-dom";
+  Drawer as MuiDrawer,
+  Button,
+} from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import RequestIcon from '@mui/icons-material/Assignment';
+import ManageIcon from '@mui/icons-material/ManageAccounts';
+import ReportIcon from '@mui/icons-material/Assessment';
+import FormIcon from '@mui/icons-material/Description';
+import SignOutIcon from '@mui/icons-material/ExitToApp';
+import { useNavigate } from 'react-router-dom';
+import logoWeb from '../../assets/logo_v4.png';
+import smallLogo from '../../assets/SmallLogo.png';
+const drawerWidth = 240;
 
-const StaffDrawer = ({ mylist, state , handleClick}) => {
-  const drawerWidth = 240;
+const openedMixin = (theme) => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme) => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(0, 1),
+  ...theme.mixins.toolbar,
+}));
+
+const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    boxSizing: 'border-box',
+    ...(open && {
+      ...openedMixin(theme),
+      '& .MuiDrawer-paper': openedMixin(theme),
+    }),
+    ...(!open && {
+      ...closedMixin(theme),
+      '& .MuiDrawer-paper': closedMixin(theme),
+    }),
+  }),
+);
+
+const iconMapping = {
+  Home: <HomeIcon />,
+  "Incomming Request": <RequestIcon />,
+  "Manage Request": <ManageIcon />,
+  Report: <ReportIcon />,
+  Form: <FormIcon />,
+  "Sign Out": <SignOutIcon />,
+};
+
+const StaffDrawer = ({ mylist, state, handleClick }) => {
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
 
+
+  const handleMouseEnter = () => {
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setOpen(false);
+  };
+
   function handleState(text) {
-    if (state === text) {
-      return (
-        <ListItemButton sx={{backgroundColor: 'lightgrey'}} onClick={() => handleClick(text, navigate)}>
-          <ListItemText primary={text}></ListItemText>
-        </ListItemButton>
-      );
-    }else{
-      return (
-        <ListItemButton onClick={() => handleClick(text, navigate)}>
-          <ListItemText primary={text}></ListItemText>
-        </ListItemButton>
-      );
-    }
+    return (
+      <ListItemButton
+        sx={{
+          justifyContent: open ? 'initial' : 'center',
+          px: 2.5,
+          backgroundColor: state === text ? 'lightgrey' : 'inherit',
+        }}
+        onClick={() => handleClick(text, navigate)}
+      >
+        <ListItemIcon
+          sx={{
+            minWidth: 0,
+            mr: open ? 3 : 'auto',
+            justifyContent: 'center',
+          }}
+        >
+          {iconMapping[text]}
+        </ListItemIcon>
+        <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+      </ListItemButton>
+    );
   }
+
   return (
-    
-    <div>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
       <Drawer
         variant="permanent"
-        anchor="left"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
+        open={open}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
-        <Button>
-          <img
-            src={logoWeb}
-            alt=""
-            style={{
-              width: "130px",
-              marginTop: "-20px",
-              marginBottom: "-20px",
-              marginRight: "-2.9px",
-              cursor: "pointer",
-            }}
-          />
-        </Button>
+        <DrawerHeader>
+          {open ? (
+            <Button onClick={() => navigate('/')}>
+              <img
+                src={logoWeb}
+                alt=""
+                style={{
+                  width: '130px',
+                  cursor: 'pointer',
+                  marginBottom: '-20px',
+                  marginTop: '-20px',
+                  
+                }}
+              />
+            </Button>
+          ) : (
+            <Button onClick={() => navigate('/')}>
+              <img
+                src={smallLogo}
+                alt=""
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  cursor: 'pointer',
+                  
+                }}
+              />
+            </Button>
+          )}
+          
+        </DrawerHeader>
+        <Divider />
         <List>
           {mylist.map((text) => (
-            <ListItem key={text}>
+            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               {handleState(text)}
             </ListItem>
           ))}
         </List>
       </Drawer>
-    </div>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+      </Box>
+    </Box>
   );
 };
 
