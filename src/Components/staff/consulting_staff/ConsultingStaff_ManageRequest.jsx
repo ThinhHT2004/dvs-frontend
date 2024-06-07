@@ -28,6 +28,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Label } from "@mui/icons-material";
 import axios from "axios";
 import moment from "moment";
+import "../../staff/StaffStyle.css";
+import { formatRequestId, formatSampleId } from "../../../Foramat";
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const staffId = 3;
@@ -193,7 +195,7 @@ const ConsultingStaff_ManageRequest = () => {
           <Table>
             <TableHead sx={{ backgroundColor: "#30D5C8" }}>
               <TableRow>
-                <TableCell>Sample Id: {text}</TableCell>
+                <TableCell>Sample Id: {formatSampleId(text)}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -364,7 +366,7 @@ const ConsultingStaff_ManageRequest = () => {
     return (
       <Fragment>
         <TableRow>
-          <TableCell>{row.id}</TableCell>
+          <TableCell>{formatRequestId(row.id)}</TableCell>
           <TableCell>{row.customer.first_name}</TableCell>
           <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
@@ -398,7 +400,7 @@ const ConsultingStaff_ManageRequest = () => {
                     {row.valuationRequestDetailList.map((sample) => (
                       <TableRow key={sample.id}>
                         <TableCell component="th" scope="row">
-                          {sample.id}
+                          {formatSampleId(sample.id)}
                         </TableCell>
                         <TableCell align="right">
                         <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>

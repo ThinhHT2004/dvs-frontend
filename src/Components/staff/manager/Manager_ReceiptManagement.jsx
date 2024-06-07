@@ -18,12 +18,14 @@ import {
   Button,
   Grid,
   Typography,
+  Chip,
 } from "@mui/material";
 import { manager_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import axios from "axios";
+import { formatRequestId, formatSampleId } from "../../../Foramat";
 
 const Manager_ReceiptManagement = () => {
   const [open, setOpen] = useState({});
@@ -95,47 +97,58 @@ const Manager_ReceiptManagement = () => {
   function displayLink(sample) {
     if (sample.status === "FILLED") {
       return (
-        <Link
-          href="#"
-          sx={{
-            color: "#69CEE2",
-            paddingLeft: "16px",
-          }}
-          underline="none"
-          onClick={() => handleBoxOpen(sample)}
-        >
-          Edit
-        </Link>
+        <Button>
+          <Link
+            href="#"
+            sx={{
+              color: "#69CEE2",
+            }}
+            underline="none"
+            onClick={() => handleBoxOpen(sample)}
+          >
+            Assign
+          </Link>
+        </Button>
       );
     } else {
       return (
-        <Link
-          component="button"
-          href="#"
-          sx={{
-            color: "grey",
-            paddingLeft: "16px",
-          }}
-          underline="none"
-          onClick={() => handleBoxOpen(sample)}
-          disabled
-        >
-          Edit
-        </Link>
+        <Button>
+          <Link
+            href="#"
+            sx={{
+              color: "grey"
+            }}
+            underline="none"
+            onClick={() => handleBoxOpen(sample)}
+            disabled
+          >
+            Assign
+          </Link>
+        </Button>
       );
+    }
+  }
+
+  const renderStatus = (status) => {
+    switch (status) {
+      case "PROCESSING":
+        return "warning";
+        break;
+    }
+  };
+
+  const renderSampleStatus = (status) =>{
+    switch(status){
+      case "ASSIGNED": return "success"; break;
+      case "FILLING": return "default"; break;
+      case "FILLED": return "primary"; break;
     }
   }
 
   return (
     <Grid container spacing={0}>
       <StaffDrawer
-        mylist={[
-          "Home",
-          "Pending Request",
-          "Receipt",
-          "Report",
-          "Sign Out",
-        ]}
+        mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
         state="Receipt"
         handleClick={manager_navigator}
       />
@@ -155,7 +168,7 @@ const Manager_ReceiptManagement = () => {
                 <TableRow>
                   <TableCell>Request ID</TableCell>
                   <TableCell>Amount</TableCell>
-                  <TableCell>Status</TableCell>
+                  <TableCell align="center">Status</TableCell>
                   <TableCell></TableCell>
                 </TableRow>
               </TableHead>
@@ -163,9 +176,14 @@ const Manager_ReceiptManagement = () => {
                 {rows.map((row) => (
                   <React.Fragment key={row.id}>
                     <TableRow>
-                      <TableCell>{row.id}</TableCell>
+                      <TableCell>{formatRequestId(row.id)}</TableCell>
                       <TableCell>{row.quantity}</TableCell>
-                      <TableCell>{row.status}</TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={row.status}
+                          color={renderStatus(row.status)}
+                        ></Chip>
+                      </TableCell>
                       <TableCell>
                         <IconButton
                           aria-label="expand row"
@@ -190,8 +208,15 @@ const Manager_ReceiptManagement = () => {
                           timeout="auto"
                           unmountOnExit
                         >
-                          <Box sx={{ margin: 0 }}>
+                          <TableContainer>
                             <Table size="small" aria-label="purchases">
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell>Sample Id</TableCell>
+                                  <TableCell>Status</TableCell>
+                                  <TableCell></TableCell>
+                                </TableRow>
+                              </TableHead>
                               <TableBody>
                                 {row.valuationRequestDetailList.map(
                                   (diamondRow, diamondIndex) => (
@@ -205,8 +230,10 @@ const Manager_ReceiptManagement = () => {
                                           : {}
                                       }
                                     >
-                                      <TableCell>{diamondRow.id}</TableCell>
-                                      <TableCell>{diamondRow.status}</TableCell>
+                                      <TableCell>{formatSampleId(diamondRow.id)}</TableCell>
+                                      <TableCell>
+                                        <Chip label={diamondRow.status} color={renderSampleStatus(diamondRow.status)} size="small"></Chip>
+                                      </TableCell>
                                       <TableCell>
                                         {displayLink(diamondRow)}
                                       </TableCell>
@@ -215,7 +242,7 @@ const Manager_ReceiptManagement = () => {
                                 )}
                               </TableBody>
                             </Table>
-                          </Box>
+                          </TableContainer>
                         </Collapse>
                       </TableCell>
                     </TableRow>

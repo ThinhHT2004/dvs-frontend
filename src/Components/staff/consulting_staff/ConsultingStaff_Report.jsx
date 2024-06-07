@@ -20,6 +20,8 @@ import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import '../../staff/StaffStyle.css'
+import { formatRequestId, formatSampleId } from "../../../Foramat";
 const drawerWidth = 240;
 
 const diamondData = [
@@ -141,11 +143,7 @@ const ConsultingStaff_Report = () => {
     setAppointmentOpen((prev) => ({ ...prev, [idRequest]: false }));
   };
 
-  const renderStatus = (status) =>{
-    switch(status){
-      case "ACCEPTED": return "success"; break;
-    }
-  }
+  
 
   const renderDiamondReport = (diamond) => (
     <Collapse in={reportOpen[diamond.idDiamond]} timeout="auto" unmountOnExit>
@@ -153,7 +151,7 @@ const ConsultingStaff_Report = () => {
         <TableHead sx={{ backgroundColor: "#30D5C8" }}>
           <TableRow>
             <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px', backgroundColor: "#69CEE2" }}>
-              Diamond Details - {diamond.idDiamond}
+              Diamond Details - {formatSampleId(diamond.idDiamond)}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -222,7 +220,7 @@ const ConsultingStaff_Report = () => {
   const renderAppointmentForm = (request) => (
     
       <Box display={appointmentOpen[request.idRequest] ? 'block' : 'none'} sx={{ position: 'absolute', top: '10%', left: '30%', width: '40%', bgcolor: 'background.paper', boxShadow: 24, p: 4}}>
-      <Typography variant="h6">Create Appointment - {request.idRequest}</Typography>
+      <Typography variant="h6">Create Appointment - {formatRequestId(request.idRequest)}</Typography>
       <Table>
         <TableBody>
           <TableRow>
