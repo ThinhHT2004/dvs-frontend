@@ -28,7 +28,6 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Label } from "@mui/icons-material";
 import axios from "axios";
 import moment from "moment";
-import "../../staff/StaffStyle.css";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;

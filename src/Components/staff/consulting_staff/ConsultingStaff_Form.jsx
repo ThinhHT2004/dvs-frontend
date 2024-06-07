@@ -19,7 +19,6 @@ import {
   Chip,
 } from "@mui/material";
 import axios from "axios";
-import "../../staff/StaffStyle.css";
 import { formatRequestId } from "../../../Foramat";
 const ConsultingStaff_Form = () => {
   const drawerWidth = 240;
