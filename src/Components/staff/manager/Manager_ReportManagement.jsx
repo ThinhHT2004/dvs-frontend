@@ -151,10 +151,8 @@ const Manager_ReportManagement = () => {
             flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: "5%",
             display: "flex",
-            alignItems: "flex-start", // Aligns children to the start of the cross axis
-            gap: "16px",
+            alignItems: "flex-start",
           }}
         >
           <TableContainer
@@ -162,7 +160,7 @@ const Manager_ReportManagement = () => {
             sx={{ width: "65%", marginRight: "8px" }}
           >
             <Table sx={{ minWidth: 550, borderRadius: 10 }}>
-              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+              <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                 <TableRow>
                   <TableCell style={{ width: "33%" }}>Sample ID</TableCell>
                   <TableCell style={{ width: "33%" }}>Status</TableCell>

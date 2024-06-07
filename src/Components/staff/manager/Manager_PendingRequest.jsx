@@ -52,7 +52,7 @@ const Manager_PendingRequest = () => {
         >
           <TableContainer component={Paper} sx={{ width: 1000 }}>
             <Table sx={{ minWidth: 700, borderRadius: 10 }}>
-              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+              <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                 <TableRow>
                   <TableCell>Request ID</TableCell>
                   <TableCell>Customer</TableCell>
@@ -68,11 +68,11 @@ const Manager_PendingRequest = () => {
                     <TableCell>{row.date}</TableCell>
                     <TableCell>{row.status}</TableCell>
                     <TableCell>
-                      <Link href="#" sx={{ color: "#32D82E", paddingLeft: "16px" }} underline="none"
+                      <Link href="#" sx={{ color: "#69CEE2", paddingLeft: "16px" }} underline="none"
                         onClick={() => handleAction(row.id)}>Approve</Link>
                     </TableCell>
                     <TableCell>
-                      <Link href="#" sx={{ color: "#F00", paddingLeft: "16px" }} underline="none"
+                      <Link href="#" sx={{ color: "red", paddingLeft: "16px" }} underline="none"
                         onClick={() => handleAction(row.id)}>Decline</Link>
                     </TableCell>
                   </TableRow>
