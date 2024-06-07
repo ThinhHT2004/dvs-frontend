@@ -11,14 +11,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
 import moment from "moment";
+import '../../staff/StaffStyle.css'
 
 const ConsultingStaff_IncommingRequest = () => {
-  const drawerWidth = 240;
   const [requests, setRequests] = useState([]);
   const [newRequestCount, setNewRequestCount] = useState(0);
   const staffId = 3;
@@ -123,3 +122,4 @@ const ConsultingStaff_IncommingRequest = () => {
 };
 
 export default ConsultingStaff_IncommingRequest;
+x``
