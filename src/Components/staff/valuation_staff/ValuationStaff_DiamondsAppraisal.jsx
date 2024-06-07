@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { valuation_staff_navigator } from '../Naviate';
 import axios from 'axios';
+import { formatSampleId, formatValuationId } from '../../../Foramat';
 
 const diamondData = [
   {
@@ -183,8 +184,8 @@ const ValuationStaff_DiamondsAppraisal = () => {
                   <TableBody>
                     {assignments.map((assign) => (
                       <TableRow key={assign.valuationRequestDetail.id}>
-                        <TableCell>{assign.id}</TableCell>
-                        <TableCell>{assign.valuationRequestDetail.id}</TableCell>
+                        <TableCell>{formatValuationId(assign.id)}</TableCell>
+                        <TableCell>{formatSampleId(assign.valuationRequestDetail.id)}</TableCell>
                         <TableCell>{assign.price === 0 ? 'No Price': assign.price}</TableCell>
                         <TableCell>{assign.note ? assign.note : 'No Note'}</TableCell>
                         <TableCell>
@@ -209,7 +210,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
             {selectedDiamond && (
               <Grid item xs={5} >
                 <Box sx={{ marginBottom: 4 }}>
-                  <Typography variant="h6">Edit Diamond - {selectedDiamond.id}</Typography>
+                  <Typography variant="h6">Edit Diamond - {formatSampleId(selectedDiamond.id)}</Typography>
                   <TextField
                     fullWidth
                     margin="normal"
@@ -258,7 +259,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                   <Table sx={{ minWidth: 700, borderRadius: 10 }}>
                     <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                       <TableRow>
-                        <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px' }}>Diamond Details - {selectedDiamond.id}</TableCell>
+                        <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px' }}>Diamond Details - {formatSampleId(selectedDiamond.id)}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>

@@ -19,6 +19,7 @@ const ConsultingStaff_IncommingRequest = () => {
   const [requests, setRequests] = useState([]);
   const [newRequestCount, setNewRequestCount] = useState(0);
   const staffId = 3;
+  const drawerWidth = 240;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -53,6 +54,7 @@ const ConsultingStaff_IncommingRequest = () => {
       })
       .catch((err) => console.log(err));
   };
+
 
   return (
     <Box display="flex">
