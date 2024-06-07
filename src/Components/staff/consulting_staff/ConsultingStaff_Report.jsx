@@ -300,7 +300,7 @@ const ConsultingStaff_Report = () => {
                 <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                   <TableRow>
                     <TableCell>ID Request</TableCell>
-                    <TableCell>Name</TableCell>
+                    <TableCell>Customer</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Appointment</TableCell>
                     <TableCell></TableCell>

@@ -148,7 +148,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   return (
     <div>
-      <Box display="flex">
+      <Box display="flex" sx={{backgroundColor: "#FAF6EF",}}>
         <Box>
           <StaffDrawer
             mylist={["Home", "Diamonds Appraisal", "Sign Out"]}
@@ -165,6 +165,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            
           }}
         >
           <Grid container spacing={3} >

@@ -454,11 +454,11 @@ const ConsultingStaff_ManageRequest = () => {
                     <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                       <TableRow>
                         <TableCell>Request ID</TableCell>
-                        <TableCell>Customer Name</TableCell>
+                        <TableCell>Customer</TableCell>
                         <TableCell>Service</TableCell>
                         <TableCell>Quantity</TableCell>
-                        <TableCell align="center">Status</TableCell>
-                        <TableCell>Appointment Date</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell>Appointment</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
                     </TableHead>
