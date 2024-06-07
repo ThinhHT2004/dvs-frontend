@@ -15,8 +15,6 @@ import {
 import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
 import moment from "moment";
-import '../../staff/StaffStyle.css'
-
 const ConsultingStaff_IncommingRequest = () => {
   const [requests, setRequests] = useState([]);
   const [newRequestCount, setNewRequestCount] = useState(0);
@@ -76,7 +74,6 @@ const ConsultingStaff_IncommingRequest = () => {
       <Box sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
           marginTop: "5%",
           display: "flex",
           flexDirection: "column",
@@ -122,4 +119,3 @@ const ConsultingStaff_IncommingRequest = () => {
 };
 
 export default ConsultingStaff_IncommingRequest;
-x``

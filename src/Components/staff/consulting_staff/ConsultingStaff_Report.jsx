@@ -20,7 +20,6 @@ import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import '../../staff/StaffStyle.css'
 const drawerWidth = 240;
 
 const diamondData = [
@@ -307,7 +306,7 @@ const ConsultingStaff_Report = () => {
                       <TableRow>
                         <TableCell>{request.idRequest}</TableCell>
                         <TableCell>{request.name}</TableCell>
-                        <TableCell className="status">{request.status}</TableCell>
+                        <TableCell>{request.status}</TableCell>
                         <TableCell>
                           <Link href="#" onClick={() => handleAppointmentClick(request.idRequest)}>
                             {appointmentData[request.idRequest]?.date ? appointmentData[request.idRequest].date : 'Create Appointment'}
