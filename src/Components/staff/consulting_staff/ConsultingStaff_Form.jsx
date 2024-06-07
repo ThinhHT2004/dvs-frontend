@@ -19,6 +19,8 @@ import {
   Chip,
 } from "@mui/material";
 import axios from "axios";
+import "../../staff/StaffStyle.css";
+import { formatRequestId } from "../../../Foramat";
 const ConsultingStaff_Form = () => {
   const drawerWidth = 240;
   const consultignStaffId = 3;
@@ -123,7 +125,7 @@ const ConsultingStaff_Form = () => {
                   <TableBody>
                     {requests.map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell>{request.id}</TableCell>
+                        <TableCell>{formatRequestId(request.id)}</TableCell>
                         <TableCell>{request.customer.first_name}</TableCell>
                         <TableCell className="status" align="center">
                           <Chip label={request.status} color={renderStatus(request.status)}></Chip>
