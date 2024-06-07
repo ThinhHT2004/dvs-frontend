@@ -15,3 +15,11 @@ export const formatValuationId = (id) =>{
 
     return `#VA${res}`;
 }
+
+export const formatPrice = (price) => {
+    if (price === null || price === undefined) {
+        return "";
+    }
+
+    return Number(price).toFixed(2).replace(/\d(?=(\d{3})+.)/g, '$&,').replace('₫', '').trim() + ' ₫';;
+};

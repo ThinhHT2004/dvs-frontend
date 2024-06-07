@@ -160,6 +160,7 @@ const ConsultingStaff_ManageRequest = () => {
 
   const handleClose = () => {
     setOpen(false);
+    getAcceptedRequest();
   };
 
   const handleOpen = () => {
