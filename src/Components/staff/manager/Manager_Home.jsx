@@ -54,16 +54,6 @@ const Manager_Home = () => {
                         </CardContent>
                     </Card>
                 </Box>
-                <Box
-                    sx={{
-                        flexGrow: 1,
-                        p: 3,
-                        width: { sm: `calc(100% - ${drawerWidth}px)` },
-                        marginTop: "5%",
-                        display: "flex",
-                    }}
-                >
-                </Box>
             </Box>
         </div >
 
