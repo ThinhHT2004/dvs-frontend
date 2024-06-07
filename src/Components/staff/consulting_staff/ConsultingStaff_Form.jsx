@@ -164,53 +164,58 @@ const ConsultingStaff_Form = () => {
               </TableContainer>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={4} >
             {open && (
-              <Box sx={{ border: "1px" }}>
+              <Box >
                 <Box>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 200 }}>
                       <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                         <TableRow>
                         <TableCell>{selectedOption} Form</TableCell>
-                        <TableCell></TableCell>
+                        
                         </TableRow>  
                       </TableHead>
                       <TableBody>
                         <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          <TableCell>Name:</TableCell>
+                          
                           <TableCell>
-                            {currentRequest.customer.first_name}
+                          Name : {currentRequest.customer.first_name}
                           </TableCell>
                         </TableRow>
                         <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          <TableCell>Phone:</TableCell>
+                          
                           <TableCell>
-                            {currentRequest.customer.phoneNumber}
+                          Phone : {currentRequest.customer.phoneNumber}
                           </TableCell>
                         </TableRow>
                         {currentRequest.valuationRequestDetailList.map(
                           (sample) => (
                             <TableRow
                               key={sample.id}
-                              sx={{ "& td": { borderBottom: "none" } }}
+                              sx={{ "& td": { borderBottom: "none" , alignItems: "center"} }}
                             >
-                              <TableCell>ID Sample: {sample.id}</TableCell>
-                              <TableCell sx={{ verticalAlign: "middle" }}>
-                                <TextField
-                                  sx={{ width: 100, height: 32 }}
+                              
+                              <TableCell>
+                              <Box
+                              display="flex" alignItems="center"
+                              >
+                              ID Sample {sample.id} : <TextField
+                                  sx={{ marginLeft: 2 }}
                                   onChange={(e) => {
                                     sample.size = e.target.value;
                                   }}
                                   value={sample.size}
                                   label="Size"
                                 />
+                                
+                              </Box>
                               </TableCell>
                             </TableRow>
                           )
                         )}
                         <TableRow>
-                          <TableCell>
+                          <TableCell colSpan={2} align="right">
                             <Button
                               onClick={() =>
                                 createReceipt(
@@ -228,7 +233,7 @@ const ConsultingStaff_Form = () => {
                                 handleClose()
                               }
                               variant="outlined"
-                              sx={{color: "red", borderColor: 'red' }}
+                              sx={{marginLeft: 2,color: "red", borderColor: 'red' }}
                              
                             >
                               Cancel

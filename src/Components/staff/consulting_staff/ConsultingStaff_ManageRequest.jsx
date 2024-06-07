@@ -206,7 +206,7 @@ const ConsultingStaff_ManageRequest = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <TextField
                     type="text"
@@ -217,7 +217,7 @@ const ConsultingStaff_ManageRequest = () => {
                   ></TextField>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <TextField
                     type="text"
@@ -228,7 +228,7 @@ const ConsultingStaff_ManageRequest = () => {
                   ></TextField>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <FormControl sx={{ width: "33.33%" }}>
                     <InputLabel>Polish</InputLabel>
@@ -280,7 +280,7 @@ const ConsultingStaff_ManageRequest = () => {
                   </FormControl>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <FormControl sx={{ width: "33.33%" }}>
                     <InputLabel>Clarity</InputLabel>
@@ -336,8 +336,8 @@ const ConsultingStaff_ManageRequest = () => {
                 <TableCell>
                   <Box
                     display={"flex"}
-                    justifyContent={"center"}
-                    sx={{ marginTop: "5%" }}
+                    
+                    justifyContent={"right"}
                   >
                     <Button
                       variant="contained"
@@ -349,8 +349,8 @@ const ConsultingStaff_ManageRequest = () => {
                       Save
                     </Button>
                     <Button
-                      variant="contained"
-                      sx={{ marginLeft: 2, color: "red", borderColor: 'red' }}
+                      variant="outlined"
+                      sx={{ marginLeft: 2,color: "red", borderColor: 'red' }}
                       onClick={() => handleClose()}
                     >
                       Cancel

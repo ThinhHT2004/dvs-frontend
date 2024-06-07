@@ -226,39 +226,46 @@ const ConsultingStaff_Report = () => {
         <TableHead sx={{ backgroundColor: "#30D5C8" }}>
           <TableRow>
             <TableCell>Create Appointment - {request.idRequest}</TableCell>
-            <TableCell></TableCell>
+            
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>{request.name}</TableCell>
+          <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+            <TableCell>Name : {request.name}</TableCell>
+            
           </TableRow>
-          <TableRow>
-            <TableCell>Phone</TableCell>
-            <TableCell>{request.phone}</TableCell>
+          <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+            <TableCell>Phone : {request.phone}</TableCell>
+           
           </TableRow>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>
-              <TextField
-                type="date"
-                value={tempAppointmentData?.date || ''}
-                onChange={(e) => handleAppointmentChange(request.idRequest, 'date', e.target.value)}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Note</TableCell>
-            <TableCell>
-              <TextField
-                type="text"
-                value={tempAppointmentData?.note || ''}
-                onChange={(e) => handleAppointmentChange(request.idRequest, 'note', e.target.value)}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
+          <TableRow sx={{ "& td": { borderBottom: "none" }, alignItems: "center" }}>
+  <TableCell>
+    <Box display="flex" alignItems="center">
+      Date :
+      <TextField
+        type="date"
+        value={tempAppointmentData?.date || ''}
+        onChange={(e) => handleAppointmentChange(request.idRequest, 'date', e.target.value)}
+        sx={{ marginLeft: 2 }}
+      />
+    </Box>
+  </TableCell>
+</TableRow>
+<TableRow sx={{ "& td": { borderBottom: "none" }, alignItems: "center" }}>
+  <TableCell>
+    <Box display="flex" alignItems="center">
+      Note : 
+      <TextField
+        type="text"
+        value={tempAppointmentData?.note || ''}
+        onChange={(e) => handleAppointmentChange(request.idRequest, 'note', e.target.value)}
+        sx={{ marginLeft: 2 }}
+      />
+    </Box>
+  </TableCell>
+</TableRow>
+
+          <TableRow sx={{ "& td": { borderBottom: "none" } }}>
             <TableCell colSpan={2} align="right">
               <Button 
               variant="contained" 
@@ -268,7 +275,7 @@ const ConsultingStaff_Report = () => {
               </Button>
               <Button
                 variant="outlined"
-                sx={{color: "red", borderColor: 'red' }}
+                sx={{marginLeft: 2, color: "red", borderColor: 'red' }}
                 onClick={() => setSelectedRequest(null)}
               >
                 Cancel
@@ -307,7 +314,7 @@ const ConsultingStaff_Report = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={4} md={7}>
+          <Grid item xs={8} >
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 100, borderRadius: 10 }}>
                 <TableHead sx={{ backgroundColor: "#30D5C8" }}>
@@ -375,7 +382,7 @@ const ConsultingStaff_Report = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={5} >
+          <Grid item xs={4} >
             {selectedRequest && renderAppointmentForm(selectedRequest)}
           </Grid>
           <Grid item xs={12} md={7}>
