@@ -20,7 +20,6 @@ import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import '../../staff/StaffStyle.css'
 const drawerWidth = 240;
 
 const diamondData = [
@@ -142,10 +141,16 @@ const ConsultingStaff_Report = () => {
     setAppointmentOpen((prev) => ({ ...prev, [idRequest]: false }));
   };
 
+  const renderStatus = (status) =>{
+    switch(status){
+      case "ACCEPTED": return "success"; break;
+    }
+  }
+
   const renderDiamondReport = (diamond) => (
     <Collapse in={reportOpen[diamond.idDiamond]} timeout="auto" unmountOnExit>
       <Table>
-        <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+        <TableHead sx={{ backgroundColor: "#30D5C8" }}>
           <TableRow>
             <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px', backgroundColor: "#69CEE2" }}>
               Diamond Details - {diamond.idDiamond}
@@ -289,10 +294,10 @@ const ConsultingStaff_Report = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={7}>
+          <Grid item xs={7} md={7}>
             <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-              <Table sx={{ minWidth: 500, borderRadius: 10 }}>
-                <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+              <Table sx={{ minWidth: 300, borderRadius: 10 }}>
+                <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                   <TableRow>
                     <TableCell>ID Request</TableCell>
                     <TableCell>Name</TableCell>
@@ -307,7 +312,7 @@ const ConsultingStaff_Report = () => {
                       <TableRow>
                         <TableCell>{request.idRequest}</TableCell>
                         <TableCell>{request.name}</TableCell>
-                        <TableCell className="status">{request.status}</TableCell>
+                        <TableCell>{request.status}</TableCell>
                         <TableCell>
                           <Link href="#" onClick={() => handleAppointmentClick(request.idRequest)}>
                             {appointmentData[request.idRequest]?.date ? appointmentData[request.idRequest].date : 'Create Appointment'}
@@ -358,7 +363,7 @@ const ConsultingStaff_Report = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={5} md={7}>
             {selectedDiamond && renderDiamondReport(selectedDiamond)}
           </Grid>
         </Grid>

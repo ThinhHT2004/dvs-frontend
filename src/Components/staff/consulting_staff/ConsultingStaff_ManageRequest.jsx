@@ -18,6 +18,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Chip,
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -27,10 +28,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { Label } from "@mui/icons-material";
 import axios from "axios";
 import moment from "moment";
-import '../../staff/StaffStyle.css'
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const staffId = 3;
+  const [open, setOpen] = useState(false);
 
   const [requestId, setRequestId] = useState("");
   const [sampleId, setSampleId] = useState("");
@@ -53,7 +54,6 @@ const ConsultingStaff_ManageRequest = () => {
     "HEART",
   ];
 
-
   const [measurement, setMeausurement] = useState("");
   const [caratWeight, setCaratWeight] = useState("");
   const [returnPolish, setReturnPolish] = useState("");
@@ -64,10 +64,16 @@ const ConsultingStaff_ManageRequest = () => {
   const [returnFluorescence, setReturnFluorescence] = useState("");
   const [rows, setRows] = useState([]);
 
-  const valuationReport = {measurement: measurement, caratWeight: caratWeight, 
-                        polish: returnPolish, symmetry: returnSymmetry, clarity: returnClarity,
-                        color: returnColorGrade, shape: returnShape, fluorescence: returnFluorescence};
-
+  const valuationReport = {
+    measurement: measurement,
+    caratWeight: caratWeight,
+    polish: returnPolish,
+    symmetry: returnSymmetry,
+    clarity: returnClarity,
+    color: returnColorGrade,
+    shape: returnShape,
+    fluorescence: returnFluorescence,
+  };
 
   useEffect(() => {
     getAcceptedRequest();
@@ -84,11 +90,18 @@ const ConsultingStaff_ManageRequest = () => {
       .catch((err) => console.log(err));
   }
 
-  function saveReport(requestId, sampleId, report){
+  function saveReport(requestId, sampleId, report) {
     axios
-      .put("http://localhost:8080/api/reports/update/" + requestId + "/" + sampleId, report)
-      .then(resp => console.log(resp.data))
-      .catch(err => console.log(err));
+      .put(
+        "http://localhost:8080/api/reports/update/" +
+          requestId +
+          "/" +
+          sampleId,
+        report
+      )
+      .then((resp) => console.log(resp.data))
+      .catch((err) => console.log(err));
+    handleClose();
   }
 
   function changeColor(text) {
@@ -107,39 +120,81 @@ const ConsultingStaff_ManageRequest = () => {
     }
   }
 
-  function displayButton(status, sample, requestId) {
-    if (status !== "ACCEPTED") {
+  function displayButton(sample, requestId) {
+    if (sample.status === "FILLING" || sample.status === "FILLED") {
       return (
-        <Button onClick={() => {setSampleId(sample.id); setRequestId(requestId)}}>
+        <Button
+          onClick={() => {
+            setSampleId(sample.id);
+            setRequestId(requestId);
+            handleOpen();
+          }}
+        >
           Edit Information
         </Button>
       );
-    } else {
+    }
+     else {
       return (
-        <Button onClick={() => {setSampleId(sample.id); setRequestId(requestId)}} disabled>
+        <Button
+          onClick={() => {
+            setSampleId(sample.id);
+            setRequestId(requestId);
+            handleOpen();
+          }}
+          disabled
+        >
           Edit Information
         </Button>
       );
     }
   }
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const renderRowStatus = (status) => {
+    switch (status) {
+      case "PROCESSING":
+        return "warning";
+        break;
+      case "RECEIVED":
+        return "info";
+        break;
+      case "ACCEPTED":
+        return "success";
+        break;
+    }
+  };
+
+  const renderSampleStatus = (status) => {
+    switch (status) {
+      case "ASSIGNED":
+        return "secondary";
+        break;
+      case "FILLING":
+        return "default";
+        break;
+      case "FILLED":
+        return "primary";
+        break;
+    }
+  };
+
   function displayBox(text, requestId) {
     if (text !== "") {
       return (
-        <Box
-          sx={{
-            width: 485,
-            marginTop: "10%",
-            marginRight: 100,
-            display: "flex",
-            justifyContent: "center",
-            p: 3,
-            border: 1,
-          }}
-        >
+        <TableContainer component={Paper}>
           <Table>
-            <TableHead>
-              <TableRow>{text}</TableRow>
+            <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+              <TableRow>
+                <TableCell>Sample Id: {text}</TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
@@ -269,22 +324,34 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <Box
-                  display={"flex"}
-                  justifyContent={"center"}
-                  sx={{ marginTop: "5%" }}
-                >
-                  <Button variant="contained" sx={{ marginRight: "10%" }} onClick={() => saveReport(requestId, text, valuationReport)}>
-                    Save
-                  </Button>
-                  <Button variant="contained" color="error">
-                    Cancel
-                  </Button>
-                </Box>
+                <TableCell>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"center"}
+                    sx={{ marginTop: "5%" }}
+                  >
+                    <Button
+                      variant="contained"
+                      sx={{ marginRight: "10%" }}
+                      onClick={() =>
+                        saveReport(requestId, text, valuationReport)
+                      }
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleClose()}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
-        </Box>
+        </TableContainer>
       );
     } else {
     }
@@ -301,7 +368,9 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell>{row.customer.first_name}</TableCell>
           <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
-          <TableCell className="status">{row.status}</TableCell>
+          <TableCell>
+            <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
+          </TableCell>
           <TableCell>{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
           <TableCell>
             <IconButton
@@ -331,9 +400,11 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell component="th" scope="row">
                           {sample.id}
                         </TableCell>
-                        {changeColor(sample.status)}
                         <TableCell align="right">
-                          {displayButton(row.status, sample, row.id)}
+                        <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>
+                        </TableCell>
+                        <TableCell align="right">
+                          {displayButton(sample, row.id)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -349,8 +420,8 @@ const ConsultingStaff_ManageRequest = () => {
 
   return (
     <div>
-      <Grid container spacing={1}>
-        <Grid item xs={2}>
+      <Box display="flex">
+        <Box>
           <StaffDrawer
             mylist={[
               "Home",
@@ -363,44 +434,49 @@ const ConsultingStaff_ManageRequest = () => {
             state="Request"
             handleClick={consulting_staff_navigator}
           ></StaffDrawer>
-        </Grid>
-        <Grid item xs={6}>
-          <Box
-            sx={{
-              flexGrow: 1,
-              p: 3,
-              width: 700,
-              marginTop: "5%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <TableContainer component={Paper} sx={{ width: "100%" }}>
-              <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-                <TableHead sx={{ backgroundColor: "#69CEE2" }}>
-                  <TableRow>
-                    <TableCell>Request ID</TableCell>
-                    <TableCell>Customer Name</TableCell>
-                    <TableCell>Service</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell>Status</TableCell>
-                    <TableCell>Appointment Date</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <Row key={row.id} row={row}></Row>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-        </Grid>
-        <Grid item xs={4}>
-          {displayBox(sampleId, requestId)}
-        </Grid>
-      </Grid>
+        </Box>
+        <Box
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            marginTop: "5%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Grid container>
+            <Grid item md={8} xs={6}>
+              <Box marginRight="5%">
+                <TableContainer component={Paper} sx={{ width: "100%" }}>
+                  <Table sx={{ minWidth: 300, borderRadius: 10 }}>
+                    <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+                      <TableRow>
+                        <TableCell>Request ID</TableCell>
+                        <TableCell>Customer Name</TableCell>
+                        <TableCell>Service</TableCell>
+                        <TableCell>Quantity</TableCell>
+                        <TableCell align="center">Status</TableCell>
+                        <TableCell>Appointment Date</TableCell>
+                        <TableCell></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rows.map((row) => (
+                        <Row key={row.id} row={row}></Row>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Grid>
+            <Grid item xs={3} md={4}>
+              {open && displayBox(sampleId, requestId)}
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
     </div>
   );
 };
