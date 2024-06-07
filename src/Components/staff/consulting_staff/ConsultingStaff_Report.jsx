@@ -142,10 +142,16 @@ const ConsultingStaff_Report = () => {
     setAppointmentOpen((prev) => ({ ...prev, [idRequest]: false }));
   };
 
+  const renderStatus = (status) =>{
+    switch(status){
+      case "ACCEPTED": return "success"; break;
+    }
+  }
+
   const renderDiamondReport = (diamond) => (
     <Collapse in={reportOpen[diamond.idDiamond]} timeout="auto" unmountOnExit>
       <Table>
-        <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+        <TableHead sx={{ backgroundColor: "#30D5C8" }}>
           <TableRow>
             <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px', backgroundColor: "#69CEE2" }}>
               Diamond Details - {diamond.idDiamond}
@@ -292,7 +298,7 @@ const ConsultingStaff_Report = () => {
           <Grid item xs={7} md={7}>
             <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
               <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-                <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                   <TableRow>
                     <TableCell>ID Request</TableCell>
                     <TableCell>Name</TableCell>
