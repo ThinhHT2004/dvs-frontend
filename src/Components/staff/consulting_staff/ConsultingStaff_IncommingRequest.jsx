@@ -57,7 +57,7 @@ const ConsultingStaff_IncommingRequest = () => {
 
 
   return (
-    <Box display="flex">
+    <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
       <Box>
         <StaffDrawer
           mylist={[
@@ -74,9 +74,7 @@ const ConsultingStaff_IncommingRequest = () => {
         />
       </Box>
       <Box sx={{
-          flexGrow: 1,
           p: 3,
-          marginTop: "5%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

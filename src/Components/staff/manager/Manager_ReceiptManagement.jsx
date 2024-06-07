@@ -147,7 +147,7 @@ const Manager_ReceiptManagement = () => {
 
   return (
     <Grid container spacing={0}>
-      <Box >
+      <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
       <StaffDrawer
         mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
         state="Receipt"
