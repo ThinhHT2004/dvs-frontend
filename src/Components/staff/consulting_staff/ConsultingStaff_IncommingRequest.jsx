@@ -15,18 +15,19 @@ import {
 import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
 import moment from "moment";
+import { useBadge } from "../BadgeContext";
 const ConsultingStaff_IncommingRequest = () => {
   const [requests, setRequests] = useState([]);
   const [newRequestCount, setNewRequestCount] = useState(0);
   const staffId = 3;
   const drawerWidth = 240;
-
+  const { badgeCounts, updateBadgeCount } = useBadge();
   useEffect(() => {
-    const interval = setInterval(() => {
+    
       getAllWaitingRequests();
-    }, 1000);
 
-    return () => clearInterval(interval);
+
+    
   }, []);
 
   const getAllWaitingRequests = () => {
@@ -34,7 +35,8 @@ const ConsultingStaff_IncommingRequest = () => {
       .get("http://localhost:8080/api/request/waiting")
       .then((response) => {
         if (response.data.length > requests.length) {
-          setNewRequestCount(response.data.length - requests.length);
+        
+          updateBadgeCount("Incomming Request", response.data.length - requests.length);
         }
         setRequests(response.data);
       })
@@ -70,7 +72,7 @@ const ConsultingStaff_IncommingRequest = () => {
           ]}
           state="Incomming Request"
           handleClick={consulting_staff_navigator}
-          badgeCount={newRequestCount}
+          badgeCount={badgeCounts["Incomming Request"]}
         />
       </Box>
       <Box sx={{

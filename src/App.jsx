@@ -16,6 +16,7 @@ import Manager_ReportManagement from './Components/staff/manager/Manager_ReportM
 import ConsultingStaff_Report from './Components/staff/consulting_staff/ConsultingStaff_Report.jsx'
 import ConsultingStaff_Form from './Components/staff/consulting_staff/ConsultingStaff_Form.jsx'
 import { BadgeProvider } from './Components/staff/BadgeContext.jsx'
+import StaffDrawer from './Components/staff/StaffDrawer.jsx'
 const App = () => {
   
   return (

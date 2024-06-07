@@ -29,6 +29,7 @@ import { Label } from "@mui/icons-material";
 import axios from "axios";
 import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
+import { useBadge } from "../BadgeContext";
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const staffId = 3;
@@ -36,7 +37,7 @@ const ConsultingStaff_ManageRequest = () => {
 
   const [requestId, setRequestId] = useState("");
   const [sampleId, setSampleId] = useState("");
-
+  const { badgeCounts, updateBadgeCount } = useBadge();
   const polish = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const symmetry = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const clarityGrade = ["SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF", "FL"];
@@ -87,7 +88,13 @@ const ConsultingStaff_ManageRequest = () => {
           staffId +
           "/WAITING"
       )
-      .then((resp) => setRows(resp.data))
+      .then((resp) => {
+        const fillingAndFilledRequests = resp.data.filter(
+          (sample) => sample.status === "FILLING" || sample.status === "FILLED"
+        );
+        updateBadgeCount("Request", fillingAndFilledRequests.length);
+        setRows(resp.data);
+      })
       .catch((err) => console.log(err));
   }
 
@@ -434,6 +441,7 @@ const ConsultingStaff_ManageRequest = () => {
             ]}
             state="Request"
             handleClick={consulting_staff_navigator}
+            badgeCount={badgeCounts["Request"]}
           ></StaffDrawer>
         </Box>
         <Box
