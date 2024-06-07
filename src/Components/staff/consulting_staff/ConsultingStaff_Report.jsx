@@ -110,9 +110,11 @@ const diamondData = [
 const ConsultingStaff_Report = () => {
   const [open, setOpen] = useState({});
   const [reportOpen, setReportOpen] = useState({});
+  const [appointmentOpen, setAppointmentOpen] = useState({})
   const [selectedDiamond, setSelectedDiamond] = useState(null);
-  const [appointmentOpen, setAppointmentOpen] = useState({});
   const [appointmentData, setAppointmentData] = useState({});
+  const [tempAppointmentData, setTempAppointmentData] = useState({});
+  const [selectedRequest, setSelectedRequest] = useState(null);
 
   const handleClick = (idRequest) => {
     setOpen((prev) => ({ ...prev, [idRequest]: !prev[idRequest] }));
@@ -125,24 +127,25 @@ const ConsultingStaff_Report = () => {
 
   const handleAppointmentClick = (idRequest) => {
     setAppointmentOpen((prev) => ({ ...prev, [idRequest]: !prev[idRequest] }));
+    const request = diamondData.find((request) => request.idRequest === idRequest);
+    setSelectedRequest(request);
+    setTempAppointmentData(appointmentData[request.idRequest] || {});
   };
 
   const handleAppointmentChange = (idRequest, field, value) => {
-    setAppointmentData((prev) => ({
+    setTempAppointmentData((prev) => ({
       ...prev,
-      [idRequest]: {
-        ...prev[idRequest],
-        [field]: value,
-      },
+      [field]: value,
     }));
   };
 
   const handleSaveAppointment = (idRequest) => {
-    console.log("Saved appointment for request:", idRequest, appointmentData[idRequest]);
-    setAppointmentOpen((prev) => ({ ...prev, [idRequest]: false }));
+    setAppointmentData((prev) => ({
+      ...prev,
+      [idRequest]: tempAppointmentData,
+    }));
+    setSelectedRequest(null);
   };
-
-  
 
   const renderDiamondReport = (diamond) => (
     <Collapse in={reportOpen[diamond.idDiamond]} timeout="auto" unmountOnExit>
@@ -150,7 +153,7 @@ const ConsultingStaff_Report = () => {
         <TableHead sx={{ backgroundColor: "#30D5C8" }}>
           <TableRow>
             <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px', backgroundColor: "#69CEE2" }}>
-              Diamond Details - {formatSampleId(diamond.idDiamond)}
+              Diamond Details - {diamond.idDiamond}
             </TableCell>
           </TableRow>
         </TableHead>
@@ -217,10 +220,15 @@ const ConsultingStaff_Report = () => {
   );
 
   const renderAppointmentForm = (request) => (
-    
-      <Box display={appointmentOpen[request.idRequest] ? 'block' : 'none'} sx={{ position: 'absolute', top: '10%', left: '30%', width: '40%', bgcolor: 'background.paper', boxShadow: 24, p: 4}}>
-      <Typography variant="h6">Create Appointment - {formatRequestId(request.idRequest)}</Typography>
-      <Table>
+    <Box>
+      <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 100, borderRadius: 10 }}>
+        <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+          <TableRow>
+            <TableCell>Create Appointment - {request.idRequest}</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
         <TableBody>
           <TableRow>
             <TableCell>Name</TableCell>
@@ -235,7 +243,7 @@ const ConsultingStaff_Report = () => {
             <TableCell>
               <TextField
                 type="date"
-                value={appointmentData[request.idRequest]?.date || ''}
+                value={tempAppointmentData?.date || ''}
                 onChange={(e) => handleAppointmentChange(request.idRequest, 'date', e.target.value)}
               />
             </TableCell>
@@ -245,26 +253,36 @@ const ConsultingStaff_Report = () => {
             <TableCell>
               <TextField
                 type="text"
-                value={appointmentData[request.idRequest]?.note || ''}
+                value={tempAppointmentData?.note || ''}
                 onChange={(e) => handleAppointmentChange(request.idRequest, 'note', e.target.value)}
               />
             </TableCell>
           </TableRow>
           <TableRow>
             <TableCell colSpan={2} align="right">
-              <Button variant="contained" color="primary" onClick={() => handleSaveAppointment(request.idRequest)}>
-                Save Appointment
+              <Button 
+              variant="contained" 
+              sx={{ backgroundColor: '#69CEE2' }}
+              onClick={() => handleSaveAppointment(request.idRequest)}>
+                Save
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{color: "red", borderColor: 'red' }}
+                onClick={() => setSelectedRequest(null)}
+              >
+                Cancel
               </Button>
             </TableCell>
           </TableRow>
         </TableBody>
       </Table>
+      </TableContainer>
     </Box>
-    
   );
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
+    <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
       <Box>
         <StaffDrawer
           mylist={[
@@ -281,19 +299,17 @@ const ConsultingStaff_Report = () => {
       </Box>
       <Box
         sx={{
-          flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          marginTop: "5%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={7} md={7}>
-            <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-              <Table sx={{ minWidth: 300, borderRadius: 10 }}>
+          <Grid item xs={4} md={7}>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 100, borderRadius: 10 }}>
                 <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                   <TableRow>
                     <TableCell>ID Request</TableCell>
@@ -311,7 +327,7 @@ const ConsultingStaff_Report = () => {
                         <TableCell>{request.name}</TableCell>
                         <TableCell>{request.status}</TableCell>
                         <TableCell>
-                          <Link href="#" onClick={() => handleAppointmentClick(request.idRequest)}>
+                          <Link href="#" onClick={() => handleAppointmentClick(request.idRequest)} underline="none">
                             {appointmentData[request.idRequest]?.date ? appointmentData[request.idRequest].date : 'Create Appointment'}
                           </Link>
                         </TableCell>
@@ -334,14 +350,13 @@ const ConsultingStaff_Report = () => {
                           <Collapse in={open[request.idRequest]} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                               <Table size="small" aria-label="diamonds">
-                                
                                 <TableBody>
                                   {request.diamonds.map((diamond) => (
                                     <TableRow key={diamond.idDiamond}>
                                       <TableCell>{diamond.idDiamond}</TableCell>
                                       {request.status === "Completed" && <TableCell>{request.completeDate}</TableCell>}
                                       <TableCell>
-                                        <Link href="#" onClick={() => handleReportClick(diamond)}>
+                                        <Link href="#" onClick={() => handleReportClick(diamond)} underline="none">
                                           View Report
                                         </Link>
                                       </TableCell>
@@ -353,14 +368,17 @@ const ConsultingStaff_Report = () => {
                           </Collapse>
                         </TableCell>
                       </TableRow>
-                      {renderAppointmentForm(request)}
+                      
                     </React.Fragment>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={5} md={7}>
+          <Grid item xs={5} >
+            {selectedRequest && renderAppointmentForm(selectedRequest)}
+          </Grid>
+          <Grid item xs={12} md={7}>
             {selectedDiamond && renderDiamondReport(selectedDiamond)}
           </Grid>
         </Grid>

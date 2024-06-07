@@ -99,10 +99,9 @@ const ConsultingStaff_Form = () => {
       </Box>
       <Box
         sx={{
-          flexGrow: 1,
           p: 3,
+          flexGrow: 1,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          marginTop: "5%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -148,7 +147,7 @@ const ConsultingStaff_Form = () => {
                           >
                             {["Receipt", "Sealed", "Committed", "Handover"].map(
                               (option) => (
-                                <MenuItem
+                                <MenuItem                                 
                                   key={option}
                                   onClick={() => handleMenuItemClick(option)}
                                 >
@@ -220,6 +219,7 @@ const ConsultingStaff_Form = () => {
                                 )
                               }
                               variant="contained"
+                              sx={{ backgroundColor: '#69CEE2' }}
                             >
                               Create
                             </Button>
@@ -227,9 +227,9 @@ const ConsultingStaff_Form = () => {
                               onClick={() =>
                                 handleClose()
                               }
-                              variant="contained"
-                              color="error"
-                              sx={{marginLeft: "3%"}}
+                              variant="outlined"
+                              sx={{color: "red", borderColor: 'red' }}
+                             
                             >
                               Cancel
                             </Button>

@@ -340,7 +340,7 @@ const ConsultingStaff_ManageRequest = () => {
                   >
                     <Button
                       variant="contained"
-                      sx={{ marginRight: "10%" }}
+                      sx={{ backgroundColor: '#69CEE2' }}
                       onClick={() =>
                         saveReport(requestId, text, valuationReport)
                       }
@@ -349,7 +349,7 @@ const ConsultingStaff_ManageRequest = () => {
                     </Button>
                     <Button
                       variant="contained"
-                      color="error"
+                      sx={{ marginLeft: 2, color: "red", borderColor: 'red' }}
                       onClick={() => handleClose()}
                     >
                       Cancel
@@ -446,10 +446,8 @@ const ConsultingStaff_ManageRequest = () => {
         </Box>
         <Box
           sx={{
-            flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: "5%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
