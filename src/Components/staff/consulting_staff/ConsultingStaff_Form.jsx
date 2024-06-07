@@ -16,6 +16,7 @@ import {
   Button,
   Grid,
   TextField,
+  Chip,
 } from "@mui/material";
 import axios from "axios";
 const ConsultingStaff_Form = () => {
@@ -73,6 +74,12 @@ const ConsultingStaff_Form = () => {
     setSelectedOption("");
   };
 
+  const renderStatus = (status) =>{
+    switch(status){
+      case "ACCEPTED": return "success"; break;
+    }
+  }
+
   return (
     <Box display="flex">
       <Box>
@@ -105,11 +112,11 @@ const ConsultingStaff_Form = () => {
             <Box>
               <TableContainer component={Paper} sx={{ width: "100%" }}>
                 <Table sx={{ minWidth: 300 }}>
-                  <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                     <TableRow>
                       <TableCell>ID Request</TableCell>
                       <TableCell>Name</TableCell>
-                      <TableCell>Status</TableCell>
+                      <TableCell align="center">Status</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -118,8 +125,8 @@ const ConsultingStaff_Form = () => {
                       <TableRow key={request.id}>
                         <TableCell>{request.id}</TableCell>
                         <TableCell>{request.customer.first_name}</TableCell>
-                        <TableCell className="status">
-                          {request.status}
+                        <TableCell className="status" align="center">
+                          <Chip label={request.status} color={renderStatus(request.status)}></Chip>
                         </TableCell>
                         <TableCell>
                           <Button>
@@ -163,7 +170,7 @@ const ConsultingStaff_Form = () => {
                 <Box>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 200 }}>
-                      <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                      <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                         <TableRow>
                         <TableCell>{selectedOption} Form</TableCell>
                         <TableCell></TableCell>

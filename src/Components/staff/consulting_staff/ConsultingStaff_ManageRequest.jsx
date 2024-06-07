@@ -18,6 +18,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Chip,
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -100,7 +101,7 @@ const ConsultingStaff_ManageRequest = () => {
       )
       .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
-      handleClose();
+    handleClose();
   }
 
   function changeColor(text) {
@@ -119,8 +120,8 @@ const ConsultingStaff_ManageRequest = () => {
     }
   }
 
-  function displayButton(status, sample, requestId) {
-    if (status !== "ACCEPTED") {
+  function displayButton(sample, requestId) {
+    if (sample.status === "FILLING" || sample.status === "FILLED") {
       return (
         <Button
           onClick={() => {
@@ -132,7 +133,8 @@ const ConsultingStaff_ManageRequest = () => {
           Edit Information
         </Button>
       );
-    } else {
+    }
+     else {
       return (
         <Button
           onClick={() => {
@@ -150,29 +152,49 @@ const ConsultingStaff_ManageRequest = () => {
 
   const handleClose = () => {
     setOpen(false);
-    
   };
 
   const handleOpen = () => {
     setOpen(true);
-  }
+  };
+
+  const renderRowStatus = (status) => {
+    switch (status) {
+      case "PROCESSING":
+        return "warning";
+        break;
+      case "RECEIVED":
+        return "info";
+        break;
+      case "ACCEPTED":
+        return "success";
+        break;
+    }
+  };
+
+  const renderSampleStatus = (status) => {
+    switch (status) {
+      case "ASSIGNED":
+        return "secondary";
+        break;
+      case "FILLING":
+        return "default";
+        break;
+      case "FILLED":
+        return "primary";
+        break;
+    }
+  };
 
   function displayBox(text, requestId) {
     if (text !== "") {
       return (
-        <Box
-          sx={{
-            width: "100%",
-            marginRight: 5,
-            display: "flex",
-            justifyContent: "center",
-            p: 3,
-            border: 1,
-          }}
-        >
+        <TableContainer component={Paper}>
           <Table>
-            <TableHead>
-              <TableRow>{text}</TableRow>
+            <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+              <TableRow>
+                <TableCell>Sample Id: {text}</TableCell>
+              </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
@@ -302,26 +324,34 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableCell>
               </TableRow>
               <TableRow>
-                <Box
-                  display={"flex"}
-                  justifyContent={"center"}
-                  sx={{ marginTop: "5%" }}
-                >
-                  <Button
-                    variant="contained"
-                    sx={{ marginRight: "10%" }}
-                    onClick={() => saveReport(requestId, text, valuationReport)}
+                <TableCell>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"center"}
+                    sx={{ marginTop: "5%" }}
                   >
-                    Save
-                  </Button>
-                  <Button variant="contained" color="error" onClick={() => handleClose()}>
-                    Cancel
-                  </Button>
-                </Box>
+                    <Button
+                      variant="contained"
+                      sx={{ marginRight: "10%" }}
+                      onClick={() =>
+                        saveReport(requestId, text, valuationReport)
+                      }
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleClose()}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
-        </Box>
+        </TableContainer>
       );
     } else {
     }
@@ -338,7 +368,9 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell>{row.customer.first_name}</TableCell>
           <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
-          <TableCell>{row.status}</TableCell>
+          <TableCell>
+            <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
+          </TableCell>
           <TableCell>{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
           <TableCell>
             <IconButton
@@ -368,9 +400,11 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell component="th" scope="row">
                           {sample.id}
                         </TableCell>
-                        {changeColor(sample.status)}
                         <TableCell align="right">
-                          {displayButton(row.status, sample, row.id)}
+                        <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>
+                        </TableCell>
+                        <TableCell align="right">
+                          {displayButton(sample, row.id)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -414,7 +448,7 @@ const ConsultingStaff_ManageRequest = () => {
         >
           <Grid container>
             <Grid item md={8} xs={6}>
-              <Box  marginRight="5%">
+              <Box marginRight="5%">
                 <TableContainer component={Paper} sx={{ width: "100%" }}>
                   <Table sx={{ minWidth: 300, borderRadius: 10 }}>
                     <TableHead sx={{ backgroundColor: "#30D5C8" }}>
@@ -423,7 +457,7 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell>Customer Name</TableCell>
                         <TableCell>Service</TableCell>
                         <TableCell>Quantity</TableCell>
-                        <TableCell>Status</TableCell>
+                        <TableCell align="center">Status</TableCell>
                         <TableCell>Appointment Date</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
