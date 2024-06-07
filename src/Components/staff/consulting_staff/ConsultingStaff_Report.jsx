@@ -289,9 +289,9 @@ const ConsultingStaff_Report = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={7}>
+          <Grid item xs={7} md={7}>
             <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-              <Table sx={{ minWidth: 500, borderRadius: 10 }}>
+              <Table sx={{ minWidth: 300, borderRadius: 10 }}>
                 <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                   <TableRow>
                     <TableCell>ID Request</TableCell>
@@ -358,7 +358,7 @@ const ConsultingStaff_Report = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={5} md={7}>
             {selectedDiamond && renderDiamondReport(selectedDiamond)}
           </Grid>
         </Grid>

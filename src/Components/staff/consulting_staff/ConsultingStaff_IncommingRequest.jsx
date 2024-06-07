@@ -3,6 +3,7 @@ import StaffDrawer from "../StaffDrawer";
 import {
   Box,
   Button,
+  Grid,
   Paper,
   Table,
   TableBody,
@@ -44,17 +45,21 @@ const ConsultingStaff_IncommingRequest = () => {
 
   const acceptRequest = (requestId) => {
     axios
-      .put("http://localhost:8080/api/request/" + requestId + "/assign/" + staffId)
+      .put(
+        "http://localhost:8080/api/request/" + requestId + "/assign/" + staffId
+      )
       .then(() => {
-        setRequests((prevRequests) => prevRequests.filter((req) => req.id !== requestId));
+        setRequests((prevRequests) =>
+          prevRequests.filter((req) => req.id !== requestId)
+        );
         setNewRequestCount((prevCount) => Math.max(prevCount - 1, 0));
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <div>
-      <Box sx={{ display: "flex" }}>
+    <Box display="flex">
+      <Box>
         <StaffDrawer
           mylist={[
             "Home",
@@ -68,53 +73,52 @@ const ConsultingStaff_IncommingRequest = () => {
           handleClick={consulting_staff_navigator}
           badgeCount={newRequestCount}
         />
-        <Box
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: "5%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <TableContainer component={Paper} sx={{ width: 1000 }}>
-            <Table sx={{ minWidth: 700, borderRadius: 10 }}>
-              <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                <TableRow>
-                  <TableCell>Customer Name</TableCell>
-                  <TableCell>Service</TableCell>
-                  <TableCell>Quantity</TableCell>
-                  <TableCell>Appointment Date</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {requests.map((request) => (
-                  <TableRow key={request.id}>
-                    <TableCell>{request.customer.first_name}</TableCell>
-                    <TableCell>{request.service.duration}</TableCell>
-                    <TableCell>{request.quantity}</TableCell>
-                    <TableCell>
-                      {moment(request.appointmentDate).format("Do, MMM")}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="contained"
-                        sx={{ background: "#30D5C8", borderRadius: "8px" }}
-                        onClick={() => acceptRequest(request.id)}
-                      >
-                        Accept
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
       </Box>
-    </div>
+      <Box sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          marginTop: "5%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}>
+        <TableContainer component={Paper} sx={{ width: "100%" }}>
+          <Table sx={{ minWidth: 300, borderRadius: 10 }}>
+            <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+              <TableRow>
+                <TableCell>Customer Name</TableCell>
+                <TableCell>Service</TableCell>
+                <TableCell>Quantity</TableCell>
+                <TableCell>Appointment Date</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {requests.map((request) => (
+                <TableRow key={request.id}>
+                  <TableCell>{request.customer.first_name}</TableCell>
+                  <TableCell>{request.service.duration}</TableCell>
+                  <TableCell>{request.quantity}</TableCell>
+                  <TableCell>
+                    {moment(request.appointmentDate).format("Do, MMM")}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      sx={{ background: "#30D5C8", borderRadius: "8px" }}
+                      onClick={() => acceptRequest(request.id)}
+                    >
+                      Accept
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
   );
 };
 

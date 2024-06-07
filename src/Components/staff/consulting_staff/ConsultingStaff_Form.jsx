@@ -18,8 +18,9 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import '../../staff/StaffStyle.css'
+import "../../staff/StaffStyle.css";
 const ConsultingStaff_Form = () => {
+  const drawerWidth = 240;
   const consultignStaffId = 3;
   const [open, setOpen] = useState(false);
   const [currentRequest, setCurrentRequest] = useState(null);
@@ -89,115 +90,153 @@ const ConsultingStaff_Form = () => {
           handleClick={consulting_staff_navigator}
         />
       </Box>
-      <Grid container spacing={3} sx={{ p: 3 }}>
-        <Grid item xs={12} md={8}>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }}>
-              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
-                <TableRow>
-                  <TableCell>ID Request</TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {requests.map((request) => (
-                  <TableRow key={request.id}>
-                    <TableCell>{request.id}</TableCell>
-                    <TableCell>{request.customer.first_name}</TableCell>
-                    <TableCell className="status">{request.status}</TableCell>
-                    <TableCell>
-                      <Link
-                        href="#"
-                        onClick={(event) => handleClickOpen(event, request)}
-                      >
-                        Create Form
-                      </Link>
-                      <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleMenuClose}
-                      >
-                        {["Receipt", "Sealed", "Committed", "Handover"].map(
-                          (option) => (
-                            <MenuItem
-                              key={option}
-                              onClick={() => handleMenuItemClick(option)}
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          marginTop: "5%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Grid container spacing={3}>
+          <Grid item md={8} xs={12}>
+            <Box>
+              <TableContainer component={Paper} sx={{ width: "100%" }}>
+                <Table sx={{ minWidth: 300 }}>
+                  <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                    <TableRow>
+                      <TableCell>ID Request</TableCell>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {requests.map((request) => (
+                      <TableRow key={request.id}>
+                        <TableCell>{request.id}</TableCell>
+                        <TableCell>{request.customer.first_name}</TableCell>
+                        <TableCell className="status">
+                          {request.status}
+                        </TableCell>
+                        <TableCell>
+                          <Button>
+                            <Link
+                              href="#"
+                              onClick={(event) =>
+                                handleClickOpen(event, request)
+                              }
+                              underline="none"
                             >
-                              {option}
-                            </MenuItem>
+                              Create Form
+                            </Link>
+                          </Button>
+                          <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                          >
+                            {["Receipt", "Sealed", "Committed", "Handover"].map(
+                              (option) => (
+                                <MenuItem
+                                  key={option}
+                                  onClick={() => handleMenuItemClick(option)}
+                                >
+                                  {option}
+                                </MenuItem>
+                              )
+                            )}
+                          </Menu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            {open && (
+              <Box sx={{ border: "1px" }}>
+                <Box>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 200 }}>
+                      <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                        <TableRow>
+                        <TableCell>{selectedOption} Form</TableCell>
+                        <TableCell></TableCell>
+                        </TableRow>  
+                      </TableHead>
+                      <TableBody>
+                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                          <TableCell>Name:</TableCell>
+                          <TableCell>
+                            {currentRequest.customer.first_name}
+                          </TableCell>
+                        </TableRow>
+                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                          <TableCell>Phone:</TableCell>
+                          <TableCell>
+                            {currentRequest.customer.phoneNumber}
+                          </TableCell>
+                        </TableRow>
+                        {currentRequest.valuationRequestDetailList.map(
+                          (sample) => (
+                            <TableRow
+                              key={sample.id}
+                              sx={{ "& td": { borderBottom: "none" } }}
+                            >
+                              <TableCell>ID Sample: {sample.id}</TableCell>
+                              <TableCell sx={{ verticalAlign: "middle" }}>
+                                <TextField
+                                  sx={{ width: 100, height: 32 }}
+                                  onChange={(e) => {
+                                    sample.size = e.target.value;
+                                  }}
+                                  value={sample.size}
+                                  label="Size"
+                                />
+                              </TableCell>
+                            </TableRow>
                           )
                         )}
-                      </Menu>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          {open && (
-            <Box sx={{ border: "1px" }}>
-              <Box>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 200 }}>
-                    <TableHead sx={{ backgroundColor: "#69CEE2" }}>
-                      {selectedOption} Form
-                      <TableCell></TableCell>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                        <TableCell>Name:</TableCell>
-                        <TableCell>
-                          {currentRequest.customer.first_name}
-                        </TableCell>
-                      </TableRow>
-                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                        <TableCell>Phone:</TableCell>
-                        <TableCell>
-                          {currentRequest.customer.phoneNumber}
-                        </TableCell>
-                      </TableRow>
-                      {currentRequest.valuationRequestDetailList.map(
-                        (sample) => (
-                          <TableRow
-                            key={sample.id}
-                            sx={{ "& td": { borderBottom: "none" } }}
-                          >
-                            <TableCell>ID Sample: {sample.id}</TableCell>
-                            <TableCell sx={{ verticalAlign: "middle" }}>
-                              <TextField
-                                sx={{ width: 100, height: 32 }}
-                                onChange={(e) => {
-                                  sample.size = e.target.value;
-                                }}
-                                value={sample.size}
-                                label="Size"
-                              />
-                            </TableCell>
-                          </TableRow>
-                        )
-                      )}
-                    </TableBody>
-                  </Table>
-                  <Button
-                    onClick={() =>
-                      createReceipt(
-                        currentRequest.valuationRequestDetailList,
-                        currentRequest.id
-                      )
-                    }
-                  >
-                    Create
-                  </Button>
-                </TableContainer>
+                        <TableRow>
+                          <TableCell>
+                            <Button
+                              onClick={() =>
+                                createReceipt(
+                                  currentRequest.valuationRequestDetailList,
+                                  currentRequest.id
+                                )
+                              }
+                              variant="contained"
+                            >
+                              Create
+                            </Button>
+                            <Button
+                              onClick={() =>
+                                handleClose()
+                              }
+                              variant="contained"
+                              color="error"
+                              sx={{marginLeft: "3%"}}
+                            >
+                              Cancel
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
               </Box>
-            </Box>
-          )}
+            )}
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </Box>
   );
 };
