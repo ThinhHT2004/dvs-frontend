@@ -147,6 +147,7 @@ const Manager_ReceiptManagement = () => {
 
   return (
     <Grid container spacing={0}>
+      <Box >
       <StaffDrawer
         mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
         state="Receipt"
@@ -426,6 +427,7 @@ const Manager_ReceiptManagement = () => {
           </Box>
         </Grid>
       )}
+      </Box>
     </Grid>
   );
 };

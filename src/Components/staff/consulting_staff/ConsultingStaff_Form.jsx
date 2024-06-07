@@ -19,7 +19,6 @@ import {
   Chip,
 } from "@mui/material";
 import axios from "axios";
-import "../../staff/StaffStyle.css";
 import { formatRequestId } from "../../../Foramat";
 const ConsultingStaff_Form = () => {
   const drawerWidth = 240;
@@ -83,7 +82,7 @@ const ConsultingStaff_Form = () => {
   }
 
   return (
-    <Box display="flex">
+    <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
       <Box>
         <StaffDrawer
           mylist={[

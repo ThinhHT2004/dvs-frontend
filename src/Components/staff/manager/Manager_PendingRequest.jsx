@@ -31,7 +31,7 @@ const Manager_PendingRequest = () => {
 
   return (
     <div>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
         <StaffDrawer
           mylist={[
             "Home",
@@ -45,11 +45,8 @@ const Manager_PendingRequest = () => {
         ></StaffDrawer>
         <Box
           sx={{
-            flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: "5%",
-            display: "flex",
             justifyContent: "center",
           }}
         >

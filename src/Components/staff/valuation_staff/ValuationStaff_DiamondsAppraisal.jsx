@@ -149,7 +149,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   return (
     <div>
-      <Box display="flex" sx={{backgroundColor: "#FAF6EF",}}>
+      <Box display="flex" sx={{backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
         <Box>
           <StaffDrawer
             mylist={["Home", "Diamonds Appraisal", "Sign Out"]}

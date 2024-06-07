@@ -20,7 +20,6 @@ import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import '../../staff/StaffStyle.css'
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 const drawerWidth = 240;
 
@@ -265,7 +264,7 @@ const ConsultingStaff_Report = () => {
   );
 
   return (
-    <Box display="flex">
+    <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
       <Box>
         <StaffDrawer
           mylist={[

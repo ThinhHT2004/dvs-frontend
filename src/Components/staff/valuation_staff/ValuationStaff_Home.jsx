@@ -17,7 +17,7 @@ const ValuationStaff_Home = () => {
     const drawerWidth = 240;
   return (
     <div>
-        <Box>
+        <Box sx={{backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
             <Box>
                 <StaffDrawer mylist={[
                     "Home",
