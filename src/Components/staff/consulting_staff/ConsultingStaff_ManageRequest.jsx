@@ -160,6 +160,7 @@ const ConsultingStaff_ManageRequest = () => {
 
   const handleClose = () => {
     setOpen(false);
+    getAcceptedRequest();
   };
 
   const handleOpen = () => {
@@ -205,7 +206,7 @@ const ConsultingStaff_ManageRequest = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <TextField
                     type="text"
@@ -216,7 +217,7 @@ const ConsultingStaff_ManageRequest = () => {
                   ></TextField>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <TextField
                     type="text"
@@ -227,7 +228,7 @@ const ConsultingStaff_ManageRequest = () => {
                   ></TextField>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <FormControl sx={{ width: "33.33%" }}>
                     <InputLabel>Polish</InputLabel>
@@ -279,7 +280,7 @@ const ConsultingStaff_ManageRequest = () => {
                   </FormControl>
                 </TableCell>
               </TableRow>
-              <TableRow>
+              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                 <TableCell>
                   <FormControl sx={{ width: "33.33%" }}>
                     <InputLabel>Clarity</InputLabel>
@@ -335,12 +336,12 @@ const ConsultingStaff_ManageRequest = () => {
                 <TableCell>
                   <Box
                     display={"flex"}
-                    justifyContent={"center"}
-                    sx={{ marginTop: "5%" }}
+                    
+                    justifyContent={"right"}
                   >
                     <Button
                       variant="contained"
-                      sx={{ marginRight: "10%" }}
+                      sx={{ backgroundColor: '#69CEE2' }}
                       onClick={() =>
                         saveReport(requestId, text, valuationReport)
                       }
@@ -348,8 +349,8 @@ const ConsultingStaff_ManageRequest = () => {
                       Save
                     </Button>
                     <Button
-                      variant="contained"
-                      color="error"
+                      variant="outlined"
+                      sx={{ marginLeft: 2,color: "red", borderColor: 'red' }}
                       onClick={() => handleClose()}
                     >
                       Cancel
@@ -446,10 +447,8 @@ const ConsultingStaff_ManageRequest = () => {
         </Box>
         <Box
           sx={{
-            flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: "5%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

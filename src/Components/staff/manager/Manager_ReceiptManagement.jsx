@@ -165,7 +165,7 @@ const Manager_ReceiptManagement = () => {
         >
           <TableContainer component={Paper} sx={{ width: 800 }}>
             <Table sx={{ minWidth: 600, borderRadius: 10 }}>
-              <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+              <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                 <TableRow>
                   <TableCell>Request ID</TableCell>
                   <TableCell>Amount</TableCell>
@@ -265,7 +265,7 @@ const Manager_ReceiptManagement = () => {
           >
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 400 }}>
-                <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                   <TableRow>
                     <TableCell colSpan={2}>
                       Edit Appraiser - {currentDiamond.id}
