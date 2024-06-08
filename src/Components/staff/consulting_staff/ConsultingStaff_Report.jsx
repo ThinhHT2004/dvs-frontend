@@ -14,6 +14,9 @@ import {
   Grid,
   TextField,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -22,6 +25,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import axios from "axios";
+import logoWeb from '../../../assets/logo_v4.png'
 const drawerWidth = 240;
 
 
@@ -118,6 +122,10 @@ const ConsultingStaff_Report = () => {
     setOpen((prev) => ({ ...prev, [idRequest]: !prev[idRequest] }));
   };
 
+  const handleClose = () =>{
+    setReportOpen(false);
+  }
+
   const handleReportClick = (diamond) => {
     setReportOpen(true);
     setSelectedDiamond(diamond);
@@ -136,82 +144,85 @@ const ConsultingStaff_Report = () => {
 
 
   const renderDiamondReport = (diamond) => (
-    <Collapse in={open} timeout="auto" unmountOnExit>
-      <Table>
-        <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-          <TableRow>
-            <TableCell
-              colSpan={2}
-              sx={{
-                color: "black",
-                fontSize: "20px",
-                backgroundColor: "#69CEE2",
-              }}
-            >
-              Diamond Details - {formatSampleId(diamond.id)}
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableContainer component={Paper}>
-          <Table size="small" aria-label="detailed-diamond">
-            <TableBody>
-              <TableRow>
-                <TableCell>Carat Weight</TableCell>
-                <TableCell>{diamond.valuationReport.caratWeight}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Clarity</TableCell>
-                <TableCell>{diamond.valuationReport.clarity}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Origin</TableCell>
-                <TableCell>{diamond.valuationReport.origin}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Polish</TableCell>
-                <TableCell>{diamond.valuationReport.polish}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Color</TableCell>
-                <TableCell>{diamond.valuationReport.color}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Symmetry</TableCell>
-                <TableCell>{diamond.valuationReport.symmetry}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Fluorescence</TableCell>
-                <TableCell>{diamond.valuationReport.fluorescence}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Shape</TableCell>
-                <TableCell>{diamond.valuationReport.shape}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Measurement</TableCell>
-                <TableCell>{diamond.valuationReport.measurement}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Proportion</TableCell>
-                <TableCell>{diamond.valuationReport.proportion}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Price</TableCell>
-                <TableCell>{diamond.valuationReport.finalPrice}$</TableCell>
-              </TableRow>
-              {/* <TableRow>
-                <TableCell>Notes</TableCell>
-                <TableCell>{diamond.valuationReport.notes}</TableCell>
-              </TableRow> */}
-              {/* <TableRow>
-                <TableCell>Valuation Staff</TableCell>
-                <TableCell>{diamond.idValuationStaff}</TableCell>
-              </TableRow> */}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Table>
-    </Collapse>
+    <Dialog open={reportOpen} onClose={() => handleClose()} maxWidth="lg" fullWidth>
+                <DialogTitle>{""}</DialogTitle>
+                <DialogContent>
+                    <Paper>
+                        <Box>
+                            <div>
+                                <img src={logoWeb} style={{ width: '30%', height: 'auto' }} />
+                            </div>
+                        </Box>
+                        <hr></hr>
+                        <Typography sx={{ fontSize: '30px', fontWeight: 'bold', textAlign: 'center' }}>DIAMOND APPRAISAL</Typography>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                            <Typography sx={{ fontWeight: 'bold' }}>Date:</Typography>
+                            <Typography sx={{ paddingLeft: '5px' }}>{new Date().toLocaleString('default', { month: 'long' })} {new Date().getDate()},{new Date().getFullYear()}</Typography>
+                            <Typography style={{ fontWeight: 'bold', marginLeft: '75%' }}>DAS Report: </Typography>
+                            <Typography style={{ marginLeft: 'auto' }}>#00001</Typography>
+                        </div>
+                        <div style={{ marginTop: '15px' }}>
+                            <Typography>Jack Gohyakuman</Typography>
+                            <Typography>1664 Bulanku Street</Typography>
+                            <Typography>Santa Barbara, CA 92475</Typography>
+                        </div>
+                        <div style={{ display: 'flex', marginTop: '20px', marginBottom: '20px' }}>
+                            {/* <img src={microscope} style={{ width: "60px", height: 'auto' }}></img> */}
+                            <div>
+                                <Typography>Type of service: 3h</Typography>
+                                <Typography>Subject Property: Diamond Ring</Typography>
+                            </div>
+                        </div>
+                        <div sx={{ marginTop: '15px' }}>
+                            <h3>DIAMOND RING</h3>
+                            <Typography>Eighteen karat white gold, diamond, and ruby set ring.
+                                A round brilliant cut diamond is bezel set in a vintage style.
+                                A total of thirty single cut diamonds are bead set around the center stone.
+                                A total of forty-two rubies accent the design. The ring is cast, stamped 18k,
+                                and has a total gross weight of 5.80 grams.
+                            </Typography>
+                        </div>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Box>
+                                <div style={{ marginTop: '15px' }}>
+                                    <h4>Mounting Attributes</h4>
+                                    <Typography>Metal ......................................................................... 18k</Typography>
+                                    <Typography>Gross Weight ............................................................ 5.60 Grams</Typography>
+                                    <Typography>Constraction ............................................................. Cast</Typography>
+                                    <Typography>Setting ...................................................................... Bezel Bead</Typography>
+                                    <Typography>Condition .................................................................. Very Good</Typography>
+                                </div>
+                                <div style={{ marginTop: '15px' }}>
+                                    <h4>Diamond Attributes</h4>
+                                    <Typography>Cutting Style ............................................................. Round Billent Cut</Typography>
+                                    <Typography>1 Measures ............................................................... 3.50mm</Typography>
+                                    <Typography>Carat Weight ............................................................. 0.15 Carats by formula estimation</Typography>
+                                    <Typography>30 Measure ............................................................... 1.50 mm</Typography>
+                                    <Typography>Individual Carat Weight ............................................ 0.01-0.02 Carats each by formula</Typography>
+                                    <Typography>Carat Weight ............................................................. 0.50 Carats by formula estimation</Typography>
+                                    <Typography>Clarity Grade ............................................................. VS2-511</Typography>
+                                    <Typography>Color Grade ............................................................... G-H</Typography>
+                                </div>
+                            </Box>
+                            {/* <img src={diamondRing} style={{ width: '45%', height: 'auto', right: 0 }}></img> */}
+                        </Box>
+                        <Typography sx={{ mt: '15px' }} >*Gemological findings may vary if the same gemstones are evaluated un-mounted</Typography>
+                        <div style={{ display: 'flex', marginTop: '15px' }}>
+                            <Typography sx={{ fontSize: '28px', fontWeight: 'bold', textDecoration: 'underline' }}>Estimated Retail Replacement Value</Typography>
+                            <Typography sx={{ fontSize: '28px', fontWeight: 'bold' }}>.........................................................$2,000.</Typography>
+                        </div>
+                        <Box sx={{ justifyContent: 'left', mt: '15px', mb: '15px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <Typography sx={{ paddingLeft: '120px' }}>02018-All Rights Reserved</Typography>
+                                <Typography sx={{ paddingLeft: '85px' }}>GA-GemSecure Jewelry Appraisale</Typography>
+                                <Typography sx={{ paddingLeft: '50px' }}>This appraisal is only valid including all 4 pages</Typography>
+                            </div>
+                        </Box>
+
+                    </Paper>
+                </DialogContent>
+            </Dialog>
+
   );
 
   const renderAppointmentForm = (request) => (
