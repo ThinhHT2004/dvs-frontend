@@ -107,9 +107,12 @@ const ConsultingStaff_ManageRequest = () => {
           sampleId,
         report
       )
-      .then((resp) => console.log(resp.data))
+      .then((resp) => {
+        console.log(resp.data);
+        getAcceptedRequest(); 
+        handleClose(); 
+      })
       .catch((err) => console.log(err));
-    handleClose();
   }
 
   function changeColor(text) {

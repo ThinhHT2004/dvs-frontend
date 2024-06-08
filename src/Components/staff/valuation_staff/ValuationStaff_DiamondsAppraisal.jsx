@@ -119,8 +119,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
   const drawerWidth = 240;
   const [assignments, setAssignments] = useState([]);
 
-  console.log(staffId);
-
   useEffect(() =>{
     getAssignments()
   }, [])
@@ -145,8 +143,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
       .catch(err => console.log(err));
   }
 
-  console.log(selectedAssignment);
-
   return (
     <div>
       <Box display="flex" sx={{backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
@@ -162,7 +158,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
             flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
-            marginTop: "5%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",

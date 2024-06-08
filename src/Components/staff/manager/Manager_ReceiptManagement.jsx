@@ -88,8 +88,9 @@ const Manager_ReceiptManagement = () => {
         staffList
       )
       .then((resp) => {
-        handleBoxClose();
         console.log(resp.data);
+        getProcessingRequest();
+        handleBoxClose(); 
       })
       .catch((err) => console.log(err));
   };
