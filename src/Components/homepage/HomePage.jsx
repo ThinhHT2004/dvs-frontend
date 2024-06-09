@@ -3,7 +3,7 @@ import Navbar from '../Navbar/Navbar'
 import { Button, Box, Typography } from '@mui/material';
 import Model_Img from '../../assets/banner_model.jpg'
 import { useSpring, animated } from 'react-spring';
-import Footer from '../footer/Footer.jsx';
+
 const Style = {
   Button: {
     backgroundColor: '#69CEE2',
@@ -67,7 +67,6 @@ const HomePage = () => {
     <div>
       <Navbar></Navbar>
       <Banner></Banner>
-      <Footer></Footer>
     </div>
   )
 }

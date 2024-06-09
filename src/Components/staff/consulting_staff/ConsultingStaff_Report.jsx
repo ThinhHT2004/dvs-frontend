@@ -100,10 +100,13 @@ const ConsultingStaff_Report = () => {
   };
 
   const handleSaveAppointment = (request) => {
+    const formData = new FormData();
+    formData.append("id", request.id);
+    formData.append("receiveDate", request.receivingDate);
+    console.log(formData.get("receiveDate"));
     axios
       .put(
-        "http://localhost:8080/api/request/create-appointment/" + request.id,
-        request.receivingDate
+        "http://localhost:8080/api/request/create-appointment", formData
       )
       .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
@@ -200,7 +203,7 @@ const ConsultingStaff_Report = () => {
                 <Typography>
                   Cutting Style
                   .............................................................
-                  Round Billent Cut
+                  {diamond.valuation}
                 </Typography>
                 <Typography>
                   1 Measures
