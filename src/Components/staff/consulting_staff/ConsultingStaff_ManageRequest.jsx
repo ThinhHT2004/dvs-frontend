@@ -167,6 +167,9 @@ const ConsultingStaff_ManageRequest = () => {
       case "ACCEPTED":
         return "success";
         break;
+      case "COMPLETED":
+        return "info";
+        break;
     }
   };
 
@@ -366,7 +369,7 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell>{row.customer.first_name}</TableCell>
           <TableCell>{row.service.duration}</TableCell>
           <TableCell>{row.quantity}</TableCell>
-          <TableCell>
+          <TableCell align="center">
             <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
           </TableCell>
           <TableCell>{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
@@ -388,7 +391,7 @@ const ConsultingStaff_ManageRequest = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell>ID Sample</TableCell>
-                      <TableCell>Status</TableCell>
+                      <TableCell align="center">Status</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -398,7 +401,7 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell>
                           {formatSampleId(sample.id)}
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                         <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>
                         </TableCell>
                         <TableCell>
@@ -454,7 +457,7 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell>Customer</TableCell>
                         <TableCell>Service</TableCell>
                         <TableCell>Quantity</TableCell>
-                        <TableCell>Status</TableCell>
+                        <TableCell align="center">Status</TableCell>
                         <TableCell>Appointment</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
