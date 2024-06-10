@@ -1,8 +1,10 @@
 import React from 'react'
 import Navbar from '../Navbar/Navbar'
-import { Button, Box, Typography } from '@mui/material';
+import { Button, Box, Typography, Grid } from '@mui/material';
 import Model_Img from '../../assets/banner_model.jpg'
 import { useSpring, animated } from 'react-spring';
+import Reviews from './CardComponent';
+import Assistance from './AssistanceComponent';
 
 const Style = {
   Button: {
@@ -67,6 +69,8 @@ const HomePage = () => {
     <div>
       <Navbar></Navbar>
       <Banner></Banner>
+      <Assistance></Assistance>
+      <Reviews></Reviews>
     </div>
   )
 }
