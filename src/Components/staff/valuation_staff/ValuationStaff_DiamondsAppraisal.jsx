@@ -47,6 +47,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
     setSelectedDiamond(assignment?.valuationRequestDetail);
   };
 
+  console.log(selectedAssignment);
   const handleSave = (selectedAssignment) =>{
     axios
       .put("http://localhost:8080/api/assignment/update", selectedAssignment)

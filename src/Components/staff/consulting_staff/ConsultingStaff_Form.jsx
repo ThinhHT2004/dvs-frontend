@@ -17,6 +17,7 @@ import {
   Grid,
   TextField,
   Chip,
+  Typography,
 } from "@mui/material";
 import axios from "axios";
 import { formatRequestId } from "../../../Foramat";
@@ -38,7 +39,7 @@ const ConsultingStaff_Form = () => {
       .get(
         "http://localhost:8080/api/request/valuation-request/" +
           consultignStaffId +
-          "/ACCEPTED"
+          "/ACCEPTED/COMPLETED"
       )
       .then((resp) => setRequests(resp.data))
       .catch((err) => console.log(err));
@@ -75,14 +76,24 @@ const ConsultingStaff_Form = () => {
     setSelectedOption("");
   };
 
-  const renderStatus = (status) =>{
-    switch(status){
-      case "ACCEPTED": return "success"; break;
+  const renderStatus = (status) => {
+    switch (status) {
+      case "ACCEPTED":
+        return "success";
+        break;
     }
-  }
+  };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#FAF6EF",
+        width: "100%",
+        minHeight: "100vh",
+      }}
+    >
       <Box>
         <StaffDrawer
           mylist={[
@@ -126,7 +137,10 @@ const ConsultingStaff_Form = () => {
                         <TableCell>{formatRequestId(request.id)}</TableCell>
                         <TableCell>{request.customer.first_name}</TableCell>
                         <TableCell className="status" align="center">
-                          <Chip label={request.status} color={renderStatus(request.status)}></Chip>
+                          <Chip
+                            label={request.status}
+                            color={renderStatus(request.status)}
+                          ></Chip>
                         </TableCell>
                         <TableCell>
                           <Button>
@@ -147,7 +161,7 @@ const ConsultingStaff_Form = () => {
                           >
                             {["Receipt", "Sealed", "Committed", "Handover"].map(
                               (option) => (
-                                <MenuItem                                 
+                                <MenuItem
                                   key={option}
                                   onClick={() => handleMenuItemClick(option)}
                                 >
@@ -164,52 +178,59 @@ const ConsultingStaff_Form = () => {
               </TableContainer>
             </Box>
           </Grid>
-          <Grid item xs={4} >
+          <Grid item xs={4}>
             {open && (
-              <Box >
+              <Box>
                 <Box>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 200 }}>
                       <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                         <TableRow>
-                        <TableCell>{selectedOption} Form</TableCell>
-                        
-                        </TableRow>  
+                          <TableCell>{selectedOption} Form</TableCell>
+                        </TableRow>
                       </TableHead>
                       <TableBody>
                         <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          
                           <TableCell>
-                          Name : {currentRequest.customer.first_name}
+                            Name : {currentRequest.customer.first_name}
                           </TableCell>
                         </TableRow>
                         <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          
                           <TableCell>
-                          Phone : {currentRequest.customer.phoneNumber}
+                            Phone : {currentRequest.customer.phoneNumber}
                           </TableCell>
                         </TableRow>
                         {currentRequest.valuationRequestDetailList.map(
                           (sample) => (
                             <TableRow
                               key={sample.id}
-                              sx={{ "& td": { borderBottom: "none" , alignItems: "center"} }}
+                              sx={{
+                                "& td": {
+                                  borderBottom: "none",
+                                  alignItems: "center",
+                                },
+                              }}
                             >
-                              
                               <TableCell>
-                              <Box
-                              display="flex" alignItems="center"
-                              >
-                              ID Sample {sample.id} : <TextField
-                                  sx={{ marginLeft: 2 }}
-                                  onChange={(e) => {
-                                    sample.size = e.target.value;
-                                  }}
-                                  value={sample.size}
-                                  label="Size"
-                                />
-                                
-                              </Box>
+                                <Box display="flex" alignItems="center">
+                                  <Typography sx={{}}>
+                                    ID Sample {sample.id}:
+                                  </Typography>
+                                  <TextField
+                                    sx={{ marginLeft: 2, width: "40%" }}
+                                    onChange={(e) => {
+                                      sample.size = e.target.value;
+                                    }}
+                                    value={sample.size}
+                                    label="Size"
+                                  />
+                                  <TextField
+                                    sx={{ marginLeft: 2, width: "40%" }}
+                                    label="Price"
+                                    disabled
+                                    variant="outlined"
+                                  ></TextField>
+                                </Box>
                               </TableCell>
                             </TableRow>
                           )
@@ -224,17 +245,18 @@ const ConsultingStaff_Form = () => {
                                 )
                               }
                               variant="contained"
-                              sx={{ backgroundColor: '#69CEE2' }}
+                              sx={{ backgroundColor: "#69CEE2" }}
                             >
                               Create
                             </Button>
                             <Button
-                              onClick={() =>
-                                handleClose()
-                              }
+                              onClick={() => handleClose()}
                               variant="outlined"
-                              sx={{marginLeft: 2,color: "red", borderColor: 'red' }}
-                             
+                              sx={{
+                                marginLeft: 2,
+                                color: "red",
+                                borderColor: "red",
+                              }}
                             >
                               Cancel
                             </Button>
