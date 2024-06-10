@@ -41,10 +41,17 @@ const ValuationStaff_DiamondsAppraisal = () => {
       .catch(err => console.log(err));
   }
 
+  const getSelectDiamond = (id) =>{
+    axios
+    .get("http://localhost:8080/api/request-detail/find/" + id)
+    .then(resp => setSelectedDiamond(resp.data))
+    .catch(err => console.log(err));
+  }
+
   const handleAction = (idDiamond) => {
-    const assignment = assignments.find((a) => a.valuationRequestDetail.id === idDiamond);
+    const assignment = assignments.find((a) => a.valuationRequestDetailId === idDiamond);
     setSelectedAssignment(assignment);
-    setSelectedDiamond(assignment?.valuationRequestDetail);
+    getSelectDiamond(assignment.valuationRequestDetailId);
   };
 
   console.log(selectedAssignment);
@@ -98,20 +105,20 @@ const ValuationStaff_DiamondsAppraisal = () => {
                   </TableHead>
                   <TableBody>
                     {assignments.map((assign) => (
-                      <TableRow key={assign.valuationRequestDetail.id}>
+                      <TableRow key={assign.id}>
                         <TableCell>{formatValuationId(assign.id)}</TableCell>
-                        <TableCell>{formatSampleId(assign.valuationRequestDetail.id)}</TableCell>
+                        <TableCell>{formatSampleId(assign.valuationRequestDetailId)}</TableCell>
                         <TableCell>{assign.price === 0 ? 'No Price': assign.price}</TableCell>
                         <TableCell>{assign.note ? assign.note : 'No Note'}</TableCell>
                         <TableCell>
                           <Link
                             href="#"
                             sx={{
-                              color: selectedDiamond && selectedDiamond.id === assign.valuationRequestDetail.id ? "grey" : "#69CEE2",
+                              color: selectedDiamond && selectedDiamond.id === assign.valuationRequestDetailId ? "grey" : "#69CEE2",
                               paddingLeft: "16px"
                             }}
                             underline="none"
-                            onClick={() => handleAction(assign.valuationRequestDetail.id)}
+                            onClick={() => handleAction(assign.valuationRequestDetailId)}
                           >
                             Edit
                           </Link>

@@ -81,6 +81,8 @@ const ConsultingStaff_ManageRequest = () => {
     getAcceptedRequest();
   }, []);
 
+  console.log(rows);
+
   function getAcceptedRequest() {
     axios
       .get(
