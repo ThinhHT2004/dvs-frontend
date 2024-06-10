@@ -217,7 +217,7 @@ const ConsultingStaff_Form = () => {
                                     ID Sample {sample.id}:
                                   </Typography>
                                   <TextField
-                                    sx={{ marginLeft: 2, width: "40%" }}
+                                    sx={{ marginLeft: 2, width: "30%" }}
                                     onChange={(e) => {
                                       sample.size = e.target.value;
                                     }}
@@ -225,7 +225,7 @@ const ConsultingStaff_Form = () => {
                                     label="Size"
                                   />
                                   <TextField
-                                    sx={{ marginLeft: 2, width: "40%" }}
+                                    sx={{ marginLeft: 2, width: "30%" }}
                                     label="Price"
                                     disabled
                                     variant="outlined"
