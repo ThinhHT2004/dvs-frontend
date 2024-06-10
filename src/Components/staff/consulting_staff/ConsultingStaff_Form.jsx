@@ -29,6 +29,8 @@ const ConsultingStaff_Form = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOption, setSelectedOption] = useState("");
   const [requests, setRequests] = useState([]);
+  const [listSample, setListSample] = useState([]);
+  const [currentPrice, setCurrentPrice] = useState(0);
 
   useEffect(() => {
     getAcceptedRquest();
@@ -55,8 +57,27 @@ const ConsultingStaff_Form = () => {
       .catch((err) => console.log(err));
   }
 
+  const getServicePrice = (id, size, index) => {
+    let res = 0;
+    const data = new FormData();
+    data.append("serviceId", id);
+    data.append("size", size);
+    axios
+      .get("http://localhost:8080/api/service-prices/price/" + id + "/" + size)
+      .then((resp) => {
+        let newListSample = [...listSample];
+        newListSample[index] = resp.data;
+        setListSample(newListSample);
+      })
+      .catch((err) => console.log(err));
+
+      console.log(currentPrice);
+    listSample[index] = currentPrice;
+  };
+
   const handleClickOpen = (event, request) => {
     setCurrentRequest(request);
+    setListSample(new Array(request.valuationRequestDetailList.length));
     setAnchorEl(event.currentTarget);
   };
 
@@ -201,7 +222,7 @@ const ConsultingStaff_Form = () => {
                           </TableCell>
                         </TableRow>
                         {currentRequest.valuationRequestDetailList.map(
-                          (sample) => (
+                          (sample, index) => (
                             <TableRow
                               key={sample.id}
                               sx={{
@@ -213,28 +234,40 @@ const ConsultingStaff_Form = () => {
                             >
                               <TableCell>
                                 <Box display="flex" alignItems="center">
-                                  <Typography sx={{}}>
-                                    ID Sample {sample.id}:
-                                  </Typography>
-                                  <TextField
-                                    sx={{ marginLeft: 2, width: "40%" }}
-                                    onChange={(e) => {
-                                      sample.size = e.target.value;
-                                    }}
-                                    value={sample.size}
-                                    label="Size"
-                                  />
-                                  <TextField
-                                    sx={{ marginLeft: 2, width: "40%" }}
-                                    label="Price"
-                                    disabled
-                                    variant="outlined"
-                                  ></TextField>
+                                  <Box width={"50%"} display={"flex"}>
+                                    <Typography>
+                                      ID Sample {sample.id}:
+                                    </Typography>
+                                    <TextField
+                                      sx={{ marginLeft: 2, width: "40%" }}
+                                      defaultValue={0}
+                                      onChange={(e) => {
+                                        sample.size = e.target.value;
+                                        getServicePrice(
+                                          currentRequest.service.id,
+                                          e.target.value,
+                                          index
+                                        );
+                                      }}
+                                      value={sample.size}
+                                      label="Size"
+                                    />
+                                  </Box>
+                                  <Box>
+                                    <TextField value={listSample[index]}>
+                                    
+                                    </TextField>
+                                  </Box>
                                 </Box>
                               </TableCell>
                             </TableRow>
                           )
                         )}
+                        <TableRow>
+                          <Typography>
+                            Total: 
+                          </Typography>
+                        </TableRow>
                         <TableRow>
                           <TableCell colSpan={2} align="right">
                             <Button

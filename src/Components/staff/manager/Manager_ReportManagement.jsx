@@ -64,7 +64,9 @@ const Manager_ReportManagement = () => {
         avg += diamond.assignmentList[i].price;
     }
 
-    return avg/diamond.assignmentList.length;
+    avg /= diamond.assignmentList.length;
+    avg = avg.toFixed(2);
+    return avg;
   }
 
   const handleSave = (diamond) =>{

@@ -81,6 +81,8 @@ const ConsultingStaff_ManageRequest = () => {
     getAcceptedRequest();
   }, []);
 
+  console.log(rows);
+
   function getAcceptedRequest() {
     axios
       .get(
@@ -113,22 +115,6 @@ const ConsultingStaff_ManageRequest = () => {
         handleClose(); 
       })
       .catch((err) => console.log(err));
-  }
-
-  function changeColor(text) {
-    if (text === "EMPTY") {
-      return (
-        <TableCell align="right" sx={{ color: "grey" }}>
-          {text}
-        </TableCell>
-      );
-    } else {
-      return (
-        <TableCell align="right" sx={{ color: "green" }}>
-          {text}
-        </TableCell>
-      );
-    }
   }
 
   function displayButton(sample, requestId) {
@@ -396,26 +382,26 @@ const ConsultingStaff_ManageRequest = () => {
         </TableRow>
         <TableRow>
           <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Collapse in={open}>
               <Box sx={{ margin: 1 }}>
                 <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell>ID Sample</TableCell>
-                      <TableCell align="right">Status</TableCell>
+                      <TableCell>Status</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {row.valuationRequestDetailList.map((sample) => (
                       <TableRow key={sample.id}>
-                        <TableCell component="th" scope="row">
+                        <TableCell>
                           {formatSampleId(sample.id)}
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell>
                         <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell>
                           {displayButton(sample, row.id)}
                         </TableCell>
                       </TableRow>
