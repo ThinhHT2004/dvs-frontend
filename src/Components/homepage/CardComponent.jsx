@@ -11,7 +11,8 @@ const ReviewCard = ({ title, rating, review, reviewer }) => (
     width: '450px', height: '360px',
     display: 'inline-flex', flexDirection: 'column',
     justifyContent: 'space-between',
-    boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)'
+    boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+    marginTop: '50px',
   }}>
     <CardContent >
       <Typography sx={{ fontSize: '20px' }} variant="h1" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', color: '#39d9b9' }}>
