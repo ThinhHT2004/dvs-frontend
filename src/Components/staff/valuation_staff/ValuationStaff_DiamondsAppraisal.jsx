@@ -281,9 +281,10 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                 </Box>
                                 <Box height="100%">
                                   <img
-                                    src="http://res.cloudinary.com/dktusfxw3/image/upload/v1718094970/e0xpygnwuqcuow9owr6l.png"
+                                    src={selectedDiamond.valuationReport.characteristic}
                                     alt=""
                                     height="100%"
+                                    width="100%"
                                   />
                                 </Box>
                               </Box>
