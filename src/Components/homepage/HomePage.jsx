@@ -69,7 +69,7 @@ const HomePage = () => {
     <div>
       <Navbar></Navbar>
       <Banner></Banner>
-      <Assistance></Assistance>
+
       <Reviews></Reviews>
     </div>
   )
