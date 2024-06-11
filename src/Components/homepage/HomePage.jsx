@@ -69,7 +69,6 @@ const HomePage = () => {
     <div>
       <Navbar></Navbar>
       <Banner></Banner>
-
       <Reviews></Reviews>
     </div>
   )
