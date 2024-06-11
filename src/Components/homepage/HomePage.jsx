@@ -4,6 +4,7 @@ import { Button, Box, Typography, Grid } from '@mui/material';
 import Model_Img from '../../assets/banner_model.jpg'
 import { useSpring, animated } from 'react-spring';
 import Reviews from './CardComponent';
+import Assistance from './AssistanceComponent';
 
 
 const Style = {
