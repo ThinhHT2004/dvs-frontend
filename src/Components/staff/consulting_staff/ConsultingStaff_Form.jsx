@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { formatRequestId } from "../../../Foramat";
+
 const ConsultingStaff_Form = () => {
   const drawerWidth = 240;
   const consultignStaffId = 3;
@@ -30,11 +31,15 @@ const ConsultingStaff_Form = () => {
   const [selectedOption, setSelectedOption] = useState("");
   const [requests, setRequests] = useState([]);
   const [listSample, setListSample] = useState([]);
-  const [currentPrice, setCurrentPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     getAcceptedRquest();
-  });
+  }, []);
+
+  useEffect(() => {
+    getTotalPrice();
+  }, [listSample]);
 
   function getAcceptedRquest() {
     axios
@@ -58,10 +63,12 @@ const ConsultingStaff_Form = () => {
   }
 
   const getServicePrice = (id, size, index) => {
-    let res = 0;
-    const data = new FormData();
-    data.append("serviceId", id);
-    data.append("size", size);
+    if (size === "") {
+      let newListSample = [...listSample];
+      newListSample[index] = 0; 
+      setListSample(newListSample);
+      return;
+    }
     axios
       .get("http://localhost:8080/api/service-prices/price/" + id + "/" + size)
       .then((resp) => {
@@ -70,14 +77,19 @@ const ConsultingStaff_Form = () => {
         setListSample(newListSample);
       })
       .catch((err) => console.log(err));
+  };
 
-      console.log(currentPrice);
-    listSample[index] = currentPrice;
+  const getTotalPrice = () => {
+    let total = 0;
+    listSample.forEach((price) => {
+      total += price || 0;
+    });
+    setTotalPrice(total);
   };
 
   const handleClickOpen = (event, request) => {
     setCurrentRequest(request);
-    setListSample(new Array(request.valuationRequestDetailList.length));
+    setListSample(new Array(request.valuationRequestDetailList.length).fill(0));
     setAnchorEl(event.currentTarget);
   };
 
@@ -97,11 +109,20 @@ const ConsultingStaff_Form = () => {
     setSelectedOption("");
   };
 
+  const handleSizeChange = (e, index, sample) => {
+    const size = e.target.value;
+    sample.size = size; // Allow size to be an empty string
+    getServicePrice(currentRequest.service.id, size, index);
+  };
+
   const renderStatus = (status) => {
     switch (status) {
       case "ACCEPTED":
         return "success";
-        break;
+      case "COMPLETED":
+        return "info";
+      default:
+        return "default";
     }
   };
 
@@ -161,7 +182,7 @@ const ConsultingStaff_Form = () => {
                           <Chip
                             label={request.status}
                             color={renderStatus(request.status)}
-                          ></Chip>
+                          />
                         </TableCell>
                         <TableCell>
                           <Button>
@@ -240,33 +261,29 @@ const ConsultingStaff_Form = () => {
                                     </Typography>
                                     <TextField
                                       sx={{ marginLeft: 2, width: "40%" }}
-                                      defaultValue={0}
-                                      onChange={(e) => {
-                                        sample.size = e.target.value;
-                                        getServicePrice(
-                                          currentRequest.service.id,
-                                          e.target.value,
-                                          index
-                                        );
-                                      }}
+                                      onChange={(e) =>
+                                        handleSizeChange(e, index, sample)
+                                      }
                                       value={sample.size}
                                       label="Size"
                                     />
                                   </Box>
                                   <Box>
-                                    <TextField value={listSample[index]}>
-                                    
-                                    </TextField>
+                                    <TextField
+                                      sx={{ width: "70%" }}
+                                      value={listSample[index] || 0}
+                                      label="Service Price"
+                                    />
                                   </Box>
                                 </Box>
                               </TableCell>
                             </TableRow>
                           )
                         )}
-                        <TableRow>
-                          <Typography>
-                            Total: 
-                          </Typography>
+                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                          <TableCell>
+                            <Typography>Total: {totalPrice}</Typography>
+                          </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell colSpan={2} align="right">

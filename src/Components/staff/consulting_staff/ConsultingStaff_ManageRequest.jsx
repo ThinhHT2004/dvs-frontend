@@ -19,6 +19,10 @@ import {
   Select,
   MenuItem,
   Chip,
+  Card,
+  CardHeader,
+  CardContent,
+  Input,
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -30,11 +34,13 @@ import axios from "axios";
 import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { useBadge } from "../BadgeContext";
+
+
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const staffId = 3;
   const [open, setOpen] = useState(false);
-
+  const [proportionImage, setProportionImage] = useState(null);
   const [requestId, setRequestId] = useState("");
   const [sampleId, setSampleId] = useState("");
   const { badgeCounts, updateBadgeCount } = useBadge();
@@ -87,8 +93,8 @@ const ConsultingStaff_ManageRequest = () => {
     axios
       .get(
         "http://localhost:8080/api/request/valuation-request/not/" +
-          staffId +
-          "/WAITING"
+        staffId +
+        "/WAITING"
       )
       .then((resp) => {
         const fillingAndFilledRequests = resp.data.filter(
@@ -104,15 +110,15 @@ const ConsultingStaff_ManageRequest = () => {
     axios
       .put(
         "http://localhost:8080/api/reports/update/" +
-          requestId +
-          "/" +
-          sampleId,
+        requestId +
+        "/" +
+        sampleId,
         report
       )
       .then((resp) => {
         console.log(resp.data);
-        getAcceptedRequest(); 
-        handleClose(); 
+        getAcceptedRequest();
+        handleClose();
       })
       .catch((err) => console.log(err));
   }
@@ -131,7 +137,7 @@ const ConsultingStaff_ManageRequest = () => {
         </Button>
       );
     }
-     else {
+    else {
       return (
         <Button
           onClick={() => {
@@ -155,7 +161,11 @@ const ConsultingStaff_ManageRequest = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-
+  const handleImageUpload = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setProportionImage(URL.createObjectURL(e.target.files[0]));
+    }
+  };
   const renderRowStatus = (status) => {
     switch (status) {
       case "PROCESSING":
@@ -190,169 +200,331 @@ const ConsultingStaff_ManageRequest = () => {
   function displayBox(text, requestId) {
     if (text !== "") {
       return (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-              <TableRow>
-                <TableCell>Sample Id: {formatSampleId(text)}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                <TableCell>
-                  <TextField
-                    type="text"
-                    placeholder="Measurements"
-                    fullWidth
-                    variant="standard"
-                    onChange={(e) => setMeausurement(e.target.value)}
-                  ></TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                <TableCell>
-                  <TextField
-                    type="text"
-                    placeholder="Carat Weight"
-                    fullWidth
-                    variant="standard"
-                    onChange={(e) => setCaratWeight(e.target.value)}
-                  ></TextField>
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                <TableCell>
-                  <FormControl sx={{ width: "33.33%" }}>
-                    <InputLabel>Polish</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={returnPolish}
-                      label="Polish"
-                      onChange={(e) => setReturnPolish(e.target.value)}
-                    >
-                      {polish.map((pol) => (
-                        <MenuItem key={pol} value={pol}>
-                          {pol}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl sx={{ width: "33.33%" }}>
-                    <InputLabel>Symmetry</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={returnSymmetry}
-                      label="Symmetry"
-                      onChange={(e) => setReturnSymmetry(e.target.value)}
-                    >
-                      {symmetry.map((sym) => (
-                        <MenuItem key={sym} value={sym}>
-                          {sym}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl sx={{ width: "33.33%" }}>
-                    <InputLabel>Shape</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={returnShape}
-                      label="Shape"
-                      onChange={(e) => setReturnShape(e.target.value)}
-                    >
-                      {shape.map((sh) => (
-                        <MenuItem key={sh} value={sh}>
-                          {sh}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                <TableCell>
-                  <FormControl sx={{ width: "33.33%" }}>
-                    <InputLabel>Clarity</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={returnClarity}
-                      label="Symmetry"
-                      onChange={(e) => setReturnClarity(e.target.value)}
-                    >
-                      {clarityGrade.map((sym) => (
-                        <MenuItem key={sym} value={sym}>
-                          {sym}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl sx={{ width: "33.33%" }}>
-                    <InputLabel>Color</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={returnColorGrade}
-                      label="Color"
-                      onChange={(e) => setReturnColorGrade(e.target.value)}
-                    >
-                      {colorGrade.map((col) => (
-                        <MenuItem key={col} value={col}>
-                          {col}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl sx={{ width: "33.33%" }}>
-                    <InputLabel>Fluorescence</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={returnFluorescence}
-                      label="Fluorescence"
-                      onChange={(e) => setReturnFluorescence(e.target.value)}
-                    >
-                      {fluorescence.map((fl) => (
-                        <MenuItem key={fl} value={fl}>
-                          {fl}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <Box
-                    display={"flex"}
-                    
-                    justifyContent={"right"}
-                  >
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: '#69CEE2' }}
-                      onClick={() =>
-                        saveReport(requestId, text, valuationReport)
-                      }
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      sx={{ marginLeft: 2,color: "red", borderColor: 'red' }}
-                      onClick={() => handleClose()}
-                    >
-                      Cancel
-                    </Button>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        // <TableContainer component={Paper}>
+        //   <Table>
+        //     <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+        //       <TableRow>
+        //         <TableCell>Sample Id: {formatSampleId(text)}</TableCell>
+        //       </TableRow>
+        //     </TableHead>
+        //     <TableBody>
+        //       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+        //         <TableCell>
+        //           <TextField
+        //             type="text"
+        //             placeholder="Measurements"
+        //             fullWidth
+        //             variant="standard"
+        //             onChange={(e) => setMeausurement(e.target.value)}
+        //           ></TextField>
+        //         </TableCell>
+        //       </TableRow>
+        //       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+        //         <TableCell>
+        //           <TextField
+        //             type="text"
+        //             placeholder="Carat Weight"
+        //             fullWidth
+        //             variant="standard"
+        //             onChange={(e) => setCaratWeight(e.target.value)}
+        //           ></TextField>
+        //         </TableCell>
+        //       </TableRow>
+        //       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+        //         <TableCell>
+        //           <FormControl sx={{ width: "33.33%" }}>
+        //             <InputLabel>Polish</InputLabel>
+        //             <Select
+        //               labelId="demo-simple-select-label"
+        //               id="demo-simple-select"
+        //               value={returnPolish}
+        //               label="Polish"
+        //               onChange={(e) => setReturnPolish(e.target.value)}
+        //             >
+        //               {polish.map((pol) => (
+        //                 <MenuItem key={pol} value={pol}>
+        //                   {pol}
+        //                 </MenuItem>
+        //               ))}
+        //             </Select>
+        //           </FormControl>
+        //           <FormControl sx={{ width: "33.33%" }}>
+        //             <InputLabel>Symmetry</InputLabel>
+        //             <Select
+        //               labelId="demo-simple-select-label"
+        //               id="demo-simple-select"
+        //               value={returnSymmetry}
+        //               label="Symmetry"
+        //               onChange={(e) => setReturnSymmetry(e.target.value)}
+        //             >
+        //               {symmetry.map((sym) => (
+        //                 <MenuItem key={sym} value={sym}>
+        //                   {sym}
+        //                 </MenuItem>
+        //               ))}
+        //             </Select>
+        //           </FormControl>
+        //           <FormControl sx={{ width: "33.33%" }}>
+        //             <InputLabel>Shape</InputLabel>
+        //             <Select
+        //               labelId="demo-simple-select-label"
+        //               id="demo-simple-select"
+        //               value={returnShape}
+        //               label="Shape"
+        //               onChange={(e) => setReturnShape(e.target.value)}
+        //             >
+        //               {shape.map((sh) => (
+        //                 <MenuItem key={sh} value={sh}>
+        //                   {sh}
+        //                 </MenuItem>
+        //               ))}
+        //             </Select>
+        //           </FormControl>
+        //         </TableCell>
+        //       </TableRow>
+        //       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+        //         <TableCell>
+        //           <FormControl sx={{ width: "33.33%" }}>
+        //             <InputLabel>Clarity</InputLabel>
+        //             <Select
+        //               labelId="demo-simple-select-label"
+        //               id="demo-simple-select"
+        //               value={returnClarity}
+        //               label="Symmetry"
+        //               onChange={(e) => setReturnClarity(e.target.value)}
+        //             >
+        //               {clarityGrade.map((sym) => (
+        //                 <MenuItem key={sym} value={sym}>
+        //                   {sym}
+        //                 </MenuItem>
+        //               ))}
+        //             </Select>
+        //           </FormControl>
+        //           <FormControl sx={{ width: "33.33%" }}>
+        //             <InputLabel>Color</InputLabel>
+        //             <Select
+        //               labelId="demo-simple-select-label"
+        //               id="demo-simple-select"
+        //               value={returnColorGrade}
+        //               label="Color"
+        //               onChange={(e) => setReturnColorGrade(e.target.value)}
+        //             >
+        //               {colorGrade.map((col) => (
+        //                 <MenuItem key={col} value={col}>
+        //                   {col}
+        //                 </MenuItem>
+        //               ))}
+        //             </Select>
+        //           </FormControl>
+        //           <FormControl sx={{ width: "33.33%" }}>
+        //             <InputLabel>Fluorescence</InputLabel>
+        //             <Select
+        //               labelId="demo-simple-select-label"
+        //               id="demo-simple-select"
+        //               value={returnFluorescence}
+        //               label="Fluorescence"
+        //               onChange={(e) => setReturnFluorescence(e.target.value)}
+        //             >
+        //               {fluorescence.map((fl) => (
+        //                 <MenuItem key={fl} value={fl}>
+        //                   {fl}
+        //                 </MenuItem>
+        //               ))}
+        //             </Select>
+        //           </FormControl>
+        //         </TableCell>
+        //       </TableRow>
+        //       <TableRow>
+        //         <TableCell>
+        //           <Box
+        //             display={"flex"}
+
+        //             justifyContent={"right"}
+        //           >
+        //             <Button
+        //               variant="contained"
+        //               sx={{ backgroundColor: '#69CEE2' }}
+        //               onClick={() =>
+        //                 saveReport(requestId, text, valuationReport)
+        //               }
+        //             >
+        //               Save
+        //             </Button>
+        //             <Button
+        //               variant="outlined"
+        //               sx={{ marginLeft: 2,color: "red", borderColor: 'red' }}
+        //               onClick={() => handleClose()}
+        //             >
+        //               Cancel
+        //             </Button>
+        //           </Box>
+        //         </TableCell>
+        //       </TableRow>
+        //     </TableBody>
+        //   </Table>
+        // </TableContainer>
+        <Card component={Paper} >
+          <CardHeader sx={{ backgroundColor: "#30D5C8" }}
+            title={`Sample Id: ${formatSampleId(text)}`}
+          />
+
+          <Card>
+            <CardHeader
+              title="Grading"
+            />
+            <CardContent>
+              <TextField
+                type="text"
+                placeholder="Measurements"
+                fullWidth
+                variant="standard"
+                onChange={(e) => setMeausurement(e.target.value)}
+              />
+              <TextField
+                type="text"
+                placeholder="Carat Weight"
+                fullWidth
+                variant="standard"
+                onChange={(e) => setCaratWeight(e.target.value)}
+              />
+            </CardContent>
+            <FormControl sx={{ width: "33.33%" }}>
+              <InputLabel>Shape</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={returnShape}
+                label="Shape"
+                onChange={(e) => setReturnShape(e.target.value)}
+              >
+                {shape.map((sh) => (
+                  <MenuItem key={sh} value={sh}>
+                    {sh}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: "33.33%" }}>
+              <InputLabel>Color</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={returnColorGrade}
+                label="Color"
+                onChange={(e) => setReturnColorGrade(e.target.value)}
+              >
+                {colorGrade.map((col) => (
+                  <MenuItem key={col} value={col}>
+                    {col}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: "33.33%" }}>
+              <InputLabel>Clarity</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={returnClarity}
+                label="Symmetry"
+                onChange={(e) => setReturnClarity(e.target.value)}
+              >
+                {clarityGrade.map((sym) => (
+                  <MenuItem key={sym} value={sym}>
+                    {sym}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Card>
+          <Card>
+            <CardHeader
+              title="Proportions"
+            />
+            <CardContent>
+              <Input
+                type="file"
+                onChange={handleImageUpload}
+              />
+              {proportionImage && <img src={proportionImage} alt="Proportions" style={{ marginTop: '10px', maxWidth: '100%' }} />}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader
+              title="Finish"
+            />
+            <CardContent>
+              <FormControl sx={{ width: "33.33%" }}>
+                <InputLabel>Polish</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={returnPolish}
+                  label="Polish"
+                  onChange={(e) => setReturnPolish(e.target.value)}
+                >
+                  {polish.map((pol) => (
+                    <MenuItem key={pol} value={pol}>
+                      {pol}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl sx={{ width: "33.33%" }}>
+                <InputLabel>Symmetry</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={returnSymmetry}
+                  label="Symmetry"
+                  onChange={(e) => setReturnSymmetry(e.target.value)}
+                >
+                  {symmetry.map((sym) => (
+                    <MenuItem key={sym} value={sym}>
+                      {sym}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader
+              title="Fluorescence"
+            />
+            <CardContent>
+              <FormControl sx={{ width: "33.33%" }}>
+                <InputLabel>Fluorescence</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={returnFluorescence}
+                  label="Fluorescence"
+                  onChange={(e) => setReturnFluorescence(e.target.value)}
+                >
+                  {fluorescence.map((fl) => (
+                    <MenuItem key={fl} value={fl}>
+                      {fl}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader
+              title="Clarity Characteristics"
+            />
+            <CardContent>
+              <Input
+                type="file"
+                onChange={handleImageUpload}
+              />
+              {proportionImage && <img src={proportionImage} alt="Proportions" style={{ marginTop: '10px', maxWidth: '100%' }} />}
+            </CardContent>
+          </Card>
+
+        </Card>
       );
     } else {
     }
@@ -402,7 +574,7 @@ const ConsultingStaff_ManageRequest = () => {
                           {formatSampleId(sample.id)}
                         </TableCell>
                         <TableCell align="center">
-                        <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>
+                          <Chip label={sample.status} color={renderSampleStatus(sample.status)} size="small"></Chip>
                         </TableCell>
                         <TableCell>
                           {displayButton(sample, row.id)}
@@ -421,7 +593,7 @@ const ConsultingStaff_ManageRequest = () => {
 
   return (
     <div>
-      <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
+      <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
         <Box>
           <StaffDrawer
             mylist={[
@@ -471,7 +643,7 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableContainer>
               </Box>
             </Grid>
-            <Grid item xs={3} md={4}>
+            <Grid item xs={12} >
               {open && displayBox(sampleId, requestId)}
             </Grid>
           </Grid>
