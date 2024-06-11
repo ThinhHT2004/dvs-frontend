@@ -17,6 +17,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Chip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -145,7 +146,16 @@ const ConsultingStaff_Report = () => {
       [field]: value,
     }));
   };
-
+  const renderStatus = (status) => {
+    switch (status) {
+      case "PROCESSING":
+        return "warning";
+        break;
+      case "COMPLETED":
+        return "info";
+        break;
+    }
+  };
   const renderDiamondReport = (diamond) => (
     <Dialog open={reportOpen} onClose={() => handleClose()} maxWidth="lg">
       <DialogTitle>{""}</DialogTitle>
@@ -379,7 +389,7 @@ const ConsultingStaff_Report = () => {
                   <TableRow>
                     <TableCell>ID Request</TableCell>
                     <TableCell>Customer</TableCell>
-                    <TableCell>Status</TableCell>
+                    <TableCell align="center">Status</TableCell>
                     <TableCell>Appointment</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
@@ -390,7 +400,12 @@ const ConsultingStaff_Report = () => {
                       <TableRow>
                         <TableCell>{formatRequestId(request.id)}</TableCell>
                         <TableCell>{request.customer.first_name}</TableCell>
-                        <TableCell>{request.status}</TableCell>
+                        <TableCell className="status" align="center">
+                          <Chip
+                            label={request.status}
+                            color={renderStatus(request.status)}
+                          ></Chip>
+                        </TableCell>
                         <TableCell>{renderLink(request)}</TableCell>
                         <TableCell>
                           <IconButton
