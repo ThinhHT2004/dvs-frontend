@@ -368,7 +368,10 @@ const ConsultingStaff_ManageRequest = () => {
             title={`Sample Id: ${formatSampleId(text)}`}
           />
 
-          <Card>
+          <Grid container spacing={0}>
+          <Grid item xs={6} >
+          <Box>
+            <Card>
             <CardHeader
               title="Grading"
             />
@@ -437,19 +440,11 @@ const ConsultingStaff_ManageRequest = () => {
               </Select>
             </FormControl>
           </Card>
-          <Card>
-            <CardHeader
-              title="Proportions"
-            />
-            <CardContent>
-              <Input
-                type="file"
-                onChange={handleImageUpload}
-              />
-              {proportionImage && <img src={proportionImage} alt="Proportions" style={{ marginTop: '10px', maxWidth: '100%' }} />}
-            </CardContent>
-          </Card>
-          <Card>
+          </Box>
+          </Grid>
+          <Grid item xs={6}>
+          <Box>
+          <Card style={{ height:'216.02px'}}>
             <CardHeader
               title="Finish"
             />
@@ -486,13 +481,6 @@ const ConsultingStaff_ManageRequest = () => {
                   ))}
                 </Select>
               </FormControl>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader
-              title="Fluorescence"
-            />
-            <CardContent>
               <FormControl sx={{ width: "33.33%" }}>
                 <InputLabel>Fluorescence</InputLabel>
                 <Select
@@ -511,6 +499,22 @@ const ConsultingStaff_ManageRequest = () => {
               </FormControl>
             </CardContent>
           </Card>
+          </Box>
+          </Grid>
+          </Grid>
+          <Card>
+            <CardHeader
+              title="Proportions"
+            />
+            <CardContent>
+              <Input
+                type="file"
+                onChange={handleImageUpload}
+              />
+              {proportionImage && <img src={proportionImage} alt="Proportions" style={{ marginTop: '10px', maxWidth: '100%' }} />}
+            </CardContent>
+          </Card>
+          
           <Card>
             <CardHeader
               title="Clarity Characteristics"
