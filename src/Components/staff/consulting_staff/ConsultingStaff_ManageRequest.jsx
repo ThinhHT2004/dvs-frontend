@@ -31,11 +31,11 @@ import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { Label } from "@mui/icons-material";
 import axios from "axios";
 import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { useBadge } from "../BadgeContext";
+import { da } from "date-fns/locale";
 
 
 const ConsultingStaff_ManageRequest = () => {
@@ -74,6 +74,7 @@ const ConsultingStaff_ManageRequest = () => {
   const [returnShape, setReturnShape] = useState("");
   const [returnFluorescence, setReturnFluorescence] = useState("");
   const [rows, setRows] = useState([]);
+  const [currentRequestDetail, setCurrentRequestDetail] = useState();
 
   const valuationReport = {
     measurement: measurement,
@@ -89,8 +90,6 @@ const ConsultingStaff_ManageRequest = () => {
   useEffect(() => {
     getAcceptedRequest();
   }, []);
-
-  console.log(rows);
 
   function getAcceptedRequest() {
     axios
@@ -119,11 +118,36 @@ const ConsultingStaff_ManageRequest = () => {
         report
       )
       .then((resp) => {
+        console.log(sampleId);
         console.log(resp.data);
-        getAcceptedRequest();
+        getValuationRequestDetail(sampleId);
+        console.log(currentRequestDetail);
+        saveImage(currentRequestDetail.valuationReport.id)
         handleClose();
       })
       .catch((err) => console.log(err));
+  }
+
+  function saveImage(reportId){
+    const data = new FormData();
+    if(proportionImage === null){
+      console.log("image null");
+    }
+    data.append("file1", proportionImage);
+    data.append("file2", clarityImage);
+    data.append("valuationReportId", reportId)
+    console.log(data.get("file1"));
+    axios
+    .post("http://localhost:8080/api/cloudinary/upload", data)
+    .then(resp => console.log(resp.data))
+    .catch(err => console.log(err));
+  }
+
+  function getValuationRequestDetail(requestDetailId){
+    axios
+    .get("http://localhost:8080/api/request-detail/find/" + requestDetailId)
+    .then(resp => setCurrentRequestDetail(resp.data))
+    .catch(err => console.log(err));
   }
 
   function displayButton(sample, requestId) {
@@ -166,12 +190,12 @@ const ConsultingStaff_ManageRequest = () => {
   };
   const handleProportionImageUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setProportionImage(URL.createObjectURL(e.target.files[0]));
+      setProportionImage(e.target.files[0]);
     }
   };
   const handleClarityImageUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setClarityImage(URL.createObjectURL(e.target.files[0]));
+      setClarityImage(e.target.files[0]);
     }
   };
   const renderRowStatus = (status) => {
