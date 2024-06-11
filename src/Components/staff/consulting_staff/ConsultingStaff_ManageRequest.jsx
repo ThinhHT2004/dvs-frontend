@@ -73,6 +73,10 @@ const ConsultingStaff_ManageRequest = () => {
   const [returnColorGrade, setReturnColorGrade] = useState("");
   const [returnShape, setReturnShape] = useState("");
   const [returnFluorescence, setReturnFluorescence] = useState("");
+  const [clarity, setClarity] = useState("");
+  const [depth, setDepth] = useState("");
+  const [girdle, setGirdle] = useState("");
+  const [culet, setCulet] = useState("");
   const [rows, setRows] = useState([]);
   const [currentRequestDetail, setCurrentRequestDetail] = useState();
 
@@ -85,6 +89,10 @@ const ConsultingStaff_ManageRequest = () => {
     color: returnColorGrade,
     shape: returnShape,
     fluorescence: returnFluorescence,
+    culet: culet,
+    clarity: clarity,
+    depth: depth,
+    girdle: girdle,
   };
 
   useEffect(() => {
@@ -249,7 +257,6 @@ const ConsultingStaff_ManageRequest = () => {
                       <TextField
                         type="text"
                         placeholder="Measurements"
-                        fullWidth
                         variant="standard"
                         onChange={(e) => setMeausurement(e.target.value)}
                       />
@@ -258,7 +265,6 @@ const ConsultingStaff_ManageRequest = () => {
                       <TextField
                         type="text"
                         placeholder="Carat Weight"
-                        fullWidth
                         variant="standard"
                         onChange={(e) => setCaratWeight(e.target.value)}
                       />
@@ -320,10 +326,6 @@ const ConsultingStaff_ManageRequest = () => {
                       </FormControl>
                         </Grid>
                       </Grid>
-                      
-                      
-
-                      
                     </Box>
                     </Box>
                   </CardContent>
@@ -332,7 +334,7 @@ const ConsultingStaff_ManageRequest = () => {
             </Grid>
             <Grid item xs={6}>
               <Box>
-                <Card style={{ height: '320.02px',  }}>
+                <Card>
                   <CardHeader
                     title="Finish"
                   />
@@ -402,26 +404,7 @@ const ConsultingStaff_ManageRequest = () => {
             </Grid>
           </Grid>
           <Grid container spacing={0}>
-            <Grid item xs={6}>
-              <Box >
-              <Card>
-                <CardHeader
-                  title="Proportions"
-                />
-                <CardContent>
-                  <Box padding={2}>
-                  <Input
-                    type="file"
-                    onChange={handleProportionImageUpload}
-                  />
-                  </Box>
-                  <Box padding={2}>
-                  {proportionImage && <img src={proportionImage} alt="Proportions" style={{ width: '470px', height: '310px'}} />}
-                  </Box>
-                </CardContent>
-              </Card>
-              </Box>
-            </Grid>
+            
             <Grid item xs={6}>
             <Box>
               <Card>
@@ -442,9 +425,56 @@ const ConsultingStaff_ManageRequest = () => {
               </Card>
               </Box>
             </Grid>
-          </Grid>
-          <CardActions>
-          <Box
+            <Grid item xs={6}>
+              <Box >
+              <Card>
+                <CardHeader
+                  title="Proportions"
+                />
+                <CardContent>
+                <Box padding={2}>
+                      <TextField
+                        type="text"
+                        placeholder="Depth"
+                        variant="standard"
+                        onChange={(e) => setDepth(e.target.value)}
+                      />
+                    </Box>
+                    <Box padding={2}>
+                      <TextField
+                        type="text"
+                        placeholder="Clarity"
+                        variant="standard"
+                        onChange={(e) => setClarity(e.target.value)}
+                      />
+                    </Box>
+                    <Box padding={2}>
+                      <TextField
+                        type="text"
+                        placeholder="Girdle"
+                        variant="standard"
+                        onChange={(e) => setGirdle(e.target.value)}
+                      />
+                    </Box>
+                    <Box padding={2}>
+                      <TextField
+                        type="text"
+                        placeholder="Culet"
+                        
+                        variant="standard"
+                        onChange={(e) => setCulet(e.target.value)}
+                      />
+                    </Box>
+                  <Box padding={2}>
+                  <Input
+                    type="file"
+                    onChange={handleProportionImageUpload}
+                  />
+                  </Box>
+                  <Box padding={2}>
+                  {proportionImage && <img src={proportionImage} alt="Proportions" style={{ width: '470px', height: '310px'}} />}
+                  </Box>
+                  <Box
             display={"flex"}
 
             justifyContent={"right"}
@@ -466,7 +496,14 @@ const ConsultingStaff_ManageRequest = () => {
               Cancel
             </Button>
           </Box>
-          </CardActions>
+                </CardContent>
+              </Card>
+              </Box>
+            </Grid>
+          </Grid>
+          
+          
+          
         </Card>
       );
     } else {
