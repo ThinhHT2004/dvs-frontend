@@ -5,14 +5,14 @@ import {
     CardContent,
     Avatar,
 } from "@mui/material";
-import { manager_navigator } from "../Naviate";
+import { vault_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
 import WelcomeImg from "../../../assets/welcome_Img.png"
-const Manager_Home = () => {
+const Vault = () => {
     const drawerWidth = 240;
     return (
         <div>
-            <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
+            <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
                 <StaffDrawer
                     mylist={[
                         "Home",
@@ -22,7 +22,7 @@ const Manager_Home = () => {
                         "Sign Out",
                     ]}
                     state="Home"
-                    handleClick={manager_navigator}
+                    handleClick={vault_navigator}
                 ></StaffDrawer>
 
                 <Box
@@ -48,4 +48,4 @@ const Manager_Home = () => {
     );
 };
 
-export default Manager_Home;
+export default Vault;

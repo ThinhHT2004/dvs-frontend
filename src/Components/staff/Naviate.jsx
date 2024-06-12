@@ -49,18 +49,32 @@ export const valuation_staff_navigator = (text, navigate) => {
 
 export const manager_navigator = (text, navigate) => {
   switch (text) {
-    case 'Home': 
-      navigate('/manager/home'); 
+    case 'Home':
+      navigate('/manager/home');
       break;
-    case "Pending Request": 
-      navigate('/manager/pending-request'); 
+    case "Pending Request":
+      navigate('/manager/pending-request');
       break;
-    case 'Receipt': 
-      navigate('/manager/receipt'); 
+    case 'Receipt':
+      navigate('/manager/receipt');
       break;
-    case 'Report': 
-      navigate('/manager/report'); 
+    case 'Report':
+      navigate('/manager/report');
       break;
+    case "Sign Out":
+      handleSignOut(navigate);
+      break;
+    default:
+      break;
+  }
+};
+
+export const vault_navigator = (text, navigate) => {
+  switch (text) {
+    case 'Home':
+      navigate('/vault/home');
+      break;
+ 
     case "Sign Out":
       handleSignOut(navigate);
       break;

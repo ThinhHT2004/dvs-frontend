@@ -102,7 +102,7 @@ const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {
 
   function handleState(text) {
     const showBadge = badgeCounts[text] > 0;
-    
+
     return (
       <ListItemButton
         sx={{
