@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
 import {
   Box,
@@ -13,13 +13,11 @@ import {
   Typography,
   Link,
   TextField,
-  Grid
+  Grid,
 } from "@mui/material";
-import { valuation_staff_navigator } from '../Naviate';
-import axios from 'axios';
-import { formatSampleId, formatValuationId } from '../../../Foramat';
-
-
+import { valuation_staff_navigator } from "../Naviate";
+import axios from "axios";
+import { formatSampleId, formatValuationId } from "../../../Foramat";
 
 const ValuationStaff_DiamondsAppraisal = () => {
   const staffId = sessionStorage.getItem("valuationStaffId");
@@ -30,47 +28,52 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   console.log(staffId);
 
-  useEffect(() =>{
-    getAssignments()
-  }, [])
+  useEffect(() => {
+    getAssignments();
+  }, []);
 
-  const getAssignments = () =>{
+  const getAssignments = () => {
     axios
       .get("http://localhost:8080/api/assignment/ASSIGNED/" + staffId)
-      .then(resp => setAssignments(resp.data))
-      .catch(err => console.log(err));
-  }
+      .then((resp) => setAssignments(resp.data))
+      .catch((err) => console.log(err));
+  };
 
-  const getSelectDiamond = (id) =>{
+  const getSelectDiamond = (id) => {
     axios
-    .get("http://localhost:8080/api/request-detail/find/" + id)
-    .then(resp => setSelectedDiamond(resp.data))
-    .catch(err => console.log(err));
-  }
+      .get("http://localhost:8080/api/request-detail/find/" + id)
+      .then((resp) => setSelectedDiamond(resp.data))
+      .catch((err) => console.log(err));
+  };
 
   const handleAction = (idDiamond) => {
-    const assignment = assignments.find((a) => a.valuationRequestDetailId === idDiamond);
+    const assignment = assignments.find(
+      (a) => a.valuationRequestDetailId === idDiamond
+    );
     setSelectedAssignment(assignment);
     getSelectDiamond(assignment.valuationRequestDetailId);
   };
 
   console.log(selectedAssignment);
-  const handleSave = (selectedAssignment) =>{
+  const handleSave = (selectedAssignment) => {
     axios
       .put("http://localhost:8080/api/assignment/update", selectedAssignment)
       .then((resp) => {
         console.log(resp.data);
         getAssignments();
-        handleClose(); 
+        handleClose();
       })
       .catch((err) => console.log(err));
-  }
+  };
 
   console.log(selectedAssignment);
 
   return (
     <div>
-      <Box display="flex" sx={{backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
+      <Box
+        display="flex"
+        sx={{ backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}
+      >
         <Box>
           <StaffDrawer
             mylist={["Home", "Diamonds Appraisal", "Sign Out"]}
@@ -86,19 +89,17 @@ const ValuationStaff_DiamondsAppraisal = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            
           }}
         >
-          <Grid container spacing={3} >
-            <Grid item xs={7} >
+          <Grid container spacing={3}>
+            <Grid item xs={7} md={4}>
               <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-                <Table sx={{ minWidth: 700, borderRadius: 10 }}>
+                <Table sx={{ minWidth: 300 }}>
                   <TableHead sx={{ backgroundColor: "#69CEE2" }}>
                     <TableRow>
                       <TableCell>ID Valuation</TableCell>
                       <TableCell>ID Sample</TableCell>
                       <TableCell>Price</TableCell>
-                      <TableCell>Note</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -106,18 +107,28 @@ const ValuationStaff_DiamondsAppraisal = () => {
                     {assignments.map((assign) => (
                       <TableRow key={assign.id}>
                         <TableCell>{formatValuationId(assign.id)}</TableCell>
-                        <TableCell>{formatSampleId(assign.valuationRequestDetailId)}</TableCell>
-                        <TableCell>{assign.price === 0 ? 'No Price': assign.price}</TableCell>
-                        <TableCell>{assign.note ? assign.note : 'No Note'}</TableCell>
+                        <TableCell>
+                          {formatSampleId(assign.valuationRequestDetailId)}
+                        </TableCell>
+                        <TableCell>
+                          {assign.price === 0 ? "No Price" : assign.price}
+                        </TableCell>
                         <TableCell>
                           <Link
                             href="#"
                             sx={{
-                              color: selectedDiamond && selectedDiamond.id === assign.valuationRequestDetailId ? "grey" : "#69CEE2",
-                              paddingLeft: "16px"
+                              color:
+                                selectedDiamond &&
+                                selectedDiamond.id ===
+                                  assign.valuationRequestDetailId
+                                  ? "grey"
+                                  : "#69CEE2",
+                              paddingLeft: "16px",
                             }}
                             underline="none"
-                            onClick={() => handleAction(assign.valuationRequestDetailId)}
+                            onClick={() =>
+                              handleAction(assign.valuationRequestDetailId)
+                            }
                           >
                             Edit
                           </Link>
@@ -128,53 +139,167 @@ const ValuationStaff_DiamondsAppraisal = () => {
                 </Table>
               </TableContainer>
             </Grid>
-            {selectedDiamond && (
-              <Grid item xs={5} >
-                <Box sx={{ marginBottom: 4 }}>
-                  <Typography variant="h6">Edit Diamond - {formatSampleId(selectedDiamond.id)}</Typography>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    label="Price"
-                    value={selectedDiamond.price}
-                    onChange={(e) =>
-                      setSelectedAssignment({ ...selectedAssignment, price: e.target.value })
-                    }
-                    type='number'
-                  />
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    label="Notes"
-                    value={selectedDiamond.note}
-                    onChange={(e) =>
-                      setSelectedAssignment({ ...selectedAssignment, note: e.target.value })
-                    }
-                  />
-                  <Box sx={{ marginTop: 2 }}>
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: '#69CEE2' }}
-                      onClick={() => {
-                        handleSave(selectedAssignment);
-                        setSelectedDiamond(null);
-                        setSelectedAssignment(null);
-                      }}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      sx={{ marginLeft: 2, color: "red", borderColor: 'red' }}
-                      onClick={() => setSelectedDiamond(null)}
-                    >
-                      Cancel
-                    </Button>
-                  </Box>
+            <Grid md={8}>
+              {selectedDiamond ? (
+                <Box sx={{ p: 3 }}>
+                  <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
+                    <Table sx={{ minWidth: 300, borderRadius: 10 }}>
+                      <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                        <TableRow>
+                          <TableCell>#00001 - #DIA01</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <Box sx={{ width: "100%", height: "77vh" }}>
+                          <Box width="100%" height="100%" display="flex">
+                            <Box
+                              width="50%"
+                              borderRight={1}
+                              sx={{ p: 2, wordSpacing: 3 }}
+                            >
+                              <Box marginBottom={1.5}>
+                                <Typography>
+                                  Cutting Style: {selectedDiamond.valuationReport.shape}
+                                </Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>
+                                  Measurements: {selectedDiamond.valuationReport.measurement}
+                                </Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>
+                                  Carat Weight: {selectedDiamond.valuationReport.caratWeight} carat
+                                </Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>Clarity Grade: {selectedDiamond.valuationReport.clarity}</Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>Color Grade: {selectedDiamond.valuationReport.color}</Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>Polish: {selectedDiamond.valuationReport.polish}</Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>Symmetry: {selectedDiamond.valuationReport.symmetry}</Typography>
+                              </Box>
+                              <Box marginBottom={1.5}>
+                                <Typography>FLuorescence: {selectedDiamond.valuationReport.fluorescence}</Typography>
+                              </Box>
+                              <Box>
+                                <Typography>
+                                  Market Price: $3400 ~ $5000
+                                </Typography>
+                              </Box>
+                              <Box>
+                                <TextField
+                                  fullWidth
+                                  margin="normal"
+                                  label="Price"
+                                  value={selectedDiamond.price}
+                                  onChange={(e) =>
+                                    setSelectedAssignment({
+                                      ...selectedAssignment,
+                                      price: e.target.value,
+                                    })
+                                  }
+                                  type="number"
+                                />
+                                <TextField
+                                  fullWidth
+                                  margin="normal"
+                                  label="Notes"
+                                  value={selectedDiamond.note}
+                                  onChange={(e) =>
+                                    setSelectedAssignment({
+                                      ...selectedAssignment,
+                                      note: e.target.value,
+                                    })
+                                  }
+                                />
+                              </Box>
+                              <Box sx={{ marginTop: 2 }}>
+                                <Button
+                                  variant="contained"
+                                  sx={{ backgroundColor: "#69CEE2" }}
+                                  onClick={() => {
+                                    handleSave(selectedAssignment);
+                                    setSelectedDiamond(null);
+                                    setSelectedAssignment(null);
+                                  }}
+                                >
+                                  Save
+                                </Button>
+                                <Button
+                                  variant="outlined"
+                                  sx={{
+                                    marginLeft: 2,
+                                    color: "red",
+                                    borderColor: "red",
+                                  }}
+                                  onClick={() => setSelectedDiamond(null)}
+                                >
+                                  Cancel
+                                </Button>
+                              </Box>
+                            </Box>
+                            <Box
+                              width="50%"
+                              sx={{ p: 2, wordSpacing: 3 }}
+                              height="90%"
+                            >
+                              <Box display="flex" height="40%">
+                                <Box width="40%">
+                                  <Box marginBottom={1.5}>
+                                    <Typography>Depth: {selectedDiamond.valuationReport.depth}</Typography>
+                                  </Box>
+                                  <Box marginBottom={1.5}>
+                                    <Typography>Table: {selectedDiamond.valuationReport.table}</Typography>
+                                  </Box>
+                                  <Box marginBottom={1.5}>
+                                    <Typography>Girdle: {selectedDiamond.valuationReport.girdle}</Typography>
+                                  </Box>
+                                  <Box marginBottom={1.5}>
+                                    <Typography>Culet: {selectedDiamond.valuationReport.culet}</Typography>
+                                  </Box>
+                                </Box>
+                                <Box width="60%">
+                                  <img
+                                    src={selectedDiamond.valuationReport.proportion}
+                                    alt=""
+                                    width="100%"
+                                    height="100%"
+                                  />
+                                </Box>
+                              </Box>
+                              <Box height="60%" sx={{ paddingTop: 3 }}>
+                                <Box>
+                                  <Typography>
+                                    Clarity Characteristic
+                                  </Typography>
+                                </Box>
+                                <Box height="100%">
+                                  <img
+                                    src={selectedDiamond.valuationReport.characteristic}
+                                    alt=""
+                                    height="100%"
+                                    width="100%"
+                                  />
+                                </Box>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Box>
-              </Grid>
-            )}
-            {selectedDiamond && (
+              ) : (
+                <Typography>Not Displayed</Typography>
+              )}
+            </Grid>
+            {/* {selectedDiamond && (
               <Grid item xs={12} >
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 700, borderRadius: 10 }}>
@@ -232,7 +357,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                   </Table>
                 </TableContainer>
               </Grid>
-            )}
+            )} */}
           </Grid>
         </Box>
       </Box>

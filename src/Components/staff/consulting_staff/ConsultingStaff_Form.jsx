@@ -58,7 +58,10 @@ const ConsultingStaff_Form = () => {
         "http://localhost:8080/api/request/create-receipt/" + requestId,
         requestDetailList
       )
-      .then((resp) => handleClose())
+      .then((resp) => {
+        handleClose();
+        getAcceptedRquest();  
+      })
       .catch((err) => console.log(err));
   }
 
@@ -111,7 +114,7 @@ const ConsultingStaff_Form = () => {
 
   const handleSizeChange = (e, index, sample) => {
     const size = e.target.value;
-    sample.size = size; // Allow size to be an empty string
+    sample.size = size; 
     getServicePrice(currentRequest.service.id, size, index);
   };
 
