@@ -115,9 +115,9 @@ const ConsultingStaff_ManageRequest = () => {
       .catch((err) => console.log(err));
   }
 
-  function saveReport(requestId, sampleId, valuationReport) {
+  async function saveReport(requestId, sampleId, valuationReport) {
     try {
-      axios
+      const resp = await axios
         .put(
           "http://localhost:8080/api/reports/update/" +
             requestId +
@@ -125,11 +125,10 @@ const ConsultingStaff_ManageRequest = () => {
             sampleId,
           valuationReport
         )
-        .then((resp) => {
-          handleClose();
-          getValuationRequestDetail(sampleId);
-          saveImage(currentRequestDetail.valuationReport.id);
-        });
+      const res = resp.data;
+      const detail = await getValuationRequestDetail(sampleId);
+      saveImage(detail.valuationReport.id);
+      handleClose();
     } catch (err) {
       console.log(err);
     }
@@ -147,11 +146,13 @@ const ConsultingStaff_ManageRequest = () => {
       .catch((err) => console.log(err));
   }
 
-  function getValuationRequestDetail(requestDetailId) {
-    axios
-      .get("http://localhost:8080/api/request-detail/find/" + requestDetailId)
-      .then((resp) => setCurrentRequestDetail(resp.data))
-      .catch((err) => console.log(err));
+  async function getValuationRequestDetail(requestDetailId) {
+    try{
+      const resp = await axios.get("http://localhost:8080/api/request-detail/find/" + requestDetailId)
+      return resp.data;
+    }catch(err){
+      console.log(err);
+    }
   }
 
   function displayButton(sample, requestId) {
