@@ -284,15 +284,17 @@ const ConsultingStaff_ManageRequest = () => {
   function displayBox(text, requestId) {
     if (text !== "") {
       return (
-        <Card component={Paper} st>
+        <Card component={Paper} >
           <CardHeader
             sx={{ backgroundColor: "#30D5C8" }}
             title={`Sample Id: ${formatSampleId(text)}`}
           />
           <Grid container spacing={0}>
-            <Grid item xs={6}>
-              <Box>
-                <Card variant="outlined" sx={{ borderRadius: 0 }}>
+            <Grid item xs={6} borderRight={1}>
+              
+                <Card variant="outlined" sx={{ borderRadius: 0 , height: '100%' , border: 0 }}>
+                <Box borderBottom={1}>
+                  <Box>
                   <CardHeader title="Grading" />
                   <CardContent>
                     <Box>
@@ -418,10 +420,11 @@ const ConsultingStaff_ManageRequest = () => {
                       </Box>
                     </Box>
                   </CardContent>
-                </Card>
+                  </Box>
               </Box>
-              <Box>
-                <Card variant="outlined" sx={{ borderRadius: 0 }}>
+              
+                
+                <Box>
                   <CardHeader title="Clarity Characteristics" />
                   <CardContent>
                     <Box padding={2}>
@@ -432,23 +435,25 @@ const ConsultingStaff_ManageRequest = () => {
                         <img
                           src={clarityImageUrl}
                           alt="Clarity Characteristics"
-                          style={{ width: "470px", height: "310px" }}
+                          style={{ width: "350px", height: "250px" }}
                         />
                       )}
                     </Box>
                   </CardContent>
-                </Card>
+                
               </Box>
+              </Card>
             </Grid>
             <Grid item xs={6}>
-              <Box>
-                <Card variant="outlined" sx={{ borderRadius: 0 }}>
+              
+                <Card variant="outlined" sx={{ borderRadius: 0 , border: 0}}>
+                <Box borderBottom={1}>
                   <CardHeader title="Finish" />
                   <CardContent>
-                    <Box>
-                      <Grid container spacing={0}>
+                    <Box padding={2}>
+                      <Grid container spacing={2}>
                         <Grid item xs={4}>
-                          <FormControl sx={{ width: "60%" }}>
+                          <FormControl fullWidth>
                             <InputLabel>Polish</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
@@ -466,7 +471,7 @@ const ConsultingStaff_ManageRequest = () => {
                           </FormControl>
                         </Grid>
                         <Grid item xs={4}>
-                          <FormControl sx={{ width: "60%" }}>
+                          <FormControl fullWidth>
                             <InputLabel>Symmetry</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
@@ -486,7 +491,7 @@ const ConsultingStaff_ManageRequest = () => {
                           </FormControl>
                         </Grid>
                         <Grid item xs={4}>
-                          <FormControl sx={{ width: "60%" }}>
+                          <FormControl fullWidth>
                             <InputLabel>Fluorescence</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
@@ -508,15 +513,12 @@ const ConsultingStaff_ManageRequest = () => {
                       </Grid>
                     </Box>
                   </CardContent>
-                </Card>
+                
               </Box>
+              
               <Box>
-                <Card
-                  sx={{ height: "704.51px", borderRadius: 0 }}
-                  variant="outlined"
-                >
                   <CardHeader title="Proportions" />
-                  <CardContent>
+                  <CardContent sx={{paddingBottom: '0px'}}>
                     <Box padding={2}>
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
@@ -573,7 +575,7 @@ const ConsultingStaff_ManageRequest = () => {
                         <img
                           src={proportionImageUrl}
                           alt="Proportions"
-                          style={{ width: "470px", height: "310px" }}
+                          style={{ width: "350px", height: "250px" }}
                         />
                       )}
                     </Box>
@@ -597,9 +599,11 @@ const ConsultingStaff_ManageRequest = () => {
                       </Button>
                     </Box>
                   </CardContent>
-                </Card>
+                
               </Box>
+              </Card>
             </Grid>
+            
           </Grid>
         </Card>
       );
@@ -703,12 +707,13 @@ const ConsultingStaff_ManageRequest = () => {
             alignItems: "center",
           }}
         >
-          <Grid container>
-            <Grid item md={8} xs={6}>
-              <Box marginRight="5%">
-                <TableContainer component={Paper} sx={{ width: "100%" }}>
+          <Grid container spacing={1}>
+            <Grid item  xs={5.5}>
+              <Box>
+                <TableContainer component={Paper} >
                   <Table sx={{ minWidth: 300, borderRadius: 10 }}>
                     <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+                      
                       <TableRow>
                         <TableCell>Request ID</TableCell>
                         <TableCell>Customer</TableCell>
@@ -718,6 +723,8 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell>Appointment</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
+                 
+                      
                     </TableHead>
                     <TableBody>
                       {rows.map((row) => (
@@ -728,7 +735,7 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableContainer>
               </Box>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6.5}>
               {open && displayBox(sampleId, requestId)}
             </Grid>
           </Grid>
