@@ -5,9 +5,9 @@ import {
     CardContent,
     Avatar,
 } from "@mui/material";
-import { vault_navigator } from "../Naviate";
-import StaffDrawer from "../StaffDrawer";
-import WelcomeImg from "../../../assets/welcome_Img.png"
+import { vault_navigator } from "../staff/Naviate";
+import StaffDrawer from "../staff/StaffDrawer";
+import WelcomeImg from "../../assets/welcome_Img.png"
 const Vault = () => {
     const drawerWidth = 240;
     return (
