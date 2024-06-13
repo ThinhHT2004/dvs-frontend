@@ -26,6 +26,8 @@ import logoWeb from '../../assets/logo_v4.png';
 import smallLogo from '../../assets/SmallLogo.png';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { useBadge } from './BadgeContext';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
@@ -83,6 +85,8 @@ const iconMapping = {
   "Receipt": <ReceiptLongIcon />,
   "Report": <ReportIcon />,
   "Form": <FormIcon />,
+  "Appointments": <NotificationsNoneOutlinedIcon />,
+  "Price Alert": <WarningAmberIcon />,
   "Sign Out": <SignOutIcon />,
 
 };

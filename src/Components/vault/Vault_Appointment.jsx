@@ -39,7 +39,7 @@ const Vault = () => {
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Appointments", "Receipt", "Report", "Sign Out"]}
+                mylist={["Home", "Appointments", "Price Alert", "Report", "Sign Out"]}
                 state="Appointments"
                 handleClick={vault_navigator}
             />
@@ -52,7 +52,7 @@ const Vault = () => {
                     width: "100%",
                 }}
             >
-                <TableContainer component={Paper} sx={{ width: { xs: "100%", sm: `calc(70%)` }}}>
+                <TableContainer component={Paper} sx={{ width: { xs: "100%", sm: `calc(70%)` } }}>
                     <Table sx={{ minWidth: 450, height: 'auto', overflow: 'visible', borderRadius: 10 }}>
                         <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                             <TableRow>
@@ -65,12 +65,12 @@ const Vault = () => {
                         <TableBody>
                             {data.map((row) => (
                                 <TableRow key={row.id}>
-                                    <TableCell sx={{ borderBottom: 'none',paddingLeft: '20px',width: '10%' }}>
+                                    <TableCell sx={{ borderBottom: 'none', paddingLeft: '30px', width: '10%' }}>
                                         <CalendarMonthIcon sx={{ color: '#4CE6DA', fontSize: 60, borderBottom: 'none' }} />
                                     </TableCell>
-                                    <TableCell sx={{ borderBottom: 'none',width: '30%' }}>{row.id}</TableCell>
-                                    <TableCell sx={{ borderBottom: 'none',width: '30%' }}>{row.service}</TableCell>
-                                    <TableCell sx={{ borderBottom: 'none',width: '30%' }}>{row.date}</TableCell>
+                                    <TableCell sx={{ borderBottom: 'none', width: '30%' }}>{row.id}</TableCell>
+                                    <TableCell sx={{ borderBottom: 'none', width: '30%' }}>{row.service}</TableCell>
+                                    <TableCell sx={{ borderBottom: 'none', width: '30%' }}>{row.date}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

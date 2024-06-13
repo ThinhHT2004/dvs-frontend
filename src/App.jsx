@@ -1,5 +1,5 @@
 import React from 'react'
-import {BrowserRouter, Route, Routes, useNavigate} from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom'
 import HomePage from './Components/homepage/HomePage'
 import DiamondAppraisal from './Components/appraisal/DiamondAppraisal'
 import Login from './Components/login/Login'
@@ -18,30 +18,34 @@ import ConsultingStaff_Form from './Components/staff/consulting_staff/Consulting
 import { BadgeProvider } from './Components/staff/BadgeContext.jsx'
 import StaffDrawer from './Components/staff/StaffDrawer.jsx'
 import Vault_Home from './Components/vault/Vault_Home.jsx'
+import Vault_Appointment from './Components/vault/Vault_Appointment.jsx'
+import Vault_PriceAlert from './Components/vault/Vault_PriceAlert.jsx'
 const App = () => {
-  
+
   return (
     <>
       <BadgeProvider>
         <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<HomePage></HomePage>}></Route>
-          <Route path='/diamond-appraisal' element={<DiamondAppraisal></DiamondAppraisal>}></Route>
-          <Route path='/accounts/signin' element={<Login></Login>}></Route>
-          <Route path='/accounts/signup' element={<SignUp></SignUp>}></Route>
-          <Route path='/consulting-staff/home' element={<ConsultingStaff_Home></ConsultingStaff_Home>}></Route>
-          <Route path='/consulting-staff/incomming-request' element={<ConsultingStaff_IncommingRequest></ConsultingStaff_IncommingRequest>}></Route>
-          <Route path='/manager/home' element={<Manager_Home></Manager_Home>}></Route>
-          <Route path='/valuation-staff/diamonds-appraisal' element={<ValuationStaff_DiamondsAppraisal></ValuationStaff_DiamondsAppraisal>}></Route>
-          <Route path='/valuation-staff/home' element={<ValuationStaff_Home></ValuationStaff_Home>}></Route>
-          <Route path='/manager/pending-request' element={<Manager_PendingRequest></Manager_PendingRequest>}></Route>
-          <Route path='/consulting-staff/request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
-          <Route path='/manager/receipt' element={<Manager_ReceiptManagement></Manager_ReceiptManagement>}></Route>
-          <Route path='/manager/report' element={<Manager_ReportManagement></Manager_ReportManagement>}></Route>
-          <Route path='/consulting-staff/report' element={<ConsultingStaff_Report></ConsultingStaff_Report>}></Route>
-          <Route path='/consulting-staff/form' element={<ConsultingStaff_Form></ConsultingStaff_Form>}></Route>
-          <Route path='/vault/home' element={<Vault_Home></Vault_Home>}></Route>
-        </Routes>
+          <Routes>
+            <Route path='/' element={<HomePage></HomePage>}></Route>
+            <Route path='/diamond-appraisal' element={<DiamondAppraisal></DiamondAppraisal>}></Route>
+            <Route path='/accounts/signin' element={<Login></Login>}></Route>
+            <Route path='/accounts/signup' element={<SignUp></SignUp>}></Route>
+            <Route path='/consulting-staff/home' element={<ConsultingStaff_Home></ConsultingStaff_Home>}></Route>
+            <Route path='/consulting-staff/incomming-request' element={<ConsultingStaff_IncommingRequest></ConsultingStaff_IncommingRequest>}></Route>
+            <Route path='/manager/home' element={<Manager_Home></Manager_Home>}></Route>
+            <Route path='/valuation-staff/diamonds-appraisal' element={<ValuationStaff_DiamondsAppraisal></ValuationStaff_DiamondsAppraisal>}></Route>
+            <Route path='/valuation-staff/home' element={<ValuationStaff_Home></ValuationStaff_Home>}></Route>
+            <Route path='/manager/pending-request' element={<Manager_PendingRequest></Manager_PendingRequest>}></Route>
+            <Route path='/consulting-staff/request' element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>}></Route>
+            <Route path='/manager/receipt' element={<Manager_ReceiptManagement></Manager_ReceiptManagement>}></Route>
+            <Route path='/manager/report' element={<Manager_ReportManagement></Manager_ReportManagement>}></Route>
+            <Route path='/consulting-staff/report' element={<ConsultingStaff_Report></ConsultingStaff_Report>}></Route>
+            <Route path='/consulting-staff/form' element={<ConsultingStaff_Form></ConsultingStaff_Form>}></Route>
+            <Route path='/vault/home' element={<Vault_Home></Vault_Home>}></Route>
+            <Route path='/vault/appointment' element={<Vault_Appointment></Vault_Appointment>}></Route>
+            <Route path='/vault/price-alert' element={<Vault_PriceAlert></Vault_PriceAlert>}></Route>
+          </Routes>
         </BrowserRouter>
       </BadgeProvider>
     </>

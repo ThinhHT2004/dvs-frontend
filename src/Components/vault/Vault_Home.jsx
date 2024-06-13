@@ -16,6 +16,7 @@ import {
 import { vault_navigator } from "../staff/Naviate";
 import StaffDrawer from "../staff/StaffDrawer";
 import WelcomeImg from "../../assets/welcome_Img.png";
+import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
 
 const drawerWidth = 180;
 
@@ -32,7 +33,7 @@ const Vault = () => {
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Appointments", "Receipt", "Report", "Sign Out"]}
+                mylist={["Home", "Appointments", "Price Alert", "Report", "Sign Out"]}
                 state="Home"
                 handleClick={vault_navigator}
             />
@@ -62,42 +63,42 @@ const Vault = () => {
                         </div>
                     </CardContent>
                 </Card>
-                    <TableContainer component={Paper} sx={{ width: { xs: "100%", sm: `calc(50% - 60px)` }, height: 229 }}>
-                        <Table sx={{ minWidth: 450, height: '100%', borderRadius: 10 }}>
-                            <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                                <TableRow>
-                                    <TableCell sx={{ fontSize: '20px', padding: '12px' }} colSpan={6}>Nearest Appoiment</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell height="23px" sx={{borderBottom: 'none', padding: '10px', fontSize: '16px'}} >Fast Diamond Appraisal - GIA ID 6495035512 - 5/13/2024</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell>
-                                        <Link
-                                            href="#"
-                                            sx={{ color: "#69CEE2", paddingLeft: "16px" }}
-                                            underline="none"
-                                            onClick={() => handleAction()}
-                                        >
-                                            Approve
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Link
-                                            href="#"
-                                            sx={{ color: "red", paddingLeft: "16px" }}
-                                            underline="none"
-                                            onClick={() => handleAction()}
-                                        >
-                                            Decline
-                                        </Link>
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                <TableContainer component={Paper} sx={{ width: { xs: "100%", sm: `calc(50% - 60px)` }, height: 229 }}>
+                    <Table sx={{ minWidth: 450, height: '100%', borderRadius: 10 }}>
+                        <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+                            <TableRow>
+                                <TableCell sx={{ fontSize: '20px', padding: '12px' }} colSpan={6}>Nearest Appoiment</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell height="23px" sx={{ borderBottom: 'none', padding: '10px', fontSize: '16px' }} >Fast Diamond Appraisal - GIA ID 6495035512 - 5/13/2024</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>
+                                    <Link
+                                        href="#"
+                                        sx={{ color: "#69CEE2", paddingLeft: "16px" }}
+                                        underline="none"
+                                        onClick={() => handleAction()}
+                                    >
+                                        Approve
+                                    </Link>
+                                </TableCell>
+                                <TableCell>
+                                    <Link
+                                        href="#"
+                                        sx={{ color: "red", paddingLeft: "16px" }}
+                                        underline="none"
+                                        onClick={() => handleAction()}
+                                    >
+                                        Decline
+                                    </Link>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Box>
         </Box>
     );

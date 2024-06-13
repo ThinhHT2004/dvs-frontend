@@ -5,7 +5,6 @@ import {
     CardContent,
     Typography,
     Avatar,
-    Typography,
 } from "@mui/material";
 import { manager_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
