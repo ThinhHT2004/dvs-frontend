@@ -17,6 +17,7 @@ import ConsultingStaff_Report from './Components/staff/consulting_staff/Consulti
 import ConsultingStaff_Form from './Components/staff/consulting_staff/ConsultingStaff_Form.jsx'
 import { BadgeProvider } from './Components/staff/BadgeContext.jsx'
 import StaffDrawer from './Components/staff/StaffDrawer.jsx'
+import Vault_Home from './Components/vault/Vault_Home.jsx'
 const App = () => {
   
   return (
@@ -39,6 +40,7 @@ const App = () => {
           <Route path='/manager/report' element={<Manager_ReportManagement></Manager_ReportManagement>}></Route>
           <Route path='/consulting-staff/report' element={<ConsultingStaff_Report></ConsultingStaff_Report>}></Route>
           <Route path='/consulting-staff/form' element={<ConsultingStaff_Form></ConsultingStaff_Form>}></Route>
+          <Route path='/vault/home' element={<Vault_Home></Vault_Home>}></Route>
         </Routes>
         </BrowserRouter>
       </BadgeProvider>
