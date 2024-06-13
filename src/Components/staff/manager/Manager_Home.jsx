@@ -3,6 +3,7 @@ import {
     Box,
     Card,
     CardContent,
+    Typography,
     Avatar,
     Typography,
 } from "@mui/material";

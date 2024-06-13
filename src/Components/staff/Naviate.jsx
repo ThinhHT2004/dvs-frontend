@@ -74,7 +74,9 @@ export const vault_navigator = (text, navigate) => {
     case 'Home':
       navigate('/vault/home');
       break;
- 
+    case 'Appointments':
+      navigate('/vault/appointment');
+      break;
     case "Sign Out":
       handleSignOut(navigate);
       break;
