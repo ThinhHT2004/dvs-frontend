@@ -21,6 +21,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { formatRequestId } from "../../../Foramat";
+import { Toaster, toast } from "sonner";
 
 const ConsultingStaff_Form = () => {
   const drawerWidth = 240;
@@ -37,6 +38,8 @@ const ConsultingStaff_Form = () => {
     getAcceptedRquest();
   }, []);
 
+  console.log(currentRequest);
+
   useEffect(() => {
     getTotalPrice();
   }, [listSample]);
@@ -52,8 +55,32 @@ const ConsultingStaff_Form = () => {
       .catch((err) => console.log(err));
   }
 
+  function checkNegative(list){
+    let check = false;
+    let i = 0;
+    for(i=0;i<list.length;++i){
+      if(parseFloat(list[i].size) < 0) check = true;
+    }
+    return check;
+  }
+
+  function checkFullFilled(){
+    let i = 0;
+    let check = true;
+    const list = currentRequest.valuationRequestDetailList;
+    for(i;i<list.length;++i){
+      if(list[i].size === 0 || list[i].size === ''){
+        check = false;
+      }
+    }
+    return check;
+  }
+
   function createReceipt(requestDetailList, requestId) {
-    axios
+    if(checkNegative(requestDetailList)){
+      toast.error("The size must not be negative");
+    }else{
+      axios
       .post(
         "http://localhost:8080/api/request/create-receipt/" + requestId,
         requestDetailList
@@ -63,6 +90,8 @@ const ConsultingStaff_Form = () => {
         getAcceptedRquest();  
       })
       .catch((err) => console.log(err));
+    }
+    
   }
 
   const getServicePrice = (id, size, index) => {
@@ -139,6 +168,7 @@ const ConsultingStaff_Form = () => {
         minHeight: "100vh",
       }}
     >
+      <Toaster position="top-center" richColors></Toaster>
       <Box>
         <StaffDrawer
           mylist={[
@@ -269,6 +299,7 @@ const ConsultingStaff_Form = () => {
                                       }
                                       value={sample.size}
                                       label="Size"
+                                      type="number"
                                     />
                                   </Box>
                                   <Box>
@@ -276,6 +307,7 @@ const ConsultingStaff_Form = () => {
                                       sx={{ width: "70%" }}
                                       value={listSample[index] || 0}
                                       label="Service Price"
+                                      disabled
                                     />
                                   </Box>
                                 </Box>
@@ -299,6 +331,7 @@ const ConsultingStaff_Form = () => {
                               }
                               variant="contained"
                               sx={{ backgroundColor: "#69CEE2" }}
+                              disabled={!checkFullFilled()}
                             >
                               Create
                             </Button>

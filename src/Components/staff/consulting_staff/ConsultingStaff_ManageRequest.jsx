@@ -63,7 +63,7 @@ const ConsultingStaff_ManageRequest = () => {
     "ASSCHER",
     "HEART",
   ];
-  const origin =["LAB", "NATURAL"];
+  const origin = ["LAB", "NATURAL"];
   const [measurement, setMeausurement] = useState("");
   const [caratWeight, setCaratWeight] = useState("");
   const [returnOrigin, setReturnOrigin] = useState("");
@@ -78,9 +78,9 @@ const ConsultingStaff_ManageRequest = () => {
   const [girdle, setGirdle] = useState("");
   const [culet, setCulet] = useState("");
   const [rows, setRows] = useState([]);
-  const [currentRequestDetail, setCurrentRequestDetail] = useState();
   const [proportionImageUrl, setProportionImageUrl] = useState("");
   const [clarityImageUrl, setClarityImageUrl] = useState("");
+  const [checkFull, setCheckFull] = useState(true);
 
   const valuationReport = {
     measurement: measurement,
@@ -95,12 +95,33 @@ const ConsultingStaff_ManageRequest = () => {
     culet: culet,
     depth: depth,
     girdle: girdle,
-    origin: origin,
+    origin: returnOrigin,
   };
+
 
   useEffect(() => {
     getAcceptedRequest();
   }, []);
+
+  function checkFullFilled() {
+    let check = true;
+    for (let key in valuationReport) {
+      if (valuationReport.hasOwnProperty(key)) {
+        if (valuationReport[key] === "") {
+          check = false;
+          break;
+        }
+      }
+    }
+    if (proportionImage === null) {
+      check = false;
+    }
+    if (clarityImage === null) {
+      check = false;
+    }
+
+    return check;
+  }
 
   function getAcceptedRequest() {
     axios
@@ -121,16 +142,16 @@ const ConsultingStaff_ManageRequest = () => {
 
   async function saveReport(requestId, sampleId, valuationReport) {
     try {
-      const resp = await axios
-        .put(
-          "http://localhost:8080/api/reports/update/" +
-            requestId +
-            "/" +
-            sampleId,
-          valuationReport
-        )
+      const resp = await axios.put(
+        "http://localhost:8080/api/reports/update/" +
+          requestId +
+          "/" +
+          sampleId,
+        valuationReport
+      );
       const res = resp.data;
       const detail = await getValuationRequestDetail(sampleId);
+      console.log(detail);
       saveImage(detail.valuationReport.id);
       handleClose();
     } catch (err) {
@@ -151,10 +172,12 @@ const ConsultingStaff_ManageRequest = () => {
   }
 
   async function getValuationRequestDetail(requestDetailId) {
-    try{
-      const resp = await axios.get("http://localhost:8080/api/request-detail/find/" + requestDetailId)
+    try {
+      const resp = await axios.get(
+        "http://localhost:8080/api/request-detail/find/" + requestDetailId
+      );
       return resp.data;
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
   }
@@ -190,6 +213,21 @@ const ConsultingStaff_ManageRequest = () => {
 
   const handleClose = () => {
     setOpen(false);
+    setMeausurement('');
+    setCaratWeight('');
+    setReturnOrigin('');
+    setReturnPolish('');
+    setReturnSymmetry('');
+    setReturnClarity('');
+    setReturnColorGrade('');
+    setReturnShape('');
+    setReturnFluorescence('');
+    setTable('');
+    setDepth('');
+    setGirdle('');
+    setCulet('');
+    setProportionImageUrl('');
+    setClarityImageUrl('');
     getAcceptedRequest();
   };
 
@@ -201,6 +239,7 @@ const ConsultingStaff_ManageRequest = () => {
       const file = e.target.files[0];
       setProportionImage(file);
       setProportionImageUrl(URL.createObjectURL(file));
+      checkFullFilled();
     }
   };
   const handleClarityImageUpload = (e) => {
@@ -208,6 +247,7 @@ const ConsultingStaff_ManageRequest = () => {
       const file = e.target.files[0];
       setClarityImage(file);
       setClarityImageUrl(URL.createObjectURL(file));
+      checkFullFilled();
     }
   };
   const renderRowStatus = (status) => {
@@ -244,56 +284,64 @@ const ConsultingStaff_ManageRequest = () => {
   function displayBox(text, requestId) {
     if (text !== "") {
       return (
-        <Card component={Paper} st>
+        <Card component={Paper} >
           <CardHeader
             sx={{ backgroundColor: "#30D5C8" }}
             title={`Sample Id: ${formatSampleId(text)}`}
           />
           <Grid container spacing={0}>
-            
-            <Grid item xs={6}>
-            <Box>
-                <Card variant="outlined" sx={{ borderRadius: 0}}>
+            <Grid item xs={6} borderRight={1}>
+              
+                <Card variant="outlined" sx={{ borderRadius: 0 , height: '100%' , border: 0 }}>
+                <Box borderBottom={1}>
+                  <Box>
                   <CardHeader title="Grading" />
                   <CardContent>
                     <Box>
                       <Box padding={2}>
                         <Grid container spacing={2}>
                           <Grid item xs={6}>
-                          <TextField
-                          type="text"
-                          placeholder="Measurements"
-                          variant="standard"
-                          fullWidth
-                          onChange={(e) => setMeausurement(e.target.value)}
-                        />
+                            <TextField
+                              type="text"
+                              placeholder="Measurements"
+                              variant="standard"
+                              fullWidth
+                              onChange={(e) => {
+                                setMeausurement(e.target.value);
+                                checkFullFilled();
+                              }}
+                            />
                           </Grid>
                           <Grid item xs={6}>
-                          <TextField
-                          type="text"
-                          placeholder="Carat Weight"
-                          variant="standard"
-                          fullWidth
-                          onChange={(e) => setCaratWeight(e.target.value)}
-                        />
+                            <TextField
+                              type="text"
+                              placeholder="Carat Weight"
+                              variant="standard"
+                              fullWidth
+                              onChange={(e) => {
+                                setCaratWeight(e.target.value);
+                                checkFullFilled();
+                              }}
+                            />
                           </Grid>
                         </Grid>
-                      
-                        
                       </Box>
                       <Box padding={2}>
                         <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <FormControl fullWidth>
+                          <Grid item xs={6}>
+                            <FormControl fullWidth required>
                               <InputLabel>Origin</InputLabel>
                               <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={returnOrigin}
                                 label="Origin"
-                                onChange={(e) => setReturnOrigin(e.target.value)}
+                                onChange={(e) => {
+                                  setReturnOrigin(e.target.value);
+                                  checkFullFilled();
+                                }}
                               >
-                                {shape.map((sh) => (
+                                {origin.map((sh) => (
                                   <MenuItem key={sh} value={sh}>
                                     {sh}
                                   </MenuItem>
@@ -309,7 +357,10 @@ const ConsultingStaff_ManageRequest = () => {
                                 id="demo-simple-select"
                                 value={returnShape}
                                 label="Shape"
-                                onChange={(e) => setReturnShape(e.target.value)}
+                                onChange={(e) => {
+                                  setReturnShape(e.target.value);
+                                  checkFullFilled();
+                                }}
                               >
                                 {shape.map((sh) => (
                                   <MenuItem key={sh} value={sh}>
@@ -319,13 +370,10 @@ const ConsultingStaff_ManageRequest = () => {
                               </Select>
                             </FormControl>
                           </Grid>
-                          
-                          
                         </Grid>
                       </Box>
                       <Box padding={2}>
                         <Grid container spacing={2}>
-                          
                           <Grid item xs={6}>
                             <FormControl fullWidth>
                               <InputLabel>Color</InputLabel>
@@ -334,9 +382,10 @@ const ConsultingStaff_ManageRequest = () => {
                                 id="demo-simple-select"
                                 value={returnColorGrade}
                                 label="Color"
-                                onChange={(e) =>
-                                  setReturnColorGrade(e.target.value)
-                                }
+                                onChange={(e) => {
+                                  setReturnColorGrade(e.target.value);
+                                  checkFullFilled();
+                                }}
                               >
                                 {colorGrade.map((col) => (
                                   <MenuItem key={col} value={col}>
@@ -354,9 +403,10 @@ const ConsultingStaff_ManageRequest = () => {
                                 id="demo-simple-select"
                                 value={returnClarity}
                                 label="Symmetry"
-                                onChange={(e) =>
-                                  setReturnClarity(e.target.value)
-                                }
+                                onChange={(e) => {
+                                  setReturnClarity(e.target.value);
+                                  checkFullFilled();
+                                }}
                               >
                                 {clarityGrade.map((sym) => (
                                   <MenuItem key={sym} value={sym}>
@@ -370,10 +420,11 @@ const ConsultingStaff_ManageRequest = () => {
                       </Box>
                     </Box>
                   </CardContent>
-                </Card>
+                  </Box>
               </Box>
-              <Box>
-                <Card variant="outlined" sx={{ borderRadius: 0}}>
+              
+                
+                <Box>
                   <CardHeader title="Clarity Characteristics" />
                   <CardContent>
                     <Box padding={2}>
@@ -384,24 +435,25 @@ const ConsultingStaff_ManageRequest = () => {
                         <img
                           src={clarityImageUrl}
                           alt="Clarity Characteristics"
-                          style={{ width: "470px", height: "310px" }}
+                          style={{ width: "350px", height: "250px" }}
                         />
                       )}
                     </Box>
                   </CardContent>
-                </Card>
+                
               </Box>
-           
+              </Card>
             </Grid>
             <Grid item xs={6}>
-              <Box>
-                <Card variant="outlined" sx={{ borderRadius: 0}}>
+              
+                <Card variant="outlined" sx={{ borderRadius: 0 , border: 0}}>
+                <Box borderBottom={1}>
                   <CardHeader title="Finish" />
                   <CardContent>
-                    <Box>
-                      <Grid container spacing={0}>
+                    <Box padding={2}>
+                      <Grid container spacing={2}>
                         <Grid item xs={4}>
-                          <FormControl sx={{ width: "60%" }}>
+                          <FormControl fullWidth>
                             <InputLabel>Polish</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
@@ -419,7 +471,7 @@ const ConsultingStaff_ManageRequest = () => {
                           </FormControl>
                         </Grid>
                         <Grid item xs={4}>
-                          <FormControl sx={{ width: "60%" }}>
+                          <FormControl fullWidth>
                             <InputLabel>Symmetry</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
@@ -439,7 +491,7 @@ const ConsultingStaff_ManageRequest = () => {
                           </FormControl>
                         </Grid>
                         <Grid item xs={4}>
-                          <FormControl sx={{ width: "60%" }}>
+                          <FormControl fullWidth>
                             <InputLabel>Fluorescence</InputLabel>
                             <Select
                               labelId="demo-simple-select-label"
@@ -461,58 +513,57 @@ const ConsultingStaff_ManageRequest = () => {
                       </Grid>
                     </Box>
                   </CardContent>
-                </Card>
+                
               </Box>
+              
               <Box>
-                <Card sx={{height:"704.51px", borderRadius: 0}} variant="outlined">
                   <CardHeader title="Proportions" />
-                  <CardContent>
+                  <CardContent sx={{paddingBottom: '0px'}}>
                     <Box padding={2}>
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
-                        <TextField
-                        type="text"
-                        placeholder="Depth"
-                        variant="standard"
-                        fullWidth
-                        onChange={(e) => setDepth(e.target.value)}
-                      />
+                          <TextField
+                            type="text"
+                            placeholder="Depth"
+                            variant="standard"
+                            fullWidth
+                            onChange={(e) => setDepth(e.target.value)}
+                          />
                         </Grid>
                         <Grid item xs={6}>
-                        <TextField
-                        type="text"
-                        placeholder="Table"
-                        variant="standard"
-                        fullWidth
-                        onChange={(e) => setTable(e.target.value)}
-                      />
+                          <TextField
+                            type="text"
+                            placeholder="Table"
+                            variant="standard"
+                            fullWidth
+                            onChange={(e) => setTable(e.target.value)}
+                          />
                         </Grid>
                       </Grid>
                     </Box>
                     <Box padding={2}>
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
-                        <TextField
-                        type="text"
-                        placeholder="Girdle"
-                        variant="standard"
-                        fullWidth
-                        onChange={(e) => setGirdle(e.target.value)}
-                      />
-                    
+                          <TextField
+                            type="text"
+                            placeholder="Girdle"
+                            variant="standard"
+                            fullWidth
+                            onChange={(e) => setGirdle(e.target.value)}
+                          />
                         </Grid>
                         <Grid item xs={6}>
-                        <TextField
-                        type="text"
-                        placeholder="Culet"
-                        variant="standard"
-                        fullWidth
-                        onChange={(e) => setCulet(e.target.value)}
-                      />
+                          <TextField
+                            type="text"
+                            placeholder="Culet"
+                            variant="standard"
+                            fullWidth
+                            onChange={(e) => setCulet(e.target.value)}
+                          />
                         </Grid>
                       </Grid>
                     </Box>
-                    
+
                     <Box padding={2}>
                       <Input
                         type="file"
@@ -524,7 +575,7 @@ const ConsultingStaff_ManageRequest = () => {
                         <img
                           src={proportionImageUrl}
                           alt="Proportions"
-                          style={{ width: "470px", height: "310px" }}
+                          style={{ width: "350px", height: "250px" }}
                         />
                       )}
                     </Box>
@@ -535,6 +586,7 @@ const ConsultingStaff_ManageRequest = () => {
                         onClick={() =>
                           saveReport(requestId, text, valuationReport)
                         }
+                        disabled={!checkFullFilled()}
                       >
                         Save
                       </Button>
@@ -547,11 +599,12 @@ const ConsultingStaff_ManageRequest = () => {
                       </Button>
                     </Box>
                   </CardContent>
-                </Card>
+                
               </Box>
+              </Card>
             </Grid>
+            
           </Grid>
-          
         </Card>
       );
     } else {
@@ -654,12 +707,13 @@ const ConsultingStaff_ManageRequest = () => {
             alignItems: "center",
           }}
         >
-          <Grid container>
-            <Grid item md={8} xs={6}>
-              <Box marginRight="5%">
-                <TableContainer component={Paper} sx={{ width: "100%" }}>
+          <Grid container spacing={1}>
+            <Grid item  xs={5.5}>
+              <Box>
+                <TableContainer component={Paper} >
                   <Table sx={{ minWidth: 300, borderRadius: 10 }}>
                     <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+                      
                       <TableRow>
                         <TableCell>Request ID</TableCell>
                         <TableCell>Customer</TableCell>
@@ -669,6 +723,8 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell>Appointment</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
+                 
+                      
                     </TableHead>
                     <TableBody>
                       {rows.map((row) => (
@@ -679,7 +735,7 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableContainer>
               </Box>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={6.5}>
               {open && displayBox(sampleId, requestId)}
             </Grid>
           </Grid>

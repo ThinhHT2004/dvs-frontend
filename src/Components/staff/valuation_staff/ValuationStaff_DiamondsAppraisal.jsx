@@ -18,6 +18,7 @@ import {
 import { valuation_staff_navigator } from "../Naviate";
 import axios from "axios";
 import { formatSampleId, formatValuationId } from "../../../Foramat";
+import { Toaster, toast } from "sonner";
 
 const ValuationStaff_DiamondsAppraisal = () => {
   const staffId = sessionStorage.getItem("valuationStaffId");
@@ -25,12 +26,23 @@ const ValuationStaff_DiamondsAppraisal = () => {
   const [selectedAssignment, setSelectedAssignment] = useState();
   const drawerWidth = 240;
   const [assignments, setAssignments] = useState([]);
+  const [price, setPrice] = useState(0);
 
   console.log(staffId);
 
   useEffect(() => {
     getAssignments();
   }, []);
+
+  console.log(selectedAssignment);
+
+  function checkFullFilled() {
+    if (selectedAssignment.price === 0 || selectedAssignment.price === "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   const getAssignments = () => {
     axios
@@ -56,20 +68,28 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   console.log(selectedAssignment);
   const handleSave = (selectedAssignment) => {
-    axios
-      .put("http://localhost:8080/api/assignment/update", selectedAssignment)
-      .then((resp) => {
-        console.log(resp.data);
-        getAssignments();
-        handleClose();
-      })
-      .catch((err) => console.log(err));
+    if (parseFloat(selectedAssignment.price) < 0) {
+      toast.error("The price must not be negative");
+    } else {
+      axios
+        .put("http://localhost:8080/api/assignment/update", selectedAssignment)
+        .then((resp) => {
+          console.log(resp.data);
+          getAssignments();
+          handleClose();
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
-  console.log(selectedAssignment);
+  function handleClose() {
+    setSelectedDiamond(null);
+    setSelectedAssignment(null);
+  }
 
   return (
     <div>
+      <Toaster position="top-center" richColors></Toaster>
       <Box
         display="flex"
         sx={{ backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}
@@ -159,33 +179,52 @@ const ValuationStaff_DiamondsAppraisal = () => {
                             >
                               <Box marginBottom={1.5}>
                                 <Typography>
-                                  Cutting Style: {selectedDiamond.valuationReport.shape}
+                                  Cutting Style:{" "}
+                                  {selectedDiamond.valuationReport.shape}
                                 </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
                                 <Typography>
-                                  Measurements: {selectedDiamond.valuationReport.measurement}
+                                  Measurements:{" "}
+                                  {selectedDiamond.valuationReport.measurement}
                                 </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
                                 <Typography>
-                                  Carat Weight: {selectedDiamond.valuationReport.caratWeight} carat
+                                  Carat Weight:{" "}
+                                  {selectedDiamond.valuationReport.caratWeight}{" "}
+                                  carat
                                 </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
-                                <Typography>Clarity Grade: {selectedDiamond.valuationReport.clarity}</Typography>
+                                <Typography>
+                                  Clarity Grade:{" "}
+                                  {selectedDiamond.valuationReport.clarity}
+                                </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
-                                <Typography>Color Grade: {selectedDiamond.valuationReport.color}</Typography>
+                                <Typography>
+                                  Color Grade:{" "}
+                                  {selectedDiamond.valuationReport.color}
+                                </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
-                                <Typography>Polish: {selectedDiamond.valuationReport.polish}</Typography>
+                                <Typography>
+                                  Polish:{" "}
+                                  {selectedDiamond.valuationReport.polish}
+                                </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
-                                <Typography>Symmetry: {selectedDiamond.valuationReport.symmetry}</Typography>
+                                <Typography>
+                                  Symmetry:{" "}
+                                  {selectedDiamond.valuationReport.symmetry}
+                                </Typography>
                               </Box>
                               <Box marginBottom={1.5}>
-                                <Typography>FLuorescence: {selectedDiamond.valuationReport.fluorescence}</Typography>
+                                <Typography>
+                                  FLuorescence:{" "}
+                                  {selectedDiamond.valuationReport.fluorescence}
+                                </Typography>
                               </Box>
                               <Box>
                                 <Typography>
@@ -225,9 +264,8 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                   sx={{ backgroundColor: "#69CEE2" }}
                                   onClick={() => {
                                     handleSave(selectedAssignment);
-                                    setSelectedDiamond(null);
-                                    setSelectedAssignment(null);
                                   }}
+                                  disabled={!checkFullFilled()}
                                 >
                                   Save
                                 </Button>
@@ -252,21 +290,35 @@ const ValuationStaff_DiamondsAppraisal = () => {
                               <Box display="flex" height="40%">
                                 <Box width="40%">
                                   <Box marginBottom={1.5}>
-                                    <Typography>Depth: {selectedDiamond.valuationReport.depth}</Typography>
+                                    <Typography>
+                                      Depth:{" "}
+                                      {selectedDiamond.valuationReport.depth}
+                                    </Typography>
                                   </Box>
                                   <Box marginBottom={1.5}>
-                                    <Typography>Table: {selectedDiamond.valuationReport.table}</Typography>
+                                    <Typography>
+                                      Table:{" "}
+                                      {selectedDiamond.valuationReport.table}
+                                    </Typography>
                                   </Box>
                                   <Box marginBottom={1.5}>
-                                    <Typography>Girdle: {selectedDiamond.valuationReport.girdle}</Typography>
+                                    <Typography>
+                                      Girdle:{" "}
+                                      {selectedDiamond.valuationReport.girdle}
+                                    </Typography>
                                   </Box>
                                   <Box marginBottom={1.5}>
-                                    <Typography>Culet: {selectedDiamond.valuationReport.culet}</Typography>
+                                    <Typography>
+                                      Culet:{" "}
+                                      {selectedDiamond.valuationReport.culet}
+                                    </Typography>
                                   </Box>
                                 </Box>
                                 <Box width="60%">
                                   <img
-                                    src={selectedDiamond.valuationReport.proportion}
+                                    src={
+                                      selectedDiamond.valuationReport.proportion
+                                    }
                                     alt=""
                                     width="100%"
                                     height="100%"
@@ -281,7 +333,10 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                 </Box>
                                 <Box height="100%">
                                   <img
-                                    src={selectedDiamond.valuationReport.characteristic}
+                                    src={
+                                      selectedDiamond.valuationReport
+                                        .characteristic
+                                    }
                                     alt=""
                                     height="100%"
                                     width="100%"
