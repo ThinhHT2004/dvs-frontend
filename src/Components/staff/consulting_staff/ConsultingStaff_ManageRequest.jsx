@@ -63,9 +63,10 @@ const ConsultingStaff_ManageRequest = () => {
     "ASSCHER",
     "HEART",
   ];
-
+  const origin =["LAB", "NATURAL"];
   const [measurement, setMeausurement] = useState("");
   const [caratWeight, setCaratWeight] = useState("");
+  const [returnOrigin, setReturnOrigin] = useState("");
   const [returnPolish, setReturnPolish] = useState("");
   const [returnSymmetry, setReturnSymmetry] = useState("");
   const [returnClarity, setReturnClarity] = useState("");
@@ -78,6 +79,8 @@ const ConsultingStaff_ManageRequest = () => {
   const [culet, setCulet] = useState("");
   const [rows, setRows] = useState([]);
   const [currentRequestDetail, setCurrentRequestDetail] = useState();
+  const [proportionImageUrl, setProportionImageUrl] = useState("");
+  const [clarityImageUrl, setClarityImageUrl] = useState("");
 
   const valuationReport = {
     measurement: measurement,
@@ -92,6 +95,7 @@ const ConsultingStaff_ManageRequest = () => {
     culet: culet,
     depth: depth,
     girdle: girdle,
+    origin: origin,
   };
 
   useEffect(() => {
@@ -194,12 +198,16 @@ const ConsultingStaff_ManageRequest = () => {
   };
   const handleProportionImageUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setProportionImage(e.target.files[0]);
+      const file = e.target.files[0];
+      setProportionImage(file);
+      setProportionImageUrl(URL.createObjectURL(file));
     }
   };
   const handleClarityImageUpload = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setClarityImage(e.target.files[0]);
+      const file = e.target.files[0];
+      setClarityImage(file);
+      setClarityImageUrl(URL.createObjectURL(file));
     }
   };
   const renderRowStatus = (status) => {
@@ -242,32 +250,59 @@ const ConsultingStaff_ManageRequest = () => {
             title={`Sample Id: ${formatSampleId(text)}`}
           />
           <Grid container spacing={0}>
+            
             <Grid item xs={6}>
-              <Box>
-                <Card>
+            <Box>
+                <Card variant="outlined" sx={{ borderRadius: 0}}>
                   <CardHeader title="Grading" />
                   <CardContent>
                     <Box>
                       <Box padding={2}>
-                        <TextField
+                        <Grid container spacing={2}>
+                          <Grid item xs={6}>
+                          <TextField
                           type="text"
                           placeholder="Measurements"
                           variant="standard"
+                          fullWidth
                           onChange={(e) => setMeausurement(e.target.value)}
                         />
-                      </Box>
-                      <Box padding={2}>
-                        <TextField
+                          </Grid>
+                          <Grid item xs={6}>
+                          <TextField
                           type="text"
                           placeholder="Carat Weight"
                           variant="standard"
+                          fullWidth
                           onChange={(e) => setCaratWeight(e.target.value)}
                         />
+                          </Grid>
+                        </Grid>
+                      
+                        
                       </Box>
                       <Box padding={2}>
-                        <Grid container spacing={0}>
-                          <Grid item xs={4}>
-                            <FormControl sx={{ width: "60%" }}>
+                        <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                              <InputLabel>Origin</InputLabel>
+                              <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={returnOrigin}
+                                label="Origin"
+                                onChange={(e) => setReturnOrigin(e.target.value)}
+                              >
+                                {shape.map((sh) => (
+                                  <MenuItem key={sh} value={sh}>
+                                    {sh}
+                                  </MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                          </Grid>
+                          <Grid item xs={6}>
+                            <FormControl fullWidth>
                               <InputLabel>Shape</InputLabel>
                               <Select
                                 labelId="demo-simple-select-label"
@@ -284,8 +319,15 @@ const ConsultingStaff_ManageRequest = () => {
                               </Select>
                             </FormControl>
                           </Grid>
-                          <Grid item xs={4}>
-                            <FormControl sx={{ width: "60%" }}>
+                          
+                          
+                        </Grid>
+                      </Box>
+                      <Box padding={2}>
+                        <Grid container spacing={2}>
+                          
+                          <Grid item xs={6}>
+                            <FormControl fullWidth>
                               <InputLabel>Color</InputLabel>
                               <Select
                                 labelId="demo-simple-select-label"
@@ -304,8 +346,8 @@ const ConsultingStaff_ManageRequest = () => {
                               </Select>
                             </FormControl>
                           </Grid>
-                          <Grid item xs={4}>
-                            <FormControl sx={{ width: "60%" }}>
+                          <Grid item xs={6}>
+                            <FormControl fullWidth>
                               <InputLabel>Clarity</InputLabel>
                               <Select
                                 labelId="demo-simple-select-label"
@@ -330,10 +372,30 @@ const ConsultingStaff_ManageRequest = () => {
                   </CardContent>
                 </Card>
               </Box>
+              <Box>
+                <Card variant="outlined" sx={{ borderRadius: 0}}>
+                  <CardHeader title="Clarity Characteristics" />
+                  <CardContent>
+                    <Box padding={2}>
+                      <Input type="file" onChange={handleClarityImageUpload} />
+                    </Box>
+                    <Box padding={2}>
+                      {clarityImageUrl && (
+                        <img
+                          src={clarityImageUrl}
+                          alt="Clarity Characteristics"
+                          style={{ width: "470px", height: "310px" }}
+                        />
+                      )}
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Box>
+           
             </Grid>
             <Grid item xs={6}>
               <Box>
-                <Card>
+                <Card variant="outlined" sx={{ borderRadius: 0}}>
                   <CardHeader title="Finish" />
                   <CardContent>
                     <Box>
@@ -401,67 +463,56 @@ const ConsultingStaff_ManageRequest = () => {
                   </CardContent>
                 </Card>
               </Box>
-            </Grid>
-          </Grid>
-          <Grid container spacing={0}>
-            <Grid item xs={6}>
               <Box>
-                <Card>
-                  <CardHeader title="Clarity Characteristics" />
-                  <CardContent>
-                    <Box padding={2}>
-                      <Input type="file" onChange={handleClarityImageUpload} />
-                    </Box>
-                    <Box padding={2}>
-                      {clarityImage && (
-                        <img
-                          src={clarityImage}
-                          alt="Clarity Characteristics"
-                          style={{ width: "470px", height: "310px" }}
-                        />
-                      )}
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Box>
-            </Grid>
-            <Grid item xs={6}>
-              <Box>
-                <Card>
+                <Card sx={{height:"704.51px", borderRadius: 0}} variant="outlined">
                   <CardHeader title="Proportions" />
                   <CardContent>
                     <Box padding={2}>
-                      <TextField
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                        <TextField
                         type="text"
                         placeholder="Depth"
                         variant="standard"
+                        fullWidth
                         onChange={(e) => setDepth(e.target.value)}
                       />
-                    </Box>
-                    <Box padding={2}>
-                      <TextField
+                        </Grid>
+                        <Grid item xs={6}>
+                        <TextField
                         type="text"
                         placeholder="Table"
                         variant="standard"
+                        fullWidth
                         onChange={(e) => setTable(e.target.value)}
                       />
+                        </Grid>
+                      </Grid>
                     </Box>
                     <Box padding={2}>
-                      <TextField
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                        <TextField
                         type="text"
                         placeholder="Girdle"
                         variant="standard"
+                        fullWidth
                         onChange={(e) => setGirdle(e.target.value)}
                       />
-                    </Box>
-                    <Box padding={2}>
-                      <TextField
+                    
+                        </Grid>
+                        <Grid item xs={6}>
+                        <TextField
                         type="text"
                         placeholder="Culet"
                         variant="standard"
+                        fullWidth
                         onChange={(e) => setCulet(e.target.value)}
                       />
+                        </Grid>
+                      </Grid>
                     </Box>
+                    
                     <Box padding={2}>
                       <Input
                         type="file"
@@ -469,15 +520,15 @@ const ConsultingStaff_ManageRequest = () => {
                       />
                     </Box>
                     <Box padding={2}>
-                      {proportionImage && (
+                      {proportionImageUrl && (
                         <img
-                          src={proportionImage}
+                          src={proportionImageUrl}
                           alt="Proportions"
                           style={{ width: "470px", height: "310px" }}
                         />
                       )}
                     </Box>
-                    <Box display={"flex"} justifyContent={"right"}>
+                    <Box display={"flex"} justifyContent={"right"} padding={2}>
                       <Button
                         variant="contained"
                         sx={{ backgroundColor: "#69CEE2" }}
@@ -500,6 +551,7 @@ const ConsultingStaff_ManageRequest = () => {
               </Box>
             </Grid>
           </Grid>
+          
         </Card>
       );
     } else {
