@@ -3,6 +3,7 @@ import {
     Box,
     Card,
     CardContent,
+    Typography,
     Avatar,
 } from "@mui/material";
 import { manager_navigator } from "../Naviate";
