@@ -15,6 +15,7 @@ import {
   FormControl,
   InputLabel,
   InputBase,
+  TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { manager_navigator } from "../Naviate";
@@ -26,6 +27,7 @@ const Manager_ReportManagement = () => {
   const [samples, setSamples] = useState([]);
   const [editPriceOpen, setEditPriceOpen] = useState(false);
   const [currentDiamond, setCurrentDiamond] = useState();
+  const [currentValuationReport, setCurrentValuationReport] = useState();
   const [finalPrice, setFinalPrice] = useState(0);
   const drawerWidth = 240;
 
@@ -35,57 +37,58 @@ const Manager_ReportManagement = () => {
 
   const handleEditPriceClick = (diamond) => {
     setCurrentDiamond(diamond);
+    setCurrentValuationReport(diamond.valuationReport);
     setEditPriceOpen(true);
   };
 
-  const handleMaxPrice = (diamond) =>{
+  const handleMaxPrice = (diamond) => {
     let max = diamond.assignmentList[0].price;
-    for(let i = 1; i < diamond.assignmentList.length; ++i){
-        if(diamond.assignmentList[i].price > max){
-            max = diamond.assignmentList[i].price
-        }
+    for (let i = 1; i < diamond.assignmentList.length; ++i) {
+      if (diamond.assignmentList[i].price > max) {
+        max = diamond.assignmentList[i].price;
+      }
     }
-    return max
-  }
+    setCurrentValuationReport({...currentValuationReport, finalPrice: max});
+    return max;
+  };
 
-  const handleMinPrice = (diamond) =>{
+  const handleMinPrice = (diamond) => {
     let min = diamond.assignmentList[0].price;
-    for(let i = 1; i < diamond.assignmentList.length; ++i){
-        if(diamond.assignmentList[i].price < min){
-            min = diamond.assignmentList[i].price
-        }
+    for (let i = 1; i < diamond.assignmentList.length; ++i) {
+      if (diamond.assignmentList[i].price < min) {
+        min = diamond.assignmentList[i].price;
+      }
     }
-    return min;
-  }
+    setCurrentValuationReport({...currentValuationReport, finalPrice: min});
+  };
 
-  const handleAverage = (diamond) =>{
+  const handleAverage = (diamond) => {
     let avg = 0;
-    for(let i = 0; i < diamond.assignmentList.length; ++i){
-        avg += diamond.assignmentList[i].price;
+    for (let i = 0; i < diamond.assignmentList.length; ++i) {
+      avg += diamond.assignmentList[i].price;
     }
 
     avg /= diamond.assignmentList.length;
     avg = avg.toFixed(2);
+    setCurrentValuationReport({...currentValuationReport, finalPrice: avg});
     return avg;
-  }
+  };
 
-  const handleSave = (diamond) =>{
-    diamond.valuationReport.finalPrice = finalPrice;
+  const handleSave = (diamond) => {
     diamond.valuationReport.createdDate = new Date();
+    diamond.valuationReport = currentValuationReport;
     axios
-    .put("http://localhost:8080/api/request-detail/update", diamond)
-    .then(resp => console.log(resp.data))
-    .catch(err => console.log(err));
-
+      .put("http://localhost:8080/api/request-detail/update", diamond)
+      .then((resp) => console.log(resp.data))
+      .catch((err) => console.log(err));
+    getSamples();
     handleCancel();
-  }
+  };
 
-
-  const handleCancel = () =>{
+  const handleCancel = () => {
     setEditPriceOpen(false);
     setCurrentDiamond();
-    setFinalPrice(0);
-  }
+  };
 
   const getSamples = () => {
     axios
@@ -93,44 +96,6 @@ const Manager_ReportManagement = () => {
       .then((resp) => setSamples(resp.data))
       .catch((err) => console.log(err));
   };
-
-  const BootstrapInput = styled(InputBase)(({ theme }) => ({
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-    "& .MuiInputBase-input": {
-      borderRadius: 4,
-      position: "relative",
-      backgroundColor: theme.palette.background.paper,
-      border: "1px solid #ced4da",
-      fontSize: 16,
-      padding: "10px 26px 10px 12px",
-      transition: theme.transitions.create(["border-color", "box-shadow"]),
-      fontFamily: [
-        "-apple-system",
-        "BlinkMacSystemFont",
-        '"Segoe UI"',
-        "Roboto",
-        '"Helvetica Neue"',
-        "Arial",
-        "sans-serif",
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(","),
-      "&:focus": {
-        borderRadius: 4,
-        borderColor: "#80bdff",
-        boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-      },
-    },
-  }));
-  const handleFinalPriceChange = useCallback(
-    (event) => {
-      setCurrentDiamond({ ...currentDiamond, final_price: event.target.value });
-    },
-    [currentDiamond]
-  );
 
   return (
     <div>
@@ -242,17 +207,15 @@ const Manager_ReportManagement = () => {
                           }}
                         >
                           <InputLabel htmlFor="final-price-input" />
-                          <BootstrapInput
-                            id="final-price-input"
-                            value={
-                              finalPrice == 0 ? 'None': finalPrice
-                            }
+                          <TextField
+                            value={currentValuationReport.finalPrice}
                             placeholder="Enter final price"
-                            onChange={(e) => {
-                                handleFinalPriceChange
-                                setFinalPrice(e.target.value)
-                            }}
-                          />
+                            onChange={(e) =>
+                              setCurrentValuationReport({...currentValuationReport, finalPrice: e.target.value})
+                            }
+                            type="number"
+                            sx={{ paddingTop: 2 }}
+                          ></TextField>
                         </FormControl>
                       </TableCell>
                     </TableRow>
@@ -266,14 +229,14 @@ const Manager_ReportManagement = () => {
                             mr: 5,
                             ml: 3,
                           }}
-                          onClick={() => setFinalPrice(handleMinPrice(currentDiamond))}
+                          onClick={() => handleMinPrice(currentDiamond)}
                         >
                           Min
                         </Button>
                         <Button
                           variant="contained"
                           sx={{ background: "#69CEE2", borderRadius: "8px" }}
-                          onClick={() => setFinalPrice(handleAverage(currentDiamond))}
+                          onClick={() => handleAverage(currentDiamond)}
                         >
                           Average
                         </Button>
@@ -284,7 +247,7 @@ const Manager_ReportManagement = () => {
                             borderRadius: "8px",
                             ml: 6,
                           }}
-                          onClick={() => setFinalPrice(handleMaxPrice(currentDiamond))}
+                          onClick={() => handleMaxPrice(currentDiamond)}
                         >
                           Max
                         </Button>
@@ -297,32 +260,32 @@ const Manager_ReportManagement = () => {
                         sx={{ borderBottom: "none", textAlign: "left" }}
                       >
                         <Button>
-                        <Link
-                          href="#"
-                          sx={{
-                            color: "#69CEE2",
-                            fontWeight: "bold",
-                            fontSize: "16px",
-                            textDecoration: "none",
-                          }}
-                          onClick={() => handleSave(currentDiamond)}
-                        >
-                          Save
-                        </Link>
+                          <Link
+                            href="#"
+                            sx={{
+                              color: "#69CEE2",
+                              fontWeight: "bold",
+                              fontSize: "16px",
+                              textDecoration: "none",
+                            }}
+                            onClick={() => handleSave(currentDiamond)}
+                          >
+                            Save
+                          </Link>
                         </Button>
                         <Button>
-                        <Link
-                          href="#"
-                          sx={{
-                            color: "red",
-                            fontWeight: "bold",
-                            fontSize: "16px",
-                            textDecoration: "none",
-                          }}
-                          onClick={() => handleCancel()}
-                        >
-                          Cancel
-                        </Link>
+                          <Link
+                            href="#"
+                            sx={{
+                              color: "red",
+                              fontWeight: "bold",
+                              fontSize: "16px",
+                              textDecoration: "none",
+                            }}
+                            onClick={() => handleCancel()}
+                          >
+                            Cancel
+                          </Link>
                         </Button>
                       </TableCell>
                     </TableRow>
