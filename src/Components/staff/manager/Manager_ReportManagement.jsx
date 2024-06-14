@@ -77,7 +77,7 @@ const Manager_ReportManagement = () => {
   };
 
   const handleSave = (diamond) => {
-    diamond.valuationReport.createdDate = new Date();
+    currentValuationReport.createdDate = new Date();
     diamond.valuationReport = currentValuationReport;
     axios
       .put("http://localhost:8080/api/request-detail/update", diamond)
