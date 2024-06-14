@@ -708,7 +708,7 @@ const ConsultingStaff_ManageRequest = () => {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item  xs={6}>
+            <Grid item  xs={12}>
               <Box>
                 <TableContainer component={Paper} >
                   <Table sx={{ minWidth: 300, borderRadius: 10 }}>
@@ -735,7 +735,7 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableContainer>
               </Box>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               {open && displayBox(sampleId, requestId)}
             </Grid>
           </Grid>
