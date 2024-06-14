@@ -707,8 +707,8 @@ const ConsultingStaff_ManageRequest = () => {
             alignItems: "center",
           }}
         >
-          <Grid container spacing={1}>
-            <Grid item  xs={5.5}>
+          <Grid container spacing={2}>
+            <Grid item  xs={6}>
               <Box>
                 <TableContainer component={Paper} >
                   <Table sx={{ minWidth: 300, borderRadius: 10 }}>
@@ -735,7 +735,7 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableContainer>
               </Box>
             </Grid>
-            <Grid item xs={6.5}>
+            <Grid item xs={6}>
               {open && displayBox(sampleId, requestId)}
             </Grid>
           </Grid>
