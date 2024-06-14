@@ -33,9 +33,9 @@ const Manager_ReceiptManagement = () => {
   const [open, setOpen] = useState({});
   const [rows, setRows] = useState([]);
   const [appraiserList, setAppraiserList] = useState(() => getAppraisers());
-  const [staff1, setStaff1] = useState();
-  const [staff2, setStaff2] = useState();
-  const [staff3, setStaff3] = useState();
+  const [staff1, setStaff1] = useState({firstName: ""});
+  const [staff2, setStaff2] = useState({firstName: ""});
+  const [staff3, setStaff3] = useState({firstName: ""});
   const [boxOpen, setBoxOpen] = useState(false);
   const [currentDiamond, setCurrentDiamond] = useState(null);
   const appraisers = [staff1, staff2, staff3];
