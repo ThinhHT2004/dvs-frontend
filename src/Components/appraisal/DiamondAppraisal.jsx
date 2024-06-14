@@ -5,8 +5,11 @@ import DiamondAppraisalBody from '../Body/DiamondAppraisalBody'
 const DiamondAppraisal = () => {
   return (
     <>
+      <div>
       <Navbar/>
-      <DiamondAppraisalBody/>
+      </div>
+      <div><DiamondAppraisalBody/></div>
+      
     </>
   )
 }

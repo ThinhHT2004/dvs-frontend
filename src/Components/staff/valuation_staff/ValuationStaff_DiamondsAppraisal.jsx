@@ -115,7 +115,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
             <Grid item xs={7} md={4}>
               <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
                 <Table sx={{ minWidth: 300 }}>
-                  <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                     <TableRow>
                       <TableCell>ID Valuation</TableCell>
                       <TableCell>ID Sample</TableCell>
@@ -164,7 +164,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                 <Box sx={{ p: 3 }}>
                   <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
                     <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-                      <TableHead sx={{ backgroundColor: "#69CEE2" }}>
+                      <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                         <TableRow>
                           <TableCell>#00001 - #DIA01</TableCell>
                         </TableRow>
