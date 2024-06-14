@@ -1,0 +1,14 @@
+.Footer li {
+    color: #989898;
+}
+
+.Footer ul {
+    padding-left: 20px;
+}
+.Footer .MuiGrid-item h6 {
+    margin-bottom: 0;
+}
+
+.Footer .MuiGrid-item ul {
+    margin-top: 0;
+}

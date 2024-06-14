@@ -5,7 +5,7 @@ import Model_Img from '../../assets/banner_model.jpg'
 import { useSpring, animated } from 'react-spring';
 import Reviews from './CardComponent';
 import Assistance from './AssistanceComponent';
-
+import Footer from '../footer/Footer.jsx'
 
 const Style = {
   Button: {
@@ -64,6 +64,47 @@ const Banner = () => {
   );
 };
 
+const Banner2 = () => {
+  return (
+    <Box
+      style={{ background: 'linear-gradient(to right, #1e3c72, #2a5298)', padding: '50px', color: '#fff' }}
+    >
+      <Grid container spacing={3}>
+        <Grid item xs={2}>
+          <img src="/path/to/image1.jpg" alt="Image 1" style={{ width: '100%' }} />
+        </Grid>
+        <Grid item xs={2}>
+          <img src="/path/to/image2.jpg" alt="Image 2" style={{ width: '100%' }} />
+        </Grid>
+        <Grid item xs={2}>
+          <img src="/path/to/image3.jpg" alt="Image 3" style={{ width: '100%' }} />
+        </Grid>
+        <Grid item xs={2}>
+          <img src="/path/to/image4.jpg" alt="Image 4" style={{ width: '100%' }} />
+        </Grid>
+        <Grid item xs={2}>
+          <img src="/path/to/image5.jpg" alt="Image 5" style={{ width: '100%' }} />
+        </Grid>
+        <Grid item xs={2}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            style={{ height: '100%' }}
+          >
+            <Typography variant="h4" align="center" gutterBottom>
+              See how over 1 million diamond shoppers saved money on DA'secur
+            </Typography>
+            <Button variant="contained" color="primary">
+              GET STARTED
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+}
 
 const HomePage = () => {
   return (
@@ -72,8 +113,11 @@ const HomePage = () => {
       <Banner></Banner>
       <Assistance></Assistance>
       <Reviews></Reviews>
+      <Footer></Footer>
     </div>
   )
 }
 
 export default HomePage;
+
+

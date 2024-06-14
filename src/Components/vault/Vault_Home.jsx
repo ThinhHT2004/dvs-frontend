@@ -74,28 +74,6 @@ const Vault = () => {
                             <TableRow>
                                 <TableCell height="23px" sx={{ borderBottom: 'none', padding: '10px', fontSize: '16px' }} >Fast Diamond Appraisal - GIA ID 6495035512 - 5/13/2024</TableCell>
                             </TableRow>
-                            <TableRow>
-                                <TableCell>
-                                    <Link
-                                        href="#"
-                                        sx={{ color: "#69CEE2", paddingLeft: "16px" }}
-                                        underline="none"
-                                        onClick={() => handleAction()}
-                                    >
-                                        Approve
-                                    </Link>
-                                </TableCell>
-                                <TableCell>
-                                    <Link
-                                        href="#"
-                                        sx={{ color: "red", paddingLeft: "16px" }}
-                                        underline="none"
-                                        onClick={() => handleAction()}
-                                    >
-                                        Decline
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
