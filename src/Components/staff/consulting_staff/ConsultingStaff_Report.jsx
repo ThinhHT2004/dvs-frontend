@@ -195,7 +195,7 @@ const ConsultingStaff_Report = () => {
                     fontSize: "0.8em",
                   }}
                 >
-                  DAS Report: #00001
+                  DAS Report: {formatSampleId(diamond.id)}
                 </Typography>
               </div>
               <div style={{ marginTop: "15px", marginBottom: "3%" }}>
