@@ -273,11 +273,13 @@ const ConsultingStaff_ManageRequest = () => {
         return "secondary";
         break;
       case "FILLING":
-        return "default";
+        return "primary";
         break;
       case "FILLED":
         return "primary";
         break;
+      case "APPROVED":
+        return "success"
     }
   };
 

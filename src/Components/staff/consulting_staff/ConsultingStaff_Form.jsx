@@ -186,15 +186,15 @@ const ConsultingStaff_Form = () => {
       <Box
         sx={{
           p: 3,
-          flexGrow: 1,
+          
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Grid container spacing={3}>
-          <Grid item md={8} xs={12}>
+        <Grid container spacing={2}>
+          <Grid item xs={7}>
             <Box>
               <TableContainer component={Paper} sx={{ width: "100%" }}>
                 <Table sx={{ minWidth: 300 }}>
@@ -253,12 +253,12 @@ const ConsultingStaff_Form = () => {
               </TableContainer>
             </Box>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             {open && (
-              <Box>
+              
                 <Box>
                   <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 200 }}>
+                    <Table sx={{ minWidth: 100 , borderRadius: 10 }}>
                       <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                         <TableRow>
                           <TableCell>{selectedOption} Form</TableCell>
@@ -352,7 +352,7 @@ const ConsultingStaff_Form = () => {
                     </Table>
                   </TableContainer>
                 </Box>
-              </Box>
+              
             )}
           </Grid>
         </Grid>

@@ -304,32 +304,31 @@ const ConsultingStaff_Report = () => {
         <Table sx={{ minWidth: 100, borderRadius: 10 }}>
           <TableHead sx={{ backgroundColor: "#30D5C8" }}>
             <TableRow>
-              <TableCell>Create Appointment - {request.id}</TableCell>
-              <TableCell></TableCell>
+              <TableCell>Create Appointment - {formatRequestId(request.id)}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>{request.customer.first_name}</TableCell>
+            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+              
+              <TableCell>Name : {request.customer.first_name}</TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>Phone</TableCell>
-              <TableCell>{request.customer.phoneNumber}</TableCell>
+            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+             
+              <TableCell>Phone : {request.customer.phoneNumber}</TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>Date</TableCell>
+            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+              
               <TableCell>
-                <TextField
+                Date : <TextField
                   type="date"
                   onChange={(e) => (request.receivingDate = e.target.value)}
                 />
+                
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>Note</TableCell>
+            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
               <TableCell>
-                <TextField type="text" />
+                Note : <TextField type="text" />
               </TableCell>
             </TableRow>
             <TableRow>
@@ -343,7 +342,7 @@ const ConsultingStaff_Report = () => {
                 </Button>
                 <Button
                   variant="outlined"
-                  sx={{ color: "red", borderColor: "red" }}
+                  sx={{  marginLeft: 2, color: "red", borderColor: "red" }}
                   onClick={() => setSelectedRequest(null)}
                 >
                   Cancel
@@ -390,7 +389,7 @@ const ConsultingStaff_Report = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={4} md={7}>
+          <Grid item xs={8} >
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 100, borderRadius: 10 }}>
                 <TableHead sx={{ backgroundColor: "#30D5C8" }}>
@@ -466,10 +465,10 @@ const ConsultingStaff_Report = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={4}>
             {selectedRequest && renderAppointmentForm(selectedRequest)}
           </Grid>
-          <Grid item xs={12} md={7}>
+          <Grid item xs={12} >
             {selectedDiamond && renderDiamondReport(selectedDiamond)}
           </Grid>
         </Grid>

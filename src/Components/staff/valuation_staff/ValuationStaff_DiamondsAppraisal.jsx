@@ -351,7 +351,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                   </TableContainer>
                 </Box>
               ) : (
-                <Typography>Not Displayed</Typography>
+                <Typography></Typography>
               )}
             </Grid>
             {/* {selectedDiamond && (
