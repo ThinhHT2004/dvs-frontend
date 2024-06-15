@@ -168,9 +168,11 @@ const Manager_ReceiptManagement = () => {
       case "ASSIGNED":
         return "success";
       case "FILLING":
-        return "default";
+        return "primary";
       case "FILLED":
         return "primary";
+      case "APPROVED":
+        return "success"
     }
   };
 
@@ -252,7 +254,7 @@ const Manager_ReceiptManagement = () => {
                                 <TableHead>
                                   <TableRow>
                                     <TableCell>Sample Id</TableCell>
-                                    <TableCell>Status</TableCell>
+                                    <TableCell align="center">Status</TableCell>
                                     <TableCell></TableCell>
                                   </TableRow>
                                 </TableHead>
@@ -273,7 +275,7 @@ const Manager_ReceiptManagement = () => {
                                         <TableCell>
                                           {formatSampleId(diamondRow.id)}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                           <Chip
                                             label={diamondRow.status}
                                             color={renderSampleStatus(
