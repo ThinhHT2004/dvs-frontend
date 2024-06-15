@@ -275,7 +275,7 @@ const ConsultingStaff_Report = () => {
                 </Typography>
                 <Typography sx={{ fontSize: "1em", fontWeight: "bold" }}>
                   .........................................................{" "}
-                  {diamond.valuationReport.finalPrice}$.
+                  ${diamond.valuationReport.finalPrice}
                 </Typography>
               </div>
               <Box sx={{ justifyContent: "left", mt: "15px", mb: "15px" }}>
