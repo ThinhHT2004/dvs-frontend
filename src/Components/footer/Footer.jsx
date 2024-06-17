@@ -17,6 +17,7 @@ const Footer = () => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                backgroundColor: "#F3F4F6",
                 // backgroundImage: `url(${MapImg})`,
                 // backgroundPosition: 'end',
                 // backgroundSize: '',
