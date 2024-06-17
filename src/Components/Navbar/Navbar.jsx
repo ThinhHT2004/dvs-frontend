@@ -34,8 +34,8 @@ const Navbar = () => {
         <Toolbar disableGutters>
           <Button onClick={() => navigator('/')}><img src={logoWeb} alt="" className='logo' />   </Button>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} justifyContent={'center'}>
-            <Button sx={{ my: 2, display: 'block', color: 'black' }}>Calculate</Button>
-            <Button sx={{ my: 2, display: 'block', color: 'black' }}>Diamond Check</Button>
+            <Button sx={{ my: 2, display: 'block', color: 'black' }} onClick={() => navigator('/calculate')}>Calculate</Button>
+            <Button sx={{ my: 2, display: 'block', color: 'black' }} onClick={() => navigator('/diamond-check')}>Diamond Check</Button>
             <Button sx={{ my: 2, display: 'block', color: 'black' }} onClick={() => navigator('/diamond-appraisal')}>Appraisal</Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>

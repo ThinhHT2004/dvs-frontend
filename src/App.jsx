@@ -20,6 +20,8 @@ import StaffDrawer from './Components/staff/StaffDrawer.jsx'
 import Vault_Home from './Components/vault/Vault_Home.jsx'
 import Vault_Appointment from './Components/vault/Vault_Appointment.jsx'
 import Vault_PriceAlert from './Components/vault/Vault_PriceAlert.jsx'
+import Calculate from './Components/calculate/Calculate.jsx'
+import Check_Diamonds from './Components/check/Check_Diamonds.jsx'
 const App = () => {
 
   return (
@@ -28,6 +30,8 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<HomePage></HomePage>}></Route>
+            <Route path='/calculate'element={<Calculate></Calculate>}></Route>
+            <Route path='/diamond-check'element={<Check_Diamonds></Check_Diamonds>}></Route>
             <Route path='/diamond-appraisal' element={<DiamondAppraisal></DiamondAppraisal>}></Route>
             <Route path='/accounts/signin' element={<Login></Login>}></Route>
             <Route path='/accounts/signup' element={<SignUp></SignUp>}></Route>
