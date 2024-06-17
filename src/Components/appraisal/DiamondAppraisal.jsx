@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Link, Grid, Button, Select, FormControl, CardHeader, Typography, Card, CardContent} from '@mui/material';
@@ -172,8 +172,8 @@ const UserDiamondAppraisalBody = () => {
             </Grid>
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  inputFormat="dd/MM/yyyy"
+              <DateTimePicker
+                  inputFormat="dd/MM/yyyy hh:mm aa"
                   value={date}
                   onChange={(newValue) => setDate(newValue)}
                   renderInput={(params) => (
@@ -181,11 +181,11 @@ const UserDiamondAppraisalBody = () => {
                       {...params}
                       fullWidth
                       variant="outlined"
-                      placeholder="dd/MM/yyyy"
-                      sx={{ backgroundColor: '#fff', fontSize: '20px' }}
+                      placeholder="dd/MM/yyyy hh:mm aa"
+                      sx={{ backgroundColor: "#fff", fontSize: "20px" }}
                     />
                   )}
-                />
+                ></DateTimePicker>
               </LocalizationProvider>
             </Grid>
             <Grid item xs={12}>

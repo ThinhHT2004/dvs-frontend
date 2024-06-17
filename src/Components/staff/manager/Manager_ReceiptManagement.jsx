@@ -38,6 +38,7 @@ const Manager_ReceiptManagement = () => {
   const [staff3, setStaff3] = useState({firstName: ""});
   const [boxOpen, setBoxOpen] = useState(false);
   const [currentDiamond, setCurrentDiamond] = useState(null);
+  const [currentrRequest, setCurrentRequest] = useState();
   const appraisers = [staff1, staff2, staff3];
 
   useEffect(() => {
@@ -87,10 +88,11 @@ const Manager_ReceiptManagement = () => {
     }));
   };
 
-  console.log(appraisers);
+  console.log(currentrRequest);
 
-  const handleBoxOpen = (diamond) => {
+  const handleBoxOpen = (diamond, request) => {
     setCurrentDiamond(diamond);
+    setCurrentRequest(request);
     setBoxOpen(true);
   };
 
@@ -108,8 +110,7 @@ const Manager_ReceiptManagement = () => {
     } else {
       axios
         .put(
-          "http://localhost:8080/api/assignment/assign/" + currentSample.id,
-          staffList
+          "http://localhost:8080/api/assignment/assign/" + currentrRequest.id + "/"  + currentSample.id, staffList
         )
         .then((resp) => {
           console.log(resp.data);
@@ -120,7 +121,7 @@ const Manager_ReceiptManagement = () => {
     }
   };
 
-  function displayLink(sample) {
+  function displayLink(sample, request) {
     if (sample.status === "FILLED") {
       return (
         <Button>
@@ -130,7 +131,7 @@ const Manager_ReceiptManagement = () => {
               color: "#69CEE2",
             }}
             underline="none"
-            onClick={() => handleBoxOpen(sample)}
+            onClick={() => handleBoxOpen(sample, request)}
           >
             Assign
           </Link>
@@ -145,7 +146,7 @@ const Manager_ReceiptManagement = () => {
               color: "grey",
             }}
             underline="none"
-            onClick={() => handleBoxOpen(sample)}
+            onClick={() => handleBoxOpen(sample, request)}
             disabled
           >
             Assign
@@ -285,7 +286,7 @@ const Manager_ReceiptManagement = () => {
                                           ></Chip>
                                         </TableCell>
                                         <TableCell>
-                                          {displayLink(diamondRow)}
+                                          {displayLink(diamondRow, row)}
                                         </TableCell>
                                       </TableRow>
                                     )
