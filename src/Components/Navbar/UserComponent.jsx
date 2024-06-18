@@ -32,6 +32,9 @@ const UserComponent = () => {
     navigator('/');
   }
 
+  function handleVault(){
+    navigator('/vault/home');
+  }
 
   if (username === null) {
     return (
@@ -75,7 +78,7 @@ const UserComponent = () => {
           onClose={handleCloseUserMenu}
         >
         <MenuItem>
-          <Typography textAlign="center">Vault</Typography>
+          <Typography textAlign="center" onClick={() => handleVault()}>Vault</Typography>
         </MenuItem>
         <MenuItem >
           <Typography textAlign="center">Edit Profile</Typography>
