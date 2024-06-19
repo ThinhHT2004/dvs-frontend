@@ -68,7 +68,7 @@ const Calculate = () => {
           </Box>
           <Box>
             <Box marginTop="3%">
-              <Grid container>
+              <Grid container spacing={2}>
                 <Grid item md={4}>
                   <Box>
                     <Typography variant="h5">Calculator Input</Typography>
@@ -273,7 +273,9 @@ const Calculate = () => {
                                   <Grid item md={3} key={s}>
                                     <Button
                                       variant={
-                                        symmetry === s ? "contained" : "outlined"
+                                        symmetry === s
+                                          ? "contained"
+                                          : "outlined"
                                       }
                                       onClick={() => setSymmetry(s)}
                                       fullWidth
@@ -308,27 +310,29 @@ const Calculate = () => {
                           <Box>
                             <Typography>FLUORESCENCE</Typography>
                             <Box paddingBottom={1}>
-                            <Grid container>
-                              <Grid item md={12}>
-                                {fluorescenceMap.map((f) => (
-                                  <Button
-                                    variant={
-                                      fluorescence === f ? "contained" : "outlined"
-                                    }
-                                    sx={{
-                                      width: "18%",
-                                      "&:not(:last-child)": {
-                                        marginRight: "2.5%",
-                                      },
-                                    }}
-                                    onClick={() => setFluorescence(f)}
-                                  >
-                                    {f}
-                                  </Button>
-                                ))}
+                              <Grid container>
+                                <Grid item md={12}>
+                                  {fluorescenceMap.map((f) => (
+                                    <Button
+                                      variant={
+                                        fluorescence === f
+                                          ? "contained"
+                                          : "outlined"
+                                      }
+                                      sx={{
+                                        width: "18%",
+                                        "&:not(:last-child)": {
+                                          marginRight: "2.5%",
+                                        },
+                                      }}
+                                      onClick={() => setFluorescence(f)}
+                                    >
+                                      {f}
+                                    </Button>
+                                  ))}
+                                </Grid>
                               </Grid>
-                            </Grid>
-                          </Box>
+                            </Box>
                           </Box>
                           <Box display="flex" justifyContent="center">
                             <Button variant="contained" sx={{ width: "50%" }}>
@@ -349,7 +353,102 @@ const Calculate = () => {
                     </Box>
                   </Box>
                 </Grid>
-                <Grid item md={8}></Grid>
+                <Grid item md={8}>
+                  <Box>
+                    <Box>
+                      <Typography variant="h5">Calculator Output</Typography>
+                    </Box>
+                    <Box
+                      paddingTop={6}
+                      sx={{
+                        backgroundColor: "#FFFCFC",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        sx={{ flexDirection: "column" }}
+                      >
+                        <Box>
+                          <Typography color="#ACACAC" variant="h6">
+                            Fair Price Estimate
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Typography variant="h3" fontWeight="bold">
+                            $5,267
+                          </Typography>
+                        </Box>
+                        <Box marginTop={1}>
+                          <Typography color="#ACACAC" variant="h7">
+                            Round 1 Carat G VS2
+                          </Typography>
+                        </Box>
+                        <Box marginTop={6}>
+                          <Chip
+                            label="Natural Diamond"
+                            color="success"
+                            size="small"
+                          ></Chip>
+                        </Box>
+                        <Box width="100%" marginTop={2}>
+                          <Grid container>
+                            <Grid item md={4}>
+                            <Box
+                                fullWidth
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{
+                                  flexDirection: "column",
+                                  borderRight: 3,
+                                  borderColor: "#e6e3e3",
+                                  backgroundColor: "#ACACAC33",
+                                  borderRadius: "0px 0px 0px 8px"
+                                }}
+                              >
+                                <Typography>Estimate Range</Typography>
+                                <Box><Typography variant="h6" fontWeight="bold">$4,215 - $6,374</Typography></Box>
+                              </Box>
+                            </Grid>
+                            <Grid item md={4}>
+                              <Box
+                                fullWidth
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{
+                                  flexDirection: "column",
+                                  borderRight: 3,
+                                  borderColor: "#e6e3e3",
+                                  backgroundColor: "#ACACAC33"
+                                }}
+                              >
+                                <Typography>Last 30 Days Change</Typography>
+                                <Box><Typography variant="h6" fontWeight="bold">+10.28%</Typography></Box>
+                              </Box>
+                            </Grid>
+                            <Grid item md={4}>
+                              <Box
+                                fullWidth
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                sx={{ flexDirection: "column", backgroundColor: "#ACACAC33", borderRadius: "0px 0px 8px 0px" }}
+                              >
+                                <Typography>Estimate Price per Carat</Typography>
+                                <Box><Typography variant="h6" fontWeight="bold">$5,267</Typography></Box>
+                                
+                              </Box>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Grid>
               </Grid>
             </Box>
           </Box>
