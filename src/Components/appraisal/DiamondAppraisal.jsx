@@ -12,9 +12,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { Link, Grid, Button, Select, FormControl, CardHeader, Typography, Card, CardContent } from '@mui/material';
+import { Link, Grid, Button, Select, FormControl, CardHeader, Typography, Card, CardContent, Paper } from '@mui/material';
 import tickXanh from '../../assets/tichxanh.png';
-
+import background from '../../assets/diamondAppraisalBackground.jpg';
 import axios from 'axios';
 import Footer from '../footer/Footer';
 
@@ -218,9 +218,12 @@ const DiamondAppraisal = () => {
       <Box>
         <Navbar />
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box 
+      sx={{ flexGrow: 1 , backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
+      
+      >
 
-        <Card variant='outlined' sx={{ borderRadius: 0, border: 0, margin: 5 }}>
+        <Card variant='outlined' sx={{ borderRadius: 0, border: 0, margin: 5, background: 0}} >
 
           <CardHeader
             title="REQUEST AN APPOINTMENT"
