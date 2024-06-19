@@ -1,12 +1,44 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Chip,
+  Grid,
+  IconButton,
+  Input,
+  Slider,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../footer/Footer";
 import moment from "moment";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const Calculate = () => {
+  const shape1 = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS"];
+  const shape2 = ["PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
+  const colorMap = ["K", "J", "I", "H", "G", "F", "E", "D"];
+  const clarityMap = ["SI2", "SI1", "VS2", "VS1", "VSS2", "VVS1", "IF", "FL"];
+  const cutMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
+  const polishMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
+  const symmetryMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
+  const fluorescenceMap = ["VSTG", "STG", "MED", "FNT", "NON"];
+  const [open, setOpen] = useState(false);
+
   const [origin, setOrigin] = useState("Natural");
   const [shape, setShape] = useState("ROUND");
+  const [carat, setCarat] = useState(0.0);
+  const [color, setColor] = useState("K");
+  const [clarity, setClarity] = useState("SI2");
+  const [cut, setCut] = useState("FAIR");
+  const [symmetry, setSymmetry] = useState("FAIR");
+  const [polish, setPolish] = useState("FAIR");
+  const [fluorescence, setFluorescence] = useState("VSTG");
+
+  function handleOpen() {
+    setOpen(!open);
+  }
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -45,60 +77,275 @@ const Calculate = () => {
                     sx={{
                       backgroundColor: "#FFFCFC",
                       borderRadius: "8px",
-                      border: 1,
                     }}
                   >
-                    <Box width="100%">
-                      <Typography variant="h6">Diamond Origin</Typography>
-                      <Box>
-                        <Grid container spacing={1}>
-                          <Grid item md={6}>
-                            <Button
-                              variant={
-                                origin === "Natural" ? "contained" : "outlined"
-                              }
-                              onClick={() => setOrigin("Natural")}
-                              fullWidth
-                            >
-                              Natural
-                            </Button>
-                          </Grid>
-                          <Grid item md={6}>
-                            <Button
-                              variant={
-                                origin === "Lab" ? "contained" : "outlined"
-                              }
-                              onClick={() => setOrigin("Lab")}
-                              fullWidth
-                            >
-                              Lab
-                            </Button>
-                          </Grid>
-                        </Grid>
-                      </Box>
-                      <Typography variant="h6">
-                        SHAPE & CUT
-                      </Typography>
-                      <Box>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                              <Button variant={shape === "ROUND" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%", marginLeft: "1%"}} onClick={() => setShape("ROUND")}>ROUND</Button>
-                              <Button variant={shape === "CUSHION" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%"}} onClick={() => setShape("CUSHION")}>CUSHION</Button>
-                              <Button variant={shape === "EMERALD" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%"}} onClick={() => setShape("EMERALD")}>EMERALD</Button>
-                              <Button variant={shape === "OVAL" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%"}} onClick={() => setShape("OVAL")}>OVAL</Button>
-                              <Button variant={shape === "PRINCESS" ? 'contained' : 'outlined'} sx={{width: "18%"}} onClick={() => setShape("PRINCESS")}>PRINCESS</Button>
+                    <Box>
+                      <Box paddingLeft={1} paddingRight={1}>
+                        <Typography variant="h6">Diamond Origin</Typography>
+                        <Box>
+                          <Grid container spacing={1}>
+                            <Grid item md={6}>
+                              <Button
+                                variant={
+                                  origin === "Natural"
+                                    ? "contained"
+                                    : "outlined"
+                                }
+                                onClick={() => setOrigin("Natural")}
+                                fullWidth
+                              >
+                                Natural
+                              </Button>
                             </Grid>
-                        </Grid>
-                        <Grid container spacing={2} marginTop=".5%">
-                            <Grid item xs={12}>
-                              <Button variant={shape === "PEAR" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%", marginLeft: "1%"}} onClick={() => setShape("PEAR")}>PEAR</Button>
-                              <Button variant={shape === "RADIANT" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%"}} onClick={() => setShape("RADIANT")}>RADIANT</Button>
-                              <Button variant={shape === "MARQUISE" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%"}} onClick={() => setShape("MARQUISE")}>MARQUISE</Button>
-                              <Button variant={shape === "ASSCHER" ? 'contained' : 'outlined'} sx={{width: "18%", marginRight: "2%"}} onClick={() => setShape("ASSCHER")}>ASSCHER</Button>
-                              <Button variant={shape === "HEART" ? 'contained' : 'outlined'} sx={{width: "18%"}} onClick={() => setShape("HEART")}>HEART</Button>
+                            <Grid item md={6}>
+                              <Button
+                                variant={
+                                  origin === "Lab" ? "contained" : "outlined"
+                                }
+                                onClick={() => setOrigin("Lab")}
+                                fullWidth
+                              >
+                                Lab
+                              </Button>
                             </Grid>
-                        </Grid>
+                          </Grid>
+                        </Box>
                       </Box>
+                      <Box paddingLeft={1} paddingRight={1}>
+                        <Typography variant="h6">SHAPE & CUT</Typography>
+                        <Box>
+                          <Box paddingBottom={1}>
+                            <Grid container>
+                              <Grid item md={12}>
+                                {shape1.map((s) => (
+                                  <Button
+                                    variant={
+                                      shape === s ? "contained" : "outlined"
+                                    }
+                                    sx={{
+                                      width: "18%",
+                                      "&:not(:last-child)": {
+                                        marginRight: "2.5%",
+                                      },
+                                    }}
+                                    onClick={() => setShape(s)}
+                                  >
+                                    {s}
+                                  </Button>
+                                ))}
+                              </Grid>
+                            </Grid>
+                          </Box>
+                          <Box>
+                            <Grid container>
+                              <Grid item md={12}>
+                                {shape2.map((s) => (
+                                  <Button
+                                    variant={
+                                      shape === s ? "contained" : "outlined"
+                                    }
+                                    sx={{
+                                      width: "18%",
+                                      "&:not(:last-child)": {
+                                        marginRight: "2.5%",
+                                      },
+                                    }}
+                                    onClick={() => setShape(s)}
+                                  >
+                                    {s}
+                                  </Button>
+                                ))}
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Box>
+                        <Box paddingLeft={1} paddingRight={1}>
+                          <Typography variant="h6">Carat</Typography>
+                          <Box>
+                            <Box display="flex" justifyContent="center">
+                              <Chip
+                                label={parseFloat(carat).toFixed(2)}
+                                color="primary"
+                              ></Chip>
+                            </Box>
+                            <Slider
+                              size="small"
+                              defaultValue={0.25}
+                              step={0.01}
+                              min={0.25}
+                              max={5.0}
+                              valueLabelDisplay="auto"
+                              onChange={(e) => setCarat(e.target.value)}
+                            ></Slider>
+                          </Box>
+                        </Box>
+                      </Box>
+                      <Box paddingLeft={1} paddingRight={1}>
+                        <Typography>COLOR</Typography>
+                        <Box>
+                          <Grid container item md={12} spacing={1}>
+                            {colorMap.map((c) => (
+                              <Grid item md={3} key={c}>
+                                <Button
+                                  variant={
+                                    color === c ? "contained" : "outlined"
+                                  }
+                                  onClick={() => setColor(c)}
+                                  fullWidth
+                                >
+                                  {c}
+                                </Button>
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </Box>
+                      </Box>
+                      <Box paddingLeft={1} paddingRight={1}>
+                        <Typography>CLARITY</Typography>
+                        <Box>
+                          <Grid container spacing={1}>
+                            {clarityMap.map((c) => (
+                              <Grid item md={3} key={c}>
+                                <Button
+                                  variant={
+                                    clarity === c ? "contained" : "outlined"
+                                  }
+                                  onClick={() => setClarity(c)}
+                                  fullWidth
+                                >
+                                  {c}
+                                </Button>
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </Box>
+                      </Box>
+                      {!open ? (
+                        <Box marginTop={2}>
+                          <Box display="flex" justifyContent="center">
+                            <Button variant="contained" sx={{ width: "50%" }}>
+                              Submit
+                            </Button>
+                          </Box>
+                          <Box
+                            paddingLeft={1}
+                            paddingRight={1}
+                            display="flex"
+                            sx={{ justifyContent: "space-between" }}
+                          >
+                            <Box>
+                              <Typography>More Input</Typography>
+                            </Box>
+                            <Box>
+                              <IconButton onClick={handleOpen}>
+                                <ArrowDropDownIcon></ArrowDropDownIcon>
+                              </IconButton>
+                            </Box>
+                          </Box>
+                        </Box>
+                      ) : (
+                        <Box paddingLeft={1} paddingRight={1}>
+                          <Box>
+                            <Typography>CUT</Typography>
+                            <Box>
+                              <Grid container spacing={1}>
+                                {cutMap.map((c) => (
+                                  <Grid item md={3} key={c}>
+                                    <Button
+                                      variant={
+                                        cut === c ? "contained" : "outlined"
+                                      }
+                                      onClick={() => setCut(c)}
+                                      fullWidth
+                                    >
+                                      {c}
+                                    </Button>
+                                  </Grid>
+                                ))}
+                              </Grid>
+                            </Box>
+                          </Box>
+                          <Box>
+                            <Typography>SYMMETRY</Typography>
+                            <Box>
+                              <Grid container spacing={1}>
+                                {symmetryMap.map((s) => (
+                                  <Grid item md={3} key={s}>
+                                    <Button
+                                      variant={
+                                        symmetry === s ? "contained" : "outlined"
+                                      }
+                                      onClick={() => setSymmetry(s)}
+                                      fullWidth
+                                    >
+                                      {s}
+                                    </Button>
+                                  </Grid>
+                                ))}
+                              </Grid>
+                            </Box>
+                          </Box>
+                          <Box>
+                            <Typography>POLISH</Typography>
+                            <Box>
+                              <Grid container spacing={1}>
+                                {polishMap.map((p) => (
+                                  <Grid item md={3} key={p}>
+                                    <Button
+                                      variant={
+                                        polish === p ? "contained" : "outlined"
+                                      }
+                                      onClick={() => setPolish(p)}
+                                      fullWidth
+                                    >
+                                      {p}
+                                    </Button>
+                                  </Grid>
+                                ))}
+                              </Grid>
+                            </Box>
+                          </Box>
+                          <Box>
+                            <Typography>FLUORESCENCE</Typography>
+                            <Box paddingBottom={1}>
+                            <Grid container>
+                              <Grid item md={12}>
+                                {fluorescenceMap.map((f) => (
+                                  <Button
+                                    variant={
+                                      fluorescence === f ? "contained" : "outlined"
+                                    }
+                                    sx={{
+                                      width: "18%",
+                                      "&:not(:last-child)": {
+                                        marginRight: "2.5%",
+                                      },
+                                    }}
+                                    onClick={() => setFluorescence(f)}
+                                  >
+                                    {f}
+                                  </Button>
+                                ))}
+                              </Grid>
+                            </Grid>
+                          </Box>
+                          </Box>
+                          <Box display="flex" justifyContent="center">
+                            <Button variant="contained" sx={{ width: "50%" }}>
+                              Submit
+                            </Button>
+                          </Box>
+                          <Box
+                            display="flex"
+                            sx={{ justifyContent: "space-between" }}
+                          >
+                            <Typography>Fewer Input</Typography>
+                            <IconButton onClick={handleOpen}>
+                              <ArrowDropUpIcon></ArrowDropUpIcon>
+                            </IconButton>
+                          </Box>
+                        </Box>
+                      )}
                     </Box>
                   </Box>
                 </Grid>
