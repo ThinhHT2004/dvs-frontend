@@ -97,15 +97,15 @@ const UserDiamondAppraisalBody = () => {
 
   if (username === null) {
     return (
-      <div className='boxi'>
-        <p style={{ textAlign: 'center' }}>
+      <Box>
+        <Typography style={{ textAlign: 'center' }}>
           Please <span>
             <Link href="/accounts/signin" underline='none' sx={{ color: '#69CEE2', textDecoration: 'underline' }}>
               Sign in
             </Link>
           </span> to send request
-        </p>
-      </div>
+        </Typography>
+      </Box>
     );
   } else {
     return (
@@ -120,7 +120,7 @@ const UserDiamondAppraisalBody = () => {
         ) : (
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12}>
-              <FormControl fullWidth sx={{ backgroundColor: '#fff', fontSize: '20px' }}>
+              <FormControl fullWidth sx={{ backgroundColor: '#fff', fontSize: '20px' ,borderRadius:'4px'}}>
                 <Select
                   id="service-select"
                   value={service}
@@ -133,8 +133,10 @@ const UserDiamondAppraisalBody = () => {
                     return services.find(option => option.id === selected)?.name;
                   }}
                   sx={{
+                    borderRadius: '4px',
                     '& .MuiSelect-select': {
                       textAlign: 'left',
+                      
                     },
                   }}
                 >
@@ -167,12 +169,14 @@ const UserDiamondAppraisalBody = () => {
                     </InputAdornment>
                   ),
                 }}
-                sx={{ backgroundColor: '#fff', fontSize: '20px' }}
+                sx={{ backgroundColor: '#fff', fontSize: '20px'  ,borderRadius:'4px'}}
               />
             </Grid>
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
+              
               <DateTimePicker
+              
                   inputFormat="dd/MM/yyyy hh:mm aa"
                   value={date}
                   onChange={(newValue) => setDate(newValue)}
@@ -182,7 +186,7 @@ const UserDiamondAppraisalBody = () => {
                       fullWidth
                       variant="outlined"
                       placeholder="dd/MM/yyyy hh:mm aa"
-                      sx={{ backgroundColor: "#fff", fontSize: "20px" }}
+                      sx={{ backgroundColor: "#fff", fontSize: "20px" ,borderRadius:'4px'}}
                     />
                   )}
                 ></DateTimePicker>
@@ -215,12 +219,11 @@ const UserDiamondAppraisalBody = () => {
 const DiamondAppraisal = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Box>
+      <Box sx={{flexGrow: 1 , zIndex: 2}}>
         <Navbar />
       </Box>
       <Box 
-      sx={{ flexGrow: 1 , backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}}
-      
+      sx={{ flexGrow: 1 , backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' , zIndex: 1}}
       >
 
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0, margin: 5, background: 0}} >
@@ -230,29 +233,29 @@ const DiamondAppraisal = () => {
           />
           <CardContent>
             <Box>
-              <Box padding="2">
+              <Box padding={1}>
                 <Typography>
                   You can request an appraisal appointment by submitting the form below and we will promptly with my appointment availability.
                 </Typography>
               </Box>
-              <Box padding="2">
+              <Box padding={1}>
                 <Typography>
                   You can also email us directly at : <span style={{ color: '#69CEE2' }}>diasecurappraiser@gmail.com</span>
                 </Typography>
               </Box>
-              <Box padding="2">
+              <Box padding={1}>
                 <Typography>
                   You can also set up an appointment by calling us directly at : <span style={{ color: '#69CEE2' }}>(+84)84913-5986</span>
                 </Typography>
               </Box>
             </Box>
-            <Box padding="2">
+            <Box padding={2}>
               {UserDiamondAppraisalBody()}
             </Box>
           </CardContent>
         </Card>
       </Box>
-      <Box>
+      <Box sx={{flexGrow: 1}}>
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0}}>
           <CardHeader
             title="The Appraisal Process"
@@ -271,7 +274,7 @@ const DiamondAppraisal = () => {
           </CardContent>
         </Card>
       </Box>
-      <Box>
+      <Box sx={{flexGrow: 1}}>
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
           <CardHeader
             title="The Evaluation Process"
@@ -369,7 +372,7 @@ const DiamondAppraisal = () => {
               </CardContent>
             </Card>
       </Box>
-      <Box>
+      <Box >
         <Footer></Footer>
       </Box>
     </Box>
