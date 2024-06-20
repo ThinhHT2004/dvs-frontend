@@ -6,7 +6,7 @@ import background from '../../assets/diamondCheckBackground.png'
 import Button from '@mui/material/Button'
 import Imac from '../../assets/imac.png'
 import exPic from '../../assets/examplediamondpic.png'
-
+import DiamondDetails from './DiamondDetailComponent.jsx'
 const CheckDiamondBody = () => {
   const [checkid, setCheckid] = useState('');
   const [diamondDetails, setDiamondDetails] = useState(null);
@@ -212,6 +212,7 @@ const Check_Diamonds = () => {
       <Box>
         {CheckDiamondBody()}
       </Box>
+      <DiamondDetails></DiamondDetails>
       <Box>
         <Footer />
       </Box>
