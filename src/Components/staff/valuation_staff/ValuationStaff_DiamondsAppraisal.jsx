@@ -14,11 +14,13 @@ import {
   Link,
   TextField,
   Grid,
+  Chip
 } from "@mui/material";
 import { valuation_staff_navigator } from "../Naviate";
 import axios from "axios";
 import { formatSampleId, formatValuationId } from "../../../Foramat";
 import { Toaster, toast } from "sonner";
+import moment from "moment";
 
 const ValuationStaff_DiamondsAppraisal = () => {
   const staffId = sessionStorage.getItem("valuationStaffId");
@@ -41,6 +43,24 @@ const ValuationStaff_DiamondsAppraisal = () => {
       return false;
     } else {
       return true;
+    }
+  }
+
+  function displayDeadline(deadline){
+    const current = new Date();
+    const deadlineTime = new Date(deadline);
+    if(current  > (deadlineTime.getTime() - 30*60*1000)){
+      return (
+        <Chip color="error" label={moment(deadline).format("yyyy-MM-DD hh:mm a")}></Chip>
+      )
+    }else if(current > (deadlineTime.getTime() - 60*60*1000)){
+      return (
+        <Chip color="warning" label={moment(deadline).format("yyyy-MM-DD hh:mm a")}></Chip>
+      )
+    }else{
+      return (
+        <Chip color="primary" label={moment(deadline).format("yyyy-MM-DD hh:mm a")}></Chip>
+      )
     }
   }
 
@@ -112,7 +132,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
           }}
         >
           <Grid container spacing={3}>
-            <Grid item xs={7} md={4}>
+            <Grid item xs={7} md={5}>
               <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
                 <Table sx={{ minWidth: 300 }}>
                   <TableHead sx={{ backgroundColor: "#30D5C8" }}>
@@ -120,6 +140,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                       <TableCell>ID Valuation</TableCell>
                       <TableCell>ID Sample</TableCell>
                       <TableCell>Price</TableCell>
+                      <TableCell>Deadline</TableCell>
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
@@ -133,6 +154,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                         <TableCell>
                           {assign.price === 0 ? "No Price" : assign.price}
                         </TableCell>
+                        <TableCell>{displayDeadline(assign.deadline)}</TableCell>
                         <TableCell>
                           <Link
                             href="#"
@@ -159,7 +181,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                 </Table>
               </TableContainer>
             </Grid>
-            <Grid md={8}>
+            <Grid md={7}>
               {selectedDiamond ? (
                 <Box sx={{ p: 3 }}>
                   <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
