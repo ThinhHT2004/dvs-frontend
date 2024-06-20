@@ -4,8 +4,10 @@ import Customer1 from '../../assets/Customer1.jpg'
 import Customer2 from '../../assets/Customer2.jpg'
 import Customer3 from '../../assets/Customer3.jpg'
 import Customer4 from '../../assets/Customer4.jpg'
+import { useNavigate } from 'react-router-dom'
 
 const Guider = () => {
+  const navigator = useNavigate();
   return (
     <Box
       style={{
@@ -76,7 +78,8 @@ const Guider = () => {
               border: '2px solid',
               borderColor: '#C9C9C6',
               borderRadius: '8px',
-            }}>
+            }}
+              onClick={() => navigator('/calculate')}>
               GET STARTED
             </Button>
           </Box>

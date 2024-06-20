@@ -10,18 +10,12 @@ const Footer = () => {
     return (
         <div style={{ marginTop: '45px' }}>
             <Box className="Footer" sx={{
-                // backgroundColor: '#F8F8F8',
                 padding: 3,
                 marginTop: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                backgroundColor: "#F3F4F6",
-                // backgroundImage: `url(${MapImg})`,
-                // backgroundPosition: 'end',
-                // backgroundSize: '',
-                // backgroundRepeat: 'no-repeat'
             }}>
                 <Box display='flex' justifyContent='flex-end' width='100%'>
 
@@ -29,7 +23,7 @@ const Footer = () => {
                         <Grid item xs={3} sx={{ marginBottom: '20px', position: 'relative', top: '-20px' }}>
                             <div>
                                 <img src={logoWeb} alt="" className='logo' />
-                                <Typography variant="subtitle1" sx={{color: '#989898'}}>
+                                <Typography variant="subtitle1" sx={{ color: '#989898' }}>
                                     The top diamond price calculator in Vietnam.
                                 </Typography>
                                 <div>
@@ -67,9 +61,10 @@ const Footer = () => {
                                 <li>Local Jewelers</li>
                             </ul>
                         </Grid>
-                        <Grid item xs={3} sx={{ backgroundImage: `url(${MapImg})`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
+                        <Grid item xs={3} className="company-section">
+                            <img src={MapImg} alt="Company Map" className="map-img" />
                             <Typography variant="h6">COMPANY</Typography>
-                            <ul>
+                            <ul style={{paddingTop: '30px'}}>
                                 <li>About</li>
                                 <li>FAQ</li>
                                 <li>Privacy</li>

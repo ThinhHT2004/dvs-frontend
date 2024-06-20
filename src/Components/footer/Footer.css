@@ -12,3 +12,22 @@
 .Footer .MuiGrid-item ul {
     margin-top: 0;
 }
+.company-section {
+    position: relative;
+    z-index: 1; /* Ensures that the text is above the image */
+}
+
+.map-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: 80%;
+    z-index: 0; 
+    opacity: 1; 
+}
+
+.company-section > * {
+    position: absolute;
+    z-index: 1;
+}

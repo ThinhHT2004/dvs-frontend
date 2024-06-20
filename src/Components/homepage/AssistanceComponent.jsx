@@ -45,14 +45,13 @@ const Section = ({ icon, title, description }) => (
 const Assistance = () => {
     const navigator = useNavigate();
     return (
-        <>
-            <div style={{ marginTop: '65px', display: 'flex', gap: '8px' }}>
+        <div>
+            <div style={{ marginTop: '65px', display: 'flex', gap: '8px', paddingLeft: '3%' }}>
                 <Typography sx={{ textAlign: 'left' }} variant="h4">How</Typography>
                 <Typography sx={{ color: "#69CEE2" }} variant="h4">DiAsecur</Typography>
                 <Typography variant="h4">helps you buy & sell better</Typography>
             </div>
-            <Box></Box>
-            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-evenly', paddingLeft: '6.5%' }}>
 
                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="space-around" width="450px">
                     <Section
@@ -91,7 +90,7 @@ const Assistance = () => {
                 </Box>
 
             </div>
-        </>
+        </div>
     )
 };
 
