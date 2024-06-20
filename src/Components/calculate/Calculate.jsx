@@ -5,6 +5,11 @@ import {
   Grid,
   IconButton,
   Input,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
   Slider,
   Typography,
 } from "@mui/material";
@@ -15,7 +20,8 @@ import moment from "moment";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
-import { isThisHour } from "date-fns";
+import InboxIcon from "@mui/icons-material/Inbox";
+import Customer4 from "../../assets/Customer4.jpg";
 
 const Calculate = () => {
   const shape1 = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS"];
@@ -64,8 +70,8 @@ const Calculate = () => {
       const max = Math.max(...prices);
 
       return "$" + min + " - " + "$" + max;
-    }else{
-      return '--'
+    } else {
+      return "--";
     }
   }
 
@@ -455,7 +461,11 @@ const Calculate = () => {
                         </Box>
                         <Box marginTop={6}>
                           <Chip
-                            label={diamonds != null && diamonds.length > 0 ? origin + " DIAMOND" : "--"}
+                            label={
+                              diamonds != null && diamonds.length > 0
+                                ? origin + " DIAMOND"
+                                : "--"
+                            }
                             color="success"
                             size="small"
                           ></Chip>
@@ -531,6 +541,31 @@ const Calculate = () => {
                         </Box>
                       </Box>
                     </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      backgroundColor: "#FFFCFC",
+                      height: 700,
+                      marginTop: "5%",
+                      padding: 3,
+                    }}
+                  >
+                    <List disablePadding>
+                      {diamonds.map((d) => (
+                        <Box marginBottom={2} border={1} padding={0} borderColor="#c7ced9" borderRadius={2}>
+                          <ListItem disablePadding>
+                            <ListItemButton>
+                              <img src={Customer4} alt="" width="10%" />
+                              <ListItemText primary={d.shape} sx={{marginLeft: "5%"}}></ListItemText>
+                              <ListItemText primary={d.caratWeight}></ListItemText>
+                              <ListItemText primary={d.color}></ListItemText>
+                              <ListItemText primary={d.clarity}></ListItemText>
+                              <ListItemText primary={"$" + d.price}></ListItemText>
+                            </ListItemButton>
+                          </ListItem>
+                        </Box>
+                      ))}
+                    </List>
                   </Box>
                 </Grid>
               </Grid>
