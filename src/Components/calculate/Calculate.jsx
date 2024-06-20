@@ -8,12 +8,14 @@ import {
   Slider,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../footer/Footer";
 import moment from "moment";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import axios from "axios";
+import { isThisHour } from "date-fns";
 
 const Calculate = () => {
   const shape1 = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS"];
@@ -25,19 +27,76 @@ const Calculate = () => {
   const symmetryMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const fluorescenceMap = ["VSTG", "STG", "MED", "FNT", "NON"];
   const [open, setOpen] = useState(false);
+  const [advanced, setAdvanced] = useState(false);
 
-  const [origin, setOrigin] = useState("Natural");
+  const [origin, setOrigin] = useState("LAB");
   const [shape, setShape] = useState("ROUND");
-  const [carat, setCarat] = useState(0.0);
-  const [color, setColor] = useState("K");
-  const [clarity, setClarity] = useState("SI2");
-  const [cut, setCut] = useState("FAIR");
-  const [symmetry, setSymmetry] = useState("FAIR");
-  const [polish, setPolish] = useState("FAIR");
-  const [fluorescence, setFluorescence] = useState("VSTG");
+  const [carat, setCarat] = useState(0.5);
+  const [color, setColor] = useState("G");
+  const [clarity, setClarity] = useState("VS1");
+  const [cut, setCut] = useState("EX.");
+  const [symmetry, setSymmetry] = useState("EX.");
+  const [polish, setPolish] = useState("EX.");
+  const [fluorescence, setFluorescence] = useState("NON");
+
+  const [diamonds, setDiamonds] = useState(handleSearch);
 
   function handleOpen() {
     setOpen(!open);
+    setAdvanced(!advanced);
+  }
+
+  function calculateFairPrice(list) {
+    let res = 0;
+    if (list != null && list.length > 0) {
+      for (let i = 0; i < list.length; ++i) {
+        res += list[i].price;
+      }
+      res = res / list.length;
+    }
+    return res;
+  }
+
+  function generateMaxMin(list) {
+    if (list != null && list.length > 0) {
+      const prices = list.map((d) => d.price);
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+
+      return "$" + min + " - " + "$" + max;
+    }else{
+      return '--'
+    }
+  }
+
+  function generateSubInfo() {
+    return shape + " " + carat + " Carat " + color + " " + clarity;
+  }
+
+  console.log(diamonds);
+
+  function handleSearch() {
+    const data = {
+      origin,
+      shape,
+      carat,
+      color,
+      clarity,
+      cut,
+      symmetry,
+      polish,
+      fluorescence,
+    };
+    console.log(data);
+    try {
+      axios
+        .get("http://localhost:8080/api/diamond/search/false" + "?", {
+          params: data,
+        })
+        .then((resp) => setDiamonds(resp.data));
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -87,11 +146,11 @@ const Calculate = () => {
                             <Grid item md={6}>
                               <Button
                                 variant={
-                                  origin === "Natural"
+                                  origin === "NATURAL"
                                     ? "contained"
                                     : "outlined"
                                 }
-                                onClick={() => setOrigin("Natural")}
+                                onClick={() => setOrigin("NATURAL")}
                                 fullWidth
                               >
                                 Natural
@@ -100,9 +159,9 @@ const Calculate = () => {
                             <Grid item md={6}>
                               <Button
                                 variant={
-                                  origin === "Lab" ? "contained" : "outlined"
+                                  origin === "LAB" ? "contained" : "outlined"
                                 }
-                                onClick={() => setOrigin("Lab")}
+                                onClick={() => setOrigin("LAB")}
                                 fullWidth
                               >
                                 Lab
@@ -223,7 +282,11 @@ const Calculate = () => {
                       {!open ? (
                         <Box marginTop={2}>
                           <Box display="flex" justifyContent="center">
-                            <Button variant="contained" sx={{ width: "50%" }}>
+                            <Button
+                              variant="contained"
+                              sx={{ width: "50%" }}
+                              onClick={handleSearch}
+                            >
                               Submit
                             </Button>
                           </Box>
@@ -335,7 +398,11 @@ const Calculate = () => {
                             </Box>
                           </Box>
                           <Box display="flex" justifyContent="center">
-                            <Button variant="contained" sx={{ width: "50%" }}>
+                            <Button
+                              variant="contained"
+                              sx={{ width: "50%" }}
+                              onClick={handleSearch}
+                            >
                               Submit
                             </Button>
                           </Box>
@@ -378,17 +445,17 @@ const Calculate = () => {
                         </Box>
                         <Box>
                           <Typography variant="h3" fontWeight="bold">
-                            $5,267
+                            ${calculateFairPrice(diamonds)}
                           </Typography>
                         </Box>
                         <Box marginTop={1}>
                           <Typography color="#ACACAC" variant="h7">
-                            Round 1 Carat G VS2
+                            {generateSubInfo()}
                           </Typography>
                         </Box>
                         <Box marginTop={6}>
                           <Chip
-                            label="Natural Diamond"
+                            label={diamonds != null && diamonds.length > 0 ? origin + " DIAMOND" : "--"}
                             color="success"
                             size="small"
                           ></Chip>
@@ -396,7 +463,7 @@ const Calculate = () => {
                         <Box width="100%" marginTop={2}>
                           <Grid container>
                             <Grid item md={4}>
-                            <Box
+                              <Box
                                 fullWidth
                                 display="flex"
                                 justifyContent="center"
@@ -406,11 +473,15 @@ const Calculate = () => {
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
                                   backgroundColor: "#ACACAC33",
-                                  borderRadius: "0px 0px 0px 8px"
+                                  borderRadius: "0px 0px 0px 8px",
                                 }}
                               >
                                 <Typography>Estimate Range</Typography>
-                                <Box><Typography variant="h6" fontWeight="bold">$4,215 - $6,374</Typography></Box>
+                                <Box>
+                                  <Typography variant="h6" fontWeight="bold">
+                                    {generateMaxMin(diamonds)}
+                                  </Typography>
+                                </Box>
                               </Box>
                             </Grid>
                             <Grid item md={4}>
@@ -423,11 +494,15 @@ const Calculate = () => {
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
-                                  backgroundColor: "#ACACAC33"
+                                  backgroundColor: "#ACACAC33",
                                 }}
                               >
                                 <Typography>Last 30 Days Change</Typography>
-                                <Box><Typography variant="h6" fontWeight="bold">+10.28%</Typography></Box>
+                                <Box>
+                                  <Typography variant="h6" fontWeight="bold">
+                                    --
+                                  </Typography>
+                                </Box>
                               </Box>
                             </Grid>
                             <Grid item md={4}>
@@ -436,11 +511,20 @@ const Calculate = () => {
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
-                                sx={{ flexDirection: "column", backgroundColor: "#ACACAC33", borderRadius: "0px 0px 8px 0px" }}
+                                sx={{
+                                  flexDirection: "column",
+                                  backgroundColor: "#ACACAC33",
+                                  borderRadius: "0px 0px 8px 0px",
+                                }}
                               >
-                                <Typography>Estimate Price per Carat</Typography>
-                                <Box><Typography variant="h6" fontWeight="bold">$5,267</Typography></Box>
-                                
+                                <Typography>
+                                  Estimate Price per Carat
+                                </Typography>
+                                <Box>
+                                  <Typography variant="h6" fontWeight="bold">
+                                    {generateMaxMin(diamonds)}
+                                  </Typography>
+                                </Box>
                               </Box>
                             </Grid>
                           </Grid>
