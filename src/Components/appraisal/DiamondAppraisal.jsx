@@ -237,7 +237,11 @@ const DiamondAppraisal = () => {
         <Navbar />
       </Box>
       <Box
-        sx={{ flexGrow: 1, backgroundImage: `url(${background})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', zIndex: 1 }}
+        sx={{ flexGrow: 1, backgroundImage: `url(${background})`, 
+        backgroundSize: 'cover', 
+        backgroundPosition: 'center', 
+        backgroundRepeat: 'no-repeat', 
+        zIndex: 1 }}
       >
 
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0, margin: 5, background: 0 }} >

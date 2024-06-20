@@ -16,6 +16,7 @@ const Footer = () => {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                backgroundColor: '#f5f5f5',
             }}>
                 <Box display='flex' justifyContent='flex-end' width='100%'>
 
