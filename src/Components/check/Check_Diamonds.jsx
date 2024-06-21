@@ -289,7 +289,7 @@ const CheckDiamondBody = () => {
                           justifyContent="center"
                           alignItems="center"
                         >
-                          <img src={diamondCheckex} alt="" style={{ width: '500px', height: '250px' }}/>
+                          <img src={diamondCheckex} alt="" style={{ width: '400px', height: '250px' }}/>
                         </Grid>
                       </Grid>
                       <Grid container spacing={2} >
