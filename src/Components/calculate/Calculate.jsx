@@ -551,7 +551,7 @@ const Calculate = () => {
                     }}
                   >
                     <List disablePadding>
-                      {diamonds.map((d) => (
+                      {diamonds?.map((d) => (
                         <Box marginBottom={2} border={1} padding={0} borderColor="#c7ced9" borderRadius={2}>
                           <ListItem disablePadding>
                             <ListItemButton>
