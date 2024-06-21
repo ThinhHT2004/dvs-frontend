@@ -159,7 +159,8 @@ const CheckDiamondBody = () => {
             <Grid
               item
               xl={6}
-              md={12}
+              sm={12}
+              md={6}
               sx={{
                 display: 'flex',
                 justifyContent: 'center',
@@ -196,7 +197,7 @@ const CheckDiamondBody = () => {
                     justifyContent="center"
                     alignItems="center"
                     spacing={2}>
-                    <Grid item xl={8}>
+                    <Grid item xl={8} md ={8}>
                       <TextField
                         placeholder="Enter Certificate ID"
                         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
@@ -211,7 +212,7 @@ const CheckDiamondBody = () => {
                     <Grid
                       item
                       xl={4}
-
+                      md={4}
                     >
                       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <Button
@@ -236,8 +237,10 @@ const CheckDiamondBody = () => {
 
               </Box>
             </Grid>
-            <Grid item xl={6}
-              md={12}
+            <Grid item 
+              xl={6}
+              sm={12}
+              md={6}
               container
               direction="column"
               justifyContent="center"
@@ -264,7 +267,8 @@ const CheckDiamondBody = () => {
                         <Grid
                           item
                           xl={6}
-                          md={12}
+              sm={12}
+              md={6}
                         >
                           <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
                             <CardHeader
@@ -283,7 +287,8 @@ const CheckDiamondBody = () => {
                         <Grid
                           item
                           xl={6}
-                          md={12}
+              sm={12}
+              md={6}
                           container
                           direction="column"
                           justifyContent="center"
@@ -293,7 +298,10 @@ const CheckDiamondBody = () => {
                         </Grid>
                       </Grid>
                       <Grid container spacing={2} >
-                        <Grid item md={12} xl={6}>
+                        <Grid item 
+                        xl={6}
+                        sm={12}
+                        md={6}>
                           <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
 
                             <CardHeader
@@ -348,8 +356,9 @@ const CheckDiamondBody = () => {
                         </Grid>
                         <Grid
                           item
-                          md={12}
                           xl={6}
+              sm={12}
+              md={6}
                           container
                           direction="column"
                           justifyContent="center"
@@ -365,7 +374,8 @@ const CheckDiamondBody = () => {
                         <Grid
                           item
                           xl={6}
-                          md={12}
+              sm={12}
+              md={6}
                         >
                           <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
                             <CardHeader
@@ -401,7 +411,8 @@ const CheckDiamondBody = () => {
                         <Grid
                           item
                           xl={6}
-                          md={12}
+              sm={12}
+              md={6}
                           container
                           direction="column"
                           justifyContent="center"
@@ -423,7 +434,8 @@ const CheckDiamondBody = () => {
           <Grid
             item
             xl={6}
-            md={12}
+              sm={12}
+              md={6}
             container
             direction="column"
             justifyContent="center"
@@ -431,7 +443,9 @@ const CheckDiamondBody = () => {
           >
             <img src={exPic} alt="example diamond" style={{ width: '450px', height: '450px', margin: 5 }} />
           </Grid>
-          <Grid item xl={6} md={12}>
+          <Grid item xl={6}
+              sm={12}
+              md={6}>
             <Card variant='outlined' sx={{ borderRadius: 0, border: 0, margin: 5, backgroundColor: '#F9FAFB' }}>
               <CardHeader
                 title={
@@ -588,13 +602,13 @@ const CheckDiamondBody = () => {
           </Grid>
         </Grid>
         <Box sx={{ justifyContent: 'center', alignItems: 'center', padding: 5 }}>
-          <Typography variant="h4" sx={{ textAlign: 'center', margin: 5 }}>
+          <Typography variant="h4" sx={{ textAlign: 'center', marginBottom: 5 }}>
             Diamond Details
           </Typography>
           <Box>
 
             <Grid container spacing={2} >
-              <Grid item xl={6}>
+              <Grid item xl={6} md={6}>
                 <Card sx={{ height: '100%' }}>
                   <CardHeader
                     title="CERTIFICATE DETAILS"
@@ -675,7 +689,7 @@ const CheckDiamondBody = () => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item xl={6}>
+              <Grid item xl={6} md={6}>
                 <Card>
                   <CardHeader
                     title="PROPORTIONS"

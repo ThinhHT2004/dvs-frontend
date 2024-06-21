@@ -123,18 +123,45 @@ const UserDiamondAppraisalBody = () => {
     );
   } else {
     return (
-      <Box className='boxi' component="form" onSubmit={handleSubmit} noValidate autoComplete="off" sx={{ width: '800px', maxWidth: '100%' }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate autoComplete="off" >
         {message === 'Request sent' ? (
-          <Box display="grid" gridTemplateColumns="auto auto" gap={1} alignItems="center" justifyContent="center" mt={2}>
+          
+            <Grid container spacing={2}>
+            <Grid item lg={12}
+             container
+             
+             direction="row"
+             justifyContent="center"
+             alignItems="center">
             <img src={tickXanh} alt="" style={{ width: '150px', height: '150px' }} />
-            <p>Request had been sent</p>
-          </Box>
+            <Typography 
+            
+            sx={{
+            fontSize: {
+              xs: '16px',
+              sm: '18px',
+              md: '20px',
+              lg: '22px',
+              xl: '24px',
+            },
+            color: '#989898',
+          }}>
+            Request had been sent successfully
+          </Typography>
+              </Grid>
+              
+            </Grid>
+          
+          
+            
+            
+          
 
 
         ) : (
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12}>
-              <FormControl fullWidth sx={{ backgroundColor: '#fff', fontSize: '20px', borderRadius: '4px' }}>
+              <FormControl  sx={{ backgroundColor: '#fff', fontSize: '20px', borderRadius: '4px', width: 800 }}>
                 <Select
                   id="service-select"
                   value={service}
@@ -164,10 +191,10 @@ const UserDiamondAppraisalBody = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                fullWidth
+                
                 value={quantity}
                 onChange={handleInputChange}
-                placeholder="Number"
+                placeholder="Amount of Diamonds"
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 InputProps={{
                   endAdornment: (
@@ -183,7 +210,7 @@ const UserDiamondAppraisalBody = () => {
                     </InputAdornment>
                   ),
                 }}
-                sx={{ backgroundColor: '#fff', fontSize: '20px', borderRadius: '4px' }}
+                sx={{ backgroundColor: '#fff', fontSize: '20px', borderRadius: '4px', width: 800 }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -197,10 +224,10 @@ const UserDiamondAppraisalBody = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      fullWidth
+                      
                       variant="outlined"
                       placeholder="dd/MM/yyyy hh:mm aa"
-                      sx={{ backgroundColor: "#fff", fontSize: "20px", borderRadius: '4px' }}
+                      sx={{ backgroundColor: "#fff", fontSize: "20px", borderRadius: '4px' , width: 800 }}
                     />
                   )}
                 ></DateTimePicker>
@@ -253,9 +280,9 @@ const DiamondAppraisal = () => {
                 sx={{
                   fontSize: {
                     xs: '1.5rem',
-                    sm: '1.5rem',
-                    md: '2rem',
-                    lg: '2.5rem',
+                    sm: '1rem',
+                    md: '3rem',
+                    lg: '3rem',
                     xl: '3rem',
                   }
                 }}
@@ -272,8 +299,8 @@ const DiamondAppraisal = () => {
                     fontSize: {
                       xs: '16px',
                       sm: '18px',
-                      md: '20px',
-                      lg: '22px',
+                      md: '24px',
+                      lg: '24px',
                       xl: '24px',
                     },
                     color: '#989898'
@@ -351,7 +378,7 @@ const DiamondAppraisal = () => {
           />
           <CardContent>
             <Grid container spacing={2} >
-              <Grid item md={12} xl={6}>
+              <Grid item lg={6} xl={6} md={12}>
                 <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
 
                   <CardHeader
@@ -392,8 +419,7 @@ const DiamondAppraisal = () => {
               </Grid>
               <Grid
                 item
-                md={12}
-                xl={6}
+                lg={6} xl={6} md={12}
                 container
                 direction="column"
                 justifyContent="center"
@@ -408,8 +434,7 @@ const DiamondAppraisal = () => {
 
               <Grid
                 item
-                xl={6}
-                md={12}
+                lg={6} xl={6} md={12}
               >
                 <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
                   <CardHeader
@@ -462,8 +487,7 @@ const DiamondAppraisal = () => {
               </Grid>
               <Grid
                 item
-                xl={6}
-                md={12}
+                lg={6} xl={6} md={12}
                 container
                 direction="column"
                 justifyContent="center"
@@ -475,8 +499,7 @@ const DiamondAppraisal = () => {
             <Grid container spacing={2} marginTop={2}>
               <Grid
                 item
-                xl={6}
-                md={12}
+                lg={6} xl={6} md={12}
               >
                 <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
                   <CardHeader
@@ -505,8 +528,7 @@ const DiamondAppraisal = () => {
               </Grid>
               <Grid
                 item
-                xl={6}
-                md={12}
+                lg={6} xl={6} md={12}
                 container
                 direction="column"
                 justifyContent="center"
