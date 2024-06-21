@@ -24,7 +24,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 import InboxIcon from "@mui/icons-material/Inbox";
-import Customer4 from "../../assets/Customer4.jpg";
+import diaImg from "../../assets/DiaImg.png";
 
 const Calculate = () => {
   const shapeMap = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS", "PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
@@ -602,7 +602,7 @@ const Calculate = () => {
                                     justifyContent="center"
                                     alignItems="center"
                                   >
-                                    <img src={Customer4} alt="" width="110px" height="110px" />
+                                    <img src={diaImg} alt="" width="110px" height="110px" />
                                   </Grid>
                                   <Grid item lg={2}>
                                     <ListItemText primary={d.shape} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} ></ListItemText>

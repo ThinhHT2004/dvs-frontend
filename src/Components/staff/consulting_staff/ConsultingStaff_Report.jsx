@@ -167,7 +167,7 @@ const ConsultingStaff_Report = () => {
       <DialogTitle>{""}</DialogTitle>
       <DialogContent>
         <Paper>
-          <Box padding={1} height="100vh">
+          <Box padding={1} height="100%">
             <Box height="6%">
               <img src={logoWeb} style={{ width: "12%", height: "auto" }} />
             </Box>
@@ -216,48 +216,72 @@ const ConsultingStaff_Report = () => {
                 </Typography>
               </div>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Box>
-                  <div style={{ marginTop: "15px" }}>
-                    <h4>Diamond Attributes</h4>
-                    <Typography fontSize="0.9em">
-                      Cutting Style
-                      ..............................................................{" "}
-                      {diamond.valuationReport.shape}
-                    </Typography>
-                    <Typography fontSize="0.9em">
-                      Measurement
-                      ............................................................{" "}
-                      {diamond.valuationReport.measurement}
-                    </Typography>
-                    <Typography fontSize="0.9em">
-                      Carat Weight
-                      .............................................................{" "}
-                      {diamond.valuationReport.caratWeight} carat
-                    </Typography>
-                    <Typography fontSize="0.9em">
-                      Polish
-                      ........................................................................{" "}
-                      {diamond.valuationReport.polish}
-                    </Typography>
-                    <Typography fontSize="0.9em">
-                      Clarity Grade
-                      .............................................................{" "}
-                      {diamond.valuationReport.clarity}
-                    </Typography>
-                    <Typography fontSize="0.9em">
-                      Color Grade
-                      ...............................................................{" "}
-                      {diamond.valuationReport.color}
-                    </Typography>
-                    <Typography fontSize="0.9em">
-                      Symmetry
-                      ..................................................................{" "}
-                      {diamond.valuationReport.symmetry}
-                    </Typography>
-                    <Typography></Typography>
-                  </div>
-                </Box>
-                {/* <img src={diamondRing} style={{ width: '45%', height: 'auto', right: 0 }}></img> */}
+                <Grid container>
+                  <Grid item md={7}>
+                    <Box>
+                      <div style={{ marginTop: "15px" }}>
+                        <h4>Diamond Attributes</h4>
+                        <Typography fontSize="0.9em">
+                          Cutting Style
+                          ..............................................................{" "}
+                          {diamond.valuationReport.shape}
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Measurement
+                          ............................................................{" "}
+                          {diamond.valuationReport.measurement}
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Carat Weight
+                          .............................................................{" "}
+                          {diamond.valuationReport.caratWeight} carat
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Polish
+                          ........................................................................{" "}
+                          {diamond.valuationReport.polish}
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Clarity Grade
+                          .............................................................{" "}
+                          {diamond.valuationReport.clarity}
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Color Grade
+                          ...............................................................{" "}
+                          {diamond.valuationReport.color}
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Symmetry
+                          ..................................................................{" "}
+                          {diamond.valuationReport.symmetry}
+                        </Typography>
+                        <Typography fontSize="0.9em">
+                          Cut Grade
+                          ..................................................................{" "}
+                          {diamond.valuationReport.cut}
+                        </Typography>
+                        <Typography></Typography>
+                      </div>
+                    </Box>
+                  </Grid>
+                  <Grid item md={5}>
+                    <Box display="flex" justifyContent="center" alignItems="center" sx={{flexDirection: "column"}}>
+                      <Box>
+                        <img
+                          src={diamond.valuationReport.proportion}
+                          style={{ width: "100%" }}
+                        ></img>
+                      </Box>
+                      <Box>
+                        <img
+                          src={diamond.valuationReport.characteristic}
+                          style={{ width: "100%" }}
+                        ></img>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </Grid>
               </Box>
               <Typography sx={{ fontSize: "0.9em" }}>
                 *Gemological findings may vary if the same gemstones are
@@ -274,8 +298,8 @@ const ConsultingStaff_Report = () => {
                   Estimated Retail Replacement Value
                 </Typography>
                 <Typography sx={{ fontSize: "1em", fontWeight: "bold" }}>
-                  .........................................................{" "}
-                  ${diamond.valuationReport.finalPrice}
+                  ......................................................... $
+                  {diamond.valuationReport.finalPrice}
                 </Typography>
               </div>
               <Box sx={{ justifyContent: "left", mt: "15px", mb: "15px" }}>
@@ -298,62 +322,7 @@ const ConsultingStaff_Report = () => {
     </Dialog>
   );
 
-  const renderAppointmentForm = (request) => (
-    <Box>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 100, borderRadius: 10 }}>
-          <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-            <TableRow>
-              <TableCell>Create Appointment - {formatRequestId(request.id)}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-              
-              <TableCell>Name : {request.customer.first_name}</TableCell>
-            </TableRow>
-            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-             
-              <TableCell>Phone : {request.customer.phoneNumber}</TableCell>
-            </TableRow>
-            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-              
-              <TableCell>
-                Date : <TextField
-                  type="date"
-                  onChange={(e) => (request.receivingDate = e.target.value)}
-                />
-                
-              </TableCell>
-            </TableRow>
-            <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-              <TableCell>
-                Note : <TextField type="text" />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell colSpan={2} align="right">
-                <Button
-                  variant="contained"
-                  sx={{ backgroundColor: "#69CEE2" }}
-                  onClick={() => handleSaveAppointment(request)}
-                >
-                  Save
-                </Button>
-                <Button
-                  variant="outlined"
-                  sx={{  marginLeft: 2, color: "red", borderColor: "red" }}
-                  onClick={() => setSelectedRequest(null)}
-                >
-                  Cancel
-                </Button>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-  );
+  
 
   return (
     <Box
@@ -389,7 +358,7 @@ const ConsultingStaff_Report = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={8} >
+          <Grid item xs={8}>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 100, borderRadius: 10 }}>
                 <TableHead sx={{ backgroundColor: "#30D5C8" }}>
@@ -397,7 +366,7 @@ const ConsultingStaff_Report = () => {
                     <TableCell>ID Request</TableCell>
                     <TableCell>Customer</TableCell>
                     <TableCell align="center">Status</TableCell>
-                    <TableCell>Appointment</TableCell>
+                    <TableCell>Receiving Date</TableCell>
                     <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
@@ -413,7 +382,10 @@ const ConsultingStaff_Report = () => {
                             color={renderStatus(request.status)}
                           ></Chip>
                         </TableCell>
-                        <TableCell>{renderLink(request)}</TableCell>
+                        <TableCell>
+                          <Chip color="primary" size="small" label={moment(request.receivingDate).format("yyyy-MM-DD hh:mm A")}>
+                          </Chip>
+                        </TableCell>
                         <TableCell>
                           <IconButton
                             aria-label="expand row"
@@ -465,10 +437,7 @@ const ConsultingStaff_Report = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={4}>
-            {selectedRequest && renderAppointmentForm(selectedRequest)}
-          </Grid>
-          <Grid item xs={12} >
+          <Grid item xs={12}>
             {selectedDiamond && renderDiamondReport(selectedDiamond)}
           </Grid>
         </Grid>

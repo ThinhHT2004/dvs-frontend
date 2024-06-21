@@ -100,9 +100,8 @@ const ConsultingStaff_ManageRequest = () => {
     depth: depth,
     girdle: girdle,
     origin: returnOrigin,
-    cut: cutGrade,
+    cut: returnCutGrade,
   };
-
 
   useEffect(() => {
     getAcceptedRequest();
@@ -135,8 +134,8 @@ const ConsultingStaff_ManageRequest = () => {
     axios
       .get(
         "http://localhost:8080/api/request/valuation-request/not/" +
-        staffId +
-        "/WAITING"
+          staffId +
+          "/WAITING"
       )
       .then((resp) => {
         const fillingAndFilledRequests = resp.data.filter(
@@ -152,9 +151,9 @@ const ConsultingStaff_ManageRequest = () => {
     try {
       const resp = await axios.put(
         "http://localhost:8080/api/reports/update/" +
-        requestId +
-        "/" +
-        sampleId,
+          requestId +
+          "/" +
+          sampleId,
         valuationReport
       );
       const res = resp.data;
@@ -222,22 +221,22 @@ const ConsultingStaff_ManageRequest = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setMeausurement('');
-    setCaratWeight('');
-    setReturnOrigin('');
-    setReturnPolish('');
-    setReturnSymmetry('');
-    setReturnClarity('');
-    setReturnColorGrade('');
-    setReturnShape('');
-    setReturnFluorescence('');
-    setTable('');
-    setDepth('');
-    setGirdle('');
-    setCulet('');
-    setProportionImageUrl('');
-    setClarityImageUrl('');
-    setDiamondImageUrl('');
+    setMeausurement("");
+    setCaratWeight("");
+    setReturnOrigin("");
+    setReturnPolish("");
+    setReturnSymmetry("");
+    setReturnClarity("");
+    setReturnColorGrade("");
+    setReturnShape("");
+    setReturnFluorescence("");
+    setTable("");
+    setDepth("");
+    setGirdle("");
+    setCulet("");
+    setProportionImageUrl("");
+    setClarityImageUrl("");
+    setDiamondImageUrl("");
     getAcceptedRequest();
   };
 
@@ -297,22 +296,31 @@ const ConsultingStaff_ManageRequest = () => {
         return "primary";
         break;
       case "APPROVED":
-        return "success"
+        return "success";
     }
   };
 
   function displayBox(text, requestId) {
     if (text !== "") {
       return (
-        <Card component={Paper} >
+        <Card component={Paper}>
           <CardHeader
             sx={{ backgroundColor: "#30D5C8" }}
             title={`Sample Id: ${formatSampleId(text)}`}
           />
           <Grid container spacing={0}>
             <Grid item lg={6} borderRight={1}>
-
-              <Card variant="outlined" sx={{ flex: 1, borderRadius: 0, height: '100%', border: 0, display: 'flex', flexDirection: 'column' }}>
+              <Card
+                variant="outlined"
+                sx={{
+                  flex: 1,
+                  borderRadius: 0,
+                  height: "100%",
+                  border: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
                 <Box borderBottom={1}>
                   <Box>
                     <CardHeader title="Grading" />
@@ -442,15 +450,36 @@ const ConsultingStaff_ManageRequest = () => {
                     </CardContent>
                   </Box>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
                   <Grid container spacing={0} sx={{ flex: 1 }}>
-                    <Grid item lg={6} sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <Grid
+                      item
+                      lg={6}
+                      sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+                    >
                       <CardHeader title="Clarity Characteristics" />
-                      <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <CardContent
+                        sx={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
                         <Box padding={2}>
-                          <Input type="file" onChange={handleClarityImageUpload} />
+                          <Input
+                            type="file"
+                            onChange={handleClarityImageUpload}
+                          />
                         </Box>
-                        <Box padding={2} sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Box
+                          padding={2}
+                          sx={{
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
                           {clarityImageUrl && (
                             <img
                               src={clarityImageUrl}
@@ -461,16 +490,39 @@ const ConsultingStaff_ManageRequest = () => {
                         </Box>
                       </CardContent>
                     </Grid>
-                    <Grid item lg={6} sx={{ flex: 1, display: 'flex', flexDirection: 'column', borderLeft: 1 }}>
-
+                    <Grid
+                      item
+                      lg={6}
+                      sx={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        borderLeft: 1,
+                      }}
+                    >
                       <CardHeader title="Diamond Picture" />
                       <CardContent
-                        sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+                        sx={{
+                          flex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
                       >
-                        <Box padding={2} >
-                          <Input type="file" onChange={handleDiamondImageUpload} />
+                        <Box padding={2}>
+                          <Input
+                            type="file"
+                            onChange={handleDiamondImageUpload}
+                          />
                         </Box>
-                        <Box padding={2} sx={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Box
+                          padding={2}
+                          sx={{
+                            flex: 1,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
                           {diamondImageUrl && (
                             <img
                               src={diamondImageUrl}
@@ -480,16 +532,12 @@ const ConsultingStaff_ManageRequest = () => {
                           )}
                         </Box>
                       </CardContent>
-
                     </Grid>
                   </Grid>
-
-
                 </Box>
               </Card>
             </Grid>
             <Grid item lg={6}>
-
               <Card variant="outlined" sx={{ borderRadius: 0, border: 0 }}>
                 <Box borderBottom={1}>
                   <CardHeader title="Finish" />
@@ -504,7 +552,10 @@ const ConsultingStaff_ManageRequest = () => {
                               id="demo-simple-select"
                               value={returnPolish}
                               label="Polish"
-                              onChange={(e) => setReturnPolish(e.target.value)}
+                              onChange={(e) => {
+                                setReturnPolish(e.target.value);
+                                checkFullFilled();
+                              }}
                             >
                               {polish.map((pol) => (
                                 <MenuItem key={pol} value={pol}>
@@ -522,9 +573,10 @@ const ConsultingStaff_ManageRequest = () => {
                               id="demo-simple-select"
                               value={returnSymmetry}
                               label="Symmetry"
-                              onChange={(e) =>
-                                setReturnSymmetry(e.target.value)
-                              }
+                              onChange={(e) => {
+                                setReturnSymmetry(e.target.value);
+                                checkFullFilled();
+                              }}
                             >
                               {symmetry.map((sym) => (
                                 <MenuItem key={sym} value={sym}>
@@ -534,7 +586,6 @@ const ConsultingStaff_ManageRequest = () => {
                             </Select>
                           </FormControl>
                         </Grid>
-
                       </Grid>
                     </Box>
                     <Box padding={2}>
@@ -547,9 +598,10 @@ const ConsultingStaff_ManageRequest = () => {
                               id="demo-simple-select"
                               value={returnFluorescence}
                               label="Fluorescence"
-                              onChange={(e) =>
-                                setReturnFluorescence(e.target.value)
-                              }
+                              onChange={(e) => {
+                                setReturnFluorescence(e.target.value);
+                                checkFullFilled();
+                              }}
                             >
                               {fluorescence.map((fl) => (
                                 <MenuItem key={fl} value={fl}>
@@ -581,16 +633,14 @@ const ConsultingStaff_ManageRequest = () => {
                             </Select>
                           </FormControl>
                         </Grid>
-
                       </Grid>
                     </Box>
                   </CardContent>
-
                 </Box>
 
                 <Box>
                   <CardHeader title="Proportions" />
-                  <CardContent sx={{ paddingBottom: '0px' }}>
+                  <CardContent sx={{ paddingBottom: "0px" }}>
                     <Box padding={2}>
                       <Grid container spacing={2}>
                         <Grid item xs={6}>
@@ -671,11 +721,9 @@ const ConsultingStaff_ManageRequest = () => {
                       </Button>
                     </Box>
                   </CardContent>
-
                 </Box>
               </Card>
             </Grid>
-
           </Grid>
         </Card>
       );
@@ -780,12 +828,11 @@ const ConsultingStaff_ManageRequest = () => {
           }}
         >
           <Grid container spacing={2}>
-            <Grid item  lg={12}>
+            <Grid item lg={12}>
               <Box>
-                <TableContainer component={Paper} >
+                <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 300, borderRadius: 10 }}>
                     <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-
                       <TableRow>
                         <TableCell>Request ID</TableCell>
                         <TableCell>Customer</TableCell>
@@ -795,8 +842,6 @@ const ConsultingStaff_ManageRequest = () => {
                         <TableCell>Appointment</TableCell>
                         <TableCell></TableCell>
                       </TableRow>
-
-
                     </TableHead>
                     <TableBody>
                       {rows.map((row) => (
@@ -807,7 +852,7 @@ const ConsultingStaff_ManageRequest = () => {
                 </TableContainer>
               </Box>
             </Grid>
-            <Grid item  lg={12}>
+            <Grid item lg={12}>
               {open && displayBox(sampleId, requestId)}
             </Grid>
           </Grid>
