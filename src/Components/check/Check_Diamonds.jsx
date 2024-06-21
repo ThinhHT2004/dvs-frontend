@@ -189,7 +189,7 @@ const CheckDiamondBody = () => {
                   }}>
                   Check any diamond's <br /><span style={{ color: '#69CEE2' }}>price & quality</span>
                 </Typography>
-                <Typography color={'#989898'}>
+                <Typography color={'#989898'} padding={1}>
                   Transact with confidence — get fair price, cut score, visual carat and more <span style={{ color: '#69CEE2', textDecoration: 'underline' }}>for free</span>
                 </Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', padding: 2 }}>
@@ -294,7 +294,7 @@ const CheckDiamondBody = () => {
                           justifyContent="center"
                           alignItems="center"
                         >
-                          <img src={diamondCheckex} alt="" style={{ width: '400px', height: '250px' }}/>
+                          <img src={diamondCheckex} alt="" style={{ width: '430px', height: '240px' }}/>
                         </Grid>
                       </Grid>
                       <Grid container spacing={2} >
@@ -683,6 +683,10 @@ const CheckDiamondBody = () => {
                       <Typography>{diamondDetails.fluorescence}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 1 }}>
+                      <Typography sx={{ color: '#989898' }}>Cut Grade</Typography>
+                      <Typography>{diamondDetails.cutGrade}</Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 1 }}>
                       <Typography sx={{ color: '#989898' }}>Comments</Typography>
                       <Typography>{diamondDetails.comments}</Typography>
                     </Box>
@@ -690,7 +694,7 @@ const CheckDiamondBody = () => {
                 </Card>
               </Grid>
               <Grid item xl={6} md={6}>
-                <Card>
+                <Card sx={{ height: '100%' }}>
                   <CardHeader
                     title="PROPORTIONS"
                     titleTypographyProps={{ variant: 'h6' }}
@@ -698,7 +702,7 @@ const CheckDiamondBody = () => {
                   />
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <img src={Diamond_Proportions} alt="" style={{ width: '450px', height: '270px' }} />
+                      <img src={Diamond_Proportions} alt="" style={{ width: '450px', height: '300px' }} />
                     </Box>
                     <Grid container spacing={2} padding={1}>
                       <Grid item xl={3}>

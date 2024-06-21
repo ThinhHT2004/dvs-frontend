@@ -1,6 +1,9 @@
 import {
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   Chip,
   Grid,
   IconButton,
@@ -24,8 +27,8 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import Customer4 from "../../assets/Customer4.jpg";
 
 const Calculate = () => {
-  const shape1 = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS"];
-  const shape2 = ["PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
+  const shapeMap = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS", "PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
+
   const colorMap = ["K", "J", "I", "H", "G", "F", "E", "D"];
   const clarityMap = ["SI2", "SI1", "VS2", "VS1", "VSS2", "VVS1", "IF", "FL"];
   const cutMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
@@ -113,328 +116,348 @@ const Calculate = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Box padding={4}>
           <Box>
-            <Typography variant="h5">Diamond Price Calculator</Typography>
-            <Box width="40%">
-              <Typography fontSize="1em" color="#ACACAC">
-                Use our free diamond price calculator to estimate the current
-                retail price for diamonds.Our price estimates are updated daily
-                based on our massive database of online jeweler inventory
-                sourced from top-rated jewelers.
-              </Typography>
-            </Box>
-            <Box>
-              <Typography>
-                Updated:{" "}
-                <span style={{ color: "#159413" }}>
-                  {moment(new Date()).format("dddd MMMM DD, yyyy")}
-                </span>
-              </Typography>
-            </Box>
+            <Grid container>
+              <Grid item md={6} xl={6}>
+
+                <CardHeader
+                  title={
+                    <Typography
+                      variant="h3"
+                      sx={{
+                        fontSize: {
+                          xs: '1.5rem',
+                          sm: '1rem',
+                          md: '3rem',
+                          lg: '3rem',
+                          xl: '3rem',
+                        }
+                      }}
+                    >
+                      Diamond Price Calculator
+                    </Typography>
+                  }
+                />
+                <CardContent>
+                  <Box >
+                    <Typography
+                      fontSize="1em"
+                      color="#989898"
+                    >
+                      Use our free diamond price calculator to estimate the current
+                      retail price for diamonds.Our price estimates are updated daily
+                      based on our massive database of online jeweler inventory
+                      sourced from top-rated jewelers.
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography>
+                      Updated:{" "}
+                      <span style={{ color: "#159413" }}>
+                        {moment(new Date()).format("dddd MMMM DD, yyyy")}
+                      </span>
+                    </Typography>
+                  </Box>
+                </CardContent>
+              </Grid>
+            </Grid>
           </Box>
           <Box>
-            <Box marginTop="3%">
+            <Box >
               <Grid container spacing={2}>
                 <Grid item md={4}>
-                  <Box>
-                    <Typography variant="h5">Calculator Input</Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "#FFFCFC",
-                      borderRadius: "8px",
-                    }}
-                  >
-                    <Box>
-                      <Box paddingLeft={1} paddingRight={1}>
-                        <Typography variant="h6">Diamond Origin</Typography>
-                        <Box>
-                          <Grid container spacing={1}>
-                            <Grid item md={6}>
+
+                  <CardHeader
+                    title='Calculator Input'
+                    titleTypographyProps={{ variant: "h4" }}
+                  />
+                  <CardContent>
+                    <Card
+                      sx={{
+                        backgroundColor: "#F9FAFB",
+                        borderRadius: "8px",
+                      }}>
+
+                      <CardHeader
+                        title='Diamond Origin'
+                      />
+                      <CardContent>
+                        <Grid container spacing={2}>
+                          <Grid item md={6}>
+                            <Button
+                              variant={
+                                origin === "NATURAL"
+                                  ? "contained"
+                                  : "outlined"
+                              }
+                              onClick={() => setOrigin("NATURAL")}
+                              fullWidth
+                            >
+                              Natural
+                            </Button>
+                          </Grid>
+                          <Grid item md={6}>
+                            <Button
+                              variant={
+                                origin === "LAB" ? "contained" : "outlined"
+                              }
+                              onClick={() => setOrigin("LAB")}
+                              fullWidth
+                            >
+                              Lab
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                      <CardHeader
+                        title='Shape'
+                      />
+                      <CardContent>
+                      <Grid container item lg={12} spacing={2}>
+                          {shapeMap.map((c) => (
+                            <Grid item lg={2.4} key={c}>
                               <Button
                                 variant={
-                                  origin === "NATURAL"
-                                    ? "contained"
-                                    : "outlined"
+                                  shape === c ? "contained" : "outlined"
                                 }
-                                onClick={() => setOrigin("NATURAL")}
+                                onClick={() => setShape(c)}
                                 fullWidth
                               >
-                                Natural
+                                {c}
                               </Button>
                             </Grid>
-                            <Grid item md={6}>
+                          ))}
+                        </Grid>
+                      </CardContent>
+                      <CardHeader
+                        title='Carat'
+                      />
+                      <CardContent>
+                        <Box>
+                          <Box display="flex" justifyContent="center">
+                            <Chip
+                              label={parseFloat(carat).toFixed(2)}
+                              color="primary"
+                            ></Chip>
+                          </Box>
+                          <Slider
+                            size="small"
+                            defaultValue={0.25}
+                            step={0.01}
+                            min={0.25}
+                            max={5.0}
+                            valueLabelDisplay="auto"
+                            onChange={(e) => setCarat(e.target.value)}
+                          ></Slider>
+                        </Box>
+                      </CardContent>
+                      <CardHeader
+                        title='Color'
+                      />
+                      <CardContent>
+                        <Grid container item lg={12} spacing={2}>
+                          {colorMap.map((c) => (
+                            <Grid item lg={3} key={c}>
                               <Button
                                 variant={
-                                  origin === "LAB" ? "contained" : "outlined"
+                                  color === c ? "contained" : "outlined"
                                 }
-                                onClick={() => setOrigin("LAB")}
+                                onClick={() => setColor(c)}
                                 fullWidth
                               >
-                                Lab
+                                {c}
                               </Button>
                             </Grid>
-                          </Grid>
-                        </Box>
-                      </Box>
-                      <Box paddingLeft={1} paddingRight={1}>
-                        <Typography variant="h6">SHAPE & CUT</Typography>
-                        <Box>
-                          <Box paddingBottom={1}>
-                            <Grid container>
-                              <Grid item md={12}>
-                                {shape1.map((s) => (
-                                  <Button
-                                    variant={
-                                      shape === s ? "contained" : "outlined"
-                                    }
-                                    sx={{
-                                      width: "18%",
-                                      "&:not(:last-child)": {
-                                        marginRight: "2.5%",
-                                      },
-                                    }}
-                                    onClick={() => setShape(s)}
-                                  >
-                                    {s}
-                                  </Button>
-                                ))}
-                              </Grid>
+                          ))}
+                        </Grid>
+                      </CardContent>
+                      <CardHeader
+                        title='Clarity'
+                      />
+
+                      <CardContent>
+                        <Grid container spacing={2}>
+                          {clarityMap.map((c) => (
+                            <Grid item lg={3} key={c}>
+                              <Button
+                                variant={
+                                  clarity === c ? "contained" : "outlined"
+                                }
+                                onClick={() => setClarity(c)}
+                                fullWidth
+                              >
+                                {c}
+                              </Button>
                             </Grid>
-                          </Box>
-                          <Box>
-                            <Grid container>
-                              <Grid item md={12}>
-                                {shape2.map((s) => (
-                                  <Button
-                                    variant={
-                                      shape === s ? "contained" : "outlined"
-                                    }
-                                    sx={{
-                                      width: "18%",
-                                      "&:not(:last-child)": {
-                                        marginRight: "2.5%",
-                                      },
-                                    }}
-                                    onClick={() => setShape(s)}
-                                  >
-                                    {s}
-                                  </Button>
-                                ))}
-                              </Grid>
-                            </Grid>
-                          </Box>
-                        </Box>
-                        <Box paddingLeft={1} paddingRight={1}>
-                          <Typography variant="h6">Carat</Typography>
-                          <Box>
-                            <Box display="flex" justifyContent="center">
-                              <Chip
-                                label={parseFloat(carat).toFixed(2)}
-                                color="primary"
-                              ></Chip>
-                            </Box>
-                            <Slider
-                              size="small"
-                              defaultValue={0.25}
-                              step={0.01}
-                              min={0.25}
-                              max={5.0}
-                              valueLabelDisplay="auto"
-                              onChange={(e) => setCarat(e.target.value)}
-                            ></Slider>
-                          </Box>
-                        </Box>
-                      </Box>
-                      <Box paddingLeft={1} paddingRight={1}>
-                        <Typography>COLOR</Typography>
-                        <Box>
-                          <Grid container item md={12} spacing={1}>
-                            {colorMap.map((c) => (
-                              <Grid item md={3} key={c}>
-                                <Button
-                                  variant={
-                                    color === c ? "contained" : "outlined"
-                                  }
-                                  onClick={() => setColor(c)}
-                                  fullWidth
-                                >
-                                  {c}
-                                </Button>
-                              </Grid>
-                            ))}
-                          </Grid>
-                        </Box>
-                      </Box>
-                      <Box paddingLeft={1} paddingRight={1}>
-                        <Typography>CLARITY</Typography>
-                        <Box>
-                          <Grid container spacing={1}>
-                            {clarityMap.map((c) => (
-                              <Grid item md={3} key={c}>
-                                <Button
-                                  variant={
-                                    clarity === c ? "contained" : "outlined"
-                                  }
-                                  onClick={() => setClarity(c)}
-                                  fullWidth
-                                >
-                                  {c}
-                                </Button>
-                              </Grid>
-                            ))}
-                          </Grid>
-                        </Box>
-                      </Box>
+                          ))}
+                        </Grid>
+                      </CardContent>
                       {!open ? (
                         <Box marginTop={2}>
-                          <Box display="flex" justifyContent="center">
-                            <Button
-                              variant="contained"
-                              sx={{ width: "50%" }}
-                              onClick={handleSearch}
-                            >
-                              Submit
-                            </Button>
-                          </Box>
+                          <CardContent>
+                            <Box display="flex" justifyContent="center">
+                              <Button
+                                variant="contained"
+                                sx={{ width: "30%" }}
+                                onClick={handleSearch}
+                              >
+                                Submit
+                              </Button>
+                            </Box>
+                          </CardContent>
+
                           <Box
-                            paddingLeft={1}
-                            paddingRight={1}
+
                             display="flex"
                             sx={{ justifyContent: "space-between" }}
                           >
-                            <Box>
-                              <Typography>More Input</Typography>
-                            </Box>
-                            <Box>
-                              <IconButton onClick={handleOpen}>
-                                <ArrowDropDownIcon></ArrowDropDownIcon>
-                              </IconButton>
-                            </Box>
+                            <CardHeader
+                              title='More Input'
+                            />
+                            <CardHeader
+                              action={
+                                <IconButton onClick={handleOpen}>
+                                  <ArrowDropDownIcon />
+                                </IconButton>
+                              }
+                            />
                           </Box>
                         </Box>
                       ) : (
-                        <Box paddingLeft={1} paddingRight={1}>
-                          <Box>
-                            <Typography>CUT</Typography>
-                            <Box>
-                              <Grid container spacing={1}>
-                                {cutMap.map((c) => (
-                                  <Grid item md={3} key={c}>
-                                    <Button
-                                      variant={
-                                        cut === c ? "contained" : "outlined"
-                                      }
-                                      onClick={() => setCut(c)}
-                                      fullWidth
-                                    >
-                                      {c}
-                                    </Button>
-                                  </Grid>
-                                ))}
-                              </Grid>
-                            </Box>
-                          </Box>
-                          <Box>
-                            <Typography>SYMMETRY</Typography>
-                            <Box>
-                              <Grid container spacing={1}>
-                                {symmetryMap.map((s) => (
-                                  <Grid item md={3} key={s}>
-                                    <Button
-                                      variant={
-                                        symmetry === s
-                                          ? "contained"
-                                          : "outlined"
-                                      }
-                                      onClick={() => setSymmetry(s)}
-                                      fullWidth
-                                    >
-                                      {s}
-                                    </Button>
-                                  </Grid>
-                                ))}
-                              </Grid>
-                            </Box>
-                          </Box>
-                          <Box>
-                            <Typography>POLISH</Typography>
-                            <Box>
-                              <Grid container spacing={1}>
-                                {polishMap.map((p) => (
-                                  <Grid item md={3} key={p}>
-                                    <Button
-                                      variant={
-                                        polish === p ? "contained" : "outlined"
-                                      }
-                                      onClick={() => setPolish(p)}
-                                      fullWidth
-                                    >
-                                      {p}
-                                    </Button>
-                                  </Grid>
-                                ))}
-                              </Grid>
-                            </Box>
-                          </Box>
-                          <Box>
-                            <Typography>FLUORESCENCE</Typography>
-                            <Box paddingBottom={1}>
-                              <Grid container>
-                                <Grid item md={12}>
-                                  {fluorescenceMap.map((f) => (
-                                    <Button
-                                      variant={
-                                        fluorescence === f
-                                          ? "contained"
-                                          : "outlined"
-                                      }
-                                      sx={{
-                                        width: "18%",
-                                        "&:not(:last-child)": {
-                                          marginRight: "2.5%",
-                                        },
-                                      }}
-                                      onClick={() => setFluorescence(f)}
-                                    >
-                                      {f}
-                                    </Button>
-                                  ))}
+
+                        <Box >
+                          <CardHeader
+                            title='Cut'
+                          />
+                          <CardContent>
+                            <Grid container spacing={1}>
+                              {cutMap.map((c) => (
+                                <Grid item lg={3} key={c}>
+                                  <Button
+                                    variant={
+                                      cut === c ? "contained" : "outlined"
+                                    }
+                                    onClick={() => setCut(c)}
+                                    fullWidth
+                                  >
+                                    {c}
+                                  </Button>
                                 </Grid>
+                              ))}
+                            </Grid>
+                          </CardContent>
+                          <CardHeader
+                            title='Symmetry'
+                          />
+                          <CardContent>
+                            <Grid container spacing={1}>
+                              {symmetryMap.map((s) => (
+                                <Grid item lg={3} key={s}>
+                                  <Button
+                                    variant={
+                                      symmetry === s
+                                        ? "contained"
+                                        : "outlined"
+                                    }
+                                    onClick={() => setSymmetry(s)}
+                                    fullWidth
+                                  >
+                                    {s}
+                                  </Button>
+                                </Grid>
+                              ))}
+                            </Grid>
+                          </CardContent>
+                          <CardHeader
+                            title='Polish'
+                          />
+                          <CardContent>
+                            <Grid container spacing={1}>
+                              {polishMap.map((p) => (
+                                <Grid item lg={3} key={p}>
+                                  <Button
+                                    variant={
+                                      polish === p ? "contained" : "outlined"
+                                    }
+                                    onClick={() => setPolish(p)}
+                                    fullWidth
+                                  >
+                                    {p}
+                                  </Button>
+                                </Grid>
+                              ))}
+                            </Grid>
+                          </CardContent>
+                          <CardHeader
+                            title='Fluorescence'
+                          />
+                          <CardContent>
+                            <Grid container>
+                              <Grid item lg={12}>
+                                {fluorescenceMap.map((f) => (
+                                  <Button
+                                    variant={
+                                      fluorescence === f
+                                        ? "contained"
+                                        : "outlined"
+                                    }
+                                    sx={{
+                                      width: "18%",
+                                      "&:not(:last-child)": {
+                                        marginRight: "2.5%",
+                                      },
+                                    }}
+                                    onClick={() => setFluorescence(f)}
+                                  >
+                                    {f}
+                                  </Button>
+                                ))}
                               </Grid>
+                            </Grid>
+                          </CardContent>
+
+                          <CardContent>
+                            <Box display="flex" justifyContent="center">
+                              <Button
+                                variant="contained"
+                                sx={{ width: "30%" }}
+                                onClick={handleSearch}
+                              >
+                                Submit
+                              </Button>
                             </Box>
-                          </Box>
-                          <Box display="flex" justifyContent="center">
-                            <Button
-                              variant="contained"
-                              sx={{ width: "50%" }}
-                              onClick={handleSearch}
-                            >
-                              Submit
-                            </Button>
-                          </Box>
+                          </CardContent>
                           <Box
                             display="flex"
                             sx={{ justifyContent: "space-between" }}
                           >
-                            <Typography>Fewer Input</Typography>
-                            <IconButton onClick={handleOpen}>
-                              <ArrowDropUpIcon></ArrowDropUpIcon>
-                            </IconButton>
+                            <CardHeader
+                              title='Fewer Input'
+                            />
+                            <CardHeader
+                              action={
+                                <IconButton onClick={handleOpen}>
+                                  <ArrowDropUpIcon />
+                                </IconButton>
+                              }
+                            />
                           </Box>
                         </Box>
                       )}
-                    </Box>
-                  </Box>
+                    </Card>
+                  </CardContent>
+
+
                 </Grid>
-                <Grid item md={8}>
-                  <Box>
-                    <Box>
-                      <Typography variant="h5">Calculator Output</Typography>
-                    </Box>
-                    <Box
-                      paddingTop={6}
+                <Grid item lg={8}>
+
+                  <CardHeader
+                    title='Calculator Output'
+                    titleTypographyProps={{ variant: "h4" }}
+                  />
+                  <CardContent>
+                    <Card
                       sx={{
-                        backgroundColor: "#FFFCFC",
+                        backgroundColor: "#F9FAFB",
                         borderRadius: "8px",
                       }}
                     >
@@ -442,37 +465,46 @@ const Calculate = () => {
                         display="flex"
                         justifyContent="center"
                         alignItems="center"
-                        sx={{ flexDirection: "column" }}
+                        flexDirection="column"
                       >
-                        <Box>
-                          <Typography color="#ACACAC" variant="h6">
-                            Fair Price Estimate
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <Typography variant="h3" fontWeight="bold">
-                            ${calculateFairPrice(diamonds)}
-                          </Typography>
-                        </Box>
-                        <Box marginTop={1}>
-                          <Typography color="#ACACAC" variant="h7">
-                            {generateSubInfo()}
-                          </Typography>
-                        </Box>
-                        <Box marginTop={6}>
-                          <Chip
-                            label={
-                              diamonds != null && diamonds.length > 0
-                                ? origin + " DIAMOND"
-                                : "--"
-                            }
-                            color="success"
-                            size="small"
-                          ></Chip>
-                        </Box>
+                        <CardHeader
+                          title='Fair Price Estimate'
+                          titleTypographyProps={{ variant: "h5", color: "#ACACAC" }}
+                        />
+                        <CardContent
+                          sx={{
+                            alignItems: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <Box paddingBottom={2}>
+                            <Typography variant="h3" fontWeight="bold">
+                              ${calculateFairPrice(diamonds)}
+                            </Typography>
+                          </Box>
+                          <Box padding={1}>
+                            <Typography color="#ACACAC" variant="h7">
+                              {generateSubInfo()}
+                            </Typography>
+                          </Box>
+                          <Box padding={1}>
+                            <Chip
+                              label={
+                                diamonds != null && diamonds.length > 0
+                                  ? origin + " DIAMOND"
+                                  : "--"
+                              }
+                              color="success"
+                              size="small"
+                            ></Chip>
+                          </Box>
+                        </CardContent>
+
                         <Box width="100%" marginTop={2}>
                           <Grid container>
-                            <Grid item md={4}>
+                            <Grid item lg={4}>
                               <Box
                                 fullWidth
                                 display="flex"
@@ -483,7 +515,8 @@ const Calculate = () => {
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
                                   backgroundColor: "#ACACAC33",
-                                  borderRadius: "0px 0px 0px 8px",
+                                  padding: 2,
+
                                 }}
                               >
                                 <Typography>Estimate Range</Typography>
@@ -494,7 +527,7 @@ const Calculate = () => {
                                 </Box>
                               </Box>
                             </Grid>
-                            <Grid item md={4}>
+                            <Grid item lg={4}>
                               <Box
                                 fullWidth
                                 display="flex"
@@ -505,6 +538,7 @@ const Calculate = () => {
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
                                   backgroundColor: "#ACACAC33",
+                                  padding: 2,
                                 }}
                               >
                                 <Typography>Last 30 Days Change</Typography>
@@ -515,7 +549,7 @@ const Calculate = () => {
                                 </Box>
                               </Box>
                             </Grid>
-                            <Grid item md={4}>
+                            <Grid item lg={4}>
                               <Box
                                 fullWidth
                                 display="flex"
@@ -524,7 +558,7 @@ const Calculate = () => {
                                 sx={{
                                   flexDirection: "column",
                                   backgroundColor: "#ACACAC33",
-                                  borderRadius: "0px 0px 8px 0px",
+                                  padding: 2,
                                 }}
                               >
                                 <Typography>
@@ -540,33 +574,73 @@ const Calculate = () => {
                           </Grid>
                         </Box>
                       </Box>
-                    </Box>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: "#FFFCFC",
-                      height: 700,
-                      marginTop: "5%",
-                      padding: 3,
-                    }}
-                  >
-                    <List disablePadding>
-                      {diamonds?.map((d) => (
-                        <Box marginBottom={2} border={1} padding={0} borderColor="#c7ced9" borderRadius={2}>
-                          <ListItem disablePadding>
-                            <ListItemButton>
-                              <img src={Customer4} alt="" width="10%" />
-                              <ListItemText primary={d.shape} sx={{marginLeft: "5%"}}></ListItemText>
-                              <ListItemText primary={d.caratWeight}></ListItemText>
-                              <ListItemText primary={d.color}></ListItemText>
-                              <ListItemText primary={d.clarity}></ListItemText>
-                              <ListItemText primary={"$" + d.price}></ListItemText>
-                            </ListItemButton>
-                          </ListItem>
-                        </Box>
-                      ))}
-                    </List>
-                  </Box>
+                    </Card>
+                  </CardContent>
+                  <CardContent>
+                    <Card
+                      sx={{
+                        backgroundColor: "#F9FAFB",
+                        borderRadius: "8px",
+                      }}
+                    >
+
+                      <List disablePadding>
+                        {diamonds?.map((d) => (
+                          <Box borderBottom={1} borderColor="#c7ced9">
+                            <ListItem disablePadding>
+                              <ListItemButton>
+                                <Grid
+                                  container
+                                  direction='row'
+                                  spacing={2}
+                                  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                >
+                                  <Grid item
+                                    lg={2}
+                                    container
+                                    direction="column"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                  >
+                                    <img src={Customer4} alt="" width="110px" height="110px" />
+                                  </Grid>
+                                  <Grid item lg={2}>
+                                    <ListItemText primary={d.shape} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} ></ListItemText>
+                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                      Shape
+                                    </Typography>
+
+                                  </Grid>
+                                  <Grid item lg={2}>
+                                    <ListItemText primary={d.caratWeight} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
+                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                      Carat
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item lg={2}>
+                                    <ListItemText primary={d.color} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
+                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                      Color
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item lg={2}>
+                                    <ListItemText primary={d.clarity} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
+                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                      Clarity
+                                    </Typography>
+                                  </Grid>
+                                  <Grid item lg={2}>
+                                    <ListItemText primary={"$" + d.price} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
+
+                                  </Grid>
+                                </Grid>
+                              </ListItemButton>
+                            </ListItem>
+                          </Box>
+                        ))}
+                      </List>
+                    </Card>
+                  </CardContent>
                 </Grid>
               </Grid>
             </Box>
