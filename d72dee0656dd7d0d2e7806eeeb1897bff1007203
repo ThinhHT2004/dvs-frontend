@@ -51,6 +51,24 @@
       "parentUuid": "210d41a2_71fb9463",
       "revId": "d72dee0656dd7d0d2e7806eeeb1897bff1007203",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62584fd9_edbe600a",
+        "filename": "src/Components/homepage/BannerComponent.jsx",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1038125
+      },
+      "writtenOn": "2024-06-22T09:59:16Z",
+      "side": 1,
+      "message": "ok keep this",
+      "parentUuid": "3f7ff17b_d1716b86",
+      "revId": "d72dee0656dd7d0d2e7806eeeb1897bff1007203",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
