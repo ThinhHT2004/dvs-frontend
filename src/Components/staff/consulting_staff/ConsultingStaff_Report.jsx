@@ -108,7 +108,7 @@ const ConsultingStaff_Report = () => {
     formData.append("receiveDate", request.receivingDate);
     console.log(formData.get("receiveDate"));
     axios
-      .put("http://localhost:8080/api/request/create-appointment", formData)
+      .put("https://dvs-backend-production.up.railway.app/api/request/create-appointment", formData)
       .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
     setSelectedRequest();
@@ -117,7 +117,7 @@ const ConsultingStaff_Report = () => {
   const getRequests = () => {
     axios
       .get(
-        "http://localhost:8080/api/request/valuation-request/status/PROCESSING/COMPLETED"
+        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/status/PROCESSING/COMPLETED"
       )
       .then((resp) => setRequests(resp.data))
       .catch((err) => console.log(err));

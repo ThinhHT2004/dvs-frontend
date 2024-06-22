@@ -32,7 +32,7 @@ const Vault = () => {
   const getRequests = () => {
     try {
       axios
-        .get("http://localhost:8080/api/customers/request/" + customerId)
+        .get("http://dvs-backend-production.up.railway.app/api/customers/request/" + customerId)
         .then((resp) => setRequests(resp.data));
     } catch (err) {
       console.log(err);

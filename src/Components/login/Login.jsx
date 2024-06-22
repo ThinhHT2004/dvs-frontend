@@ -18,7 +18,7 @@ const Login = () => {
 
     function handleLogin(){
         axios
-        .post('http://localhost:8080/api/auth/login', {username: username, password: password})
+        .post('https://dvs-backend-production.up.railway.app/api/auth/login', {username: username, password: password})
         .then(response => {
             console.log(response.data)
             if(response.data.role === 'CUSTOMER'){

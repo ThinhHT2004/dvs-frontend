@@ -133,7 +133,7 @@ const ConsultingStaff_ManageRequest = () => {
   function getAcceptedRequest() {
     axios
       .get(
-        "http://localhost:8080/api/request/valuation-request/not/" +
+        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/not/" +
           staffId +
           "/WAITING"
       )
@@ -150,7 +150,7 @@ const ConsultingStaff_ManageRequest = () => {
   async function saveReport(requestId, sampleId, valuationReport) {
     try {
       const resp = await axios.put(
-        "http://localhost:8080/api/reports/update/" +
+        "https://dvs-backend-production.up.railway.app/api/reports/update/" +
           requestId +
           "/" +
           sampleId,
@@ -174,7 +174,7 @@ const ConsultingStaff_ManageRequest = () => {
     data.append("valuationReportId", reportId);
     console.log(data.get("file1"));
     axios
-      .post("http://localhost:8080/api/cloudinary/upload", data)
+      .post("https://dvs-backend-production.up.railway.app/api/cloudinary/upload", data)
       .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
   }
@@ -182,7 +182,7 @@ const ConsultingStaff_ManageRequest = () => {
   async function getValuationRequestDetail(requestDetailId) {
     try {
       const resp = await axios.get(
-        "http://localhost:8080/api/request-detail/find/" + requestDetailId
+        "https://dvs-backend-production.up.railway.app/api/request-detail/find/" + requestDetailId
       );
       return resp.data;
     } catch (err) {

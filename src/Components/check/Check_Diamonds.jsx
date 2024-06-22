@@ -1217,7 +1217,7 @@ const Check_Diamonds = () => {
       <Box sx={{ flexGrow: 1, zIndex: 1 }}>{CheckDiamondBody()}</Box>
       <Box>
         <Footer />
-      </Box> 
+      </Box>
     </Box>
   );
 };

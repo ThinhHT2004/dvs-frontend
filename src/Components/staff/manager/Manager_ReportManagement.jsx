@@ -80,7 +80,7 @@ const Manager_ReportManagement = () => {
     currentValuationReport.createdDate = new Date();
     diamond.valuationReport = currentValuationReport;
     axios
-      .put("http://localhost:8080/api/request-detail/update", diamond)
+      .put("https://dvs-backend-production.up.railway.app/api/request-detail/update", diamond)
       .then((resp) => {
         console.log(resp.data);
         getSamples();
@@ -97,7 +97,7 @@ const Manager_ReportManagement = () => {
 
   const getSamples = () => {
     axios
-      .get("http://localhost:8080/api/request-detail/VALUATED")
+      .get("https://dvs-backend-production.up.railway.app/api/request-detail/VALUATED")
       .then((resp) => setSamples(resp.data))
       .catch((err) => console.log(err));
   };

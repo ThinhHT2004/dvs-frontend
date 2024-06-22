@@ -66,14 +66,14 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   const getAssignments = () => {
     axios
-      .get("http://localhost:8080/api/assignment/ASSIGNED/" + staffId)
+      .get("https://dvs-backend-production.up.railway.app/api/assignment/ASSIGNED/" + staffId)
       .then((resp) => setAssignments(resp.data))
       .catch((err) => console.log(err));
   };
 
   const getSelectDiamond = (id) => {
     axios
-      .get("http://localhost:8080/api/request-detail/find/" + id)
+      .get("https://dvs-backend-production.up.railway.app/api/request-detail/find/" + id)
       .then((resp) => setSelectedDiamond(resp.data))
       .catch((err) => console.log(err));
   };
@@ -92,7 +92,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
       toast.error("The price must not be negative");
     } else {
       axios
-        .put("http://localhost:8080/api/assignment/update", selectedAssignment)
+        .put("https://dvs-backend-production.up.railway.app/api/assignment/update", selectedAssignment)
         .then((resp) => {
           console.log(resp.data);
           getAssignments();

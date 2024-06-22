@@ -47,7 +47,7 @@ const ConsultingStaff_Form = () => {
   function getAcceptedRquest() {
     axios
       .get(
-        "http://localhost:8080/api/request/valuation-request/" +
+        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/" +
           consultignStaffId +
           "/ACCEPTED/COMPLETED"
       )
@@ -82,7 +82,7 @@ const ConsultingStaff_Form = () => {
     }else{
       axios
       .post(
-        "http://localhost:8080/api/request/create-receipt/" + requestId,
+        "https://dvs-backend-production.up.railway.app/api/request/create-receipt/" + requestId,
         requestDetailList
       )
       .then((resp) => {
@@ -102,7 +102,7 @@ const ConsultingStaff_Form = () => {
       return;
     }
     axios
-      .get("http://localhost:8080/api/service-prices/price/" + id + "/" + size)
+      .get("https://dvs-backend-production.up.railway.app/api/service-prices/price/" + id + "/" + size)
       .then((resp) => {
         let newListSample = [...listSample];
         newListSample[index] = resp.data;

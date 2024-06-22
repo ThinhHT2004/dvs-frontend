@@ -17,7 +17,7 @@ const SignUp = () => {
   
     function handleSignUp(){
         axios
-        .post("http://localhost:8080/api/accounts/signup", {username: username, password: password, confirmPassword: confirmPassword})
+        .post("https://dvs-backend-production.up.railway.app/api/accounts/signup", {username: username, password: password, confirmPassword: confirmPassword})
         .then(response => {
             console.log(response.data)
             if(response.data.status === true){

@@ -68,7 +68,7 @@ const Manager_ReceiptManagement = () => {
   function getProcessingRequest() {
     axios
       .get(
-        "http://localhost:8080/api/request/valuation-request/status/PROCESSING"
+        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/status/PROCESSING"
       )
       .then((resp) => setRows(resp.data))
       .catch((err) => console.log(err));
@@ -76,7 +76,7 @@ const Manager_ReceiptManagement = () => {
 
   function getAppraisers() {
     axios
-      .get("http://localhost:8080/api/staff/valuation-staffs")
+      .get("https://dvs-backend-production.up.railway.app/api/staff/valuation-staffs")
       .then((resp) => setAppraiserList(resp.data))
       .catch((err) => console.log(err));
   }
@@ -110,7 +110,7 @@ const Manager_ReceiptManagement = () => {
     } else {
       axios
         .put(
-          "http://localhost:8080/api/assignment/assign/" + currentrRequest.id + "/"  + currentSample.id, staffList
+          "https://dvs-backend-production.up.railway.app/api/assignment/assign/" + currentrRequest.id + "/"  + currentSample.id, staffList
         )
         .then((resp) => {
           console.log(resp.data);

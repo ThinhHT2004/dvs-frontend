@@ -32,7 +32,7 @@ const ConsultingStaff_IncommingRequest = () => {
 
   const getAllWaitingRequests = () => {
     axios
-      .get("http://localhost:8080/api/request/waiting")
+      .get("https://dvs-backend-production.up.railway.app/api/request/waiting")
       .then((response) => {
         if (response.data.length > requests.length) {
         
@@ -46,7 +46,7 @@ const ConsultingStaff_IncommingRequest = () => {
   const acceptRequest = (requestId) => {
     axios
       .put(
-        "http://localhost:8080/api/request/" + requestId + "/assign/" + staffId
+        "https://dvs-backend-production.up.railway.app/api/request/" + requestId + "/assign/" + staffId
       )
       .then(() => {
         setRequests((prevRequests) =>

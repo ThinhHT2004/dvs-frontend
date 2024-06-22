@@ -99,7 +99,7 @@ const Calculate = () => {
     console.log(data);
     try {
       axios
-        .get("http://localhost:8080/api/diamond/search/false" + "?", {
+        .get("https://dvs-backend-production.up.railway.app/api/diamond/search/false" + "?", {
           params: data,
         })
         .then((resp) => setDiamonds(resp.data));

@@ -29,7 +29,7 @@ const UserDiamondAppraisalBody = () => {
   const [date, setDate] = useState(null);
   const [message, setMessage] = useState('');
   const [customer, setCustomer] = useState(() => {
-    axios.get('http://localhost:8080/api/customers/' + customerId)
+    axios.get('https://dvs-backend-production.up.railway.app/api/customers/' + customerId)
       .then(response => {
         console.log(response.data);
         setCustomer(response.data);
@@ -40,7 +40,7 @@ const UserDiamondAppraisalBody = () => {
 
   function getAllServices() {
     axios
-      .get('http://localhost:8080/api/services/')
+      .get('https://dvs-backend-production.up.railway.app/api/services/')
       .then(resp => setServices(resp.data))
       .catch(err => console.log(err));
   }
@@ -52,7 +52,7 @@ const UserDiamondAppraisalBody = () => {
   });
 
   function fetchService() {
-    axios.get('http://localhost:8080/api/services/' + service)
+    axios.get('https://dvs-backend-production.up.railway.app/api/services/' + service)
       .then(response => {
         setServiceObject(response.data);
       })
@@ -91,7 +91,7 @@ const UserDiamondAppraisalBody = () => {
 
   const submitRequest = () => {
 
-    axios.post('http://localhost:8080/api/request/create', request)
+    axios.post('https://dvs-backend-production.up.railway.app/api/request/create', request)
       .then(response => console.log(response.data))
       .catch(error => console.log(error))
   }
