@@ -16,6 +16,24 @@
       "message": "i think these Typography are important",
       "revId": "85573707074a806af2713fed31370b4c0f2f95c3",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a5c0ff7_20c95d8b",
+        "filename": "src/Components/homepage/BannerComponent.jsx",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1038133
+      },
+      "writtenOn": "2024-06-22T09:51:15Z",
+      "side": 0,
+      "message": "i don\u0027t think so these code can be deleted",
+      "parentUuid": "15dd6b97_0eb2856e",
+      "revId": "85573707074a806af2713fed31370b4c0f2f95c3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
