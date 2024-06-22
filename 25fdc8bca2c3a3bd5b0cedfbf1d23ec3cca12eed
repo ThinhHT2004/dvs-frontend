@@ -16,6 +16,23 @@
       "message": "You should keep those Typography",
       "revId": "25fdc8bca2c3a3bd5b0cedfbf1d23ec3cca12eed",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e29242f1_d151315c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1038125
+      },
+      "writtenOn": "2024-06-22T09:50:25Z",
+      "side": 1,
+      "message": "Let Review this code",
+      "revId": "25fdc8bca2c3a3bd5b0cedfbf1d23ec3cca12eed",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
     }
   ]
 }
