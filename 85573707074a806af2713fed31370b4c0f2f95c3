@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15dd6b97_0eb2856e",
+        "filename": "src/Components/homepage/BannerComponent.jsx",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1038125
+      },
+      "writtenOn": "2024-06-22T09:49:57Z",
+      "side": 0,
+      "message": "i think these Typography are important",
+      "revId": "85573707074a806af2713fed31370b4c0f2f95c3",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735"
+    }
+  ]
+}
