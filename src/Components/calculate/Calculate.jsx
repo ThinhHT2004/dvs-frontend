@@ -23,7 +23,7 @@ import moment from "moment";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
-import InboxIcon from "@mui/icons-material/Inbox";
+
 import diaImg from "../../assets/DiaImg.png";
 
 const Calculate = () => {
@@ -191,6 +191,15 @@ const Calculate = () => {
                               }
                               onClick={() => setOrigin("NATURAL")}
                               fullWidth
+                              sx={{
+                                fontSize: {
+                                  xs: '16px',
+                                  sm: '18px',
+                                  md: '20px',
+                                  lg: '12px',
+                                  xl: '20px',
+                                },
+                              }}
                             >
                               Natural
                             </Button>
@@ -202,6 +211,15 @@ const Calculate = () => {
                               }
                               onClick={() => setOrigin("LAB")}
                               fullWidth
+                              sx={{
+                                fontSize: {
+                                  xs: '16px',
+                                  sm: '18px',
+                                  md: '20px',
+                                  lg: '12px',
+                                  xl: '20px',
+                                },
+                              }}
                             >
                               Lab
                             </Button>
@@ -221,6 +239,15 @@ const Calculate = () => {
                                 }
                                 onClick={() => setShape(c)}
                                 fullWidth
+                                sx={{
+                                  fontSize: {
+                                    xs: '16px',
+                                    sm: '18px',
+                                    md: '20px',
+                                    lg: '12px',
+                                    xl: '20px',
+                                  },
+                                }}
                               >
                                 {c}
                               </Button>
@@ -263,6 +290,15 @@ const Calculate = () => {
                                 }
                                 onClick={() => setColor(c)}
                                 fullWidth
+                                sx={{
+                                  fontSize: {
+                                    xs: '16px',
+                                    sm: '18px',
+                                    md: '20px',
+                                    lg: '12px',
+                                    xl: '20px',
+                                  },
+                                }}
                               >
                                 {c}
                               </Button>
@@ -284,6 +320,15 @@ const Calculate = () => {
                                 }
                                 onClick={() => setClarity(c)}
                                 fullWidth
+                                sx={{
+                                  fontSize: {
+                                    xs: '16px',
+                                    sm: '18px',
+                                    md: '20px',
+                                    lg: '12px',
+                                    xl: '20px',
+                                  },
+                                }}
                               >
                                 {c}
                               </Button>
@@ -297,8 +342,18 @@ const Calculate = () => {
                             <Box display="flex" justifyContent="center">
                               <Button
                                 variant="contained"
-                                sx={{ width: "30%" }}
+                                
                                 onClick={handleSearch}
+                                sx={{
+                                  width: "30%" ,
+                                  fontSize: {
+                                    xs: '16px',
+                                    sm: '18px',
+                                    md: '20px',
+                                    lg: '12px',
+                                    xl: '20px',
+                                  },
+                                }}
                               >
                                 Submit
                               </Button>
@@ -338,6 +393,15 @@ const Calculate = () => {
                                     }
                                     onClick={() => setCut(c)}
                                     fullWidth
+                                    sx={{
+                                      fontSize: {
+                                        xs: '16px',
+                                        sm: '18px',
+                                        md: '20px',
+                                        lg: '12px',
+                                        xl: '20px',
+                                      },
+                                    }}
                                   >
                                     {c}
                                   </Button>
@@ -360,6 +424,15 @@ const Calculate = () => {
                                     }
                                     onClick={() => setSymmetry(s)}
                                     fullWidth
+                                    sx={{
+                                      fontSize: {
+                                        xs: '16px',
+                                        sm: '18px',
+                                        md: '20px',
+                                        lg: '12px',
+                                        xl: '20px',
+                                      },
+                                    }}
                                   >
                                     {s}
                                   </Button>
@@ -380,6 +453,15 @@ const Calculate = () => {
                                     }
                                     onClick={() => setPolish(p)}
                                     fullWidth
+                                    sx={{
+                                      fontSize: {
+                                        xs: '16px',
+                                        sm: '18px',
+                                        md: '20px',
+                                        lg: '12px',
+                                        xl: '20px',
+                                      },
+                                    }}
                                   >
                                     {p}
                                   </Button>
@@ -404,6 +486,14 @@ const Calculate = () => {
                                       width: "18%",
                                       "&:not(:last-child)": {
                                         marginRight: "2.5%",
+                                          fontSize: {
+                                            xs: '16px',
+                                            sm: '18px',
+                                            md: '20px',
+                                            lg: '12px',
+                                            xl: '20px',
+                                          },
+                                        
                                       },
                                     }}
                                     onClick={() => setFluorescence(f)}
@@ -419,8 +509,18 @@ const Calculate = () => {
                             <Box display="flex" justifyContent="center">
                               <Button
                                 variant="contained"
-                                sx={{ width: "30%" }}
+                                
                                 onClick={handleSearch}
+                                sx={{
+                                  width: "30%" ,
+                                  fontSize: {
+                                    xs: '16px',
+                                    sm: '18px',
+                                    md: '20px',
+                                    lg: '12px',
+                                    xl: '20px',
+                                  },
+                                }}
                               >
                                 Submit
                               </Button>

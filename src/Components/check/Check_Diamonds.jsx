@@ -35,7 +35,7 @@ const CheckDiamondBody = () => {
       certificateDate: "2023-06-01",
       fairPrice: "$12,000",
       shape: "Round",
-      measurements: "6.5 x 6.5 x 4.0 mm",
+      measurements: "6.5 x 6.5 x 4.0",
       caratWeight: "1.00 ct",
       colorGrade: "D",
       clarityGrade: "VVS1",
@@ -56,7 +56,7 @@ const CheckDiamondBody = () => {
       certificateDate: "2023-07-15",
       fairPrice: "$9,500",
       shape: "Princess",
-      measurements: "5.5 x 5.5 x 4.2 mm",
+      measurements: "5.5 x 5.5 x 4.2",
       caratWeight: "1.02 ct",
       colorGrade: "E",
       clarityGrade: "VS1",
@@ -77,7 +77,7 @@ const CheckDiamondBody = () => {
       certificateDate: "2023-08-20",
       fairPrice: "$8,200",
       shape: "Oval",
-      measurements: "7.0 x 5.0 x 3.5 mm",
+      measurements: "7.0 x 5.0 x 3.5",
       caratWeight: "1.15 ct",
       colorGrade: "F",
       clarityGrade: "SI1",
@@ -98,7 +98,7 @@ const CheckDiamondBody = () => {
       certificateDate: "2023-09-10",
       fairPrice: "$11,000",
       shape: "Emerald",
-      measurements: "6.0 x 4.5 x 3.0 mm",
+      measurements: "6.0 x 4.5 x 3.0",
       caratWeight: "1.20 ct",
       colorGrade: "G",
       clarityGrade: "VS2",
@@ -119,7 +119,7 @@ const CheckDiamondBody = () => {
       certificateDate: "2023-10-05",
       fairPrice: "$10,500",
       shape: "Cushion",
-      measurements: "5.8 x 5.8 x 4.0 mm",
+      measurements: "5.8 x 5.8 x 4.0",
       caratWeight: "1.10 ct",
       colorGrade: "H",
       clarityGrade: "VVS2",
@@ -1004,7 +1004,7 @@ const CheckDiamondBody = () => {
                       <Typography sx={{ color: "#989898" }}>
                         Measurements
                       </Typography>
-                      <Typography>{diamondDetails?.measurements}</Typography>
+                      <Typography>{diamondDetails?.measurements} mm</Typography>
                     </Box>
                   </CardContent>
                   <CardHeader
