@@ -249,7 +249,7 @@ const CheckDiamondBody = () => {
                             justifyContent: "center",
                             alignItems: "center",
                           }}
-                          onClick={CheckID}
+                          onClick={() => CheckID()}
                         >
                           Check
                         </Button>
