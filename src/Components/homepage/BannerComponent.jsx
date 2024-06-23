@@ -55,28 +55,11 @@ const Banner = () => {
                     <Typography variant="h4" fontSize="40px">
                         Compare Top-Rated
                     </Typography>
-                    <Typography variant="h4" fontSize="40px">
-                        Jewelers & Save "Time & Money"
-                    </Typography>
-                    <Typography variant="h5" gutterBottom color="#828282">
-                        Get the best price for your diamond.
-                    </Typography>
-                    <Typography variant="h5" gutterBottom color="#828282">
-                        Get the best price for your diamond.
-                    </Typography>
-                    <Typography variant="h5" gutterBottom color="#828282">
-                        Get the best price for your diamond.
-                    </Typography>
+                    
                     <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
                         <Button sx={Style.Button} variant="contained" onClick={() => navigator('/calculate')}>Calculate price</Button>
-                        <Button sx={Style.Button} variant="contained" onClick={() => navigator('/diamond-list')}>List of diamonds</Button>
-                        <Button sx={Style.Button} variant="contained" onClick={() => navigator('/diamond-compare')}>Compare diamonds</Button>
-                        <Button sx={Style.Button} variant="contained" onClick={() => navigator('/diamond-search')}>Search diamond</Button>
                         <Button sx={Style.Button} variant="contained" onClick={() => navigator('/diamond-check')}>Check your diamond</Button>
                     </Box>
-                    <Typography variant="h5" gutterBottom color="#828282">
-                        Get the best price for your diamond.
-                    </Typography>
                 </animated.div>
             </Box>
         </Box>
