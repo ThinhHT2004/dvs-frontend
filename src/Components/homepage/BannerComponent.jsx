@@ -58,10 +58,14 @@ const Banner = () => {
                     <Typography variant="h4" fontSize="40px">
                         Jewelers & Save "Time & Money"
                     </Typography>
+                    <Typography variant="h5" gutterBottom color="#828282">
+                        Navigate the diamond market effortlessly.
+                    </Typography>
                     <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
                         <Button sx={Style.Button} variant="contained" onClick={() => navigator('/calculate')}>Calculate price</Button>
                         <Button sx={Style.Button} variant="contained" onClick={() => navigator('/diamond-check')}>Check your diamond</Button>
                     </Box>
+
                 </animated.div>
             </Box>
         </Box>
