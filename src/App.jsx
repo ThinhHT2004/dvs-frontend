@@ -16,12 +16,12 @@ import Manager_ReportManagement from './Components/staff/manager/Manager_ReportM
 import ConsultingStaff_Report from './Components/staff/consulting_staff/ConsultingStaff_Report.jsx'
 import ConsultingStaff_Form from './Components/staff/consulting_staff/ConsultingStaff_Form.jsx'
 import { BadgeProvider } from './Components/staff/BadgeContext.jsx'
-import StaffDrawer from './Components/staff/StaffDrawer.jsx'
 import Vault_Home from './Components/vault/Vault_Home.jsx'
 import Vault_Appointment from './Components/vault/Vault_Appointment.jsx'
 import Vault_PriceAlert from './Components/vault/Vault_PriceAlert.jsx'
 import Calculate from './Components/calculate/Calculate.jsx'
 import Check_Diamonds from './Components/check/Check_Diamonds.jsx'
+import Check_DiamondsDetails from './Components/check/Check_DiamondsDetails.jsx'
 const App = () => {
 
   return (
@@ -49,6 +49,7 @@ const App = () => {
             <Route path='/vault/home' element={<Vault_Home></Vault_Home>}></Route>
             <Route path='/vault/appointment' element={<Vault_Appointment></Vault_Appointment>}></Route>
             <Route path='/vault/price-alert' element={<Vault_PriceAlert></Vault_PriceAlert>}></Route>
+            <Route path='/diamond-check/:id' element={<Check_DiamondsDetails></Check_DiamondsDetails>}></Route>
           </Routes>
         </BrowserRouter>
       </BadgeProvider>
