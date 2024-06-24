@@ -16,6 +16,7 @@ import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
 import moment from "moment";
 import { useBadge } from "../BadgeContext";
+
 const ConsultingStaff_IncommingRequest = () => {
   const [requests, setRequests] = useState([]);
   const [newRequestCount, setNewRequestCount] = useState(0);
@@ -82,14 +83,14 @@ const ConsultingStaff_IncommingRequest = () => {
           alignItems: "center",
         }}>
         <TableContainer component={Paper} sx={{ width: "100%" }}>
-          <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-            <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+          <Table sx={{  borderRadius: 10 }}>
+            <TableHead sx={{ backgroundColor: "#30D5C8"}}>
               <TableRow>
-                <TableCell>Customer Name</TableCell>
-                <TableCell>Service</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Appointment Date</TableCell>
-                <TableCell></TableCell>
+                <TableCell sx={{fontSize: 20}}>Customer Name</TableCell>
+                <TableCell sx={{fontSize: 20}}>Service</TableCell>
+                <TableCell sx={{fontSize: 20}}>Quantity</TableCell>
+                <TableCell sx={{fontSize: 20}}>Appointment Date</TableCell>
+                <TableCell ></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
