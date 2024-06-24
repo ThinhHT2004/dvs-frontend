@@ -593,34 +593,30 @@ const Check_DiamondsDetails = () => {
                                             <Grid container spacing={2} padding={1}>
                                                 <Grid item xl={3}>
                                                     <Box sx={{ display: "flex", justifyContent: "center" }}>
-                                                        <Typography sx={{ color: "#989898" }}>
-                                                            Table:
+                                                        <Typography>
+                                                            <span style={{ color: "#989898" }} >Table:</span> {diamondDetails?.table}
                                                         </Typography>
-                                                        <Typography>{diamondDetails?.table}</Typography>
                                                     </Box>
                                                 </Grid>
                                                 <Grid item xl={3}>
                                                     <Box sx={{ display: "flex", justifyContent: "center" }}>
-                                                        <Typography sx={{ color: "#989898" }}>
-                                                            Girdle:
+                                                        <Typography>
+                                                            <span style={{ color: "#989898" }} >Girdle:</span> {diamondDetails?.girdle}
                                                         </Typography>
-                                                        <Typography>{diamondDetails?.girdle}</Typography>
                                                     </Box>
                                                 </Grid>
                                                 <Grid item xl={3}>
                                                     <Box sx={{ display: "flex", justifyContent: "center" }}>
-                                                        <Typography sx={{ color: "#989898" }}>
-                                                            Depth:
-                                                        </Typography>
-                                                        <Typography>{diamondDetails?.depth}</Typography>
+                                                        <Typography>
+                                                            <span style={{ color: "#989898" }} >Depth:</span> {diamondDetails?.depth}
+                                                        </Typography>                                                      
                                                     </Box>
                                                 </Grid>
                                                 <Grid item xl={3}>
                                                     <Box sx={{ display: "flex", justifyContent: "center" }}>
-                                                        <Typography sx={{ color: "#989898" }}>
-                                                            Culet:
+                                                        <Typography>
+                                                            <span style={{ color: "#989898" }} >Culet:</span> {diamondDetails?.culet}
                                                         </Typography>
-                                                        <Typography>{diamondDetails?.culet}</Typography>
                                                     </Box>
                                                 </Grid>
                                             </Grid>
