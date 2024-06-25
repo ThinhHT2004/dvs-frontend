@@ -3,57 +3,38 @@ import StaffDrawer from "../StaffDrawer";
 import {
   Box,
   Button,
+  CardContent,
+  CardHeader,
   Grid,
   Paper,
+  Card,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
 import moment from "moment";
-import { useBadge } from "../BadgeContext";
+
+import { useRequests } from "./RequestContext";
+
 
 const ConsultingStaff_IncommingRequest = () => {
-  const [requests, setRequests] = useState([]);
-  const [newRequestCount, setNewRequestCount] = useState(0);
-  const staffId = 3;
   const drawerWidth = 240;
-  const { badgeCounts, updateBadgeCount } = useBadge();
-  useEffect(() => {
-    
-      getAllWaitingRequests();
 
-
-    
-  }, []);
-
-  const getAllWaitingRequests = () => {
-    axios
-      .get("https://dvs-backend-production.up.railway.app/api/request/waiting")
-      .then((response) => {
-        if (response.data.length > requests.length) {
-        
-          updateBadgeCount("Incomming Request", response.data.length - requests.length);
-        }
-        setRequests(response.data);
-      })
-      .catch((error) => console.log(error));
-  };
-
+ 
+  const { waitingRequests, getAllWaitingRequests } = useRequests();
   const acceptRequest = (requestId) => {
     axios
       .put(
-        "https://dvs-backend-production.up.railway.app/api/request/" + requestId + "/assign/" + staffId
+        "https://dvs-backend-production.up.railway.app/api/request/" + requestId + "/assign/3"
       )
       .then(() => {
-        setRequests((prevRequests) =>
-          prevRequests.filter((req) => req.id !== requestId)
-        );
-        setNewRequestCount((prevCount) => Math.max(prevCount - 1, 0));
+        getAllWaitingRequests();
       })
       .catch((err) => console.log(err));
   };
@@ -73,36 +54,45 @@ const ConsultingStaff_IncommingRequest = () => {
           ]}
           state="Incomming Request"
           handleClick={consulting_staff_navigator}
-          badgeCount={badgeCounts["Incomming Request"]}
+         
         />
       </Box>
       <Box sx={{
           p: 3,
           display: "flex",
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           flexDirection: "column",
           alignItems: "center",
         }}>
-        <TableContainer component={Paper} sx={{ width: "100%" }}>
-          <Table sx={{  borderRadius: 10 }}>
-            <TableHead sx={{ backgroundColor: "#30D5C8"}}>
-              <TableRow>
-                <TableCell sx={{fontSize: 20}}>Customer Name</TableCell>
-                <TableCell sx={{fontSize: 20}}>Service</TableCell>
-                <TableCell sx={{fontSize: 20}}>Quantity</TableCell>
-                <TableCell sx={{fontSize: 20}}>Appointment Date</TableCell>
-                <TableCell ></TableCell>
-              </TableRow>
-            </TableHead>
+          <Grid container>
+          <Grid item lg={12} xl={12} md={12} sm={12} xs={12}>
+          <TableContainer sx={{borderRadius: 3}} component={Paper}>
+          <CardHeader
+                    title='INCOMMING REQUESTS'
+                    titleTypographyProps={{
+                      variant: 'h5',
+                      color: 'white',
+                    }}
+                    sx={{ backgroundColor: '#30D5C8' }}
+                  />
+          <Table>
             <TableBody>
-              {requests.map((request) => (
+            <TableRow>
+                <TableCell sx={{fontSize: 20, width: 250 , color: '#69CEE2'}}>Customer Name</TableCell>
+                <TableCell sx={{fontSize: 20 , width: 250 , color: '#69CEE2'}}>Service</TableCell>
+                <TableCell sx={{fontSize: 20, width: 150 , color: '#69CEE2'}} align="center">Quantity</TableCell>
+                <TableCell sx={{fontSize: 20, width: 200 , color: '#69CEE2'}} align="center">Appointment Date</TableCell>
+                <TableCell sx={{ width: 150 }} align="center"></TableCell>
+              </TableRow>
+              {waitingRequests.map((request) => (
                 <TableRow key={request.id}>
-                  <TableCell>{request.customer.first_name}</TableCell>
-                  <TableCell>{request.service.duration}</TableCell>
-                  <TableCell>{request.quantity}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{fontSize: 15}}>{request.customer.last_name} {request.customer.first_name}</TableCell>
+                  <TableCell sx={{fontSize: 15}}>{request.service.name}</TableCell>
+                  <TableCell sx={{fontSize: 15, textAlign: 'center'}}>{request.quantity}</TableCell>
+                  <TableCell sx={{fontSize: 15, textAlign: 'center'}}>
                     {moment(request.appointmentDate).format("Do, MMM")}
                   </TableCell>
-                  <TableCell>
+                  <TableCell sx={{fontSize: 15}}  align="center">
                     <Button
                       variant="contained"
                       sx={{ background: "#30D5C8", borderRadius: "8px" }}
@@ -116,6 +106,9 @@ const ConsultingStaff_IncommingRequest = () => {
             </TableBody>
           </Table>
         </TableContainer>
+        </Grid>
+        <Grid item lg={12} xl={12} md={12} sm={12} xs={12}></Grid>
+         </Grid>
       </Box>
     </Box>
   );

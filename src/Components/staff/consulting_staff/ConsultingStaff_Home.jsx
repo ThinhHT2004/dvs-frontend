@@ -2,29 +2,154 @@ import React from "react";
 import StaffDrawer from "../StaffDrawer";
 import {
   Box,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  CardHeader,
+  Link,
 } from "@mui/material";
 import { consulting_staff_navigator } from "../Naviate";
-
+import WelcomeImg from "../../../assets/welcome_Img.png"
+import { useRequests } from "./RequestContext";
+import moment from "moment";
 const ConsultingStaff_Home = () => {
-
-
+  const { waitingRequests} = useRequests();
+  const { acceptedRequests } = useRequests();
+  const drawerWidth = 240;
+  
   return (
-    <div>
-      <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
-        <StaffDrawer
-          mylist={[
-            "Home",
-            "Incomming Request",
-            "Request",
-            "Report",
-            "Form",
-            "Sign Out",
-          ]}
-          state="Home" handleClick={consulting_staff_navigator}
-        ></StaffDrawer>
-        
+    <Box>
+      <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
+        <Box>
+          <StaffDrawer
+            mylist={[
+              "Home",
+              "Incomming Request",
+              "Request",
+              "Report",
+              "Form",
+              "Sign Out",
+            ]}
+            state="Home" handleClick={consulting_staff_navigator}
+          ></StaffDrawer>
+        </Box>
+        <Box sx={{
+          p: 3,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+        }}>
+          <Grid container spacing={5} >
+            <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
+              <Card sx={{ borderRadius: 3 }}>
+                <CardContent>
+                  <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>Hua Tan Thinh</span></Typography>
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
+                  </Box>
+                </CardContent>
+              </Card>
+
+            </Grid>
+            <Grid item lg={6} xl={6}>
+
+              <TableContainer  sx={{ borderRadius: 3 }} component={Paper}>
+                <Table>
+                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+                    <TableRow>
+                      <TableCell>
+                        <Typography variant="h6" sx={{ color: "white" }}>INCOMING REQUEST</Typography>
+                      </TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {waitingRequests?.slice(0, 5).map((request) => (
+                      <TableRow key={request.id}>
+                        <TableCell sx={{ fontSize: 15 }}>{request.customer.first_name}</TableCell>
+                        <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
+                        <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
+                        <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>
+                          {moment(request.appointmentDate).format("Do, MMM")}
+                        </TableCell>
+
+                      </TableRow>
+                    ))}
+                    <TableRow>
+                    <TableCell>
+                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start'}}>Showing {Math.min(waitingRequests.length, 5)} of {waitingRequests.length}</Typography>
+                      </TableCell>
+                    <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>
+                        
+                        <Link href="/consulting-staff/incomming-request" underline="hover" sx={{color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline'}}>See more</Link>
+                      </TableCell>
+                     
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+            </Grid>
+            <Grid item lg={6} xl={6}>
+
+              <TableContainer  sx={{ borderRadius: 3 }} component={Paper}>
+                <Table>
+                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
+                    <TableRow>
+                      <TableCell>
+                        <Typography variant="h6" sx={{ color: "white" }}>REQUEST MANAGEMENT</Typography>
+                      </TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {acceptedRequests?.slice(0, 5).map((request) => (
+                      <TableRow key={request.id}>
+                        <TableCell sx={{ fontSize: 15 }}>{request.id}</TableCell>
+                        <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
+                        <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
+                        <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>
+                          {request.status}
+                        </TableCell>
+
+                      </TableRow>
+                    ))}
+                    <TableRow>
+                    <TableCell>
+                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start'}}>Showing {Math.min(waitingRequests.length, 5)} of {waitingRequests.length}</Typography>
+                      </TableCell>
+                    <TableCell></TableCell>
+                      <TableCell></TableCell>
+                      <TableCell>
+                        
+                        <Link href="/consulting-staff/incomming-request" underline="hover" sx={{color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline'}}>See more</Link>
+                      </TableCell>
+                     
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+            </Grid>
+          </Grid>
+        </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 

@@ -25,6 +25,10 @@ import {
   Input,
   CardActionArea,
   CardActions,
+  ListItem,
+  ListItemText,
+  colors,
+  List,
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -34,19 +38,17 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import axios from "axios";
 import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
-import { useBadge } from "../BadgeContext";
-import { da } from "date-fns/locale";
+import { useRequests } from "./RequestContext";
+
 
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
-  const staffId = 3;
   const [open, setOpen] = useState(false);
   const [proportionImage, setProportionImage] = useState(null);
   const [clarityImage, setClarityImage] = useState(null);
   const [diamondImage, setDiamondImage] = useState(null);
   const [requestId, setRequestId] = useState("");
   const [sampleId, setSampleId] = useState("");
-  const { badgeCounts, updateBadgeCount } = useBadge();
   const polish = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const symmetry = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const cutGrade = ["FAIR", "GOOD", "V.GOOD", "EX."];
@@ -80,11 +82,10 @@ const ConsultingStaff_ManageRequest = () => {
   const [depth, setDepth] = useState("");
   const [girdle, setGirdle] = useState("");
   const [culet, setCulet] = useState("");
-  const [rows, setRows] = useState([]);
   const [proportionImageUrl, setProportionImageUrl] = useState("");
   const [clarityImageUrl, setClarityImageUrl] = useState("");
   const [diamondImageUrl, setDiamondImageUrl] = useState("");
-  const [checkFull, setCheckFull] = useState(true);
+  const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
 
   const valuationReport = {
     measurement: measurement,
@@ -102,11 +103,6 @@ const ConsultingStaff_ManageRequest = () => {
     origin: returnOrigin,
     cut: returnCutGrade,
   };
-
-  useEffect(() => {
-    getAcceptedRequest();
-  }, []);
-
   function checkFullFilled() {
     let check = true;
     for (let key in valuationReport) {
@@ -130,33 +126,15 @@ const ConsultingStaff_ManageRequest = () => {
     return check;
   }
 
-  function getAcceptedRequest() {
-    axios
-      .get(
-        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/not/" +
-          staffId +
-          "/WAITING"
-      )
-      .then((resp) => {
-        const fillingAndFilledRequests = resp.data.filter(
-          (sample) => sample.status === "FILLING" || sample.status === "FILLED"
-        );
-        updateBadgeCount("Request", fillingAndFilledRequests.length);
-        setRows(resp.data);
-      })
-      .catch((err) => console.log(err));
-  }
-
   async function saveReport(requestId, sampleId, valuationReport) {
     try {
       const resp = await axios.put(
         "https://dvs-backend-production.up.railway.app/api/reports/update/" +
-          requestId +
-          "/" +
-          sampleId,
+        requestId +
+        "/" +
+        sampleId,
         valuationReport
       );
-      const res = resp.data;
       const detail = await getValuationRequestDetail(sampleId);
       console.log(detail);
       saveImage(detail.valuationReport.id);
@@ -237,7 +215,7 @@ const ConsultingStaff_ManageRequest = () => {
     setProportionImageUrl("");
     setClarityImageUrl("");
     setDiamondImageUrl("");
-    getAcceptedRequest();
+    getAllAcceptedRequests();
   };
 
   const handleOpen = () => {
@@ -305,9 +283,13 @@ const ConsultingStaff_ManageRequest = () => {
       return (
         <Card component={Paper}>
           <CardHeader
-            sx={{ backgroundColor: "#30D5C8" }}
-            title={`Sample Id: ${formatSampleId(text)}`}
-          />
+                    title={`SAMPLE ID: ${formatSampleId(text)}`}
+                    titleTypographyProps={{
+                      variant: 'h5',
+                      color: 'white',
+                    }}
+                    sx={{ backgroundColor: '#30D5C8' }}
+                  />
           <Grid container spacing={0}>
             <Grid item lg={6} borderRight={1}>
               <Card
@@ -737,18 +719,18 @@ const ConsultingStaff_ManageRequest = () => {
 
     return (
       <Fragment>
-        <TableRow>
-          <TableCell>{formatRequestId(row.id)}</TableCell>
-          <TableCell>{row.customer.first_name}</TableCell>
-          <TableCell>{row.service.duration}</TableCell>
-          <TableCell>{row.quantity}</TableCell>
+        <TableRow sx={{ backgroundColor: "white" }}>
+          <TableCell align="center">{formatRequestId(row.id)}</TableCell>
+          <TableCell>{row.customer.last_name} {row.customer.first_name}</TableCell>
+          <TableCell>{row.service.name}</TableCell>
+          <TableCell align="center">{row.quantity}</TableCell>
           <TableCell align="center">
             <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
           </TableCell>
-          <TableCell>{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
-          <TableCell>
+          <TableCell align="center">{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
+          <TableCell align="center">
             <IconButton
-              aria-label="expand row"
+              sx={{ backgroundColor: "#69CEE2" }}
               size="small"
               onClick={() => setOpen(!open)}
             >
@@ -756,109 +738,126 @@ const ConsultingStaff_ManageRequest = () => {
             </IconButton>
           </TableCell>
         </TableRow>
-        <TableRow>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableRow sx={{border: 0}} >
+          <TableCell style={{ padding: 0 ,border: 0}} colSpan={7}>
             <Collapse in={open}>
-              <Box sx={{ margin: 1 }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>ID Sample</TableCell>
-                      <TableCell align="center">Status</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {row.valuationRequestDetailList.map((sample) => (
-                      <TableRow key={sample.id}>
-                        <TableCell>{formatSampleId(sample.id)}</TableCell>
-                        <TableCell align="center">
+            <List disablePadding >
+              <Box>
+                <ListItem sx={{borderBottom: 1 , borderColor: "#c7ced9"}}>
+                  <Grid container>
+                    <Grid item lg={4} xl={4}>
+                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
+                    </Grid>
+                    <Grid item lg={4} xl={4}>
+                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
+                    </Grid>
+                  </Grid>
+                  <ListItemText />
+                </ListItem>
+                {row.valuationRequestDetailList.map((sample) => (
+                  <ListItem key={sample.id} sx={{borderBottom: 1 , borderColor: "#c7ced9"}}>
+                    <Grid container>
+                      <Grid item lg={4} xl={4}>
+                        <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                      </Grid>
+                      <Grid item lg={4} xl={4}>
+                        <ListItemText sx={{ textAlign: 'center' }}>
                           <Chip
                             label={sample.status}
                             color={renderSampleStatus(sample.status)}
                             size="small"
                           ></Chip>
-                        </TableCell>
-                        <TableCell>{displayButton(sample, row.id)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                        </ListItemText>
+                      </Grid>
+                      <Grid item lg={4} xl={4}>
+                        <ListItemText primary={displayButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                      </Grid>
+                    </Grid>
+                  </ListItem>
+
+                ))}
+
               </Box>
+              </List>
             </Collapse>
           </TableCell>
         </TableRow>
+
       </Fragment>
     );
   }
 
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#FAF6EF",
+        width: "100%", minHeight: "100vh"
+
+      }}
+    >
+      <Box>
+        <StaffDrawer
+          mylist={[
+            "Home",
+            "Incomming Request",
+            "Request",
+            "Report",
+            "Form",
+            "Sign Out",
+          ]}
+          state="Request"
+          handleClick={consulting_staff_navigator}
+        ></StaffDrawer>
+      </Box>
       <Box
         sx={{
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
-          flexDirection: "row",
-          backgroundColor: "#FAF6EF",
-          width: "100%",
-          minHeight: "100vh",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Box>
-          <StaffDrawer
-            mylist={[
-              "Home",
-              "Incomming Request",
-              "Request",
-              "Report",
-              "Form",
-              "Sign Out",
-            ]}
-            state="Request"
-            handleClick={consulting_staff_navigator}
-            badgeCount={badgeCounts["Request"]}
-          ></StaffDrawer>
-        </Box>
-        <Box
-          sx={{
-            p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Grid container spacing={2}>
-            <Grid item lg={12}>
-              <Box>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-                    <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                      <TableRow>
-                        <TableCell>Request ID</TableCell>
-                        <TableCell>Customer</TableCell>
-                        <TableCell>Service</TableCell>
-                        <TableCell>Quantity</TableCell>
-                        <TableCell align="center">Status</TableCell>
-                        <TableCell>Appointment</TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row) => (
-                        <Row key={row.id} row={row}></Row>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Box>
-            </Grid>
-            <Grid item lg={12}>
-              {open && displayBox(sampleId, requestId)}
-            </Grid>
+        <Grid container spacing={2}>
+          <Grid item lg={12}>
+            <Box>
+              <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
+                <CardHeader
+                  title='MANAGE REQUEST'
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                <Table>
+                  <TableBody>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
+                      <TableCell sx={{ width: 100 }}></TableCell>
+                    </TableRow>
+                    {acceptedRequests.map((row) => (
+                      <Row key={row.id} row={row} />
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
           </Grid>
-        </Box>
+          <Grid item lg={12}>
+            {open && displayBox(sampleId, requestId)}
+          </Grid>
+        </Grid>
       </Box>
-    </div>
+    </Box>
+
   );
 };
 

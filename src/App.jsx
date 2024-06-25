@@ -15,23 +15,22 @@ import Manager_ReceiptManagement from './Components/staff/manager/Manager_Receip
 import Manager_ReportManagement from './Components/staff/manager/Manager_ReportManagement'
 import ConsultingStaff_Report from './Components/staff/consulting_staff/ConsultingStaff_Report.jsx'
 import ConsultingStaff_Form from './Components/staff/consulting_staff/ConsultingStaff_Form.jsx'
-import { BadgeProvider } from './Components/staff/BadgeContext.jsx'
 import Vault_Home from './Components/vault/Vault_Home.jsx'
 import Vault_Appointment from './Components/vault/Vault_Appointment.jsx'
 import Vault_PriceAlert from './Components/vault/Vault_PriceAlert.jsx'
 import Calculate from './Components/calculate/Calculate.jsx'
 import Check_Diamonds from './Components/check/Check_Diamonds.jsx'
 import Check_DiamondsDetails from './Components/check/Check_DiamondsDetails.jsx'
+import { RequestsProvider } from './Components/staff/consulting_staff/RequestContext.jsx'
 const App = () => {
-
   return (
     <>
-      <BadgeProvider>
+      <RequestsProvider>
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<HomePage></HomePage>}></Route>
-            <Route path='/calculate'element={<Calculate></Calculate>}></Route>
-            <Route path='/diamond-check'element={<Check_Diamonds></Check_Diamonds>}></Route>
+            <Route path='/calculate' element={<Calculate></Calculate>}></Route>
+            <Route path='/diamond-check' element={<Check_Diamonds></Check_Diamonds>}></Route>
             <Route path='/diamond-appraisal' element={<DiamondAppraisal></DiamondAppraisal>}></Route>
             <Route path='/accounts/signin' element={<Login></Login>}></Route>
             <Route path='/accounts/signup' element={<SignUp></SignUp>}></Route>
@@ -52,7 +51,7 @@ const App = () => {
             <Route path='/diamond-check/:id' element={<Check_DiamondsDetails></Check_DiamondsDetails>}></Route>
           </Routes>
         </BrowserRouter>
-      </BadgeProvider>
+      </RequestsProvider>
     </>
   )
 }

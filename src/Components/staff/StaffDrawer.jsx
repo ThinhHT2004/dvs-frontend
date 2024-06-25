@@ -25,7 +25,6 @@ import { useNavigate } from 'react-router-dom';
 import logoWeb from '../../assets/logo_v4.png';
 import smallLogo from '../../assets/SmallLogo.png';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import { useBadge } from './BadgeContext';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 const drawerWidth = 260;
@@ -95,7 +94,6 @@ const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const { badgeCounts } = useBadge();
   const handleMouseEnter = () => {
     setOpen(true);
   };
@@ -105,8 +103,6 @@ const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {
   };
 
   function handleState(text) {
-    const showBadge = badgeCounts[text] > 0;
-
     return (
       <ListItemButton
         sx={{
@@ -123,20 +119,13 @@ const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {
             justifyContent: 'center',
           }}
         >
-          {showBadge && !open ? (
-            <Badge badgeContent={badgeCounts[text]} color="error">
-              {iconMapping[text]}
-            </Badge>
-          ) : (
-            iconMapping[text]
-          )}
+         
+        
+            {iconMapping[text]}
+          
         </ListItemIcon>
         <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-        {showBadge && open && (
-          <Badge badgeContent={badgeCounts[text]} color="error">
-            <h1></h1>
-          </Badge>
-        )}
+
       </ListItemButton>
     );
   }

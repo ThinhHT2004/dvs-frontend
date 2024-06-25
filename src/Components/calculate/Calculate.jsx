@@ -245,7 +245,7 @@ const Calculate = () => {
                                     sm: '18px',
                                     md: '20px',
                                     lg: '12px',
-                                    xl: '20px',
+                                    xl: '15px',
                                   },
                                 }}
                               >
@@ -296,7 +296,7 @@ const Calculate = () => {
                                     sm: '18px',
                                     md: '20px',
                                     lg: '12px',
-                                    xl: '20px',
+                                    xl: '15px',
                                   },
                                 }}
                               >
@@ -326,7 +326,7 @@ const Calculate = () => {
                                     sm: '18px',
                                     md: '20px',
                                     lg: '12px',
-                                    xl: '20px',
+                                    xl: '15px',
                                   },
                                 }}
                               >
@@ -351,7 +351,7 @@ const Calculate = () => {
                                     sm: '18px',
                                     md: '20px',
                                     lg: '12px',
-                                    xl: '20px',
+                                    xl: '15px',
                                   },
                                 }}
                               >
@@ -399,7 +399,7 @@ const Calculate = () => {
                                         sm: '18px',
                                         md: '20px',
                                         lg: '12px',
-                                        xl: '20px',
+                                        xl: '15px',
                                       },
                                     }}
                                   >
@@ -430,7 +430,7 @@ const Calculate = () => {
                                         sm: '18px',
                                         md: '20px',
                                         lg: '12px',
-                                        xl: '20px',
+                                        xl: '15px',
                                       },
                                     }}
                                   >
@@ -459,7 +459,7 @@ const Calculate = () => {
                                         sm: '18px',
                                         md: '20px',
                                         lg: '12px',
-                                        xl: '20px',
+                                        xl: '15px',
                                       },
                                     }}
                                   >
@@ -491,7 +491,7 @@ const Calculate = () => {
                                             sm: '18px',
                                             md: '20px',
                                             lg: '12px',
-                                            xl: '20px',
+                                            xl: '15px',
                                           },
                                         
                                       },
@@ -518,7 +518,7 @@ const Calculate = () => {
                                     sm: '18px',
                                     md: '20px',
                                     lg: '12px',
-                                    xl: '20px',
+                                    xl: '15px',
                                   },
                                 }}
                               >
