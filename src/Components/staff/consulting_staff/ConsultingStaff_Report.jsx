@@ -19,8 +19,12 @@ import {
   DialogTitle,
   Chip,
   ThemeProvider,
+  List,
+  ListItem,
+  ListItemText,
+  CardHeader,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -266,7 +270,7 @@ const ConsultingStaff_Report = () => {
                     </Box>
                   </Grid>
                   <Grid item md={5}>
-                    <Box display="flex" justifyContent="center" alignItems="center" sx={{flexDirection: "column"}}>
+                    <Box display="flex" justifyContent="center" alignItems="center" sx={{ flexDirection: "column" }}>
                       <Box>
                         <img
                           src={diamond.valuationReport.proportion}
@@ -322,7 +326,7 @@ const ConsultingStaff_Report = () => {
     </Dialog>
   );
 
-  
+
 
   return (
     <Box
@@ -358,31 +362,38 @@ const ConsultingStaff_Report = () => {
         }}
       >
         <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 100, borderRadius: 10 }}>
-                <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                  <TableRow>
-                    <TableCell>ID Request</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="center">Status</TableCell>
-                    <TableCell>Receiving Date</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
+          <Grid item xl={12} lg={12}>
+                <TableContainer sx={{ borderRadius: 3}} component={Paper}>
+                <CardHeader
+                  title='MANAGE REPORTS'
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                <Table>
+                  <TableBody>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Receiving Date</TableCell>
+                      <TableCell sx={{ width: 100 }}></TableCell>
+                    </TableRow>
+                
                   {requests.map((request) => (
-                    <React.Fragment key={request.id}>
+                    <Fragment key={request.id}>
                       <TableRow>
-                        <TableCell>{formatRequestId(request.id)}</TableCell>
-                        <TableCell>{request.customer.first_name}</TableCell>
-                        <TableCell className="status" align="center">
+                        <TableCell align="center">{formatRequestId(request.id)}</TableCell>
+                        <TableCell>{request.customer.last_name} {request.customer.first_name}</TableCell>
+                        <TableCell align="center">
                           <Chip
                             label={request.status}
                             color={renderStatus(request.status)}
                           ></Chip>
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                           <Chip color="primary" size="small" label={moment(request.receivingDate).format("yyyy-MM-DD hh:mm A")}>
                           </Chip>
                         </TableCell>
@@ -390,6 +401,7 @@ const ConsultingStaff_Report = () => {
                           <IconButton
                             aria-label="expand row"
                             size="small"
+                            sx={{ backgroundColor: "#69CEE2" }}
                             onClick={() => handleClick(request.id)}
                           >
                             {open[request.id] ? (
@@ -402,42 +414,50 @@ const ConsultingStaff_Report = () => {
                       </TableRow>
                       <TableRow>
                         <TableCell
-                          style={{ paddingBottom: 0, paddingTop: 0 }}
+                          style={{ padding: 0 }}
                           colSpan={6}
                         >
-                          <Collapse
-                            in={open[request.id]}
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <Box margin={1}>
-                              <Table size="small" aria-label="diamonds">
-                                <TableBody>
-                                  {request.valuationRequestDetailList.map(
-                                    (diamond) => (
-                                      <TableRow key={diamond.id}>
-                                        <TableCell>
-                                          {formatSampleId(diamond.id)}
-                                        </TableCell>
-                                        <TableCell>
-                                          {renderReportLink(diamond)}
-                                        </TableCell>
-                                      </TableRow>
-                                    )
-                                  )}
-                                </TableBody>
-                              </Table>
+                        <Collapse in={open[request.id]} sx={{ backgroundColor: "#F0F0F0" }}>
+                          <List disablePadding >
+                            <Box>
+                              <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                                <Grid container>
+                                  <Grid item lg={6} xl={6}>
+                                    <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
+                                  </Grid>
+                                  <Grid item lg={6} xl={6}>
+                                    
+                                  </Grid>
+                                </Grid>
+                                <ListItemText />
+                              </ListItem>
+                              {request.valuationRequestDetailList.map((sample) => (
+                                <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                                  <Grid container>
+                                    <Grid item lg={6} xl={6}>
+                                      <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                                    </Grid>
+                                    
+                                    <Grid item lg={6} xl={6} sx={{ textAlign: 'center' }} >
+                                    {renderReportLink(sample)} 
+                                    </Grid>
+                                  </Grid>
+                                </ListItem>
+
+                              ))}
+
                             </Box>
-                          </Collapse>
+                          </List>
+                        </Collapse>
                         </TableCell>
                       </TableRow>
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xl={12} lg={12}>
             {selectedDiamond && renderDiamondReport(selectedDiamond)}
           </Grid>
         </Grid>

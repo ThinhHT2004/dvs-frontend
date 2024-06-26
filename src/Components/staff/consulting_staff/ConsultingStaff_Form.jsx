@@ -18,6 +18,8 @@ import {
   TextField,
   Chip,
   Typography,
+  CardHeader,
+
 } from "@mui/material";
 import axios from "axios";
 import { formatRequestId } from "../../../Foramat";
@@ -196,7 +198,7 @@ const ConsultingStaff_Form = () => {
         <Grid container spacing={2}>
           <Grid item xs={7}>
             <Box>
-              <TableContainer component={Paper} sx={{ width: "100%" }}>
+              {/* <TableContainer component={Paper} sx={{ width: "100%" }}>
                 <Table sx={{ minWidth: 300 }}>
                   <TableHead sx={{ backgroundColor: "#30D5C8" }}>
                     <TableRow>
@@ -206,18 +208,35 @@ const ConsultingStaff_Form = () => {
                       <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
+                  <TableBody> */}
+                  <TableContainer sx={{ borderRadius: 3}} component={Paper}>
+                <CardHeader
+                  title='MANAGE FORMS'
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                <Table>
                   <TableBody>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell sx={{ width: 200 }}></TableCell>
+                    </TableRow>
                     {requests.map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell>{formatRequestId(request.id)}</TableCell>
-                        <TableCell>{request.customer.first_name}</TableCell>
-                        <TableCell className="status" align="center">
+                        <TableCell align="center">{formatRequestId(request.id)}</TableCell>
+                        <TableCell>{request.customer.last_name} {request.customer.first_name}</TableCell>
+                        <TableCell align="center">
                           <Chip
                             label={request.status}
                             color={renderStatus(request.status)}
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                           <Button>
                             <Link
                               href="#"

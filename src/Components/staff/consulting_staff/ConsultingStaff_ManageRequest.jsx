@@ -825,7 +825,7 @@ const ConsultingStaff_ManageRequest = () => {
             <Box>
               <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
                 <CardHeader
-                  title='MANAGE REQUEST'
+                  title='MANAGE REQUESTS'
                   titleTypographyProps={{
                     variant: 'h5',
                     color: 'white',

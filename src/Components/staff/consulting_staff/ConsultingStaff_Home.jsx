@@ -15,16 +15,33 @@ import {
   TableBody,
   CardHeader,
   Link,
+  Chip,
 } from "@mui/material";
 import { consulting_staff_navigator } from "../Naviate";
 import WelcomeImg from "../../../assets/welcome_Img.png"
 import { useRequests } from "./RequestContext";
 import moment from "moment";
+import { formatRequestId} from "../../../Foramat";
 const ConsultingStaff_Home = () => {
   const { waitingRequests} = useRequests();
   const { acceptedRequests } = useRequests();
   const drawerWidth = 240;
-  
+  const renderRowStatus = (status) => {
+    switch (status) {
+      case "PROCESSING":
+        return "warning";
+        break;
+      case "RECEIVED":
+        return "info";
+        break;
+      case "ACCEPTED":
+        return "success";
+        break;
+      case "COMPLETED":
+        return "info";
+        break;
+    }
+  };
   return (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
@@ -58,73 +75,58 @@ const ConsultingStaff_Home = () => {
                   </Box>
                 </CardContent>
               </Card>
-
-            </Grid>
-            <Grid item lg={6} xl={6}>
-
-              <TableContainer  sx={{ borderRadius: 3 }} component={Paper}>
-                <Table>
-                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                    <TableRow>
-                      <TableCell>
-                        <Typography variant="h6" sx={{ color: "white" }}>INCOMING REQUEST</Typography>
-                      </TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
+              <TableContainer  sx={{ borderRadius: 3 , marginTop: 5}} component={Paper}>
+                <CardHeader
+                title="REQUEST MANAGEMENT"
+                titleTypographyProps={{ variant: 'h6', color: 'white'}}
+                sx={{ backgroundColor: "#30D5C8"}}
+                />
+                <Table>   
                   <TableBody>
-                    {waitingRequests?.slice(0, 5).map((request) => (
+                    {acceptedRequests?.slice(0, 5).map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell sx={{ fontSize: 15 }}>{request.customer.first_name}</TableCell>
+                        <TableCell sx={{ fontSize: 15 }}>{formatRequestId(request.id)}</TableCell>
                         <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>
-                          {moment(request.appointmentDate).format("Do, MMM")}
+                        <Chip label={request.status} color={renderRowStatus(request.status)}></Chip>
                         </TableCell>
 
                       </TableRow>
                     ))}
                     <TableRow>
                     <TableCell>
-                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start'}}>Showing {Math.min(waitingRequests.length, 5)} of {waitingRequests.length}</Typography>
+                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start'}}>Showing {Math.min(acceptedRequests.length, 5)} of {acceptedRequests.length}</Typography>
                       </TableCell>
                     <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell>
                         
-                        <Link href="/consulting-staff/incomming-request" underline="hover" sx={{color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline'}}>See more</Link>
+                        <Link href="/consulting-staff/request" underline="hover" sx={{color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline'}}>See more</Link>
                       </TableCell>
                      
                     </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
-
             </Grid>
             <Grid item lg={6} xl={6}>
 
               <TableContainer  sx={{ borderRadius: 3 }} component={Paper}>
+              <CardHeader
+                title="INCOMING REQUEST"
+                titleTypographyProps={{ variant: 'h6', color: 'white'}}
+                sx={{ backgroundColor: "#30D5C8"}}
+                />
                 <Table>
-                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                    <TableRow>
-                      <TableCell>
-                        <Typography variant="h6" sx={{ color: "white" }}>REQUEST MANAGEMENT</Typography>
-                      </TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
                   <TableBody>
-                    {acceptedRequests?.slice(0, 5).map((request) => (
+                    {waitingRequests?.slice(0, 5).map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell sx={{ fontSize: 15 }}>{request.id}</TableCell>
+                        <TableCell sx={{ fontSize: 15 }}>{request.customer.last_name} {request.customer.first_name}</TableCell>
                         <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>
-                          {request.status}
+                          {moment(request.appointmentDate).format("Do, MMM")}
                         </TableCell>
 
                       </TableRow>
