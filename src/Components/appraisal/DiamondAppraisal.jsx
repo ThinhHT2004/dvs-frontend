@@ -90,7 +90,7 @@ const UserDiamondAppraisalBody = () => {
   };
 
   const submitRequest = () => {
-
+    console.log(request);
     axios.post('https://dvs-backend-production.up.railway.app/api/request/create', request)
       .then(response => console.log(response.data))
       .catch(error => console.log(error))

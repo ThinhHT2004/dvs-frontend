@@ -1,11 +1,12 @@
 import React from 'react'
 import exPic from "../../assets/examplediamondpic.png";
 import Diamond_Proportions from "../../assets/Diamond_Proportions.png";
-import exCla from "../../assets/exCla.jpg";
+import errorImage from "../../assets/empty_image.jpg";
 import { useLocation } from 'react-router-dom';
 import { Box, Button, Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../footer/Footer';
+import moment from 'moment';
 const Check_DiamondsDetails = () => {
     const location = useLocation();
     const diamondDetails = location.state?.diamondDetails;
@@ -28,7 +29,7 @@ const Check_DiamondsDetails = () => {
                             alignItems="center"
                         >
                             <img
-                                src={exPic}
+                                src={diamondDetails.image || errorImage}
                                 alt="example diamond"
                                 style={{ width: "450px", height: "450px", margin: 5 }}
                             />
@@ -46,7 +47,7 @@ const Check_DiamondsDetails = () => {
                                 <CardHeader
                                     title={
                                         <Typography variant="h3">
-                                            {`Certificate ID: ${diamondDetails?.reportNumber}`}
+                                            {`Certificate ID: ${diamondDetails?.labId}`}
                                         </Typography>
                                     }
                                 />
@@ -81,7 +82,7 @@ const Check_DiamondsDetails = () => {
                                                             alignItems: "center",
                                                         }}
                                                     >
-                                                        {diamondDetails?.fairPrice}
+                                                        {diamondDetails?.finalPrice}
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
@@ -123,7 +124,7 @@ const Check_DiamondsDetails = () => {
                                                             alignItems: "center",
                                                         }}
                                                     >
-                                                        {diamondDetails?.CertificateLab}
+                                                        N/A
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
@@ -144,7 +145,7 @@ const Check_DiamondsDetails = () => {
                                                             alignItems: "center",
                                                         }}
                                                     >
-                                                        {diamondDetails?.cutGrade}
+                                                        {diamondDetails?.cut}
                                                     </Typography>
                                                 </Grid>
                                             </Grid>
@@ -204,7 +205,7 @@ const Check_DiamondsDetails = () => {
                                                                 alignItems: "center",
                                                             }}
                                                         >
-                                                            {diamondDetails?.measurements}
+                                                            {diamondDetails?.measurement}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
@@ -246,7 +247,7 @@ const Check_DiamondsDetails = () => {
                                                                 alignItems: "center",
                                                             }}
                                                         >
-                                                            {diamondDetails?.colorGrade}
+                                                            {diamondDetails?.color}
                                                         </Typography>
                                                     </Grid>
                                                 </Grid>
@@ -280,7 +281,7 @@ const Check_DiamondsDetails = () => {
                                                                 alignItems: "center",
                                                             }}
                                                         >
-                                                            {diamondDetails?.clarityGrade}
+                                                            {diamondDetails?.clarity}
                                                         </Typography>
                                                     </Grid>
                                                     <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
@@ -404,7 +405,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Certificate Date
                                                 </Typography>
-                                                <Typography>{diamondDetails?.certificateDate}</Typography>
+                                                <Typography>{moment(diamondDetails?.createdDate).format("yyyy-MM-dd")}</Typography>
                                             </Box>
                                             <Box
                                                 sx={{
@@ -416,7 +417,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Certificate Number
                                                 </Typography>
-                                                <Typography>{diamondDetails?.reportNumber}</Typography>
+                                                <Typography>{diamondDetails?.labId}</Typography>
                                             </Box>
 
                                             <Box
@@ -451,7 +452,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Measurements
                                                 </Typography>
-                                                <Typography>{diamondDetails?.measurements} mm</Typography>
+                                                <Typography>{diamondDetails?.measurement} mm</Typography>
                                             </Box>
                                         </CardContent>
                                         <CardHeader
@@ -483,7 +484,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Color Grade
                                                 </Typography>
-                                                <Typography>{diamondDetails?.colorGrade}</Typography>
+                                                <Typography>{diamondDetails?.color}</Typography>
                                             </Box>
 
                                             <Box
@@ -496,7 +497,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Clarity Grade
                                                 </Typography>
-                                                <Typography>{diamondDetails?.clarityGrade}</Typography>
+                                                <Typography>{diamondDetails?.clarity}</Typography>
                                             </Box>
                                         </CardContent>
 
@@ -552,7 +553,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Cut Grade
                                                 </Typography>
-                                                <Typography>{diamondDetails?.cutGrade}</Typography>
+                                                <Typography>{diamondDetails?.cut}</Typography>
                                             </Box>
                                             <Box
                                                 sx={{
@@ -564,7 +565,7 @@ const Check_DiamondsDetails = () => {
                                                 <Typography sx={{ color: "#989898" }}>
                                                     Comments
                                                 </Typography>
-                                                <Typography>{diamondDetails?.comments}</Typography>
+                                                <Typography>{diamondDetails?.note}</Typography>
                                             </Box>
                                         </CardContent>
                                     </Card>
@@ -585,7 +586,7 @@ const Check_DiamondsDetails = () => {
                                                 }}
                                             >
                                                 <img
-                                                    src={Diamond_Proportions}
+                                                    src={diamondDetails?.proportion}
                                                     alt=""
                                                     style={{ width: "450px", height: "300px" }}
                                                 />
@@ -635,7 +636,7 @@ const Check_DiamondsDetails = () => {
                                                 }}
                                             >
                                                 <img
-                                                    src={exCla}
+                                                    src={diamondDetails.characteristic}
                                                     alt=""
                                                     style={{ width: "450px", height: "270px" }}
                                                 />
