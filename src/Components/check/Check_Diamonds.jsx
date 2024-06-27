@@ -28,7 +28,7 @@ const CheckDiamondBody = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (diamondDetails) {
-      navigate(`/diamond-check/${diamondDetails.reportNumber}`, {
+      navigate(`/diamond-check/${diamondDetails.labId}`, {
         state: { diamondDetails },
       });
     }
