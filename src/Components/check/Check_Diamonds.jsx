@@ -21,6 +21,7 @@ import diamondCheckex from "../../assets/diamondCheckex.png";
 
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import axios from "axios";
+import { Toaster, toast } from "sonner";
 const CheckDiamondBody = () => {
   const [checkid, setCheckid] = useState("");
   const [diamondDetails, setDiamondDetails] = useState(null);
@@ -145,21 +146,25 @@ const CheckDiamondBody = () => {
     return diamond;
   };
 
-  const CheckID = () => {
+  async function CheckID(){
     try {
-      axios
+      await axios
         .get(
           "https://dvs-backend-production.up.railway.app/api/reports/diamond/" +
             checkid
         )
-        .then((resp) => setDiamondDetails(resp.data));
+        .then((resp) => {
+         setDiamondDetails(resp.data);
+        });
     } catch (err) {
-      console.log(err);
+      toast.error("Diamond Not Found");
+      
     }
   };
 
   return (
     <Box>
+      <Toaster position="bottom-center" richColors></Toaster>
       <Box sx={{ position: "relative" }}>
         <Box
           sx={{
