@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { consulting_staff_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
 import {
@@ -148,7 +148,79 @@ const ConsultingStaff_Form = () => {
     sample.size = size;
     getServicePrice(currentRequest.service.id, size, index);
   };
+  const selectTypeForm = (type) => {
+    if (type === "RECEIPT") {
+      return (
+        <Fragment>
+        {currentRequest.valuationRequestDetailList.map(
+          (sample, index) => (
+            <TableRow
+              key={sample.id}
+              sx={{
+                "& td": {
+                  borderBottom: "none",
+                  alignItems: "center",
+                },
+              }}
+            >
+              <TableCell>
+                <Box display="flex" alignItems="center">
+                  <Box width={"50%"} display={"flex"}>
+                    <Typography>
+                      ID Sample {sample.id}:
+                    </Typography>
+                    <TextField
+                      sx={{ marginLeft: 2, width: "40%" }}
+                      onChange={(e) =>
+                        handleSizeChange(e, index, sample)
+                      }
 
+                      label="Size"
+                      type="number"
+                    />
+                  </Box>
+                  <Box>
+                    <TextField
+                      sx={{ width: "70%" }}
+                      value={listSample[index] || 0}
+                      label="Service Price"
+                      disabled
+                    />
+                  </Box>
+                </Box>
+              </TableCell>
+            </TableRow>
+          )
+        )
+      }
+      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+        <TableCell>
+          <Typography>Total: {totalPrice} VND</Typography>
+        </TableCell>
+      </TableRow>
+      </Fragment>
+      )
+    } else  {return (
+      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+        <TableCell>
+        <TextField
+        fullWidth
+        margin="normal"
+        label="Notes"
+        multiline
+        rows={4}
+        value={currentRequest.note}
+        onChange={(e) =>
+          setCurrentRequest({
+            ...currentRequest,
+            note: e.target.value,
+          })
+        }
+      />
+        </TableCell>
+      </TableRow>
+    )}
+  };
   const renderStatus = (status) => {
     switch (status) {
       case "ACCEPTED":
@@ -274,7 +346,7 @@ const ConsultingStaff_Form = () => {
                     <TableBody>
                       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>
-                          <Typography> Request ID : {currentRequest.id}</Typography>
+                          <Typography> Request ID : {formatRequestId(currentRequest.id)}</Typography>
                         </TableCell>
                       </TableRow>
                       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
@@ -292,51 +364,7 @@ const ConsultingStaff_Form = () => {
                           <Typography>Phone : {currentRequest.customer.phoneNumber}</Typography>
                         </TableCell>
                       </TableRow>
-                      {currentRequest.valuationRequestDetailList.map(
-                        (sample, index) => (
-                          <TableRow
-                            key={sample.id}
-                            sx={{
-                              "& td": {
-                                borderBottom: "none",
-                                alignItems: "center",
-                              },
-                            }}
-                          >
-                            <TableCell>
-                              <Box display="flex" alignItems="center">
-                                <Box width={"50%"} display={"flex"}>
-                                  <Typography>
-                                    ID Sample {sample.id}:
-                                  </Typography>
-                                  <TextField
-                                    sx={{ marginLeft: 2, width: "40%" }}
-                                    onChange={(e) =>
-                                      handleSizeChange(e, index, sample)
-                                    }
-
-                                    label="Size"
-                                    type="number"
-                                  />
-                                </Box>
-                                <Box>
-                                  <TextField
-                                    sx={{ width: "70%" }}
-                                    value={listSample[index] || 0}
-                                    label="Service Price"
-                                    disabled
-                                  />
-                                </Box>
-                              </Box>
-                            </TableCell>
-                          </TableRow>
-                        )
-                      )}
-                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                        <TableCell>
-                          <Typography>Total: {totalPrice} VND</Typography>
-                        </TableCell>
-                      </TableRow>
+                      {selectTypeForm(selectedOption)}
                       <TableRow>
                         <TableCell colSpan={2} align="right">
                           <Button
