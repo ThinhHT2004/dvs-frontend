@@ -397,7 +397,7 @@ const Manager_ReceiptManagement = () => {
                                   );
                                 }
                                 return appraisers.find(
-                                  (option) => option.firstName === selected
+                                  (option) => option?.firstName === selected
                                 )?.firstName;
                               }}
                             >

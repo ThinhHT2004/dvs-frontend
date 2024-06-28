@@ -66,16 +66,22 @@ const App = () => {
             <Route
               path="/admin/home"
               element={
-                <RolesAuthRoute element={<Admin_Home></Admin_Home>} allowedRoles={[roles.ADMIN]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={<Admin_Home></Admin_Home>}
+                  allowedRoles={[roles.ADMIN]}
+                ></RolesAuthRoute>
               }
             ></Route>
             <Route
               path="/admin/services"
               element={
-                <RolesAuthRoute element={<Admin_Services></Admin_Services>} allowedRoles={[roles.ADMIN]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={<Admin_Services></Admin_Services>}
+                  allowedRoles={[roles.ADMIN]}
+                ></RolesAuthRoute>
               }
             ></Route>
-            
+
             {/* Consulting Staff Site */}
             <Route
               path="/consulting-staff/home"
@@ -89,37 +95,63 @@ const App = () => {
             <Route
               path="/consulting-staff/incomming-request"
               element={
-                <RolesAuthRoute element={<ConsultingStaff_IncommingRequest></ConsultingStaff_IncommingRequest>}
-                allowedRoles={[roles.CONSULTING_STAFF]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={
+                    <ConsultingStaff_IncommingRequest></ConsultingStaff_IncommingRequest>
+                  }
+                  allowedRoles={[roles.CONSULTING_STAFF]}
+                ></RolesAuthRoute>
               }
             ></Route>
             <Route
               path="/consulting-staff/request"
               element={
-                <RolesAuthRoute element={<ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>} allowedRoles={[roles.CONSULTING_STAFF]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={
+                    <ConsultingStaff_ManageRequest></ConsultingStaff_ManageRequest>
+                  }
+                  allowedRoles={[roles.CONSULTING_STAFF]}
+                ></RolesAuthRoute>
               }
             ></Route>
             <Route
               path="/consulting-staff/report"
-              element={<RolesAuthRoute element={<ConsultingStaff_Report></ConsultingStaff_Report>} allowedRoles={[roles.CONSULTING_STAFF]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={<ConsultingStaff_Report></ConsultingStaff_Report>}
+                  allowedRoles={[roles.CONSULTING_STAFF]}
+                ></RolesAuthRoute>
+              }
             ></Route>
             <Route
               path="/consulting-staff/form"
-              element={<RolesAuthRoute element={<ConsultingStaff_Form></ConsultingStaff_Form>} allowedRoles={[roles.CONSULTING_STAFF]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={<ConsultingStaff_Form></ConsultingStaff_Form>}
+                  allowedRoles={[roles.CONSULTING_STAFF]}
+                ></RolesAuthRoute>
+              }
             ></Route>
-    
 
             {/* Valuation Staff Site */}
             <Route
               path="/valuation-staff/diamonds-appraisal"
               element={
-                <RolesAuthRoute element={<ValuationStaff_DiamondsAppraisal></ValuationStaff_DiamondsAppraisal>} allowedRoles={[roles.VALUATION_STAFF]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={
+                    <ValuationStaff_DiamondsAppraisal></ValuationStaff_DiamondsAppraisal>
+                  }
+                  allowedRoles={[roles.VALUATION_STAFF]}
+                ></RolesAuthRoute>
               }
             ></Route>
             <Route
               path="/valuation-staff/home"
               element={
-                <RolesAuthRoute element={<ValuationStaff_Home></ValuationStaff_Home>} allowedRoles={[roles.VALUATION_STAFF]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={<ValuationStaff_Home></ValuationStaff_Home>}
+                  allowedRoles={[roles.VALUATION_STAFF]}
+                ></RolesAuthRoute>
               }
             ></Route>
 
@@ -127,39 +159,72 @@ const App = () => {
             <Route
               path="/manager/home"
               element={
-                <RolesAuthRoute element={<Manager_Home></Manager_Home>} allowedRoles={[roles.MANAGER]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={<Manager_Home></Manager_Home>}
+                  allowedRoles={[roles.MANAGER]}
+                ></RolesAuthRoute>
               }
             ></Route>
             <Route
               path="/manager/pending-request"
               element={
-                <RolesAuthRoute element={<Manager_PendingRequest></Manager_PendingRequest>} allowedRoles={[roles.MANAGER]}></RolesAuthRoute>
+                <RolesAuthRoute
+                  element={<Manager_PendingRequest></Manager_PendingRequest>}
+                  allowedRoles={[roles.MANAGER]}
+                ></RolesAuthRoute>
               }
             ></Route>
             <Route
               path="/manager/receipt"
-              element={<RolesAuthRoute element={<Manager_ReceiptManagement></Manager_ReceiptManagement>} allowedRoles={[roles.MANAGER]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={
+                    <Manager_ReceiptManagement></Manager_ReceiptManagement>
+                  }
+                  allowedRoles={[roles.MANAGER]}
+                ></RolesAuthRoute>
+              }
             ></Route>
             <Route
               path="/manager/report"
-              element={<RolesAuthRoute element={<Manager_ReportManagement></Manager_ReportManagement>} allowedRoles={[roles.MANAGER]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={
+                    <Manager_ReportManagement></Manager_ReportManagement>
+                  }
+                  allowedRoles={[roles.MANAGER]}
+                ></RolesAuthRoute>
+              }
             ></Route>
 
             {/* Customer Site */}
             <Route
               path="/vault/home"
-              element={<RolesAuthRoute element={<Vault_Home></Vault_Home>} allowedRoles={[roles.CUSTOMER]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={<Vault_Home></Vault_Home>}
+                  allowedRoles={[roles.CUSTOMER]}
+                ></RolesAuthRoute>
+              }
             ></Route>
             <Route
               path="/vault/appointment"
-              element={<RolesAuthRoute element={<Vault_Appointment></Vault_Appointment>} allowedRoles={[roles.CUSTOMER]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={<Vault_Appointment></Vault_Appointment>}
+                  allowedRoles={[roles.CUSTOMER]}
+                ></RolesAuthRoute>
+              }
             ></Route>
             <Route
               path="/vault/price-alert"
-              element={<RolesAuthRoute element={<Vault_PriceAlert></Vault_PriceAlert>} allowedRoles={[roles.CUSTOMER]}></RolesAuthRoute>}
+              element={
+                <RolesAuthRoute
+                  element={<Vault_PriceAlert></Vault_PriceAlert>}
+                  allowedRoles={[roles.CUSTOMER]}
+                ></RolesAuthRoute>
+              }
             ></Route>
-            
-            
           </Routes>
         </BrowserRouter>
       </RequestsProvider>

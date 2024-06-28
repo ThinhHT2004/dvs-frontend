@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Link,
@@ -14,6 +14,9 @@ import {
 } from "@mui/material";
 import { manager_navigator } from '../Naviate';
 import StaffDrawer from '../StaffDrawer';
+import axios from 'axios';
+import moment from 'moment';
+import { formatValuationId } from '../../../Foramat';
 const initRequestList = [
   { id: '#00001', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
   { id: '#00002', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
@@ -25,11 +28,44 @@ const initRequestList = [
 
 const Manager_PendingRequest = () => {
   const [data, setData] = useState(initRequestList);
+  const [listForms, setListForms] = useState([]);
   const drawerWidth = 240;
 
   const handleAction = (id) => {
     setData(prevData => prevData.filter(row => row.id !== id));
   };
+
+  function approveForm(id){
+    try{
+      axios.post("http://localhost:8080/api/forms/approve/" + id)
+      .then(resp => console.log(resp.data))
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  function denyForm(id){
+    try{
+      axios.post("http://localhost:8080/api/forms/deny/" + id)
+      .then(resp => console.log(resp.data))
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  useEffect( () => {
+    getWaitingForms();
+  }, [])
+  
+  function getWaitingForms(){
+    try{
+      axios
+      .get("http://localhost:8080/api/forms/waiting")
+      .then(resp => setListForms(resp.data));
+    }catch(err){
+      console.log(err);
+    }
+  }
 
   return (
     <Box
@@ -75,25 +111,25 @@ const Manager_PendingRequest = () => {
               <TableBody>
                 <TableRow sx={{ backgroundColor: "white" }}>
                   <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
-                  <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
                   <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Date</TableCell>
+                  <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
                   <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Type</TableCell>
                   <TableCell sx={{ width: 100 }}></TableCell>
                   <TableCell sx={{ width: 100 }}></TableCell>
                 </TableRow>
-                {data.map((row) => (
+                {listForms.map((row) => (
                   <TableRow key={row.id} sx={{ backgroundColor: "white" }}>
-                    <TableCell align="center">{row.id}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell align="center">{row.date}</TableCell>
+                    <TableCell align="center">{formatValuationId(row.valuationRequestId)}</TableCell>
+                    <TableCell align="center">{moment(row.createdDate).format("yyyy-MM-dd")}</TableCell>
                     <TableCell align="center">{row.status}</TableCell>
+                    <TableCell align="center">{row.formType}</TableCell>
                     <TableCell>
                       <Link href="#" sx={{ color: "#69CEE2"}} underline="none"
-                        onClick={() => handleAction(row.id)}>Approve</Link>
+                        onClick={() => approveForm(row.id)}>Approve</Link>
                     </TableCell>
                     <TableCell>
                       <Link href="#" sx={{ color: "red"}} underline="none"
-                        onClick={() => handleAction(row.id)}>Decline</Link>
+                        onClick={() => denyForm(row.id)}>Decline</Link>
                     </TableCell>
                   </TableRow>
                 ))}

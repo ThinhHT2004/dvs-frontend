@@ -19,7 +19,6 @@ import {
   Chip,
   Typography,
   CardHeader,
-
 } from "@mui/material";
 import axios from "axios";
 import { formatRequestId } from "../../../Foramat";
@@ -35,12 +34,16 @@ const ConsultingStaff_Form = () => {
   const [requests, setRequests] = useState([]);
   const [listSample, setListSample] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [form, setForm] = useState({
+    valuationRequestId: 0,
+    formType: selectedOption,
+    note: "",
+  });
 
+  console.log(form);
   useEffect(() => {
     getAcceptedRquest();
   }, []);
-
-  console.log(currentRequest);
 
   useEffect(() => {
     getTotalPrice();
@@ -50,8 +53,8 @@ const ConsultingStaff_Form = () => {
     axios
       .get(
         "https://dvs-backend-production.up.railway.app/api/request/valuation-request/" +
-        consultignStaffId +
-        "/ACCEPTED/COMPLETED"
+          consultignStaffId +
+          "/ACCEPTED/COMPLETED"
       )
       .then((resp) => setRequests(resp.data))
       .catch((err) => console.log(err));
@@ -71,11 +74,32 @@ const ConsultingStaff_Form = () => {
     let check = true;
     const list = currentRequest.valuationRequestDetailList;
     for (i; i < list.length; ++i) {
-      if (list[i].size === 0 || list[i].size === '') {
+      if (list[i].size === 0 || list[i].size === "") {
         check = false;
       }
     }
     return check;
+  }
+
+  console.log(selectedOption);
+  function createForm() {
+    if (selectedOption === "RECEIPT") {
+      createReceipt(
+        currentRequest.valuationRequestDetailList,
+        currentRequest.id
+      );
+    } else {
+      try {
+        axios
+          .post("http://localhost:8080/api/forms/create-form", form)
+          .then((resp) => {
+            console.log(resp.data);
+            handleClose();
+          });
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   function createReceipt(requestDetailList, requestId) {
@@ -84,7 +108,8 @@ const ConsultingStaff_Form = () => {
     } else {
       axios
         .post(
-          "https://dvs-backend-production.up.railway.app/api/request/create-receipt/" + requestId,
+          "https://dvs-backend-production.up.railway.app/api/forms/create-receipt/" +
+            requestId,
           requestDetailList
         )
         .then((resp) => {
@@ -93,7 +118,6 @@ const ConsultingStaff_Form = () => {
         })
         .catch((err) => console.log(err));
     }
-
   }
 
   const getServicePrice = (id, size, index) => {
@@ -104,7 +128,12 @@ const ConsultingStaff_Form = () => {
       return;
     }
     axios
-      .get("https://dvs-backend-production.up.railway.app/api/service-prices/price/" + id + "/" + size)
+      .get(
+        "https://dvs-backend-production.up.railway.app/api/service-prices/price/" +
+          id +
+          "/" +
+          size
+      )
       .then((resp) => {
         let newListSample = [...listSample];
         newListSample[index] = resp.data;
@@ -133,6 +162,11 @@ const ConsultingStaff_Form = () => {
 
   const handleMenuItemClick = (option) => {
     setSelectedOption(option);
+    setForm({
+      ...form,
+      valuationRequestId: currentRequest?.id,
+      formType: option,
+    });
     setOpen(true);
     handleMenuClose();
   };
@@ -152,8 +186,7 @@ const ConsultingStaff_Form = () => {
     if (type === "RECEIPT") {
       return (
         <Fragment>
-        {currentRequest.valuationRequestDetailList.map(
-          (sample, index) => (
+          {currentRequest.valuationRequestDetailList.map((sample, index) => (
             <TableRow
               key={sample.id}
               sx={{
@@ -166,15 +199,10 @@ const ConsultingStaff_Form = () => {
               <TableCell>
                 <Box display="flex" alignItems="center">
                   <Box width={"50%"} display={"flex"}>
-                    <Typography>
-                      ID Sample {sample.id}:
-                    </Typography>
+                    <Typography>ID Sample {sample.id}:</Typography>
                     <TextField
                       sx={{ marginLeft: 2, width: "40%" }}
-                      onChange={(e) =>
-                        handleSizeChange(e, index, sample)
-                      }
-
+                      onChange={(e) => handleSizeChange(e, index, sample)}
                       label="Size"
                       type="number"
                     />
@@ -190,36 +218,36 @@ const ConsultingStaff_Form = () => {
                 </Box>
               </TableCell>
             </TableRow>
-          )
-        )
-      }
-      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-        <TableCell>
-          <Typography>Total: {totalPrice} VND</Typography>
-        </TableCell>
-      </TableRow>
-      </Fragment>
-      )
-    } else  {return (
-      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-        <TableCell>
-        <TextField
-        fullWidth
-        margin="normal"
-        label="Notes"
-        multiline
-        rows={4}
-        value={currentRequest.note}
-        onChange={(e) =>
-          setCurrentRequest({
-            ...currentRequest,
-            note: e.target.value,
-          })
-        }
-      />
-        </TableCell>
-      </TableRow>
-    )}
+          ))}
+          <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+            <TableCell>
+              <Typography>Total: {totalPrice} VND</Typography>
+            </TableCell>
+          </TableRow>
+        </Fragment>
+      );
+    } else {
+      return (
+        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+          <TableCell>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Notes"
+              multiline
+              rows={4}
+              value={form.note}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  note: e.target.value,
+                })
+              }
+            />
+          </TableCell>
+        </TableRow>
+      );
+    }
   };
   const renderStatus = (status) => {
     switch (status) {
@@ -271,25 +299,44 @@ const ConsultingStaff_Form = () => {
             <Box>
               <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
                 <CardHeader
-                  title='MANAGE FORMS'
+                  title="MANAGE FORMS"
                   titleTypographyProps={{
-                    variant: 'h5',
-                    color: 'white',
+                    variant: "h5",
+                    color: "white",
                   }}
-                  sx={{ backgroundColor: '#30D5C8' }}
+                  sx={{ backgroundColor: "#30D5C8" }}
                 />
                 <Table>
                   <TableBody>
                     <TableRow sx={{ backgroundColor: "white" }}>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell
+                        sx={{ fontSize: 20, width: 150, color: "#69CEE2" }}
+                        align="center"
+                      >
+                        Request ID
+                      </TableCell>
+                      <TableCell
+                        sx={{ fontSize: 20, width: 250, color: "#69CEE2" }}
+                      >
+                        Customer Name
+                      </TableCell>
+                      <TableCell
+                        sx={{ fontSize: 20, width: 150, color: "#69CEE2" }}
+                        align="center"
+                      >
+                        Status
+                      </TableCell>
                       <TableCell sx={{ width: 200 }}></TableCell>
                     </TableRow>
                     {requests.map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell align="center">{formatRequestId(request.id)}</TableCell>
-                        <TableCell>{request.customer.last_name} {request.customer.first_name}</TableCell>
+                        <TableCell align="center">
+                          {formatRequestId(request.id)}
+                        </TableCell>
+                        <TableCell>
+                          {request.customer.last_name}{" "}
+                          {request.customer.first_name}
+                        </TableCell>
                         <TableCell align="center">
                           <Chip
                             label={request.status}
@@ -313,16 +360,19 @@ const ConsultingStaff_Form = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleMenuClose}
                           >
-                            {["RECEIPT", "SEALED", "COMMITTED", "HANDOVER"].map(
-                              (option) => (
-                                <MenuItem
-                                  key={option}
-                                  onClick={() => handleMenuItemClick(option)}
-                                >
-                                  {option}
-                                </MenuItem>
-                              )
-                            )}
+                            {[
+                              "RECEIPT",
+                              "SEALED",
+                              "COMMITMENT",
+                              "HAND OVER",
+                            ].map((option) => (
+                              <MenuItem
+                                key={option}
+                                onClick={() => handleMenuItemClick(option)}
+                              >
+                                {option}
+                              </MenuItem>
+                            ))}
                           </Menu>
                         </TableCell>
                       </TableRow>
@@ -334,34 +384,45 @@ const ConsultingStaff_Form = () => {
           </Grid>
           <Grid item xl={4} lg={4}>
             {open && (
-
               <Box>
                 <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
                   <CardHeader
                     title={`${selectedOption} FORM`}
-                    titleTypographyProps={{ variant: 'h5', color: 'white' }}
+                    titleTypographyProps={{ variant: "h5", color: "white" }}
                     sx={{ backgroundColor: "#30D5C8" }}
                   />
                   <Table>
                     <TableBody>
                       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>
-                          <Typography> Request ID : {formatRequestId(currentRequest.id)}</Typography>
+                          <Typography>
+                            {" "}
+                            Request ID : {formatRequestId(currentRequest.id)}
+                          </Typography>
                         </TableCell>
                       </TableRow>
                       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>
-                          <Typography> Service : {currentRequest.service.name}</Typography>
+                          <Typography>
+                            {" "}
+                            Service : {currentRequest.service.name}
+                          </Typography>
                         </TableCell>
                       </TableRow>
                       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>
-                          <Typography> Name : {currentRequest.customer.last_name} {currentRequest.customer.first_name}</Typography>
+                          <Typography>
+                            {" "}
+                            Name : {currentRequest.customer.last_name}{" "}
+                            {currentRequest.customer.first_name}
+                          </Typography>
                         </TableCell>
                       </TableRow>
                       <TableRow sx={{ "& td": { borderBottom: "none" } }}>
                         <TableCell>
-                          <Typography>Phone : {currentRequest.customer.phoneNumber}</Typography>
+                          <Typography>
+                            Phone : {currentRequest.customer.phoneNumber}
+                          </Typography>
                         </TableCell>
                       </TableRow>
                       {selectTypeForm(selectedOption)}
@@ -369,7 +430,7 @@ const ConsultingStaff_Form = () => {
                         <TableCell colSpan={2} align="right">
                           <Button
                             onClick={() =>
-                              createReceipt(
+                              createForm(
                                 currentRequest.valuationRequestDetailList,
                                 currentRequest.id
                               )
@@ -397,7 +458,6 @@ const ConsultingStaff_Form = () => {
                   </Table>
                 </TableContainer>
               </Box>
-
             )}
           </Grid>
         </Grid>
