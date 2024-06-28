@@ -168,10 +168,17 @@ const ConsultingStaff_Report = () => {
       maxWidth="md"
       fullWidth={true}
     >
-      <DialogTitle>{""}</DialogTitle>
-      <DialogContent>
-        <Paper>
-          <Box padding={1} height="100%">
+      <CardHeader
+        title={`${formatSampleId(diamond.id)}  Report`}
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+        />
+      <DialogContent sx={{ padding: 1}}>
+        
+          <Box  height="100%">
             <Box height="6%">
               <img src={logoWeb} style={{ width: "12%", height: "auto" }} />
             </Box>
@@ -321,7 +328,7 @@ const ConsultingStaff_Report = () => {
               </Box>
             </Box>
           </Box>
-        </Paper>
+        
       </DialogContent>
     </Dialog>
   );
@@ -376,8 +383,8 @@ const ConsultingStaff_Report = () => {
                   <TableBody>
                     <TableRow sx={{ backgroundColor: "white" }}>
                       <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Status</TableCell>
                       <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Receiving Date</TableCell>
                       <TableCell sx={{ width: 100 }}></TableCell>
                     </TableRow>

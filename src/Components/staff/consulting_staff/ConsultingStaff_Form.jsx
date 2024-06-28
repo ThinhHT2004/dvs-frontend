@@ -50,28 +50,28 @@ const ConsultingStaff_Form = () => {
     axios
       .get(
         "https://dvs-backend-production.up.railway.app/api/request/valuation-request/" +
-          consultignStaffId +
-          "/ACCEPTED/COMPLETED"
+        consultignStaffId +
+        "/ACCEPTED/COMPLETED"
       )
       .then((resp) => setRequests(resp.data))
       .catch((err) => console.log(err));
   }
 
-  function checkNegative(list){
+  function checkNegative(list) {
     let check = false;
     let i = 0;
-    for(i=0;i<list.length;++i){
-      if(parseFloat(list[i].size) < 0) check = true;
+    for (i = 0; i < list.length; ++i) {
+      if (parseFloat(list[i].size) < 0) check = true;
     }
     return check;
   }
 
-  function checkFullFilled(){
+  function checkFullFilled() {
     let i = 0;
     let check = true;
     const list = currentRequest.valuationRequestDetailList;
-    for(i;i<list.length;++i){
-      if(list[i].size === 0 || list[i].size === ''){
+    for (i; i < list.length; ++i) {
+      if (list[i].size === 0 || list[i].size === '') {
         check = false;
       }
     }
@@ -79,27 +79,27 @@ const ConsultingStaff_Form = () => {
   }
 
   function createReceipt(requestDetailList, requestId) {
-    if(checkNegative(requestDetailList)){
+    if (checkNegative(requestDetailList)) {
       toast.error("The size must not be negative");
-    }else{
+    } else {
       axios
-      .post(
-        "https://dvs-backend-production.up.railway.app/api/request/create-receipt/" + requestId,
-        requestDetailList
-      )
-      .then((resp) => {
-        handleClose();
-        getAcceptedRquest();  
-      })
-      .catch((err) => console.log(err));
+        .post(
+          "https://dvs-backend-production.up.railway.app/api/request/create-receipt/" + requestId,
+          requestDetailList
+        )
+        .then((resp) => {
+          handleClose();
+          getAcceptedRquest();
+        })
+        .catch((err) => console.log(err));
     }
-    
+
   }
 
   const getServicePrice = (id, size, index) => {
     if (size === "") {
       let newListSample = [...listSample];
-      newListSample[index] = 0; 
+      newListSample[index] = 0;
       setListSample(newListSample);
       return;
     }
@@ -145,7 +145,7 @@ const ConsultingStaff_Form = () => {
 
   const handleSizeChange = (e, index, sample) => {
     const size = e.target.value;
-    sample.size = size; 
+    sample.size = size;
     getServicePrice(currentRequest.service.id, size, index);
   };
 
@@ -188,28 +188,16 @@ const ConsultingStaff_Form = () => {
       <Box
         sx={{
           p: 3,
-          
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={7}>
+        <Grid container spacing={3}>
+          <Grid item xl={8} lg={8}>
             <Box>
-              {/* <TableContainer component={Paper} sx={{ width: "100%" }}>
-                <Table sx={{ minWidth: 300 }}>
-                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                    <TableRow>
-                      <TableCell>ID Request</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell align="center">Status</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody> */}
-                  <TableContainer sx={{ borderRadius: 3}} component={Paper}>
+              <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
                 <CardHeader
                   title='MANAGE FORMS'
                   titleTypographyProps={{
@@ -253,7 +241,7 @@ const ConsultingStaff_Form = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleMenuClose}
                           >
-                            {["Receipt", "Sealed", "Committed", "Handover"].map(
+                            {["RECEIPT", "SEALED", "COMMITTED", "HANDOVER"].map(
                               (option) => (
                                 <MenuItem
                                   key={option}
@@ -272,106 +260,116 @@ const ConsultingStaff_Form = () => {
               </TableContainer>
             </Box>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xl={4} lg={4}>
             {open && (
-              
-                <Box>
-                  <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 100 , borderRadius: 10 }}>
-                      <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                        <TableRow>
-                          <TableCell>{selectedOption} Form</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          <TableCell>
-                            Name : {currentRequest.customer.first_name}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          <TableCell>
-                            Phone : {currentRequest.customer.phoneNumber}
-                          </TableCell>
-                        </TableRow>
-                        {currentRequest.valuationRequestDetailList.map(
-                          (sample, index) => (
-                            <TableRow
-                              key={sample.id}
-                              sx={{
-                                "& td": {
-                                  borderBottom: "none",
-                                  alignItems: "center",
-                                },
-                              }}
-                            >
-                              <TableCell>
-                                <Box display="flex" alignItems="center">
-                                  <Box width={"50%"} display={"flex"}>
-                                    <Typography>
-                                      ID Sample {sample.id}:
-                                    </Typography>
-                                    <TextField
-                                      sx={{ marginLeft: 2, width: "40%" }}
-                                      onChange={(e) =>
-                                        handleSizeChange(e, index, sample)
-                                      }
-                                      value={sample.size}
-                                      label="Size"
-                                      type="number"
-                                    />
-                                  </Box>
-                                  <Box>
-                                    <TextField
-                                      sx={{ width: "70%" }}
-                                      value={listSample[index] || 0}
-                                      label="Service Price"
-                                      disabled
-                                    />
-                                  </Box>
+
+              <Box>
+                <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
+                  <CardHeader
+                    title={`${selectedOption} FORM`}
+                    titleTypographyProps={{ variant: 'h5', color: 'white' }}
+                    sx={{ backgroundColor: "#30D5C8" }}
+                  />
+                  <Table>
+                    <TableBody>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <Typography> Request ID : {currentRequest.id}</Typography>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <Typography> Service : {currentRequest.service.name}</Typography>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <Typography> Name : {currentRequest.customer.last_name} {currentRequest.customer.first_name}</Typography>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <Typography>Phone : {currentRequest.customer.phoneNumber}</Typography>
+                        </TableCell>
+                      </TableRow>
+                      {currentRequest.valuationRequestDetailList.map(
+                        (sample, index) => (
+                          <TableRow
+                            key={sample.id}
+                            sx={{
+                              "& td": {
+                                borderBottom: "none",
+                                alignItems: "center",
+                              },
+                            }}
+                          >
+                            <TableCell>
+                              <Box display="flex" alignItems="center">
+                                <Box width={"50%"} display={"flex"}>
+                                  <Typography>
+                                    ID Sample {sample.id}:
+                                  </Typography>
+                                  <TextField
+                                    sx={{ marginLeft: 2, width: "40%" }}
+                                    onChange={(e) =>
+                                      handleSizeChange(e, index, sample)
+                                    }
+
+                                    label="Size"
+                                    type="number"
+                                  />
                                 </Box>
-                              </TableCell>
-                            </TableRow>
-                          )
-                        )}
-                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          <TableCell>
-                            <Typography>Total: {totalPrice}</Typography>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell colSpan={2} align="right">
-                            <Button
-                              onClick={() =>
-                                createReceipt(
-                                  currentRequest.valuationRequestDetailList,
-                                  currentRequest.id
-                                )
-                              }
-                              variant="contained"
-                              sx={{ backgroundColor: "#69CEE2" }}
-                              disabled={!checkFullFilled()}
-                            >
-                              Create
-                            </Button>
-                            <Button
-                              onClick={() => handleClose()}
-                              variant="outlined"
-                              sx={{
-                                marginLeft: 2,
-                                color: "red",
-                                borderColor: "red",
-                              }}
-                            >
-                              Cancel
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Box>
-              
+                                <Box>
+                                  <TextField
+                                    sx={{ width: "70%" }}
+                                    value={listSample[index] || 0}
+                                    label="Service Price"
+                                    disabled
+                                  />
+                                </Box>
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      )}
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <Typography>Total: {totalPrice} VND</Typography>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={2} align="right">
+                          <Button
+                            onClick={() =>
+                              createReceipt(
+                                currentRequest.valuationRequestDetailList,
+                                currentRequest.id
+                              )
+                            }
+                            variant="contained"
+                            sx={{ backgroundColor: "#69CEE2" }}
+                            disabled={!checkFullFilled()}
+                          >
+                            Create
+                          </Button>
+                          <Button
+                            onClick={() => handleClose()}
+                            variant="outlined"
+                            sx={{
+                              marginLeft: 2,
+                              color: "red",
+                              borderColor: "red",
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+
             )}
           </Grid>
         </Grid>

@@ -15,6 +15,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Chip,
 } from "@mui/material";
 import { consulting_staff_navigator } from "../Naviate";
 import axios from "axios";
@@ -90,7 +91,8 @@ const ConsultingStaff_IncommingRequest = () => {
                   <TableCell sx={{fontSize: 15}}>{request.service.name}</TableCell>
                   <TableCell sx={{fontSize: 15, textAlign: 'center'}}>{request.quantity}</TableCell>
                   <TableCell sx={{fontSize: 15, textAlign: 'center'}}>
-                    {moment(request.appointmentDate).format("Do, MMM")}
+                  <Chip color="primary" size="small" label={moment(request.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
+                  </Chip>
                   </TableCell>
                   <TableCell sx={{fontSize: 15}}  align="center">
                     <Button

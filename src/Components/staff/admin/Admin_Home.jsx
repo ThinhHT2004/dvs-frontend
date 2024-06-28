@@ -1,38 +1,29 @@
 import React from 'react'
-import StaffDrawer from "../StaffDrawer";
+import { admin_navigator } from '../Naviate'
 import {
-  Box,
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardHeader,
+    Box,
+    Card,
+    CardContent,
+    Grid,
+    Typography,
 } from "@mui/material";
-import { valuation_staff_navigator } from '../Naviate';
 import WelcomeImg from "../../../assets/welcome_Img.png";
+import StaffDrawer from "../StaffDrawer";
 
-const ValuationStaff_Home = () => {
+const Admin_Home = () => {
     const drawerWidth = 240;
-  return (
-    
+    return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
-            
-                <StaffDrawer mylist={[
+            <StaffDrawer
+                mylist={[
                     "Home",
-                    "Diamonds Appraisal",
+                    "Services",
                     "Sign Out",
                 ]}
                 state="Home"
-                handleClick={valuation_staff_navigator}
-                ></StaffDrawer>
+                handleClick={admin_navigator}
+            />
+
             <Box
                 sx={{
                     p: 3,
@@ -56,9 +47,8 @@ const ValuationStaff_Home = () => {
                 </Grid>
             </Box>
         </Box>
-    
-  );
 
+    )
 }
 
-export default ValuationStaff_Home
+export default Admin_Home

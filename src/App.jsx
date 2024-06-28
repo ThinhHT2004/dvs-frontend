@@ -22,6 +22,8 @@ import Calculate from './Components/calculate/Calculate.jsx'
 import Check_Diamonds from './Components/check/Check_Diamonds.jsx'
 import Check_DiamondsDetails from './Components/check/Check_DiamondsDetails.jsx'
 import { RequestsProvider } from './Components/staff/consulting_staff/RequestContext.jsx'
+import Admin_Home from './Components/staff/admin/Admin_Home'
+import Admin_Services from './Components/staff/admin/Admin_Services'
 const App = () => {
   return (
     <>
@@ -31,6 +33,8 @@ const App = () => {
             <Route path='/' element={<HomePage></HomePage>}></Route>
             <Route path='/calculate' element={<Calculate></Calculate>}></Route>
             <Route path='/diamond-check' element={<Check_Diamonds></Check_Diamonds>}></Route>
+            <Route path='/admin/home' element={<Admin_Home></Admin_Home>}></Route>
+            <Route path='/admin/services' element={<Admin_Services></Admin_Services>}></Route>
             <Route path='/diamond-appraisal' element={<DiamondAppraisal></DiamondAppraisal>}></Route>
             <Route path='/accounts/signin' element={<Login></Login>}></Route>
             <Route path='/accounts/signup' element={<SignUp></SignUp>}></Route>

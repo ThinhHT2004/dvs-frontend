@@ -466,7 +466,7 @@ const ConsultingStaff_ManageRequest = () => {
                             <img
                               src={clarityImageUrl}
                               alt="Clarity Characteristics"
-                              style={{ width: "350px", height: "250px" }}
+                              style={{ width: "300px", height: "200px" }}
                             />
                           )}
                         </Box>
@@ -727,7 +727,10 @@ const ConsultingStaff_ManageRequest = () => {
           <TableCell align="center">
             <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
           </TableCell>
-          <TableCell align="center">{moment(row.appointmentDate).format("Do, MMM")}</TableCell>
+          <TableCell align="center">
+          <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
+          </Chip>
+          </TableCell>
           <TableCell align="center">
             <IconButton
               sx={{ backgroundColor: "#69CEE2" }}

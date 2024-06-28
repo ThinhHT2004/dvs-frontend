@@ -14,7 +14,9 @@ import {
   Link,
   TextField,
   Grid,
-  Chip
+  Chip,
+  CardHeader,
+
 } from "@mui/material";
 import { valuation_staff_navigator } from "../Naviate";
 import axios from "axios";
@@ -133,28 +135,34 @@ const ValuationStaff_DiamondsAppraisal = () => {
         >
           <Grid container spacing={3}>
             <Grid item xs={7} md={5}>
-              <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-                <Table sx={{ minWidth: 300 }}>
-                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                    <TableRow>
-                      <TableCell>ID Valuation</TableCell>
-                      <TableCell>ID Sample</TableCell>
-                      <TableCell>Price</TableCell>
-                      <TableCell>Deadline</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
+            <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
+                <CardHeader
+                  title='DIAMONDS APPRAISAL'
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                <Table>
                   <TableBody>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Valuation ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Sample ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }}>Price</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Deadline</TableCell>
+                      <TableCell sx={{ width: 100 }}></TableCell>
+                    </TableRow>
                     {assignments.map((assign) => (
                       <TableRow key={assign.id}>
-                        <TableCell>{formatValuationId(assign.id)}</TableCell>
-                        <TableCell>
+                        <TableCell align="center">{formatValuationId(assign.id)}</TableCell>
+                        <TableCell align="center">
                           {formatSampleId(assign.valuationRequestDetailId)}
                         </TableCell>
                         <TableCell>
                           {assign.price === 0 ? "No Price" : assign.price}
                         </TableCell>
-                        <TableCell>{displayDeadline(assign.deadline)}</TableCell>
+                        <TableCell align="center">{displayDeadline(assign.deadline)}</TableCell>
                         <TableCell>
                           <Link
                             href="#"
@@ -184,13 +192,16 @@ const ValuationStaff_DiamondsAppraisal = () => {
             <Grid md={7}>
               {selectedDiamond ? (
                 <Box sx={{ p: 3 }}>
-                  <TableContainer component={Paper} sx={{ marginBottom: 4 }}>
-                    <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-                      <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                        <TableRow>
-                          <TableCell>#00001 - #DIA01</TableCell>
-                        </TableRow>
-                      </TableHead>
+                  <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
+                  <CardHeader
+                  title={`DIAMOND DETAILS - ${formatSampleId(selectedDiamond.id)}`}
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                      <Table>
                       <TableBody>
                         <Box sx={{ width: "100%", height: "77vh" }}>
                           <Box width="100%" height="100%" display="flex">
@@ -244,7 +255,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                               </Box>
                               <Box marginBottom={1.5}>
                                 <Typography>
-                                  FLuorescence:{" "}
+                                  Fluorescence:{" "}
                                   {selectedDiamond.valuationReport.fluorescence}
                                 </Typography>
                               </Box>
@@ -271,6 +282,8 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                   fullWidth
                                   margin="normal"
                                   label="Notes"
+                                  multiline
+                                  rows={4}
                                   value={selectedDiamond.note}
                                   onChange={(e) =>
                                     setSelectedAssignment({

@@ -27,6 +27,7 @@ import smallLogo from '../../assets/SmallLogo.png';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
@@ -87,7 +88,7 @@ const iconMapping = {
   "Appointments": <NotificationsNoneOutlinedIcon />,
   "Price Alert": <WarningAmberIcon />,
   "Sign Out": <SignOutIcon />,
-
+  "Services": <LocalOfferIcon />,
 };
 
 const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {

@@ -111,7 +111,6 @@ const ConsultingStaff_Home = () => {
               </TableContainer>
             </Grid>
             <Grid item lg={6} xl={6}>
-
               <TableContainer  sx={{ borderRadius: 3 }} component={Paper}>
               <CardHeader
                 title="INCOMING REQUEST"
@@ -125,8 +124,9 @@ const ConsultingStaff_Home = () => {
                         <TableCell sx={{ fontSize: 15 }}>{request.customer.last_name} {request.customer.first_name}</TableCell>
                         <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
-                        <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>
-                          {moment(request.appointmentDate).format("Do, MMM")}
+                        <TableCell sx={{ fontSize: 15, textAlign: 'center' }}> 
+                          <Chip color="primary" size="small" label={moment(request.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
+                          </Chip>
                         </TableCell>
 
                       </TableRow>

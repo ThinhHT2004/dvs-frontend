@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, Fragment } from "react";
 import {
   Box,
   Link,
@@ -17,6 +17,11 @@ import {
   InputBase,
   TextField,
   Grid,
+  Typography,
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { manager_navigator } from "../Naviate";
@@ -75,7 +80,13 @@ const Manager_ReportManagement = () => {
     setCurrentValuationReport({ ...currentValuationReport, finalPrice: avg });
     return avg;
   };
-
+  const renderSampleStatus = (status) => {
+    switch (status) {
+      case "VALUATED":
+        return "success";
+        break;
+    }
+  };
   const handleSave = (diamond) => {
     currentValuationReport.createdDate = new Date();
     diamond.valuationReport = currentValuationReport;
@@ -87,7 +98,7 @@ const Manager_ReportManagement = () => {
         handleCancel();
       })
       .catch((err) => console.log(err));
-    
+
   };
 
   const handleCancel = () => {
@@ -103,211 +114,240 @@ const Manager_ReportManagement = () => {
   };
 
   return (
-    <div>
+
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#FAF6EF",
+        width: "100%",
+        minHeight: "100vh",
+      }}
+    >
+      <StaffDrawer
+        mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
+        state="Report"
+        handleClick={manager_navigator}
+      />
       <Box
         sx={{
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
-          flexDirection: "row",
-          backgroundColor: "#FAF6EF",
-          width: "100%",
-          minHeight: "100vh",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <StaffDrawer
-          mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
-          state="Report"
-          handleClick={manager_navigator}
-        />
-        <Box
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            display: "flex",
-            alignItems: "flex-start",
-          }}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TableContainer
-                component={Paper}
-                sx={{ width: "100%" }}
-              >
-                <Table sx={{ minWidth: 550, borderRadius: 10 }}>
-                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                    <TableRow>
-                      <TableCell>Sample ID</TableCell>
-                      <TableCell>Status</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <React.Fragment>
+        <Grid container spacing={3}>
+          <Grid item xl={6} lg={6}>
+            <TableContainer sx={{ borderRadius: 3}} component={Paper}>
+              <CardHeader
+                title='MANAGE REQUESTS'
+                titleTypographyProps={{
+                  variant: 'h5',
+                  color: 'white',
+                }}
+                sx={{ backgroundColor: '#30D5C8' }}
+              />
+              <Table>
+                <TableBody>
+                  <TableRow sx={{ backgroundColor: "white" }}>
+                    <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+
+                    <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                    <TableCell sx={{ width: 100 }}></TableCell>
+                  </TableRow>
+
+                  {samples.map((sample) => (
+                    <Fragment key={sample.id}>
+                      <TableRow>
+                        <TableCell align="center">
+                          {formatSampleId(sample.id)}
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip label={sample.status} color={renderSampleStatus(sample.status)}/>
+                        </TableCell>
+                        <TableCell>
+                          <Button>
+                            <Link
+                              href="#"
+                              sx={{ color: "#69CEE2", paddingLeft: "16px" }}
+                              underline="none"
+                              onClick={() => handleEditPriceClick(sample)}
+                            >
+                              Edit Price
+                            </Link>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </Fragment>
+                  ))}
+                </TableBody>
+
+              </Table>
+            </TableContainer>
+          </Grid>
+          <Grid item xl={6} lg={6}>
+            {editPriceOpen && (
+              <Box key={currentDiamond.id}>
+                <TableContainer component={Paper} sx={{borderRadius: 3}}>
+                  <CardHeader
+                    title={`DIAMOND PRICES - ${formatSampleId(currentDiamond.id)}`}
+                    titleTypographyProps={{ variant: 'h5', color: 'white' }}
+                    sx={{ backgroundColor: "#30D5C8" }}
+                  />
+                  <Grid container spacing={0.5}>
+                    {currentDiamond.assignmentList.map((assignment) => (
+                      <Grid item lg={4} xl={4} key={assignment.id}>
+                        <Card sx={{ maxWidth: '260px', margin: 1, backgroundColor: '#F2F2F2' }}>
+                          <CardHeader
+                            title={assignment.valuationStaff.firstName}
+                          />
+                          <CardContent>
+                            <Typography>
+                              Price: ${assignment.price}
+                            </Typography>
+                            <Typography sx={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                              Note: {assignment.note === null ? "none" : assignment.note}
+                            </Typography>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+
+                    ))}
+                  </Grid>
+                  <Table>
                     <TableBody>
-                      {samples.map((sample) => (
-                        <TableRow key={sample.id}>
-                          <TableCell>
-                            {formatSampleId(sample.id)}
-                          </TableCell>
+                      <TableRow >
+                        <TableCell
+                          sx={{
+                            borderBottom: "none",
+                            display: "flex",
+                            alignItems: "center",
 
-                          <TableCell>{sample.status}</TableCell>
-
-                          <TableCell>
-                            <Button>
-                              <Link
-                                href="#"
-                                sx={{ color: "#69CEE2", paddingLeft: "16px" }}
-                                underline="none"
-                                onClick={() => handleEditPriceClick(sample)}
-                              >
-                                Edit Price
-                              </Link>
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </React.Fragment>
-                </Table>
-              </TableContainer>
-            </Grid>
-            <Grid item xs={6}>
-              {editPriceOpen && (
-                <Box>
-                  <TableContainer component={Paper} sx={{ width: "100%" }}>
-                    <Table sx={{ minWidth: 300, borderRadius: 10 }}>
-                      <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                        <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                          <TableCell
-                            colSpan={5}
-                            sx={{ color: "white", fontSize: "25px" }}
-                          >
-                            {formatSampleId(currentDiamond.id)}
-                          </TableCell>
-
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {currentDiamond.assignmentList.map((assignment) => (
-                          <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                            <TableCell>
-                              <Grid container spacing={2}>
-                                <Grid item xs={4}>
-                                  Valuator : {assignment.valuationStaff.firstName}
-                                </Grid>
-                                <Grid item xs={4}>
-                                  Price : ${assignment.price}
-                                </Grid>
-                                <Grid item xs={4}>
-                                  Note : {assignment.note === null ? "none" : assignment.note}
-                                </Grid>
-                              </Grid>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-
-                        <TableRow >
-                          <TableCell
-                            sx={{
-                              borderBottom: "none",
-                              display: "flex",
-                              alignItems: "center",
-
-                            }}
-                          >
-                            <div style={{ marginRight: 8 }}>Final Price:</div>
+                          }}
+                        >
+                          <Typography  marginRight={2}>Final price: {" "}</Typography>
                             <FormControl
                               variant="standard">
                               <InputLabel htmlFor="final-price-input" />
                               <TextField
-                                value={currentValuationReport.finalPrice}
+                                value={currentValuationReport.finalPrice || ""}
                                 placeholder="Enter final price"
                                 onChange={(e) =>
                                   setCurrentValuationReport({ ...currentValuationReport, finalPrice: e.target.value })
                                 }
                                 type="number"
-                                sx={{ paddingTop: 2 }}
-                              ></TextField>
+
+                              />
                             </FormControl>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell colSpan={3} style={{ borderBottom: "none" }}>
+                          
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={3} style={{ borderBottom: "none" }}>
 
-                            <Grid container spacing={2}>
-                              <Grid item xs={4}>
-                                <Button
-                                  variant="contained"
-                                  sx={{ background: "#30D5C8" }}
-                                  fullWidth
-                                  onClick={() => handleMinPrice(currentDiamond)}
-                                >
-                                  Min
-                                </Button>
-                              </Grid>
-                              <Grid item xs={4}>
-                                <Button
-                                  variant="contained"
-                                  sx={{ background: "#30D5C8" }}
-                                  fullWidth
-                                  onClick={() => handleAverage(currentDiamond)}
-                                >
-                                  Average
-                                </Button>
-                              </Grid>
-                              <Grid item xs={4}>
-                                <Button
-                                  variant="contained"
-                                  sx={{
-                                    background: "#30D5C8"
-                                  }}
-                                  fullWidth
-                                  onClick={() => handleMaxPrice(currentDiamond)}
-                                >
-                                  Max
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </TableCell>
-                        </TableRow>
-                        <TableRow
-                          sx={{ backgroundColor: "#FFF", borderBottom: "none" }}
-                        >
-                          <TableCell
-                            sx={{ borderBottom: "none", textAlign: "left" }}
-                          >
-                            <Box display={"flex"} justifyContent={"right"} padding={2}>
+                          <Grid container spacing={2}>
+                            <Grid item xs={4}>
                               <Button
-
                                 variant="contained"
-                                sx={{ backgroundColor: "#69CEE2" }}
-                                onClick={() =>
-                                  handleSave(currentDiamond)
-                                }
-
+                                sx={{ background: "#30D5C8" }}
+                                fullWidth
+                                onClick={() => handleMinPrice(currentDiamond)}
                               >
-                                Save
-
+                                Min
                               </Button>
+                            </Grid>
+                            <Grid item xs={4}>
                               <Button
-                                variant="outlined"
-                                sx={{ marginLeft: 2, color: "red", borderColor: "red" }}
-                                onClick={() => handleCancel()}
+                                variant="contained"
+                                sx={{ background: "#30D5C8" }}
+                                fullWidth
+                                onClick={() => handleAverage(currentDiamond)}
                               >
-                                Cancel
+                                Average
                               </Button>
-                            </Box>
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Box>
-              )}
-            </Grid>
+                            </Grid>
+                            <Grid item xs={4}>
+                              <Button
+                                variant="contained"
+                                sx={{
+                                  background: "#30D5C8"
+                                }}
+                                fullWidth
+                                onClick={() => handleMaxPrice(currentDiamond)}
+                              >
+                                Max
+                              </Button>
+                            </Grid>
+                          </Grid>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell
+                        sx={{
+                          borderBottom: "none",
+                          display: "flex",
+                        }}
+                        >
+                   
+                          <Typography marginRight={2}>Notes:</Typography>
+                            <FormControl variant='standard'>
+                              <InputLabel htmlFor="note-input" />
+                              <TextField
+                                placeholder="Enter note"
+                                value={currentValuationReport.note || ""}
+                                multiline
+                                rows={4}
+                                onChange={(e) =>
+                                  setCurrentValuationReport({ ...currentValuationReport, note: e.target.value })
+                                }
+                                
+                              />
+                            </FormControl>
+                          
+                
+                        </TableCell>
+                      </TableRow>
+                      <TableRow
+                        sx={{ backgroundColor: "#FFF", borderBottom: "none" }}
+                      >
+                        <TableCell
+                          sx={{ borderBottom: "none", textAlign: "left" }}
+                        >
+                          <Box display={"flex"} justifyContent={"right"} padding={2}>
+                            <Button
+
+                              variant="contained"
+                              sx={{ backgroundColor: "#69CEE2" }}
+                              onClick={() =>
+                                handleSave(currentDiamond)
+                              }
+
+                            >
+                              Save
+
+                            </Button>
+                            <Button
+                              variant="outlined"
+                              sx={{ marginLeft: 2, color: "red", borderColor: "red" }}
+                              onClick={() => handleCancel()}
+                            >
+                              Cancel
+                            </Button>
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            )}
           </Grid>
-        </Box>
+        </Grid>
       </Box>
-    </div>
+    </Box >
+
   );
 };
 

@@ -87,7 +87,21 @@ export const vault_navigator = (text, navigate) => {
       break;
   }
 };
-
+export const admin_navigator = (text, navigate) => {
+  switch (text) {
+    case 'Home':
+      navigate('/admin/home');
+      break;
+    case 'Services':
+      navigate('/admin/services');
+      break;
+    case "Sign Out":
+      handleSignOut(navigate);
+      break;
+    default:
+      break;
+  }
+};
 function handleSignOut(navigate) {
   sessionStorage.clear();
   navigate("/");

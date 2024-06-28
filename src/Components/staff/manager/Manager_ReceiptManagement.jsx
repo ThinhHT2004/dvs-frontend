@@ -19,6 +19,10 @@ import {
   Grid,
   Typography,
   Chip,
+  CardHeader,
+  ListItem,
+  ListItemText,
+  List,
 } from "@mui/material";
 import { manager_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
@@ -33,14 +37,14 @@ const Manager_ReceiptManagement = () => {
   const [open, setOpen] = useState({});
   const [rows, setRows] = useState([]);
   const [appraiserList, setAppraiserList] = useState(() => getAppraisers());
-  const [staff1, setStaff1] = useState({firstName: ""});
-  const [staff2, setStaff2] = useState({firstName: ""});
-  const [staff3, setStaff3] = useState({firstName: ""});
+  const [staff1, setStaff1] = useState({ firstName: "" });
+  const [staff2, setStaff2] = useState({ firstName: "" });
+  const [staff3, setStaff3] = useState({ firstName: "" });
   const [boxOpen, setBoxOpen] = useState(false);
   const [currentDiamond, setCurrentDiamond] = useState(null);
   const [currentrRequest, setCurrentRequest] = useState();
   const appraisers = [staff1, staff2, staff3];
-
+  const drawerWidth = 240;
   useEffect(() => {
     getProcessingRequest();
   }, []);
@@ -110,7 +114,7 @@ const Manager_ReceiptManagement = () => {
     } else {
       axios
         .put(
-          "https://dvs-backend-production.up.railway.app/api/assignment/assign/" + currentrRequest.id + "/"  + currentSample.id, staffList
+          "https://dvs-backend-production.up.railway.app/api/assignment/assign/" + currentrRequest.id + "/" + currentSample.id, staffList
         )
         .then((resp) => {
           console.log(resp.data);
@@ -178,312 +182,317 @@ const Manager_ReceiptManagement = () => {
   };
 
   return (
-    <Grid container spacing={0}>
+
+
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#FAF6EF",
+        width: "100%",
+        minHeight: "100vh",
+      }}
+    >
       <Toaster position="top-center" richColors></Toaster>
+      <StaffDrawer
+        mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
+        state="Receipt"
+        handleClick={manager_navigator}
+      />
+
+
       <Box
         sx={{
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
-          flexDirection: "row",
-          backgroundColor: "#FAF6EF",
-          width: "100%",
-          minHeight: "100vh",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <StaffDrawer
-          mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
-          state="Receipt"
-          handleClick={manager_navigator}
-        />
-
-        <Grid item xs={6}>
-          <Box
-            sx={{
-              p: 3,
-
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <TableContainer component={Paper} sx={{ width: 800 }}>
-              <Table sx={{ minWidth: 600, borderRadius: 10 }}>
-                <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                  <TableRow>
-                    <TableCell>Request ID</TableCell>
-                    <TableCell>Amount</TableCell>
-                    <TableCell align="center">Status</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <React.Fragment key={row.id}>
-                      <TableRow>
-                        <TableCell>{formatRequestId(row.id)}</TableCell>
-                        <TableCell>{row.quantity}</TableCell>
-                        <TableCell align="center">
-                          <Chip
-                            label={row.status}
-                            color={renderStatus(row.status)}
-                          ></Chip>
-                        </TableCell>
-                        <TableCell>
-                          <IconButton
-                            aria-label="expand row"
-                            size="small"
-                            onClick={() => handleToggle(row.id)}
+        <Grid container spacing={3}>
+          <Grid item xl={8} lg={8}>
+            <Box>
+              <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
+                <CardHeader
+                  title='MANAGE RECEIPTS'
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                <Table>
+                  <TableBody>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell sx={{ width: 100 }}></TableCell>
+                    </TableRow>
+                    {rows.map((row) => (
+                      <React.Fragment key={row.id}>
+                        <TableRow sx={{ backgroundColor: "white" }}>
+                          <TableCell align="center">{formatRequestId(row.id)}</TableCell>
+                          <TableCell>{row.customer.last_name} {row.customer.first_name}</TableCell>
+                          <TableCell align="center">{row.quantity}</TableCell>
+                          <TableCell align="center">
+                            <Chip
+                              label={row.status}
+                              color={renderStatus(row.status)}
+                            ></Chip>
+                          </TableCell>
+                          <TableCell>
+                            <IconButton
+                              sx={{ backgroundColor: "#69CEE2" }}
+                              size="small"
+                              onClick={() => handleToggle(row.id)}
+                            >
+                              {open[row.id] ? (
+                                <KeyboardArrowUpIcon />
+                              ) : (
+                                <KeyboardArrowDownIcon />
+                              )}
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                        <TableRow sx={{ border: 0 }}>
+                          <TableCell
+                            style={{ padding: 0, border: 0 }} colSpan={6}
                           >
-                            {open[row.id] ? (
-                              <KeyboardArrowUpIcon />
-                            ) : (
-                              <KeyboardArrowDownIcon />
-                            )}
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell
-                          style={{ paddingBottom: 0, paddingTop: 0 }}
-                          colSpan={6}
-                        >
-                          <Collapse
-                            in={open[row.id]}
-                            timeout="auto"
-                            unmountOnExit
-                          >
-                            <TableContainer>
-                              <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                  <TableRow>
-                                    <TableCell>Sample Id</TableCell>
-                                    <TableCell align="center">Status</TableCell>
-                                    <TableCell></TableCell>
-                                  </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                  {row.valuationRequestDetailList.map(
-                                    (diamondRow, diamondIndex) => (
-                                      <TableRow
-                                        key={diamondRow.id}
-                                        sx={
-                                          diamondIndex ===
-                                          row.valuationRequestDetailList
-                                            .length -
-                                            1
-                                            ? { borderBottom: 0 }
-                                            : {}
-                                        }
-                                      >
-                                        <TableCell>
-                                          {formatSampleId(diamondRow.id)}
-                                        </TableCell>
-                                        <TableCell align="center">
-                                          <Chip
-                                            label={diamondRow.status}
-                                            color={renderSampleStatus(
-                                              diamondRow.status
-                                            )}
-                                            size="small"
-                                          ></Chip>
-                                        </TableCell>
-                                        <TableCell>
-                                          {displayLink(diamondRow, row)}
-                                        </TableCell>
-                                      </TableRow>
+                            <Collapse
+                              in={open[row.id]}
+                              timeout="auto"
+                              unmountOnExit
+                            >
+                              <List disablePadding >
+                              <Box>
+                                <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                                  <Grid container>
+                                    <Grid item lg={4} xl={4}>
+                                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
+                                    </Grid>
+                                    <Grid item lg={4} xl={4}>
+                                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
+                                    </Grid>
+                                  </Grid>
+                                  <ListItemText />
+                                </ListItem>
+                                    {row.valuationRequestDetailList.map(
+                                      (diamondRow) => (
+                                        <ListItem key={diamondRow.id}>
+                                          <Grid container>
+                                            <Grid item lg={4} xl={4}>
+                                              <ListItemText primary={formatRequestId(diamondRow.id)} />
+                                            </Grid>
+                                            <Grid item lg={4} xl={4}>
+                                              <ListItemText sx={{ textAlign: 'center' }}>
+                                                <Chip
+                                                  label={diamondRow.status}
+                                                  color={renderSampleStatus(diamondRow.status)}
+                                                  size="small"
+                                                ></Chip>
+                                              </ListItemText>
+                                            </Grid>
+                                            <Grid item lg={4} xl={4}>
+                                              <ListItemText primary={displayLink(diamondRow, row)} sx={{ textAlign: 'center' }} />
+                                            </Grid>
+                                          </Grid>
+                                        </ListItem>
+                                     
                                     )
                                   )}
-                                </TableBody>
-                              </Table>
-                            </TableContainer>
-                          </Collapse>
-                        </TableCell>
-                      </TableRow>
-                    </React.Fragment>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-        </Grid>
-        {boxOpen && currentDiamond && (
-          <Grid item xs={4}>
-            <Box
-              sx={{
-                p: 3,
-                display: "flex",
-                justifyContent: "center",
-              }}
-            >
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 400 }}>
-                  <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                    <TableRow>
-                      <TableCell colSpan={2}>
-                        Edit Appraiser - {currentDiamond.id}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                      <TableCell>
-                        <FormControl fullWidth margin="normal">
-                          <InputLabel id="demo-simple-select-label">
-                            Appraiser 1
-                          </InputLabel>
-                          <Select
-                            defaultValue=""
-                            labelId="demo-simple-select-label"
-                            value={staff1?.firstName ?? ""}
-                            onChange={(event) => {
-                              setStaff1(event.target.value);
-                            }}
-                            label="Appraiser 1"
-                            renderValue={(selected) => {
-                              if (selected === "") {
-                                return (
-                                  <em
-                                    style={{
-                                      color: "#989898",
-                                      fontStyle: "normal",
-                                    }}
-                                  >
-                                    Appraiser 1
-                                  </em>
-                                );
-                              }
-                              return appraisers.find(
-                                (option) => option.firstName === selected
-                              )?.firstName;
-                            }}
-                          >
-                            {appraiserList.map((appraiser) => (
-                              <MenuItem key={appraiser.id} value={appraiser}>
-                                {appraiser.firstName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                      <TableCell>
-                        <FormControl fullWidth margin="normal">
-                          <InputLabel id="demo-simple-select-label">
-                            Appraiser 2
-                          </InputLabel>
-                          <Select
-                            defaultValue=""
-                            labelId="demo-simple-select-label"
-                            value={staff2?.firstName ?? ""}
-                            onChange={(event) => {
-                              setStaff2(event.target.value);
-                            }}
-                            label="Appraiser 2"
-                            renderValue={(selected) => {
-                              if (selected === "") {
-                                return (
-                                  <em
-                                    style={{
-                                      color: "#989898",
-                                      fontStyle: "normal",
-                                    }}
-                                  >
-                                    Appraiser 2
-                                  </em>
-                                );
-                              }
-                              return appraisers.find(
-                                (option) => option.firstName === selected
-                              )?.firstName;
-                            }}
-                          >
-                            {appraiserList.map((appraiser) => (
-                              <MenuItem key={appraiser.id} value={appraiser}>
-                                {appraiser.firstName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                      <TableCell>
-                        <FormControl fullWidth margin="normal">
-                          <InputLabel id="demo-simple-select-label">
-                            Appraiser 3
-                          </InputLabel>
-                          <Select
-                            defaultValue=""
-                            labelId="demo-simple-select-label"
-                            value={staff3?.firstName ?? ""}
-                            onChange={(event) => {
-                              setStaff3(event.target.value);
-                            }}
-                            label="Appraiser 3"
-                            renderValue={(selected) => {
-                              if (selected === "") {
-                                return (
-                                  <em
-                                    style={{
-                                      color: "#989898",
-                                      fontStyle: "normal",
-                                    }}
-                                  >
-                                    Appraiser 3
-                                  </em>
-                                );
-                              }
-                              return appraisers.find(
-                                (option) => option.firstName === selected
-                              )?.firstName;
-                            }}
-                          >
-                            {appraiserList.map((appraiser) => (
-                              <MenuItem key={appraiser.id} value={appraiser}>
-                                {appraiser.firstName}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                        colSpan={2}
-                        sx={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          marginTop: 2,
-                        }}
-                      >
-                        <Button
-                          onClick={() => handleSave(currentDiamond, appraisers)}
-                          sx={{ backgroundColor: "#69CEE2" }}
-                          variant="contained"
-                          disabled={!checkFullFilled()}
-                        >
-                          Save
-                        </Button>
-                        <Button
-                          onClick={handleBoxClose}
-                          variant="outlined"
-                          sx={{
-                            marginLeft: 1,
-                            borderColor: "red",
-                            color: "red",
-                          }}
-                        >
-                          Cancel
-                        </Button>
-                      </TableCell>
-                    </TableRow>
+                                  
+                              </Box>
+                              </List>
+                            </Collapse>
+                          </TableCell>
+                        </TableRow>
+                      </React.Fragment>
+                    ))}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Box>
           </Grid>
-        )}
+          {boxOpen && currentDiamond && (
+            <Grid item xl={4} lg={4}>
+              <Box
+              >
+                <TableContainer component={Paper} sx={{borderRadius:3}}>
+              <CardHeader
+                    title={`Edit Appraiser - ${formatRequestId(currentDiamond.id)}`}
+                    titleTypographyProps={{ variant: 'h5', color: 'white' }}
+                    sx={{ backgroundColor: "#30D5C8"}}
+                  />
+                  <Table >
+                    <TableBody>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <FormControl fullWidth margin="normal">
+                            <InputLabel id="demo-simple-select-label">
+                              Appraiser 1
+                            </InputLabel>
+                            <Select
+                              defaultValue=""
+                              labelId="demo-simple-select-label"
+                              value={staff1?.firstName ?? ""}
+                              onChange={(event) => {
+                                setStaff1(event.target.value);
+                              }}
+                              label="Appraiser 1"
+                              renderValue={(selected) => {
+                                if (selected === "") {
+                                  return (
+                                    <em
+                                      style={{
+                                        color: "#989898",
+                                        fontStyle: "normal",
+                                      }}
+                                    >
+                                      Appraiser 1
+                                    </em>
+                                  );
+                                }
+                                return appraisers.find(
+                                  (option) => option.firstName === selected
+                                )?.firstName;
+                              }}
+                            >
+                              {appraiserList.map((appraiser) => (
+                                <MenuItem key={appraiser.id} value={appraiser}>
+                                  {appraiser.firstName}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <FormControl fullWidth margin="normal">
+                            <InputLabel id="demo-simple-select-label">
+                              Appraiser 2
+                            </InputLabel>
+                            <Select
+                              defaultValue=""
+                              labelId="demo-simple-select-label"
+                              value={staff2?.firstName ?? ""}
+                              onChange={(event) => {
+                                setStaff2(event.target.value);
+                              }}
+                              label="Appraiser 2"
+                              renderValue={(selected) => {
+                                if (selected === "") {
+                                  return (
+                                    <em
+                                      style={{
+                                        color: "#989898",
+                                        fontStyle: "normal",
+                                      }}
+                                    >
+                                      Appraiser 2
+                                    </em>
+                                  );
+                                }
+                                return appraisers.find(
+                                  (option) => option.firstName === selected
+                                )?.firstName;
+                              }}
+                            >
+                              {appraiserList.map((appraiser) => (
+                                <MenuItem key={appraiser.id} value={appraiser}>
+                                  {appraiser.firstName}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
+                        <TableCell>
+                          <FormControl fullWidth margin="normal">
+                            <InputLabel id="demo-simple-select-label">
+                              Appraiser 3
+                            </InputLabel>
+                            <Select
+                              defaultValue=""
+                              labelId="demo-simple-select-label"
+                              value={staff3?.firstName ?? ""}
+                              onChange={(event) => {
+                                setStaff3(event.target.value);
+                              }}
+                              label="Appraiser 3"
+                              renderValue={(selected) => {
+                                if (selected === "") {
+                                  return (
+                                    <em
+                                      style={{
+                                        color: "#989898",
+                                        fontStyle: "normal",
+                                      }}
+                                    >
+                                      Appraiser 3
+                                    </em>
+                                  );
+                                }
+                                return appraisers.find(
+                                  (option) => option.firstName === selected
+                                )?.firstName;
+                              }}
+                            >
+                              {appraiserList.map((appraiser) => (
+                                <MenuItem key={appraiser.id} value={appraiser}>
+                                  {appraiser.firstName}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell
+                          colSpan={2}
+                          sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            marginTop: 2,
+                          }}
+                        >
+                          <Button
+                            onClick={() => handleSave(currentDiamond, appraisers)}
+                            sx={{ backgroundColor: "#69CEE2" }}
+                            variant="contained"
+                            disabled={!checkFullFilled()}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            onClick={handleBoxClose}
+                            variant="outlined"
+                            sx={{
+                              marginLeft: 1,
+                              borderColor: "red",
+                              color: "red",
+                            }}
+                          >
+                            Cancel
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Grid>
+
+
+          )}
+        </Grid>
       </Box>
-    </Grid>
+    </Box>
+
   );
 };
 
