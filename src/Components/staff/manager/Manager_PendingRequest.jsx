@@ -37,7 +37,7 @@ const Manager_PendingRequest = () => {
 
   function approveForm(id){
     try{
-      axios.post("http://localhost:8080/api/forms/approve/" + id)
+      axios.post("https://dvs-backend-production.up.railway.app/api/forms/approve/" + id)
       .then(resp => console.log(resp.data))
     }catch(err){
       console.log(err);
@@ -46,7 +46,7 @@ const Manager_PendingRequest = () => {
 
   function denyForm(id){
     try{
-      axios.post("http://localhost:8080/api/forms/deny/" + id)
+      axios.post("https://dvs-backend-production.up.railway.app/api/forms/deny/" + id)
       .then(resp => console.log(resp.data))
     }catch(err){
       console.log(err);
@@ -60,7 +60,7 @@ const Manager_PendingRequest = () => {
   function getWaitingForms(){
     try{
       axios
-      .get("http://localhost:8080/api/forms/waiting")
+      .get("https://dvs-backend-production.up.railway.app/api/forms/waiting")
       .then(resp => setListForms(resp.data));
     }catch(err){
       console.log(err);

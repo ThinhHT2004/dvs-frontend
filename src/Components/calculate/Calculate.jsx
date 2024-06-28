@@ -25,6 +25,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import axios from "axios";
 
 import diaImg from "../../assets/DiaImg.png";
+import { useNavigate } from "react-router-dom";
 
 const Calculate = () => {
   const shapeMap = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS", "PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
@@ -37,6 +38,7 @@ const Calculate = () => {
   const fluorescenceMap = ["VSTG", "STG", "MED", "FNT", "NON"];
   const [open, setOpen] = useState(false);
   const [advanced, setAdvanced] = useState(false);
+  const navigate = useNavigate();
 
   const [origin, setOrigin] = useState("LAB");
   const [shape, setShape] = useState("ROUND");
@@ -699,7 +701,7 @@ const Calculate = () => {
                         {diamonds?.map((d) => (
                           <Box borderBottom={1} borderColor="#c7ced9">
                             <ListItem disablePadding>
-                              <ListItemButton>
+                              <ListItemButton href={d.source} target="_blank">
                                 <Grid
                                   container
                                   direction='row'
@@ -713,7 +715,7 @@ const Calculate = () => {
                                     justifyContent="center"
                                     alignItems="center"
                                   >
-                                    <img src={diaImg} alt="" width="110px" height="110px" />
+                                    <img src={d.image} alt="" width="110px" height="110px" />
                                   </Grid>
                                   <Grid item lg={2}>
                                     <ListItemText primary={d.shape} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} ></ListItemText>
