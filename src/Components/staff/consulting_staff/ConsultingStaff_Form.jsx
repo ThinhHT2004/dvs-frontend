@@ -54,7 +54,7 @@ const ConsultingStaff_Form = () => {
       .get(
         "https://dvs-backend-production.up.railway.app/api/request/valuation-request/" +
           consultignStaffId +
-          "/ACCEPTED/COMPLETED"
+          "/ACCEPTED/COMPLETED/SEALED"
       )
       .then((resp) => setRequests(resp.data))
       .catch((err) => console.log(err));
