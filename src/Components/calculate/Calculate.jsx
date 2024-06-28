@@ -190,8 +190,9 @@ const Calculate = () => {
                                   : "outlined"
                               }
                               onClick={() => setOrigin("NATURAL")}
-                              fullWidth
+                              
                               sx={{
+                                width: '100%',
                                 fontSize: {
                                   xs: '16px',
                                   sm: '18px',
@@ -210,8 +211,9 @@ const Calculate = () => {
                                 origin === "LAB" ? "contained" : "outlined"
                               }
                               onClick={() => setOrigin("LAB")}
-                              fullWidth
+                              
                               sx={{
+                                width: '100%',
                                 fontSize: {
                                   xs: '16px',
                                   sm: '18px',
@@ -238,8 +240,9 @@ const Calculate = () => {
                                   shape === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setShape(c)}
-                                fullWidth
+                                
                                 sx={{
+                                  width: '100%',
                                   fontSize: {
                                     xs: '16px',
                                     sm: '18px',
@@ -289,8 +292,9 @@ const Calculate = () => {
                                   color === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setColor(c)}
-                                fullWidth
+                                
                                 sx={{
+                                  width: '100%',
                                   fontSize: {
                                     xs: '16px',
                                     sm: '18px',
@@ -319,8 +323,9 @@ const Calculate = () => {
                                   clarity === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setClarity(c)}
-                                fullWidth
+                                
                                 sx={{
+                                  width: '100%',
                                   fontSize: {
                                     xs: '16px',
                                     sm: '18px',
@@ -392,8 +397,9 @@ const Calculate = () => {
                                       cut === c ? "contained" : "outlined"
                                     }
                                     onClick={() => setCut(c)}
-                                    fullWidth
+                                   
                                     sx={{
+                                      width: '100%',
                                       fontSize: {
                                         xs: '16px',
                                         sm: '18px',
@@ -423,8 +429,9 @@ const Calculate = () => {
                                         : "outlined"
                                     }
                                     onClick={() => setSymmetry(s)}
-                                    fullWidth
+                                    
                                     sx={{
+                                      width: '100%',
                                       fontSize: {
                                         xs: '16px',
                                         sm: '18px',
@@ -452,8 +459,9 @@ const Calculate = () => {
                                       polish === p ? "contained" : "outlined"
                                     }
                                     onClick={() => setPolish(p)}
-                                    fullWidth
+                                    
                                     sx={{
+                                      width: '100%',
                                       fontSize: {
                                         xs: '16px',
                                         sm: '18px',
@@ -606,11 +614,12 @@ const Calculate = () => {
                           <Grid container>
                             <Grid item lg={4}>
                               <Box
-                                fullWidth
+                                
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
+                                  width: '100%',  
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
@@ -629,11 +638,12 @@ const Calculate = () => {
                             </Grid>
                             <Grid item lg={4}>
                               <Box
-                                fullWidth
+                                
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
+                                  width: '100%',
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
@@ -651,11 +661,12 @@ const Calculate = () => {
                             </Grid>
                             <Grid item lg={4}>
                               <Box
-                                fullWidth
+                                
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
+                                  width: '100%',
                                   flexDirection: "column",
                                   backgroundColor: "#ACACAC33",
                                   padding: 2,

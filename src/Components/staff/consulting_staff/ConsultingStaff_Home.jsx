@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import StaffDrawer from "../StaffDrawer";
 import {
   Box,
@@ -23,9 +23,13 @@ import { useRequests } from "./RequestContext";
 import moment from "moment";
 import { formatRequestId} from "../../../Foramat";
 const ConsultingStaff_Home = () => {
-  const { waitingRequests} = useRequests();
-  const { acceptedRequests } = useRequests();
+  const { waitingRequests , getAllWaitingRequests} = useRequests([]);
+  const { acceptedRequests , getAllAcceptedRequests} = useRequests([]);
   const drawerWidth = 240;
+  useEffect(() => {
+    getAllWaitingRequests();
+    getAllAcceptedRequests();
+  }, []);
   const renderRowStatus = (status) => {
     switch (status) {
       case "PROCESSING":

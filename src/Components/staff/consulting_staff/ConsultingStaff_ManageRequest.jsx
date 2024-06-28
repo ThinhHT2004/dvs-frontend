@@ -43,6 +43,9 @@ import { useRequests } from "./RequestContext";
 
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
+  useEffect(() => {
+    getAllAcceptedRequests();
+  }, []);
   const [open, setOpen] = useState(false);
   const [proportionImage, setProportionImage] = useState(null);
   const [clarityImage, setClarityImage] = useState(null);
@@ -275,6 +278,13 @@ const ConsultingStaff_ManageRequest = () => {
         break;
       case "APPROVED":
         return "success";
+        break;
+        case "VALUATED":
+        return "secondary";
+        break;
+        case "WAITING":
+        return "primary";
+        break;
     }
   };
 

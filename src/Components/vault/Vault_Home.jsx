@@ -12,13 +12,15 @@ import {
     TableRow,
     TableCell,
     Link,
+    Grid,
+
 } from "@mui/material";
 import { vault_navigator } from "../staff/Naviate";
 import StaffDrawer from "../staff/StaffDrawer";
 import WelcomeImg from "../../assets/welcome_Img.png";
-import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
 
-const drawerWidth = 180;
+
+const drawerWidth = 240;
 
 const Vault = () => {
     return (
@@ -29,54 +31,34 @@ const Vault = () => {
                 backgroundColor: "#FAF6EF",
                 width: "100%",
                 minHeight: "100vh",
-                overflow: "hidden",
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Appointments", "Price Alert", "Report", "Sign Out"]}
+                mylist={["Home", "Appointments", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Sign Out"]}
                 state="Home"
                 handleClick={vault_navigator}
             />
             <Box
                 sx={{
                     p: 3,
-                    flexGrow: 1,
-                    display: "inline-flex",
-                    justifyContent: "space-evenly",
-                    flexDirection: { xs: "column", sm: "row" },
-                    transition: "margin 0.3s ease",
-                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
                 }}
             >
-                <Card
-                    sx={{
-                        width: { xs: '100%', sm: `calc(50% - 60px)` },
-                        height: 229,
-                    }}
-                >
-                    <CardContent>
-                        <Typography gutterBottom variant="h4" component="div" display="flex" gap="8px">
-                            Welcome <h4 style={{ color: '#69CEE2' }}>Nguyen Uyen</h4>!
-                        </Typography>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
-                        </div>
-                    </CardContent>
-                </Card>
-                <TableContainer component={Paper} sx={{ width: { xs: "100%", sm: `calc(50% - 60px)` }, height: 229 }}>
-                    <Table sx={{ minWidth: 450, height: '100%', borderRadius: 10 }}>
-                        <TableHead sx={{ backgroundColor: "#30D5C8" }}>
-                            <TableRow>
-                                <TableCell sx={{ fontSize: '20px', padding: '12px' }} colSpan={6}>Nearest Appoiment</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell height="23px" sx={{ borderBottom: 'none', padding: '10px', fontSize: '16px' }} >Fast Diamond Appraisal - GIA ID 6495035512 - 5/13/2024</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <Grid container spacing={2}>
+                    <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
+                        <Card sx={{ borderRadius: 3 }}>
+                            <CardContent>
+                                <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>Hua Tan Thinh</span></Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );
