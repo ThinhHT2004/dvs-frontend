@@ -42,6 +42,8 @@ const ConsultingStaff_Home = () => {
         break;
     }
   };
+
+
   return (
     <Box>
       <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>

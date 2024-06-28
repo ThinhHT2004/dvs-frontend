@@ -23,19 +23,23 @@ const Login = () => {
             console.log(response.data)
             if(response.data.role === 'CUSTOMER'){
                 sessionStorage.setItem('username', username);
-                sessionStorage.setItem('customerId', response.data.id);       
+                sessionStorage.setItem('customerId', response.data.id);
+                sessionStorage.setItem("role", response.data.role);       
                 navigator('/');
                 toast.success(response.data.mess);
             }else if(response.data.role === 'CONSULTING_STAFF'){
                 sessionStorage.setItem("consultingStaffId", response.data.id);
+                sessionStorage.setItem("role", response.data.role);
                 toast.success(response.data.mess);
                 navigator('/consulting-staff/home');
             }else if(response.data.role === 'VALUATION_STAFF'){
                 sessionStorage.setItem("valuationStaffId", response.data.id);
+                sessionStorage.setItem("role", response.data.role);
                 toast.success(response.data.mess);
                 navigator('/valuation-staff/home');
             }else if(response.data.role === 'MANAGER'){
                 sessionStorage.setItem("managerId", response.data.id);
+                sessionStorage.setItem("role", response.data.role);
                 toast.success(response.data.mess);
                 navigator('/manager/home');
             }
