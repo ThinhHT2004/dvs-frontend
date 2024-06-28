@@ -77,9 +77,15 @@ export const vault_navigator = (text, navigate) => {
     case 'Appointments':
       navigate('/vault/appointment');
       break;
-    case 'Price Alert':
-      navigate('/vault/price-alert');
-      break;
+      case 'Calculate':
+        navigate('/calculate');
+        break;
+      case 'Check Diamonds':
+        navigate('/diamond-check');
+        break;
+      case 'Diamonds Appraisal':
+        navigate('/diamond-appraisal');
+        break;
     case "Sign Out":
       handleSignOut(navigate);
       break;
@@ -95,6 +101,7 @@ export const admin_navigator = (text, navigate) => {
     case 'Services':
       navigate('/admin/services');
       break;
+   
     case "Sign Out":
       handleSignOut(navigate);
       break;

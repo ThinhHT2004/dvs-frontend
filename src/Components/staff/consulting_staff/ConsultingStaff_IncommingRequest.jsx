@@ -26,7 +26,9 @@ import { useRequests } from "./RequestContext";
 
 const ConsultingStaff_IncommingRequest = () => {
   const drawerWidth = 240;
-
+  useEffect(() => {
+    getAllWaitingRequests();
+  }, []);
  
   const { waitingRequests, getAllWaitingRequests } = useRequests();
   const acceptRequest = (requestId) => {

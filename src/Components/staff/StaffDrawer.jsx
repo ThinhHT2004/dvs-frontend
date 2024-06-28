@@ -28,6 +28,8 @@ import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import CalculateIcon from '@mui/icons-material/Calculate';
+import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
@@ -82,6 +84,7 @@ const iconMapping = {
   "Diamonds Appraisal": <DiamondIcon />,
   "Pending Request": <PendingActionsIcon />,
   "Request": <ManageIcon />,
+  "Requests": <ManageIcon />,
   "Receipt": <ReceiptLongIcon />,
   "Report": <ReportIcon />,
   "Form": <FormIcon />,
@@ -89,6 +92,8 @@ const iconMapping = {
   "Price Alert": <WarningAmberIcon />,
   "Sign Out": <SignOutIcon />,
   "Services": <LocalOfferIcon />,
+  "Calculate": <CalculateIcon />,
+  "Check Diamonds": <LibraryAddCheckIcon />,
 };
 
 const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {

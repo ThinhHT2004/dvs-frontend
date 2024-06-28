@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
-import { Box, Grid, Paper, TextField , Button, Typography, Link } from '@mui/material'
+import { Box, Grid, Paper, TextField , Button, Typography, Link, Card , CardHeader} from '@mui/material'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'sonner'
-
+import Footer from '../footer/Footer'
+import { FormControl, InputLabel, Input, InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = () => {
-
+    const [showPassword, setShowPassword] = useState(false);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [response, setResponse] = useState('');
@@ -47,34 +49,69 @@ const Login = () => {
         .catch(error => toast.error(response));
     }
   return (
-    <div>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Toaster position="top-center" richColors></Toaster>
+        <Box>
         <Navbar></Navbar>
-        <Grid>
-            <Paper elevation={10} style={paperStyle}>
-                <Grid alignContent={'center'} alignItems={'center'} textAlign={'center'} >
-                    <Box mt={3}>
-                        <h1>Sign In</h1>
-                    </Box>
-                    <Box mt={6}>
+        </Box>
+        <Box sx={{ flexGrow: 1}}>
+        <Grid container display={'flex'} justifyContent={'center'} alignItems={'center'}>
+            
+            <Card component={Paper} sx={{width:400, padding: 5, margin: 5}} elevation={5}>
+                    <CardHeader 
+                    title="Sign In"
+                    titleTypographyProps={{variant:'h4' , align: 'center'}}
+                    />
+                    <Box padding={1}>
                     <TextField label='Username' placeholder='Username' fullWidth required variant='standard' margin='normal' value={username} onChange={(e) => setUsername(e.target.value)}></TextField>
                     </Box>
-                    <Box>
-                        <TextField label='Password' placeholder='Password' fullWidth required variant='standard' margin='normal' value={password} onChange={(e) => setPassword(e.target.value)}></TextField>
-                    </Box>
-                    <Box mt={3}>
-                        <Button variant="contained" sx={{background: '#69CEE2', borderRadius: '8px'}} onClick={() => handleLogin()}>Sign In</Button>
-                    </Box>
+                    <Box padding={1}>
+                    <FormControl
+                                fullWidth
+                                required
+                                variant='standard'
+                            >
+                                <InputLabel htmlFor="password">Password</InputLabel>
+                                <Input
+                                    id="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder='Password'
+                                    value={password} 
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    endAdornment={
+                                        <InputAdornment position="end" >
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                onMouseDown={(e) => e.preventDefault()}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
 
-                    <Typography>
-                        Don't have an account? <br />
-                        <Link href="/accounts/signup" underline='none'>sign up</Link>
+                                />
+                            </FormControl>
+                        </Box>
+                    <Box padding={3} textAlign={'center'}>
+                        <Button variant="contained" sx={{background: '#69CEE2', borderRadius: '8px' }} onClick={() => handleLogin()} >Sign In</Button>
+                        </Box>
+
+                    <Typography padding={3} textAlign={'center'}>
+                        Don't have an account? <Link href="/accounts/signup" underline='none'>Sign up</Link>
                     </Typography>
-                </Grid>
                 
-            </Paper>
-        </Grid>        
-    </div>
+                
+            </Card>
+            
+        </Grid>  
+        </Box>
+        <Box>
+        <Footer></Footer>
+        </Box>
+              
+    </Box>
   )
 }
 
