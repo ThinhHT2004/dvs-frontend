@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { admin_navigator } from '../Naviate'
 import {
     Box,
@@ -24,6 +24,7 @@ import {
 import StaffDrawer from "../StaffDrawer";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
+import axios from 'axios';
 const Admin_Services = () => {
     const serviceList = [
         { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 0, size_to: 4, init_price: 350000, price_unit: 0 },
@@ -64,8 +65,25 @@ const Admin_Services = () => {
         { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 15, size_to: 100, init_price: 2800000, price_unit: 1300000 }
     ];
     const [servicePriceList, setServicePriceList] = useState(serviceList);
+    const [services, setServices] = useState([]);
     const [tempServiceList, setTempServiceList] = useState(serviceList);
-    const [selectedService, setSelectedService] = useState('');
+    const [selectedService, setSelectedService] = useState(null);
+
+    useEffect(() => {
+        getServices();
+        console.log(selectedService)
+    }, [selectedService]);
+
+    function getServices(){
+        try{
+            axios.get("http://localhost:8080/api/services/")
+            .then(resp => setServices(resp.data));
+        }catch(err){
+            console.log(err)
+        }
+    }
+
+    
 
     const handlePriceChange = (id_service, fieldName, value) => {
         // Find the index of the service with the given id_service in the tempServiceList
@@ -144,13 +162,9 @@ const Admin_Services = () => {
                             value={selectedService}
                             onChange={(event) => setSelectedService(event.target.value)}
                         >
-                            {serviceList.filter((service, index, self) =>
-                                index === self.findIndex((t) => (
-                                    t.name_service === service.name_service
-                                ))
-                            ).map((option) => (
-                                <MenuItem key={option.id_service} value={option.name_service}>
-                                    {option.name_service}
+                            {services.map((option) => (
+                                <MenuItem key={option.id} value={option}>
+                                    {option.name}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -169,19 +183,21 @@ const Admin_Services = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {tempServiceList.filter(service => service.name_service === selectedService).map((service, index) => (
-                                <StyledTableRow key={`${service.id_service}-${service.size_from}-${service.size_to}`}>
+                            {selectedService?.servicePriceList?.map((service, index) => (
+                                <StyledTableRow key={`${service.id}-${service.sizeFrom}-${service.sizeTo}`}>
                                     <StyledTableCell align='center'> {index +1}</StyledTableCell>
-                                    <StyledTableCell align='center'>{service.size_from}</StyledTableCell>
-                                    <StyledTableCell align='center'>{service.size_to}</StyledTableCell>
+                                    <StyledTableCell align='center'>{service.sizeFrom}</StyledTableCell>
+                                    <StyledTableCell align='center'>{service.sizeTo}</StyledTableCell>
                                     <StyledTableCell align='center'>
                                         <FormControl>
                                             <InputLabel htmlFor={`init_price-${index}`}></InputLabel>
                                             <OutlinedInput
                                                 type='number'
-                                                defaultValue={service.init_price}
-                                                onBlur={(e) => handlePriceChange(service.id_service, 'init_price', parseFloat(e.target.value))}
-                                                onChange={(e) => { }}
+                                                defaultValue={service.initPrice}
+                                                
+                                                onChange={(e) => {
+                                                    service.initPrice = e.target.value;
+                                                 }}
                                             />
                                         </FormControl>
                                     </StyledTableCell>
@@ -191,7 +207,7 @@ const Admin_Services = () => {
                                             <OutlinedInput
                                                 type='number'
                                                 id={`price_unit-${index}`}
-                                                defaultValue={service.price_unit}
+                                                defaultValue={service.priceUnit}
                                                 onBlur={(e) => handlePriceChange(service.id_service, 'price_unit', parseFloat(e.target.value))}
                                                 onChange={(e) => { }}
                                             />
