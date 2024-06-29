@@ -44,6 +44,11 @@ const Login = () => {
                 sessionStorage.setItem("role", response.data.role);
                 toast.success(response.data.mess);
                 navigator('/manager/home');
+            }else if(response.data.role === 'ADMIN'){
+                sessionStorage.setItem("adminId", response.data.id);
+                sessionStorage.setItem("role", response.data.role);
+                toast.success(response.data.mess);
+                navigator('/admin/home');
             }
             else{
                 toast.error(response.data.mess);

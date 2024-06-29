@@ -38,7 +38,10 @@ const Manager_PendingRequest = () => {
   function approveForm(id){
     try{
       axios.post("https://dvs-backend-production.up.railway.app/api/forms/approve/" + id)
-      .then(resp => console.log(resp.data))
+      
+      .then(() => {
+        getWaitingForms();
+      })
     }catch(err){
       console.log(err);
     }
@@ -47,7 +50,9 @@ const Manager_PendingRequest = () => {
   function denyForm(id){
     try{
       axios.post("https://dvs-backend-production.up.railway.app/api/forms/deny/" + id)
-      .then(resp => console.log(resp.data))
+      .then(() => {
+        getWaitingForms();
+      })
     }catch(err){
       console.log(err);
     }
