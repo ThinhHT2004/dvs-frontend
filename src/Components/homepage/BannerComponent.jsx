@@ -11,9 +11,9 @@ const Style = {
         borderColor: '#C9C9C6',
         borderRadius: '8px',
     },
-    div: {
-        marginLeft: '200px'
-    },
+    // div: {
+    //     marginLeft: '200px'
+    // },
     img: {
         width: 'auto', height: '500px', position: 'absolute', right: 0,
     }
@@ -33,10 +33,9 @@ const Banner = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            // justifyContent: 'space-between',
             padding: 2,
             backgroundImage: 'linear-gradient(to left, #d9f2f2 , white)',
-            color: 'black',
             width: 'auto',
             height: '500px',
             position: 'relative'
@@ -48,8 +47,6 @@ const Banner = () => {
             <Box sx={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 position: 'absolute',
-                left: 0,
-                padding: 2,
             }}>
                 <animated.div style={textProps} sx={Style.div}>
                     <Typography variant="h4" fontSize="40px">

@@ -12,10 +12,7 @@ const Guider = () => {
     <Box
       style={{
         backgroundColor: '#69CEE2',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
         padding: '20px',
-        color: '#000',
         width: '55%',
         height: '90%',
         marginTop: '14%',
