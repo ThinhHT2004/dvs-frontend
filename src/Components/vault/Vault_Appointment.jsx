@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Card,
-  CardContent,
-  Typography,
   TableContainer,
-  TableHead,
   Table,
   TableBody,
   Paper,
   TableRow,
   TableCell,
-  Link,
   Grid,
   CardHeader,
   Chip,
@@ -42,9 +37,9 @@ const Vault = () => {
       case "COMPLETED":
         return "info";
         break;
-        case "WAITING":
-          return "primary";
-          break;
+      case "WAITING":
+        return "primary";
+        break;
     }
   };
   useEffect(() => {
@@ -71,7 +66,7 @@ const Vault = () => {
       }}
     >
       <StaffDrawer
-        mylist={["Home", "Appointments", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Sign Out"]}
+        mylist={["Home", "Appointments", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Settings", "Sign Out"]}
         state="Appointments"
         handleClick={vault_navigator}
       />
@@ -86,51 +81,51 @@ const Vault = () => {
       >
         <Grid container>
           <Grid item lg={12} xl={12} md={12} sm={12} xs={12}>
-          <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
-          <CardHeader
-            title='APPPOINTMENTS'
-            titleTypographyProps={{
-              variant: 'h5',
-              color: 'white',
-            }}
-            sx={{ backgroundColor: '#30D5C8' }}
-          />
-          <Table>
-            <TableBody>
-              <TableRow>
-                <TableCell sx={{fontSize: 20, width: 50 , color: '#69CEE2'}}></TableCell>
-                <TableCell align="center" sx={{fontSize: 20, width: 50 , color: '#69CEE2'}}>Request ID</TableCell>
-                <TableCell sx={{fontSize: 20, width: 100 , color: '#69CEE2'}}>Service</TableCell>
-                <TableCell align="center" sx={{fontSize: 20, width: 100 , color: '#69CEE2'}}>Status</TableCell>
-                <TableCell align="center" sx={{fontSize: 20, width: 100 , color: '#69CEE2'}}>Appointment Date</TableCell>
-                <TableCell align="center" sx={{fontSize: 20, width: 100 , color: '#69CEE2'}}>Receive Date</TableCell>
-              </TableRow>
-              {requests.map((row) => (
-                <TableRow key={row.id}>
-                  <TableCell align="center">
-                    <CalendarMonthIcon
-                      sx={{
-                        color: '#30D5C8',
-                        fontSize: 60,
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell align="center">{formatRequestId(row.id)}</TableCell>
-                  <TableCell>
-                    {row.service.name}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
-                  </TableCell >
-                  <TableCell align="center">
-                    {moment(row.appointmentDate).format("yyyy-MM-DD hh:mm a")}
-                  </TableCell>
-                  <TableCell align="center">{row.receivingDate === null ? "N/A" : moment(row.receivingDate).format("yyyy-MM-DD hh:mm a")}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+            <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
+              <CardHeader
+                title='APPPOINTMENTS'
+                titleTypographyProps={{
+                  variant: 'h5',
+                  color: 'white',
+                }}
+                sx={{ backgroundColor: '#30D5C8' }}
+              />
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell sx={{ fontSize: 20, width: 50, color: '#69CEE2' }}></TableCell>
+                    <TableCell align="center" sx={{ fontSize: 20, width: 50, color: '#69CEE2' }}>Request ID</TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 100, color: '#69CEE2' }}>Service</TableCell>
+                    <TableCell align="center" sx={{ fontSize: 20, width: 100, color: '#69CEE2' }}>Status</TableCell>
+                    <TableCell align="center" sx={{ fontSize: 20, width: 100, color: '#69CEE2' }}>Appointment Date</TableCell>
+                    <TableCell align="center" sx={{ fontSize: 20, width: 100, color: '#69CEE2' }}>Receive Date</TableCell>
+                  </TableRow>
+                  {requests.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell align="center">
+                        <CalendarMonthIcon
+                          sx={{
+                            color: '#30D5C8',
+                            fontSize: 60,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell align="center">{formatRequestId(row.id)}</TableCell>
+                      <TableCell>
+                        {row.service.name}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
+                      </TableCell >
+                      <TableCell align="center">
+                        {moment(row.appointmentDate).format("yyyy-MM-DD hh:mm a")}
+                      </TableCell>
+                      <TableCell align="center">{row.receivingDate === null ? "N/A" : moment(row.receivingDate).format("yyyy-MM-DD hh:mm a")}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Grid>
         </Grid>
       </Box>

@@ -8,14 +8,14 @@ import Guider from './GuiderComponent.jsx'
 
 const HomePage = () => {
   return (
-    <div>
-      <Navbar></Navbar>
-      <Banner></Banner>
-      <Assistance></Assistance>
-      <Reviews></Reviews>
-      <Guider></Guider>
-      <Footer></Footer>
-    </div>
+      <>
+        <Navbar></Navbar>
+        <Banner></Banner>
+        <Assistance></Assistance>
+        <Reviews></Reviews>
+        <Guider></Guider>
+        <Footer></Footer>
+      </>
   )
 }
 

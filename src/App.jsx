@@ -18,6 +18,7 @@ import ConsultingStaff_Form from "./Components/staff/consulting_staff/Consulting
 import Vault_Home from "./Components/vault/Vault_Home.jsx";
 import Vault_Appointment from "./Components/vault/Vault_Appointment.jsx";
 import Vault_PriceAlert from "./Components/vault/Vault_PriceAlert.jsx";
+import Vault_Settings from "./Components/vault/Vault_Settings.jsx";
 import Calculate from "./Components/calculate/Calculate.jsx";
 import Check_Diamonds from "./Components/check/Check_Diamonds.jsx";
 import Check_DiamondsDetails from "./Components/check/Check_DiamondsDetails.jsx";
@@ -225,6 +226,16 @@ const App = () => {
                 ></RolesAuthRoute>
               }
             ></Route>
+            <Route
+              path="/vault/settings"
+              element={
+                <RolesAuthRoute
+                  element={<Vault_Settings></Vault_Settings>}
+                  allowedRoles={[roles.CUSTOMER]}
+                ></RolesAuthRoute>
+              }
+            ></Route>
+            
           </Routes>
         </BrowserRouter>
       </RequestsProvider>

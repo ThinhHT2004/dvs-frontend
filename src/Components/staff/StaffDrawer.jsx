@@ -30,6 +30,7 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import CalculateIcon from '@mui/icons-material/Calculate';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
@@ -94,6 +95,7 @@ const iconMapping = {
   "Services": <LocalOfferIcon />,
   "Calculate": <CalculateIcon />,
   "Check Diamonds": <LibraryAddCheckIcon />,
+  "Settings": <ManageAccountsIcon />,
 };
 
 const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {

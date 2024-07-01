@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import { vault_navigator } from "../staff/Naviate";
 import StaffDrawer from "../staff/StaffDrawer";
-import WelcomeImg from "../../assets/welcome_Img.png";
 import DiamondOutlinedIcon from '@mui/icons-material/DiamondOutlined';
 
 const initRequestList = [
@@ -40,7 +39,7 @@ const Vault = () => {
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Appointments", "Price Alert", "Report", "Sign Out"]}
+                 mylist={["Home", "Appointments", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Settings", "Sign Out"]}
                 state="Price Alert"
                 handleClick={vault_navigator}
             />

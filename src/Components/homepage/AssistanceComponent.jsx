@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Typography, Button, Card, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DiaIcon from '../../assets/DiaIcon.png';
@@ -22,8 +22,19 @@ const Style = {
 };
 
 const Section = ({ icon, title, description }) => {
+    // const ref = useRef(null);
+    // const [height, setHeight] = useState('auto');
+
+    // useEffect(() => {
+    //     if (ref.current) {
+    //         const width = ref.current.offsetWidth;
+    //         setHeight(`${width * 0.3}px`); // Set height to 75% of the width
+    //     }
+    // }, [ref.current?.offsetWidth]); // Update whenever the width changes
+
     return (
         <Box
+            // ref={ref}
             sx={{
                 background: "rgba(152, 152, 152, 0.1)",
                 borderRadius: '11px',

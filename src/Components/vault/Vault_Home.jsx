@@ -1,17 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import {
     Box,
     Card,
     CardContent,
     Typography,
-    TableContainer,
-    TableHead,
-    Table,
-    TableBody,
-    Paper,
-    TableRow,
-    TableCell,
-    Link,
     Grid,
 
 } from "@mui/material";
@@ -34,7 +26,7 @@ const Vault = () => {
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Appointments", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Sign Out"]}
+                mylist={["Home", "Appointments", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Settings", "Sign Out"]}
                 state="Home"
                 handleClick={vault_navigator}
             />

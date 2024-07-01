@@ -35,6 +35,9 @@ const UserComponent = () => {
   function handleVault(){
     navigator('/vault/home');
   }
+  function handleVault_Settings(){
+    navigator('/vault/settings');
+  }
 
   function handleHome(){
     switch(role){
@@ -91,7 +94,7 @@ const UserComponent = () => {
             <Typography textAlign="center" onClick={() => handleVault()}>Vault</Typography>
           </MenuItem>
           <MenuItem >
-            <Typography textAlign="center">Edit Profile</Typography>
+            <Typography textAlign="center" onClick={() => handleVault_Settings()}>Edit Profile</Typography>
           </MenuItem>
           <MenuItem>
             <Typography textAlign="center" onClick={() => handleLogOut()}>Log Out</Typography>
