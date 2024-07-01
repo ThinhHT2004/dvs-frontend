@@ -42,7 +42,7 @@ const Calculate = () => {
 
   const [origin, setOrigin] = useState("LAB");
   const [shape, setShape] = useState("ROUND");
-  const [carat, setCarat] = useState(0.5);
+  const [carat, setCarat] = useState(0.25);
   const [color, setColor] = useState("G");
   const [clarity, setClarity] = useState("VS1");
   const [cut, setCut] = useState("EX.");
