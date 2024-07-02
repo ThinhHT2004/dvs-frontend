@@ -1,130 +1,165 @@
-import React, { useEffect, useState } from 'react'
-import { admin_navigator } from '../Naviate'
+import React, { Fragment, useEffect, useState } from 'react';
+import { admin_navigator } from '../Naviate';
 import {
     Box,
-    CardContent,
     CardHeader,
     Table,
     TableBody,
     TableCell,
-    Typography,
     TableRow,
-    TableHead,
     TableContainer,
     Paper,
     Button,
     TextField,
-    FormControl,
-    InputLabel,
-    OutlinedInput,
-    InputAdornment,
-    MenuItem,
-
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    TableHead,
 } from "@mui/material";
 import StaffDrawer from "../StaffDrawer";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 import axios from 'axios';
+
+const drawerWidth = 240;
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+    },
+    '&:last-child td, &:last-child th': {
+        border: 0,
+    },
+}));
+
+const initialServicePriceList = [
+    { sizeFrom: 0, sizeTo: 4 },
+    { sizeFrom: 4, sizeTo: 4.5 },
+    { sizeFrom: 4.5, sizeTo: 5 },
+    { sizeFrom: 5, sizeTo: 5.5 },
+    { sizeFrom: 5.5, sizeTo: 6 },
+    { sizeFrom: 6, sizeTo: 6.5 },
+    { sizeFrom: 6.5, sizeTo: 7 },
+    { sizeFrom: 7, sizeTo: 7.5 },
+    { sizeFrom: 7.5, sizeTo: 8 },
+    { sizeFrom: 8, sizeTo: 8.5 },
+    { sizeFrom: 8.5, sizeTo: 9 },
+    { sizeFrom: 9, sizeTo: 10 },
+    { sizeFrom: 10, sizeTo: 11 },
+    { sizeFrom: 11, sizeTo: 12 },
+    { sizeFrom: 12, sizeTo: 13 },
+    { sizeFrom: 13, sizeTo: 14 },
+    { sizeFrom: 14, sizeTo: 15 },
+    { sizeFrom: 15, sizeTo: 100 }
+].map(range => ({
+    ...range,
+    initPrice: 0,
+    priceUnit: 0
+}));
+
 const Admin_Services = () => {
-    const serviceList = [
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 0, size_to: 4, init_price: 350000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 4, size_to: 4.5, init_price: 400000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 4.5, size_to: 5, init_price: 450000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 5, size_to: 5.5, init_price: 500000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 5.5, size_to: 6, init_price: 550000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 6, size_to: 6.5, init_price: 600000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 6.5, size_to: 7, init_price: 650000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 7, size_to: 7.5, init_price: 700000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 7.5, size_to: 8, init_price: 750000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 8, size_to: 8.5, init_price: 800000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 8.5, size_to: 9, init_price: 850000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 9, size_to: 10, init_price: 1000000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 10, size_to: 11, init_price: 1500000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 11, size_to: 12, init_price: 2000000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 12, size_to: 13, init_price: 2500000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 13, size_to: 14, init_price: 3000000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 14, size_to: 15, init_price: 3500000, price_unit: 0 },
-        { id_service: 1, name_service: 'Fast Appraisal in 3 hours', size_from: 15, size_to: 100, init_price: 3500000, price_unit: 1500000 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 0, size_to: 4, init_price: 300000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 4, size_to: 4.5, init_price: 350000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 4.5, size_to: 5, init_price: 400000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 5, size_to: 5.5, init_price: 450000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 5.5, size_to: 6, init_price: 500000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 6, size_to: 6.5, init_price: 550000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 6.5, size_to: 7, init_price: 600000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 7, size_to: 7.5, init_price: 650000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 7.5, size_to: 8, init_price: 700000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 8, size_to: 8.5, init_price: 750000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 8.5, size_to: 9, init_price: 800000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 9, size_to: 10, init_price: 950000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 10, size_to: 11, init_price: 1100000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 11, size_to: 12, init_price: 1500000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 12, size_to: 13, init_price: 1800000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 13, size_to: 14, init_price: 2100000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 14, size_to: 15, init_price: 2500000, price_unit: 0 },
-        { id_service: 2, name_service: 'Normal Appraisal in 10 hours', size_from: 15, size_to: 100, init_price: 2800000, price_unit: 1300000 }
-    ];
-    const [servicePriceList, setServicePriceList] = useState(serviceList);
+    const [servicePriceList, setServicePriceList] = useState([]);
     const [services, setServices] = useState([]);
-    const [tempServiceList, setTempServiceList] = useState(serviceList);
     const [selectedService, setSelectedService] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [newServiceDialogOpen, setNewServiceDialogOpen] = useState(false);
+    const [newService, setNewService] = useState({
+        id: '',
+        name: '',
+        servicePriceList: initialServicePriceList.map((range, index) => ({
+            id: Date.now() + index,
+            ...range,
+            initPrice: 0,
+            priceUnit: 0
+        }))
+    });
 
     useEffect(() => {
         getServices();
-        console.log(selectedService)
-    }, [selectedService]);
+    }, []);
 
-    function getServices(){
-        try{
-            axios.get("http://localhost:8080/api/services/")
-            .then(resp => setServices(resp.data));
-        }catch(err){
-            console.log(err)
+    const getServices = async () => {
+        try {
+            const resp = await axios.get("http://localhost:8080/api/services/");
+            setServices(resp.data);
+        } catch (err) {
+            console.log(err);
         }
-    }
-
-    
-
-    const handlePriceChange = (id_service, fieldName, value) => {
-        // Find the index of the service with the given id_service in the tempServiceList
-        const index = tempServiceList.findIndex(service => service.id_service === id_service);
-      
-        // If the service was found in the tempServiceList
-        if (index !== -1) {
-          // Create a copy of the tempServiceList
-          let updatedServiceList = [...tempServiceList];
-      
-          // Update the specific field in the selected service
-          updatedServiceList[index][fieldName] = value;
-      
-          // Update the state
-          setTempServiceList(updatedServiceList);
-        }
-      };
-    const handleUpdateClick = () => {
-        setServicePriceList(tempServiceList);
-        console.log("Updated service price list:", tempServiceList);
     };
 
-    const drawerWidth = 240;
-    const StyledTableCell = styled(TableCell)(({ theme }) => ({
-        [`&.${tableCellClasses.head}`]: {
-            backgroundColor: theme.palette.common.black,
-            color: theme.palette.common.white,
-        },
-        [`&.${tableCellClasses.body}`]: {
-            fontSize: 14,
-        },
-    }));
+    const handlePriceChange = (index, fieldName, value) => {
+        const updatedServicePriceList = [...servicePriceList];
+        updatedServicePriceList[index][fieldName] = value;
+        setServicePriceList(updatedServicePriceList);
+    };
 
-    const StyledTableRow = styled(TableRow)(({ theme }) => ({
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
-        '&:last-child td, &:last-child th': {
-            border: 0,
-        },
-    }));
+    const handleNewServicePriceChange = (index, field, value) => {
+        const updatedServicePriceList = newService.servicePriceList.map((service, serviceIndex) => {
+            if (index === serviceIndex) {
+                return { ...service, [field]: value };
+            }
+            return service; 
+        });
+        setNewService({ ...newService, servicePriceList: updatedServicePriceList });
+    };
+
+    const handleUpdateClick = () => {
+        const updatedServices = services.map(service =>
+            service.id === selectedService.id
+                ? { ...selectedService, servicePriceList }
+                : service
+        );
+        setServices(updatedServices);
+        setDialogOpen(false);
+        console.log("Updated service price list:", servicePriceList);
+    };
+
+    const handleSaveNewService = () => {
+        const newServiceWithId = { ...newService, id: Date.now() };
+        setServices([...services, newServiceWithId]);
+        setNewServiceDialogOpen(false);
+        console.log("New service added:", newServiceWithId);
+    };
+
+    const handleViewEditClick = service => {
+        setSelectedService(service);
+        setServicePriceList(service.servicePriceList);
+        setDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+        setSelectedService(null);
+    };
+
+    const handleCloseNewServiceDialog = () => {
+        setNewServiceDialogOpen(false);
+        setNewService({
+            id: '',
+            name: '',
+            servicePriceList: initialServicePriceList.map((range, index) => ({
+                id: Date.now() + index,
+                ...range,
+                initPrice: 0,
+                priceUnit: 0
+            }))
+        });
+    };
+
+    const handleCreateNewService = () => {
+        setNewServiceDialogOpen(true);
+    };
 
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
@@ -148,30 +183,53 @@ const Admin_Services = () => {
                 }}
             >
                 <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
-                    <CardHeader title="Service Price List"
+                    <CardHeader title="SERVICE PRICING MANAGEMENT"
                         titleTypographyProps={{ variant: 'h5', color: 'white' }}
                         sx={{ backgroundColor: "#30D5C8" }}
                     />
-                    <CardContent>
-                        <TextField
-                            id="select-service"
-                            select
-                            label="Select Service to Update"
-                            fullWidth
-                            variant="outlined"
-                            value={selectedService}
-                            onChange={(event) => setSelectedService(event.target.value)}
-                        >
-                            {services.map((option) => (
-                                <MenuItem key={option.id} value={option}>
-                                    {option.name}
-                                </MenuItem>
+                    <Table>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">No</TableCell>
+                                <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service Name</TableCell>
+                                <TableCell sx={{ width: 100 }}></TableCell>
+                                <TableCell sx={{ width: 100 }}></TableCell>
+                            </TableRow>
+                            {services.map((service, index) => (
+                                <Fragment key={service.id}>
+                                    <TableRow>
+                                        <TableCell align="center">{index + 1}</TableCell>
+                                        <TableCell>{service.name}</TableCell>
+                                        <TableCell>
+                                            <Button onClick={() => handleViewEditClick(service)}>View & Edit</Button>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button>Delete</Button>
+                                        </TableCell>
+                                    </TableRow>
+                                </Fragment>
                             ))}
-                        </TextField>
-                        <Box display='flex' justifyContent='flex-end'>
-                            <Button variant="contained" color="primary" onClick={handleUpdateClick}>Update</Button>
-                        </Box>
-                    </CardContent>
+                            <TableRow>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell></TableCell>
+                                <TableCell align='left'>
+                                    <Button onClick={handleCreateNewService}>Create new Service</Button>
+                                </TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Box>
+
+            <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+                <DialogTitle>
+                    <TextField
+                        defaultValue={selectedService?.name}
+                        onChange={e => setSelectedService({ ...selectedService, name: e.target.value })}
+                    />
+                </DialogTitle>
+                <DialogContent>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -183,44 +241,87 @@ const Admin_Services = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {selectedService?.servicePriceList?.map((service, index) => (
-                                <StyledTableRow key={`${service.id}-${service.sizeFrom}-${service.sizeTo}`}>
-                                    <StyledTableCell align='center'> {index +1}</StyledTableCell>
+                            {servicePriceList.map((service, index) => (
+                                <StyledTableRow key={service.id}>
+                                    <StyledTableCell align='center'>{index + 1}</StyledTableCell>
                                     <StyledTableCell align='center'>{service.sizeFrom}</StyledTableCell>
                                     <StyledTableCell align='center'>{service.sizeTo}</StyledTableCell>
                                     <StyledTableCell align='center'>
-                                        <FormControl>
-                                            <InputLabel htmlFor={`init_price-${index}`}></InputLabel>
-                                            <OutlinedInput
-                                                type='number'
-                                                defaultValue={service.initPrice}
-                                                
-                                                onChange={(e) => {
-                                                    service.initPrice = e.target.value;
-                                                 }}
-                                            />
-                                        </FormControl>
+                                        <TextField
+                                            type='number'
+                                            value={service.initPrice.toString()}
+                                            onChange={e => handlePriceChange(index, 'initPrice', e.target.value)}
+                                        />
                                     </StyledTableCell>
                                     <StyledTableCell align='center'>
-                                        <FormControl>
-                                            <InputLabel htmlFor={`price_unit-${index}`}></InputLabel>
-                                            <OutlinedInput
-                                                type='number'
-                                                id={`price_unit-${index}`}
-                                                defaultValue={service.priceUnit}
-                                                onBlur={(e) => handlePriceChange(service.id_service, 'price_unit', parseFloat(e.target.value))}
-                                                onChange={(e) => { }}
-                                            />
-                                        </FormControl>
+                                        <TextField
+                                            type='number'
+                                            value={service.priceUnit.toString()}
+                                            onChange={e => handlePriceChange(index, 'priceUnit', e.target.value)}
+                                        />
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>
                     </Table>
-                </TableContainer>
-            </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleUpdateClick} color="primary">Update</Button>
+                    <Button onClick={handleCloseDialog} color="error">Cancel</Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={newServiceDialogOpen} onClose={handleCloseNewServiceDialog} maxWidth="md" fullWidth>
+                <DialogTitle>
+                    <TextField
+                        label="Service Name"
+                        value={newService.name}
+                        onChange={e => setNewService({ ...newService, name: e.target.value })}
+                    />
+                </DialogTitle>
+                <DialogContent>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell align='center'>No</StyledTableCell>
+                                <StyledTableCell align='center'>Size From</StyledTableCell>
+                                <StyledTableCell align='center'>Size To</StyledTableCell>
+                                <StyledTableCell align='center'>Initial Price</StyledTableCell>
+                                <StyledTableCell align='center'>Price Unit</StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {newService.servicePriceList.map((service, index) => (
+                                <StyledTableRow key={service.id}>
+                                    <StyledTableCell align='center'>{index + 1}</StyledTableCell>
+                                    <StyledTableCell align='center'>{service.sizeFrom}</StyledTableCell>
+                                    <StyledTableCell align='center'>{service.sizeTo}</StyledTableCell>
+                                    <StyledTableCell align='center'>
+                                        <TextField
+                                            type='number'
+                                            value={service.initPrice}
+                                            onChange={e => handleNewServicePriceChange(index, 'initPrice', e.target.value)}
+                                        />
+                                    </StyledTableCell>
+                                    <StyledTableCell align='center'>
+                                        <TextField
+                                            type='number'
+                                            value={service.priceUnit}
+                                            onChange={e => handleNewServicePriceChange(index, 'priceUnit', e.target.value)}
+                                        />
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleSaveNewService} color="primary">Save</Button>
+                    <Button onClick={handleCloseNewServiceDialog} color="error">Cancel</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };
 
-export default Admin_Services
+export default Admin_Services;
