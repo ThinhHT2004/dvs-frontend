@@ -32,6 +32,8 @@ import axios from "axios";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { flushSync } from "react-dom";
 import { Toaster, toast } from "sonner";
+import protectedApi from "../../../APIs/ProtectedApi";
+import publicApi from "../../../APIs/PublicApi";
 
 const Manager_ReceiptManagement = () => {
   const [open, setOpen] = useState({});
@@ -48,6 +50,8 @@ const Manager_ReceiptManagement = () => {
   useEffect(() => {
     getProcessingRequest();
   }, []);
+
+  console.log(appraisers)
 
   function checkFullFilled() {
     let check = true;
@@ -70,17 +74,17 @@ const Manager_ReceiptManagement = () => {
   }
 
   function getProcessingRequest() {
-    axios
+    protectedApi
       .get(
-        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/status/PROCESSING"
+        "/request/valuation-request/status/PROCESSING"
       )
       .then((resp) => setRows(resp.data))
       .catch((err) => console.log(err));
   }
 
   function getAppraisers() {
-    axios
-      .get("https://dvs-backend-production.up.railway.app/api/staff/valuation-staffs")
+    protectedApi
+      .get("/staffs/valuation-staffs")
       .then((resp) => setAppraiserList(resp.data))
       .catch((err) => console.log(err));
   }
@@ -112,9 +116,9 @@ const Manager_ReceiptManagement = () => {
     if (checkDuplicate()) {
       toast.error("The Staff is duplicated");
     } else {
-      axios
+      protectedApi
         .put(
-          "https://dvs-backend-production.up.railway.app/api/assignment/assign/" + currentrRequest.id + "/" + currentSample.id, staffList
+          "http://localhost:8080/api/assignment/assigns/" + currentrRequest.id + "/" + currentSample.id, appraiserList
         )
         .then((resp) => {
           console.log(resp.data);
@@ -360,7 +364,7 @@ const Manager_ReceiptManagement = () => {
                                 )?.firstName;
                               }}
                             >
-                              {appraiserList.map((appraiser) => (
+                              {appraiserList?.map((appraiser) => (
                                 <MenuItem key={appraiser.id} value={appraiser}>
                                   {appraiser.firstName}
                                 </MenuItem>
@@ -401,7 +405,7 @@ const Manager_ReceiptManagement = () => {
                                 )?.firstName;
                               }}
                             >
-                              {appraiserList.map((appraiser) => (
+                              {appraiserList?.map((appraiser) => (
                                 <MenuItem key={appraiser.id} value={appraiser}>
                                   {appraiser.firstName}
                                 </MenuItem>
@@ -442,7 +446,7 @@ const Manager_ReceiptManagement = () => {
                                 )?.firstName;
                               }}
                             >
-                              {appraiserList.map((appraiser) => (
+                              {appraiserList?.map((appraiser) => (
                                 <MenuItem key={appraiser.id} value={appraiser}>
                                   {appraiser.firstName}
                                 </MenuItem>

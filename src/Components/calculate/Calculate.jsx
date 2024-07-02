@@ -26,6 +26,7 @@ import axios from "axios";
 
 import diaImg from "../../assets/DiaImg.png";
 import { useNavigate } from "react-router-dom";
+import publicApi from "../../APIs/PublicApi";
 
 const Calculate = () => {
   const shapeMap = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS", "PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
@@ -100,8 +101,8 @@ const Calculate = () => {
     };
     console.log(data);
     try {
-      axios
-        .get("https://dvs-backend-production.up.railway.app/api/diamond/search/false" + "?", {
+      publicApi
+        .get("/diamond/search/false" + "?", {
           params: data,
         })
         .then((resp) => setDiamonds(resp.data));

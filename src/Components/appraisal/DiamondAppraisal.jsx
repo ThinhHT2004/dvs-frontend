@@ -20,6 +20,7 @@ import Footer from '../footer/Footer';
 import diaApp01 from '../../assets/diamondAppraisal01.png';
 import diaApp02 from '../../assets/diamondAppraisal02.png';
 import exampleReport from '../../assets/exampleReport.png';
+import protectedApi from '../../APIs/ProtectedApi';
 const UserDiamondAppraisalBody = () => {
   const username = sessionStorage.getItem("username");
   const customerId = sessionStorage.getItem("customerId");
@@ -29,7 +30,7 @@ const UserDiamondAppraisalBody = () => {
   const [date, setDate] = useState(null);
   const [message, setMessage] = useState('');
   const [customer, setCustomer] = useState(() => {
-    axios.get('https://dvs-backend-production.up.railway.app/api/customers/' + customerId)
+    protectedApi.get('/customers/' + customerId)
       .then(response => {
         console.log(response.data);
         setCustomer(response.data);
@@ -39,8 +40,8 @@ const UserDiamondAppraisalBody = () => {
   const [serviceObject, setServiceObject] = useState(null);
 
   function getAllServices() {
-    axios
-      .get('https://dvs-backend-production.up.railway.app/api/services/')
+    protectedApi
+      .get('/services/')
       .then(resp => setServices(resp.data))
       .catch(err => console.log(err));
   }
@@ -52,7 +53,7 @@ const UserDiamondAppraisalBody = () => {
   });
 
   function fetchService() {
-    axios.get('https://dvs-backend-production.up.railway.app/api/services/' + service)
+    protectedApi.get('/services/' + service)
       .then(response => {
         setServiceObject(response.data);
       })
@@ -91,7 +92,7 @@ const UserDiamondAppraisalBody = () => {
 
   const submitRequest = () => {
     console.log(request);
-    axios.post('https://dvs-backend-production.up.railway.app/api/request/create', request)
+    protectedApi.post('/request/create', request)
       .then(response => console.log(response.data))
       .catch(error => console.log(error))
   }

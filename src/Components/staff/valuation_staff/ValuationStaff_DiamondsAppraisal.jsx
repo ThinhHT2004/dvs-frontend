@@ -23,6 +23,7 @@ import axios from "axios";
 import { formatSampleId, formatValuationId } from "../../../Foramat";
 import { Toaster, toast } from "sonner";
 import moment from "moment";
+import protectedApi from "../../../APIs/ProtectedApi";
 
 const ValuationStaff_DiamondsAppraisal = () => {
   const staffId = sessionStorage.getItem("valuationStaffId");
@@ -67,15 +68,15 @@ const ValuationStaff_DiamondsAppraisal = () => {
   }
 
   const getAssignments = () => {
-    axios
-      .get("https://dvs-backend-production.up.railway.app/api/assignment/ASSIGNED/" + staffId)
+    protectedApi
+      .get("/assignment/ASSIGNED/" + staffId)
       .then((resp) => setAssignments(resp.data))
       .catch((err) => console.log(err));
   };
 
   const getSelectDiamond = (id) => {
-    axios
-      .get("https://dvs-backend-production.up.railway.app/api/request-detail/find/" + id)
+    protectedApi
+      .get("/request-detail/find/" + id)
       .then((resp) => setSelectedDiamond(resp.data))
       .catch((err) => console.log(err));
   };
@@ -93,8 +94,8 @@ const ValuationStaff_DiamondsAppraisal = () => {
     if (parseFloat(selectedAssignment.price) < 0) {
       toast.error("The price must not be negative");
     } else {
-      axios
-        .put("https://dvs-backend-production.up.railway.app/api/assignment/update", selectedAssignment)
+      protectedApi
+        .put("/assignment/update", selectedAssignment)
         .then((resp) => {
           console.log(resp.data);
           getAssignments();

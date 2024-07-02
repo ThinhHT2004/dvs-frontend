@@ -29,6 +29,7 @@ import StaffDrawer from "../StaffDrawer";
 import axios from "axios";
 import { formatPrice, formatSampleId } from "../../../Foramat";
 import { Diamond } from "@mui/icons-material";
+import protectedApi from "../../../APIs/ProtectedApi";
 
 const Manager_ReportManagement = () => {
   const [samples, setSamples] = useState([]);
@@ -90,8 +91,8 @@ const Manager_ReportManagement = () => {
   const handleSave = (diamond) => {
     currentValuationReport.createdDate = new Date();
     diamond.valuationReport = currentValuationReport;
-    axios
-      .put("https://dvs-backend-production.up.railway.app/api/request-detail/update", diamond)
+    protectedApi
+      .put("/request-detail/update", diamond)
       .then((resp) => {
         console.log(resp.data);
         getSamples();
@@ -107,8 +108,8 @@ const Manager_ReportManagement = () => {
   };
 
   const getSamples = () => {
-    axios
-      .get("https://dvs-backend-production.up.railway.app/api/request-detail/VALUATED")
+    protectedApi
+      .get("/request-detail/VALUATED")
       .then((resp) => setSamples(resp.data))
       .catch((err) => console.log(err));
   };

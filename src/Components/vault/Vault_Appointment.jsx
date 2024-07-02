@@ -18,6 +18,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import axios from "axios";
 import moment from "moment";
 import { formatRequestId } from "../../Foramat";
+import protectedApi from "../../APIs/ProtectedApi";
 
 const Vault = () => {
   const drawerWidth = 240;
@@ -48,8 +49,8 @@ const Vault = () => {
 
   const getRequests = () => {
     try {
-      axios
-        .get("http://dvs-backend-production.up.railway.app/api/customers/request/" + customerId)
+      protectedApi
+        .get("/customers/request/" + customerId)
         .then((resp) => setRequests(resp.data));
     } catch (err) {
       console.log(err);

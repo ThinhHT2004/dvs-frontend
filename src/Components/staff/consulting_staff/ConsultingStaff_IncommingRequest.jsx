@@ -22,6 +22,7 @@ import axios from "axios";
 import moment from "moment";
 
 import { useRequests } from "./RequestContext";
+import protectedApi from "../../../APIs/ProtectedApi";
 
 
 const ConsultingStaff_IncommingRequest = () => {
@@ -32,9 +33,9 @@ const ConsultingStaff_IncommingRequest = () => {
  
   const { waitingRequests, getAllWaitingRequests } = useRequests();
   const acceptRequest = (requestId) => {
-    axios
+    protectedApi
       .put(
-        "https://dvs-backend-production.up.railway.app/api/request/" + requestId + "/assign/3"
+        "/request/" + requestId + "/assign/3"
       )
       .then(() => {
         getAllWaitingRequests();

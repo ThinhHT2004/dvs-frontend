@@ -17,6 +17,7 @@ import StaffDrawer from '../StaffDrawer';
 import axios from 'axios';
 import moment from 'moment';
 import { formatValuationId } from '../../../Foramat';
+import protectedApi from '../../../APIs/ProtectedApi';
 const initRequestList = [
   { id: '#00001', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
   { id: '#00002', name: 'Hua Tan Thinh', date: '13/6/2024', status: 'Commitment' },
@@ -37,7 +38,8 @@ const Manager_PendingRequest = () => {
 
   function approveForm(id){
     try{
-      axios.post("https://dvs-backend-production.up.railway.app/api/forms/approve/" + id)
+      protectedApi
+      .post("/forms/approve/" + id)
       
       .then(() => {
         getWaitingForms();
@@ -49,7 +51,7 @@ const Manager_PendingRequest = () => {
 
   function denyForm(id){
     try{
-      axios.post("https://dvs-backend-production.up.railway.app/api/forms/deny/" + id)
+      protectedApi.post("/forms/deny/" + id)
       .then(() => {
         getWaitingForms();
       })
@@ -64,8 +66,8 @@ const Manager_PendingRequest = () => {
   
   function getWaitingForms(){
     try{
-      axios
-      .get("https://dvs-backend-production.up.railway.app/api/forms/waiting")
+      protectedApi
+      .get("/forms/waiting")
       .then(resp => setListForms(resp.data));
     }catch(err){
       console.log(err);

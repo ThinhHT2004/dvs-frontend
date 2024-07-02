@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import protectedApi from "../../../APIs/ProtectedApi";
 
 const RequestsContext = createContext();
 const staffId = 3;
@@ -12,17 +13,17 @@ export const RequestsProvider = ({ children }) => {
   }, []);
 
   const getAllWaitingRequests = () => {
-    axios
-      .get("https://dvs-backend-production.up.railway.app/api/request/waiting")
+    protectedApi
+      .get("/request/waiting")
       .then((response) => {
         setwaitingRequests(response.data);
       })
       .catch((error) => console.log(error));
   };
   function getAllAcceptedRequests() {
-    axios
+    protectedApi
       .get(
-        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/not/" +
+        "/request/valuation-request/not/" +
           staffId +
           "/WAITING"
       )

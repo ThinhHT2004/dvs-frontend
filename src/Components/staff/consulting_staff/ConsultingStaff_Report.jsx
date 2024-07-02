@@ -33,6 +33,7 @@ import { formatRequestId, formatSampleId } from "../../../Foramat";
 import axios from "axios";
 import logoWeb from "../../../assets/logo_v4.png";
 import moment from "moment";
+import protectedApi from "../../../APIs/ProtectedApi";
 const drawerWidth = 240;
 
 const ConsultingStaff_Report = () => {
@@ -111,17 +112,17 @@ const ConsultingStaff_Report = () => {
     formData.append("id", request.id);
     formData.append("receiveDate", request.receivingDate);
     console.log(formData.get("receiveDate"));
-    axios
-      .put("https://dvs-backend-production.up.railway.app/api/request/create-appointment", formData)
+    protectedApi
+      .put("/request/create-appointment", formData)
       .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
     setSelectedRequest();
   };
 
   const getRequests = () => {
-    axios
+    protectedApi
       .get(
-        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/status/PROCESSING/COMPLETED"
+        "/request/valuation-request/status/PROCESSING/COMPLETED"
       )
       .then((resp) => setRequests(resp.data))
       .catch((err) => console.log(err));

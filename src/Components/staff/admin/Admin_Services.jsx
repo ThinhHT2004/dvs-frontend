@@ -21,6 +21,7 @@ import StaffDrawer from "../StaffDrawer";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 import axios from 'axios';
+import protectedApi from '../../../APIs/ProtectedApi';
 
 const drawerWidth = 240;
 
@@ -91,7 +92,7 @@ const Admin_Services = () => {
 
     const getServices = async () => {
         try {
-            const resp = await axios.get("http://localhost:8080/api/services/");
+            const resp = await protectedApi.get("/services/");
             setServices(resp.data);
         } catch (err) {
             console.log(err);

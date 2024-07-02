@@ -39,6 +39,7 @@ import axios from "axios";
 import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { useRequests } from "./RequestContext";
+import protectedApi from "../../../APIs/ProtectedApi";
 
 
 const ConsultingStaff_ManageRequest = () => {
@@ -131,8 +132,8 @@ const ConsultingStaff_ManageRequest = () => {
 
   async function saveReport(requestId, sampleId, valuationReport) {
     try {
-      const resp = await axios.put(
-        "https://dvs-backend-production.up.railway.app/api/reports/update/" +
+      const resp = await protectedApi.put(
+        "/reports/update/" +
         requestId +
         "/" +
         sampleId,
@@ -154,16 +155,16 @@ const ConsultingStaff_ManageRequest = () => {
     data.append("file3", diamondImage);
     data.append("valuationReportId", reportId);
     console.log(data.get("file1"));
-    axios
-      .post("https://dvs-backend-production.up.railway.app/api/cloudinary/upload", data)
+    protectedApi
+      .post("/cloudinary/upload", data)
       .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
   }
 
   async function getValuationRequestDetail(requestDetailId) {
     try {
-      const resp = await axios.get(
-        "https://dvs-backend-production.up.railway.app/api/request-detail/find/" + requestDetailId
+      const resp = await protectedApi.get(
+        "/request-detail/find/" + requestDetailId
       );
       return resp.data;
     } catch (err) {

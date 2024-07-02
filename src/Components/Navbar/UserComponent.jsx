@@ -29,6 +29,7 @@ const UserComponent = () => {
 
   function handleLogOut(){
     sessionStorage.clear();
+    localStorage.clear();
     navigator('/');
   }
 

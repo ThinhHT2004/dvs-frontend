@@ -114,5 +114,6 @@ export const admin_navigator = (text, navigate) => {
 };
 function handleSignOut(navigate) {
   sessionStorage.clear();
+  localStorage.clear();
   navigate("/");
 }

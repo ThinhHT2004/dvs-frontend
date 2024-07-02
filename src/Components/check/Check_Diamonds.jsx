@@ -22,6 +22,7 @@ import diamondCheckex from "../../assets/diamondCheckex.png";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import axios from "axios";
 import { Toaster, toast } from "sonner";
+import publicApi from "../../APIs/PublicApi";
 const CheckDiamondBody = () => {
   const [checkid, setCheckid] = useState("");
   const [diamondDetails, setDiamondDetails] = useState(null);
@@ -148,9 +149,9 @@ const CheckDiamondBody = () => {
 
   async function CheckID(){
     try {
-      await axios
+      await publicApi
         .get(
-          "https://dvs-backend-production.up.railway.app/api/reports/diamond/" +
+          "/reports/diamond/" +
             checkid
         )
         .then((resp) => {

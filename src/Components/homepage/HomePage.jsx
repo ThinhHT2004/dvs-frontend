@@ -7,6 +7,7 @@ import Banner from './BannerComponent.jsx'
 import Guider from './GuiderComponent.jsx'
 
 const HomePage = () => {
+  console.log(localStorage.getItem('token'));
   return (
       <>
         <Navbar></Navbar>

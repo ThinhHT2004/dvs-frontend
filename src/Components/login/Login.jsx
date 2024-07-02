@@ -7,6 +7,8 @@ import { Toaster, toast } from 'sonner'
 import Footer from '../footer/Footer'
 import { FormControl, InputLabel, Input, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import publicApi from '../../APIs/PublicApi'
+
 
 const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -19,10 +21,10 @@ const Login = () => {
     const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px'}
 
     function handleLogin(){
-        axios
-        .post('https://dvs-backend-production.up.railway.app/api/auth/login', {username: username, password: password})
+        publicApi
+        .post('/auth/authenticate', {username: username, password: password})
         .then(response => {
-            console.log(response.data)
+            localStorage.setItem("token", response.data.token);
             if(response.data.role === 'CUSTOMER'){
                 sessionStorage.setItem('username', username);
                 sessionStorage.setItem('customerId', response.data.id);
@@ -55,7 +57,7 @@ const Login = () => {
             }
         }        
         )
-        .catch(error => toast.error(response));
+        .catch(error => toast.error(error));
     }
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>

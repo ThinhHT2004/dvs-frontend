@@ -23,6 +23,7 @@ import {
 import axios from "axios";
 import { formatRequestId } from "../../../Foramat";
 import { Toaster, toast } from "sonner";
+import protectedApi from "../../../APIs/ProtectedApi";
 
 const ConsultingStaff_Form = () => {
   const drawerWidth = 240;
@@ -50,9 +51,9 @@ const ConsultingStaff_Form = () => {
   }, [listSample]);
 
   function getAcceptedRquest() {
-    axios
+    protectedApi
       .get(
-        "https://dvs-backend-production.up.railway.app/api/request/valuation-request/" +
+        "/request/valuation-request/" +
           consultignStaffId +
           "/ACCEPTED/COMPLETED/SEALED"
       )
@@ -90,8 +91,8 @@ const ConsultingStaff_Form = () => {
       );
     } else {
       try {
-        axios
-          .post("https://dvs-backend-production.up.railway.app/api/forms/create-form", form)
+        protectedApi
+          .post("/forms/create-form", form)
           .then((resp) => {
             console.log(resp.data);
             handleClose();
@@ -106,9 +107,9 @@ const ConsultingStaff_Form = () => {
     if (checkNegative(requestDetailList)) {
       toast.error("The size must not be negative");
     } else {
-      axios
+      protectedApi
         .post(
-          "https://dvs-backend-production.up.railway.app/api/forms/create-receipt/" +
+          "/forms/create-receipt/" +
             requestId,
           requestDetailList
         )
@@ -127,9 +128,9 @@ const ConsultingStaff_Form = () => {
       setListSample(newListSample);
       return;
     }
-    axios
+    protectedApi
       .get(
-        "https://dvs-backend-production.up.railway.app/api/service-prices/price/" +
+        "/service-prices/price/" +
           id +
           "/" +
           size
