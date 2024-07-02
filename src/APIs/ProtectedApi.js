@@ -2,7 +2,7 @@ import axios from "axios";
 
 const protectedApi = axios.create(
     {
-        baseURL: 'http://localhost:8080/api'
+        baseURL: 'https://dvs-backend-production.up.railway.app/api'
     }
 );
 
