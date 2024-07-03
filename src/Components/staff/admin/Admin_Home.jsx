@@ -18,6 +18,7 @@ const Admin_Home = () => {
                 mylist={[
                     "Home",
                     "Services",
+                    "Accounts",
                     "Sign Out",
                 ]}
                 state="Home"

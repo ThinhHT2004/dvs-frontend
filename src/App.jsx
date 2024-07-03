@@ -25,6 +25,7 @@ import Check_DiamondsDetails from "./Components/check/Check_DiamondsDetails.jsx"
 import { RequestsProvider } from "./Components/staff/consulting_staff/RequestContext.jsx";
 import Admin_Home from "./Components/staff/admin/Admin_Home";
 import Admin_Services from "./Components/staff/admin/Admin_Services";
+import Admin_Accounts from "./Components/staff/admin/Admin_Accounts";
 import AccessDenied from "./Components/exception/AccessDenied.jsx";
 import RolesAuthRoute from "./Components/route/RolesAuthRoute.jsx";
 import { ro } from "date-fns/locale";
@@ -82,7 +83,15 @@ const App = () => {
                 ></RolesAuthRoute>
               }
             ></Route>
-
+            <Route
+              path="/admin/accounts"
+              element={
+                <RolesAuthRoute
+                  element={<Admin_Accounts></Admin_Accounts>}
+                  allowedRoles={[roles.ADMIN]}
+                ></RolesAuthRoute>
+              }
+            ></Route>
             {/* Consulting Staff Site */}
             <Route
               path="/consulting-staff/home"

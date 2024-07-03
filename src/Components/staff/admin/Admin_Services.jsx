@@ -76,10 +76,9 @@ const Admin_Services = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [newServiceDialogOpen, setNewServiceDialogOpen] = useState(false);
     const [newService, setNewService] = useState({
-        id: '',
         name: '',
         duration: '',
-        servicePriceList: initialServicePriceList.map((range, index) => ({
+        servicePriceList: initialServicePriceList.map((range) => ({
             ...range,
             initPrice: 0,
             priceUnit: 0
@@ -114,10 +113,9 @@ const Admin_Services = () => {
 
     const resetNewService = () => {
         setNewService({
-            id: '',
             name: '',
-            servicePriceList: initialServicePriceList.map((range, index) => ({
-                id: Date.now() + index,
+            duration: '',
+            servicePriceList: initialServicePriceList.map((range) => ({
                 ...range,
                 initPrice: 0,
                 priceUnit: 0
@@ -130,7 +128,11 @@ const Admin_Services = () => {
         try{
             protectedApi
             .delete("/services/delete/" + service.id)
-            .then(resp => toast.success(resp.data));
+            .then(resp => {
+                toast.success(resp.data);
+                getServices();
+            });
+            
         }catch(err){
             console.log(err);
         }
@@ -171,17 +173,20 @@ const Admin_Services = () => {
         try{
             await protectedApi
             .post("/services/create", newService)
-            .then(console.log(resp => console.log(resp.data)))
+            .then(console.log(resp => {
+                console.log(resp.data);
+            }))
         }catch(err){
             console.log(err);
         }
 
 
-        const newServiceWithId = { ...newService, id: Date.now() };
-        setServices([...services, newServiceWithId]);
+        
+        setServices([...services, newService]);
         setNewServiceDialogOpen(false);
-        console.log("New service added:", newServiceWithId);
+        console.log("New service added:", newService);
         resetNewService();
+        getServices();
     };
 
     const handleViewEditClick = service => {
@@ -198,10 +203,9 @@ const Admin_Services = () => {
     const handleCloseNewServiceDialog = () => {
         setNewServiceDialogOpen(false);
         setNewService({
-            id: '',
             name: '',
-            servicePriceList: initialServicePriceList.map((range, index) => ({
-                id: Date.now() + index,
+            duration: '',
+            servicePriceList: initialServicePriceList.map((range) => ({
                 ...range,
                 initPrice: 0,
                 priceUnit: 0
@@ -220,6 +224,7 @@ const Admin_Services = () => {
                 mylist={[
                     "Home",
                     "Services",
+                    "Accounts",
                     "Sign Out",
                 ]}
                 state="Services"
@@ -249,7 +254,7 @@ const Admin_Services = () => {
                                 <TableCell sx={{ width: 100 }}></TableCell>
                             </TableRow>
                             {services.map((service, index) => (
-                                <Fragment key={service.id}>
+                                <Fragment key={service.id || index}>
                                     <TableRow>
                                         <TableCell align="center">{index + 1}</TableCell>
                                         <TableCell>{service.name}</TableCell>
@@ -328,12 +333,12 @@ const Admin_Services = () => {
                 <DialogTitle>
                     <TextField
                         label="Service Name"
-                        value={newService.name}
+                        value={newService.name || ''}
                         onChange={e => setNewService({ ...newService, name: e.target.value })}
                     />
                     <TextField
                         label="Service Duration"
-                        value={newService.duration}
+                        value={newService.duration || ''}
                         onChange={e => setNewService({ ...newService, duration: parseInt(e.target.value) })}
                     />
                 </DialogTitle>
@@ -350,7 +355,7 @@ const Admin_Services = () => {
                         </TableHead>
                         <TableBody>
                             {newService.servicePriceList.map((service, index) => (
-                                <StyledTableRow key={service.id}>
+                                <StyledTableRow key={service.id || index}>
                                     <StyledTableCell align='center'>{index + 1}</StyledTableCell>
                                     <StyledTableCell align='center'>{service.sizeFrom}</StyledTableCell>
                                     <StyledTableCell align='center'>{service.sizeTo}</StyledTableCell>

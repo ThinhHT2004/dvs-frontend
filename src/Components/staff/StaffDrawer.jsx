@@ -96,6 +96,7 @@ const iconMapping = {
   "Calculate": <CalculateIcon />,
   "Check Diamonds": <LibraryAddCheckIcon />,
   "Settings": <ManageAccountsIcon />,
+  "Accounts": <ManageAccountsIcon />,
 };
 
 const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {
