@@ -21,7 +21,8 @@ import StaffDrawer from "../StaffDrawer";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 import axios from 'axios';
-
+import protectedApi from '../../../APIs/ProtectedApi';
+import { Toaster, toast } from 'sonner';
 const drawerWidth = 240;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -77,17 +78,30 @@ const Admin_Services = () => {
     const [newService, setNewService] = useState({
         id: '',
         name: '',
+        duration: '',
         servicePriceList: initialServicePriceList.map((range, index) => ({
-            id: Date.now() + index,
             ...range,
             initPrice: 0,
             priceUnit: 0
         }))
     });
 
+    console.log(newService);
+
     useEffect(() => {
         getServices();
     }, []);
+
+
+    async function updateService(){
+        try{
+            await protectedApi
+            .put('/services/update', selectedService)
+            .then(resp => console.log(resp.data))
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     const getServices = async () => {
         try {
@@ -97,6 +111,7 @@ const Admin_Services = () => {
             console.log(err);
         }
     };
+
     const resetNewService = () => {
         setNewService({
             id: '',
@@ -109,9 +124,22 @@ const Admin_Services = () => {
             }))
         });
     };
+
+    const handleDelete = async service =>{
+        console.log(service);
+        try{
+            protectedApi
+            .delete("/services/delete/" + service.id)
+            .then(resp => toast.success(resp.data));
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     const handlePriceChange = (index, fieldName, value) => {
         const updatedServicePriceList = [...servicePriceList];
-        updatedServicePriceList[index][fieldName] = value;
+        console.log(parseFloat(value));
+        updatedServicePriceList[index][fieldName] = parseFloat(value);
         setServicePriceList(updatedServicePriceList);
     };
 
@@ -124,18 +152,31 @@ const Admin_Services = () => {
         }));
     };
 
+
     const handleUpdateClick = () => {
+        updateService();
         const updatedServices = services.map(service =>
             service.id === selectedService.id
                 ? { ...selectedService, servicePriceList }
                 : service
         );
         setServices(updatedServices);
+        
         setDialogOpen(false);
         console.log("Updated service price list:", servicePriceList);
     };
 
-    const handleSaveNewService = () => {
+    const handleSaveNewService = async () => {
+
+        try{
+            await protectedApi
+            .post("/services/create", newService)
+            .then(console.log(resp => console.log(resp.data)))
+        }catch(err){
+            console.log(err);
+        }
+
+
         const newServiceWithId = { ...newService, id: Date.now() };
         setServices([...services, newServiceWithId]);
         setNewServiceDialogOpen(false);
@@ -174,6 +215,7 @@ const Admin_Services = () => {
 
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
+            <Toaster position='top-center' richColors></Toaster>
             <StaffDrawer
                 mylist={[
                     "Home",
@@ -215,7 +257,7 @@ const Admin_Services = () => {
                                             <Button onClick={() => handleViewEditClick(service)}>View & Edit</Button>
                                         </TableCell>
                                         <TableCell>
-                                            <Button>Delete</Button>
+                                            <Button onClick={() => handleDelete(service)}>Delete</Button>
                                         </TableCell>
                                     </TableRow>
                                 </Fragment>
@@ -288,6 +330,11 @@ const Admin_Services = () => {
                         label="Service Name"
                         value={newService.name}
                         onChange={e => setNewService({ ...newService, name: e.target.value })}
+                    />
+                    <TextField
+                        label="Service Duration"
+                        value={newService.duration}
+                        onChange={e => setNewService({ ...newService, duration: parseInt(e.target.value) })}
                     />
                 </DialogTitle>
                 <DialogContent>

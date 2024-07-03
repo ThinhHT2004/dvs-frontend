@@ -11,6 +11,9 @@ import DiasecurWhiteLogo from '../../assets/DiasecurWhiteLogo.png';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import publicApi from '../../APIs/PublicApi'
+
+
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -24,8 +27,8 @@ const SignUp = () => {
     const [dayOfBirth, setDayOfBirth] = useState(null); 
     const [phoneNumber, setPhoneNumber] = useState('');
     function handleSignUp() {
-        axios
-            .post("https://dvs-backend-production.up.railway.app/api/accounts/signup", { username: username, password: password, confirmPassword: confirmPassword })
+        publicApi
+            .post("/auth/signup", { username: username, password: password, confirmPassword: confirmPassword })
             .then(response => {
                 console.log(response.data)
                 if (response.data.status === true) {
@@ -35,7 +38,7 @@ const SignUp = () => {
                 }
             }
             )
-            .catch(error => console.log(error))
+            .catch(error => console.log())
     }
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
