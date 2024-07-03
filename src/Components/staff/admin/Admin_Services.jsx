@@ -21,7 +21,6 @@ import StaffDrawer from "../StaffDrawer";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
 import axios from 'axios';
-import protectedApi from '../../../APIs/ProtectedApi';
 
 const drawerWidth = 240;
 
@@ -92,27 +91,37 @@ const Admin_Services = () => {
 
     const getServices = async () => {
         try {
-            const resp = await protectedApi.get("/services/");
+            const resp = await axios.get("http://localhost:8080/api/services/");
             setServices(resp.data);
         } catch (err) {
             console.log(err);
         }
     };
-
+    const resetNewService = () => {
+        setNewService({
+            id: '',
+            name: '',
+            servicePriceList: initialServicePriceList.map((range, index) => ({
+                id: Date.now() + index,
+                ...range,
+                initPrice: 0,
+                priceUnit: 0
+            }))
+        });
+    };
     const handlePriceChange = (index, fieldName, value) => {
         const updatedServicePriceList = [...servicePriceList];
         updatedServicePriceList[index][fieldName] = value;
         setServicePriceList(updatedServicePriceList);
     };
 
-    const handleNewServicePriceChange = (index, field, value) => {
-        const updatedServicePriceList = newService.servicePriceList.map((service, serviceIndex) => {
-            if (index === serviceIndex) {
-                return { ...service, [field]: value };
-            }
-            return service; 
-        });
-        setNewService({ ...newService, servicePriceList: updatedServicePriceList });
+    const handleNewServicePriceChange = (index, fieldName, value) => {
+        const updatedServicePriceList = [...newService.servicePriceList];
+        updatedServicePriceList[index][fieldName] = fieldName === 'initPrice' || fieldName === 'priceUnit' ? Number(value) : value;
+        setNewService(prevState => ({
+            ...prevState,
+            servicePriceList: updatedServicePriceList
+        }));
     };
 
     const handleUpdateClick = () => {
@@ -131,6 +140,7 @@ const Admin_Services = () => {
         setServices([...services, newServiceWithId]);
         setNewServiceDialogOpen(false);
         console.log("New service added:", newServiceWithId);
+        resetNewService();
     };
 
     const handleViewEditClick = service => {

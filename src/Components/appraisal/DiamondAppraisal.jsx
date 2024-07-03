@@ -38,20 +38,16 @@ const UserDiamondAppraisalBody = () => {
       .catch(error => console.log(error));
   });
   const [serviceObject, setServiceObject] = useState(null);
-
   function getAllServices() {
     protectedApi
       .get('/services/')
       .then(resp => setServices(resp.data))
       .catch(err => console.log(err));
   }
-
-
   useEffect(() => {
     getAllServices();
     fetchService();
   });
-
   function fetchService() {
     protectedApi.get('/services/' + service)
       .then(response => {
@@ -59,10 +55,6 @@ const UserDiamondAppraisalBody = () => {
       })
       .catch(error => console.log(error));
   }
-
-
-
-
   const request = { consultingStaffId: null, customer: customer, service: serviceObject, quantity: quantity, status: 'WAITING', appointmentDate: date, receivingDate: null, requestDate: new Date() };
 
 
@@ -152,13 +144,6 @@ const UserDiamondAppraisalBody = () => {
               </Grid>
               
             </Grid>
-          
-          
-            
-            
-          
-
-
         ) : (
           <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12}>
