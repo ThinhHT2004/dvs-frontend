@@ -138,6 +138,27 @@ const Admin_Services = () => {
         }
     }
 
+    const handleDisable = async service =>{
+        try{
+            protectedApi
+            .put("/services/disable/" + service.id)
+            .then(resp => toast.success(resp.data));
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    const handleEnable = async service =>{
+        try{
+            protectedApi
+            .put("/services/enable/" + service.id)
+            .then(resp => toast.success(resp.data));
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+
     const handlePriceChange = (index, fieldName, value) => {
         const updatedServicePriceList = [...servicePriceList];
         console.log(parseFloat(value));
@@ -262,7 +283,13 @@ const Admin_Services = () => {
                                             <Button onClick={() => handleViewEditClick(service)}>View & Edit</Button>
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleDelete(service)}>Delete</Button>
+                                            {
+                                                service.active === true ? (
+                                                    <Button onClick={() => handleDisable(service)} sx={{color: "red"}}>Disable</Button>
+                                                ) : (
+                                                    <Button onClick={() => handleEnable(service)} sx={{color: "green"}}>Enabale</Button>
+                                                )
+                                            }
                                         </TableCell>
                                     </TableRow>
                                 </Fragment>
