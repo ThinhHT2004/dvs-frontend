@@ -40,7 +40,7 @@ const UserDiamondAppraisalBody = () => {
   const [serviceObject, setServiceObject] = useState(null);
   function getAllServices() {
     protectedApi
-      .get('/services/')
+      .get('/services/active')
       .then(resp => setServices(resp.data))
       .catch(err => console.log(err));
   }
