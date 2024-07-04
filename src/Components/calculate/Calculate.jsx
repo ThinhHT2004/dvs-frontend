@@ -680,7 +680,7 @@ const Calculate = () => {
                                 </Typography>
                                 <Box>
                                   <Typography variant="h6" fontWeight="bold">
-                                    {generateMaxMin(diamonds)}
+                                    {calculateFairPrice(diamonds)}
                                   </Typography>
                                 </Box>
                               </Box>
