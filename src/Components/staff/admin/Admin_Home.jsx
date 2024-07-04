@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { admin_navigator } from '../Naviate'
 import {
     Box,
@@ -9,9 +9,33 @@ import {
 } from "@mui/material";
 import WelcomeImg from "../../../assets/welcome_Img.png";
 import StaffDrawer from "../StaffDrawer";
+import { useRequests } from "../consulting_staff/RequestContext";
+import { PieChart } from '@mui/x-charts/PieChart';
 
 const Admin_Home = () => {
+    useEffect(() => {
+        getAllAcceptedRequests();
+    }, []);
     const drawerWidth = 240;
+    const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
+    const [statusData, setStatusData] = useState([]);
+    console.log(acceptedRequests);
+    useEffect(() => {
+        if (acceptedRequests.length > 0) {
+            const statusCounts = acceptedRequests.reduce((acc, { status }) => {
+                acc[status] = (acc[status] || 0) + 1;
+                return acc;
+            }, {});
+
+            const formattedStatusData = Object.keys(statusCounts).map(key => ({
+                label: key,
+                value: statusCounts[key],
+            }));
+
+            setStatusData(formattedStatusData);
+        }
+    }, [acceptedRequests]);
+    console.log(statusData);
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
             <StaffDrawer
@@ -36,14 +60,34 @@ const Admin_Home = () => {
             >
                 <Grid container spacing={2}>
                     <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                    <Card sx={{ borderRadius: 3 }}>
-                    <CardContent>
-                        <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>Hua Tan Thinh</span></Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
-                        </Box>
-                    </CardContent>
-                </Card>
+                        <Card sx={{ borderRadius: 3 }}>
+                            <CardContent>
+                                <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>Hua Tan Thinh</span></Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                    <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
+                        <Card sx={{ borderRadius: 3 }}>
+                            <CardContent>
+                                <Typography variant="h4">Accepted Requests</Typography>
+                                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                    <PieChart
+                                        series={[
+                                            {
+                                                data: statusData,
+                                                innerRadius: 40,
+                                                outerRadius: 80,
+                                            },
+                                        ]}
+                                        height={300}
+                                        
+                                    />
+                                </Box>
+                            </CardContent>
+                        </Card>
                     </Grid>
                 </Grid>
             </Box>
