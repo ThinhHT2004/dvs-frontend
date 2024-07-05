@@ -177,7 +177,6 @@ const UserDiamondAppraisalBody = () => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                
                 value={quantity}
                 onChange={handleInputChange}
                 placeholder="Amount of Diamonds"
@@ -201,9 +200,7 @@ const UserDiamondAppraisalBody = () => {
             </Grid>
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-
                 <DateTimePicker
-
                   inputFormat="dd/MM/yyyy hh:mm aa"
                   value={date}
                   onChange={(newValue) => setDate(newValue)}
