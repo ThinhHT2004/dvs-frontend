@@ -32,6 +32,8 @@ const Admin_Accounts = () => {
   const [staffs, setStaffs] = useState([]);
   const [editDiaLogOpen, setEditDiaLogOpen] = useState(false);
   const [dialogData, setDialogData] = useState(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [addDialogData, setAddDialogData] = useState(null);
   const roles = ["MANAGER", "CONSULTING_STAFF", "VALUATION_STAFF"];
   useEffect(() => {
     getStaffs();
@@ -44,7 +46,7 @@ const Admin_Accounts = () => {
         staffData.map(async (staff) => {
           const roleResp = await protectedApi.get(`/accounts/${staff.id}`);
           const roleData = roleResp.data;
-          return { ...staff, role: roleData.role , active: roleData.active };
+          return { ...staff, role: roleData.role, active: roleData.active };
         })
       );
       const fillteredStaffs = staffWithRoles.filter(
@@ -73,11 +75,11 @@ const Admin_Accounts = () => {
   };
   const handleUpdate = async () => {
     try {
-        await protectedApi
+      await protectedApi
         .put("/staffs/update", dialogData)
         .then(resp => {
-            console.log(resp.data);
-            toast.success("Update Successfully");
+          console.log(resp.data);
+          toast.success("Update Successfully");
         })
 
       getStaffs();
@@ -87,29 +89,50 @@ const Admin_Accounts = () => {
     }
   };
 
-  const handleDisable = async staff =>{
-    try{
-        await protectedApi
+  const handleDisable = async staff => {
+    try {
+      await protectedApi
         .put("/accounts/disable/" + staff.id)
         .then(resp => toast.success(resp.data));
-        getStaffs()
-    }catch(err){
-        console.log(err);
+      getStaffs()
+    } catch (err) {
+      console.log(err);
     }
   }
 
-  const handleEnable = async staff =>{
-    try{
-        await protectedApi
+  const handleEnable = async staff => {
+    try {
+      await protectedApi
         .put("/accounts/enable/" + staff.id)
         .then(resp => toast.success(resp.data));
-        getStaffs();
-    }catch(err){
-        console.log(err);
+      getStaffs();
+    } catch (err) {
+      console.log(err);
     }
   }
-
-
+  const handleAddClick = () => {
+    setAddDialogOpen(true);
+  };
+  const handleAddDialogClose = () => {
+    setAddDialogOpen(false);
+  };
+  const handleAdd = async () => {
+    try {
+      await protectedApi
+        .post("/staffs/add", dialogData)
+        .then(resp => toast.success(resp.data));
+      getStaffs();
+      handleAddDialogClose();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  const handleAddDialogChange = (field, value) => {
+    setAddDialogData({
+      ...addDialogData,
+      [field]: value,
+    });
+  }
   return (
     <Box
       sx={{
@@ -178,14 +201,27 @@ const Admin_Accounts = () => {
                     </TableCell>
                     <TableCell align="center">
                       {staff.active === true ? (
-                        <Button sx={{color: "red"}} onClick={() => handleDisable(staff)}>Disable</Button>
+                        <Button sx={{ color: "red" }} onClick={() => handleDisable(staff)}>Disable</Button>
                       ) : (
-                        <Button sx={{color: "green"}} onClick={() => handleEnable(staff)}>Enable</Button>
+                        <Button sx={{ color: "green" }} onClick={() => handleEnable(staff)}>Enable</Button>
                       )}
                     </TableCell>
                   </TableRow>
                 </Fragment>
               ))}
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell align="right">
+                  <Button 
+                  onClick={handleAddClick}
+                  >
+                    Add New Staff
+                  </Button>
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
@@ -305,88 +341,120 @@ const Admin_Accounts = () => {
           <Button onClick={handleDialogClose}>Cancel</Button>
         </DialogActions>
       </Dialog>
+    
+    <Dialog
+    open={addDialogOpen}
+    onClose={handleAddDialogClose}
+    fullWidth
+    maxWidth='md'
+    >
+      <DialogContent>
+      <Box padding={1}>
+                <Grid container spacing={2}>
+                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                    <TextField
+                    variant='standard'
+                    label='Username'
+                    fullWidth
+                    required
+                    onChange={(e) => handleAddDialogChange('username', e.target.value)}
+                />
+                    </Grid>
+                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                    <FormControl fullWidth>
+                    <InputLabel>Role</InputLabel>
+                    <Select
+                    label="Role"
+                    required
+                    fullWidth
+                    onChange={(e) => handleAddDialogChange('role', e.target.value)}
+                    >
+                        {roles.map((role) => (
+                            <MenuItem key={role} value={role}>
+                                {role}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                    </Grid>
+                </Grid>
+
+            </Box>
+            <Box padding={1}>
+                <TextField
+                    variant='standard'
+                    label='Email'
+                    fullWidth
+                    required
+                    onChange={(e) => handleAddDialogChange('email', e.target.value)}
+                />
+            </Box>
+            <Box padding={1}>
+                <TextField
+                    variant='standard'
+                    label='Password'
+                    fullWidth
+                    required
+                    onChange={(e) => handleAddDialogChange('password', e.target.value)}
+                />
+            </Box>
+            <Box padding={1}>
+                <Grid container spacing={2}>
+                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                        <TextField
+                            variant='standard'
+                            label='First Name'
+                            fullWidth
+                            required
+                            onChange={(e) => handleAddDialogChange('firstName', e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                        <TextField
+                            variant='standard'
+                            label='Last Name'
+                            fullWidth
+                            required
+                            onChange={(e) => handleAddDialogChange('lastName', e.target.value)}
+                        />
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box padding={1}>
+                <TextField
+                    variant='standard'
+                    label='Day of Birth'
+                    fullWidth
+                    required
+                    onChange={(e) => handleAddDialogChange('dob', e.target.value)}
+                />
+            </Box>
+            <Box padding={1}>
+                <TextField
+                    variant='standard'
+                    label='Address'
+                    fullWidth
+                    required
+                    onChange={(e) => handleAddDialogChange('address', e.target.value)}
+                />
+            </Box>
+            <Box padding={1}>
+                <TextField
+                    variant='standard'
+                    label='Phone Number'
+                    fullWidth
+                    required
+                    onChange={(e) => handleAddDialogChange('phoneNumber', e.target.value)}
+                />
+            </Box>
+            
+      </DialogContent>
+      <DialogActions>
+          <Button onClick={handleAdd}>Add</Button>
+          <Button onClick={handleAddDialogClose}>Cancel</Button>
+        </DialogActions>
+    </Dialog>
     </Box>
-    // <Box padding={1}>
-    //             <Grid container spacing={2}>
-    //                 <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-    //                 <TextField
-    //                 variant='standard'
-    //                 label='Username'
-
-    //                 fullWidth
-    //             />
-    //                 </Grid>
-    //                 <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-    //                 <FormControl fullWidth>
-    //                 <InputLabel>Role</InputLabel>
-    //                 <Select
-    //                 label="Role"
-    //                 >
-    //                     {roles.map((role) => (
-    //                         <MenuItem key={role} value={role}>
-    //                             {role}
-    //                         </MenuItem>
-    //                     ))}
-    //                 </Select>
-    //             </FormControl>
-    //                 </Grid>
-    //             </Grid>
-
-    //         </Box>
-
-    //         <Box padding={1}>
-    //             <TextField
-    //                 variant='standard'
-    //                 label='Email'
-    //                 fullWidth
-    //             />
-    //         </Box>
-    //         <Box padding={1}>
-    //             <TextField
-    //                 variant='standard'
-    //                 label='Password'
-    //                 fullWidth
-    //             />
-    //         </Box>
-    //         <Box padding={1}>
-    //             <Grid container spacing={2}>
-    //                 <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-    //                     <TextField
-    //                         variant='standard'
-    //                         label='First Name'
-    //                         fullWidth
-    //                     />
-    //                 </Grid>
-    //                 <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-    //                     <TextField
-    //                         variant='standard'
-    //                         label='Last Name'
-    //                         fullWidth
-    //                     />
-    //                 </Grid>
-    //             </Grid>
-    //         </Box>
-    //         <Box padding={1}>
-    //             <TextField
-    //                 variant='standard'
-    //                 label='Day of Birth'
-    //                 fullWidth
-    //             />
-    //         </Box>
-    //         <Box padding={1}>
-    //             <TextField
-    //                 variant='standard'
-    //                 label='Address'
-    //                 fullWidth
-    //             />
-    //         </Box>
-    //         <Box padding={1}>
-    //             <TextField
-    //                 variant='standard'
-    //                 label='Phone Number'
-    //                 fullWidth
-    //             />
-    //         </Box>
   );
 };
 

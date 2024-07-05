@@ -6,27 +6,36 @@ import {
     CardContent,
     Grid,
     Typography,
+    CardHeader,
 } from "@mui/material";
 import WelcomeImg from "../../../assets/welcome_Img.png";
 import StaffDrawer from "../StaffDrawer";
 import { useRequests } from "../consulting_staff/RequestContext";
 import { PieChart } from '@mui/x-charts/PieChart';
+import { he } from 'date-fns/locale';
 
 const Admin_Home = () => {
     useEffect(() => {
         getAllAcceptedRequests();
+        getAllWaitingRequests();
     }, []);
     const drawerWidth = 240;
     const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
+    const { waitingRequests, getAllWaitingRequests } = useRequests([]);
     const [statusData, setStatusData] = useState([]);
-    console.log(acceptedRequests);
+    console.log(statusData);
     useEffect(() => {
-        if (acceptedRequests.length > 0) {
-            const statusCounts = acceptedRequests.reduce((acc, { status }) => {
+        if (acceptedRequests.length > 0 && waitingRequests.length > 0) {
+            const statusCounts1 = acceptedRequests.reduce((acc, { status }) => {
                 acc[status] = (acc[status] || 0) + 1;
                 return acc;
             }, {});
-
+            const statusCounts2 = waitingRequests.reduce((acc, { status }) => {
+                acc[status] = (acc[status] || 0) + 1;
+                return acc;
+            }
+                , {});
+            const statusCounts = { ...statusCounts1, ...statusCounts2 };
             const formattedStatusData = Object.keys(statusCounts).map(key => ({
                 label: key,
                 value: statusCounts[key],
@@ -35,7 +44,6 @@ const Admin_Home = () => {
             setStatusData(formattedStatusData);
         }
     }, [acceptedRequests]);
-    console.log(statusData);
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
             <StaffDrawer
@@ -71,22 +79,27 @@ const Admin_Home = () => {
                     </Grid>
                     <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
                         <Card sx={{ borderRadius: 3 }}>
-                            <CardContent>
-                                <Typography variant="h4">Accepted Requests</Typography>
+                            
+                                <CardHeader
+                                    title="REQUESTS STATUS"
+                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
+                                    sx={{ backgroundColor: "#30D5C8" }}
+                                />
+
                                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                     <PieChart
                                         series={[
                                             {
                                                 data: statusData,
-                                                innerRadius: 40,
-                                                outerRadius: 80,
-                                            },
+                                                innerRadius: 80,
+                                                outerRadius: 120,
+                                                cx: 200,
+                                            },                                           
                                         ]}
-                                        height={300}
-                                        
+                                       height={300}
                                     />
                                 </Box>
-                            </CardContent>
+                            
                         </Card>
                     </Grid>
                 </Grid>
