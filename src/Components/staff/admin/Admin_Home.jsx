@@ -48,6 +48,7 @@ const Admin_Home = () => {
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
     const [dbLoading, setDbLoading] = useState(false);
+    const [formattedList, setFormattedList] = useState([]);
 
     useEffect(() => {
         if (acceptedRequests.length > 0 && waitingRequests.length > 0) {
@@ -84,12 +85,28 @@ const Admin_Home = () => {
                 }
             };
             reader.onloadend = (e) => {
-                setFileContent(e.target.result);
+                const content = e.target.result;
+                setFileContent(content);
                 setLoading(false);
                 setProgress(100);
+                formatFileContent(content);
             };
             reader.readAsText(file);
         }
+    };
+
+    const formatFileContent = (content) => {
+        const lines = content.split('\n');
+        const keys = ["price", "shape", "carat_weight", "color", "clarity", "polish", "fluorescence", "symmetry", "cut", "measurement", "origin", "source", "proportion"];
+        const formattedData = lines.map(line => {
+            const values = line.split(',').map(item => item.trim());
+            let formattedItem = {};
+            keys.forEach((key, index) => {
+                formattedItem[key] = values[index];
+            });
+            return formattedItem;
+        });
+        setFormattedList(formattedData);
     };
 
     const handleAddToDb = () => {
@@ -106,6 +123,7 @@ const Admin_Home = () => {
                     clearInterval(interval);
                     setDbLoading(false);
                     alert("Data added to the database!");
+                    console.log("Formatted List:", formattedList);
                     return 100;
                 }
                 return prev + increment;
@@ -135,7 +153,7 @@ const Admin_Home = () => {
                     width: { sm: `calc(100% - ${drawerWidth}px)` },
                 }}
             >
-                <Grid container spacing={2}>
+                <Grid container spacing={5}>
                     <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
                         <Card sx={{ borderRadius: 3 }}>
                             <CardContent>
@@ -143,6 +161,30 @@ const Admin_Home = () => {
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
                                 </Box>
+                            </CardContent>
+                        </Card>
+                        <Card sx={{ borderRadius: 3 , marginTop: 5}}>
+                            <CardHeader
+                                title="File Upload"
+                                titleTypographyProps={{ variant: 'h6' }}
+                                sx={{ backgroundColor: "#30D5C8" }}
+                            />
+                            <CardContent>
+                                <input type="file" accept=".txt" onChange={handleFileChange} />
+                                {loading && <LinearProgressWithLabel value={progress} />}
+                                {fileContent && (
+                                    <Box sx={{ mt: 2 }}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{ mt: 2 }}
+                                            onClick={handleAddToDb}
+                                            disabled={dbLoading}
+                                        >
+                                            Add to Database
+                                        </Button>
+                                        {dbLoading && <LinearProgressWithLabel value={progress} />}
+                                    </Box>
+                                )}
                             </CardContent>
                         </Card>
                     </Grid>
@@ -166,34 +208,6 @@ const Admin_Home = () => {
                                     height={300}
                                 />
                             </Box>
-                        </Card>
-                    </Grid>
-                    <Grid item lg={12} xl={12} md={12} sm={12} xs={12}>
-                        <Card sx={{ borderRadius: 3 }}>
-                            <CardHeader
-                                title="File Upload"
-                                titleTypographyProps={{ variant: 'h6' }}
-                                sx={{ backgroundColor: "#30D5C8" }}
-                            />
-                            <CardContent>
-                                <input type="file" accept=".txt" onChange={handleFileChange} />
-                                {loading && <LinearProgressWithLabel value={progress} />}
-                                {fileContent && (
-                                    <Box sx={{ mt: 2 }}>
-                                        <Typography variant="body1" component="pre">{fileContent}</Typography>
-                                        <Button
-                                            variant="contained"
-                                            sx={{ mt: 2 }}
-                                            onClick={handleAddToDb}
-                                            disabled={dbLoading}
-                                        >
-                                            Add to Database
-                                        </Button>
-                                        {dbLoading && <LinearProgressWithLabel value={progress} />}
-                                        
-                                    </Box>
-                                )}
-                            </CardContent>
                         </Card>
                     </Grid>
                 </Grid>
