@@ -165,8 +165,8 @@ const Admin_Home = () => {
                         </Card>
                         <Card sx={{ borderRadius: 3 , marginTop: 5}}>
                             <CardHeader
-                                title="File Upload"
-                                titleTypographyProps={{ variant: 'h6' }}
+                                title="FILE UPLOAD"
+                                titleTypographyProps={{ variant: 'h6' , color: 'white'}}
                                 sx={{ backgroundColor: "#30D5C8" }}
                             />
                             <CardContent>
