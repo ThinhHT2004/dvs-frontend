@@ -1,40 +1,4 @@
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
-
-.Container {
-    padding-left: 10%;
-    padding-right: 10%;
-    background: #fff;
-}
-.navbar {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    
-}
-.logo{
-    width: 130px;
-    height: 68.5px;
-    margin-top: -20px;
-    margin-bottom: -20px;
-    margin-right: -2.9px;
-    cursor: pointer;
-}
-
-nav ul li{
-    display: inline-block;
-    margin: 5px 20px;
-    font-size: 18px;
-    list-style: none;
 }

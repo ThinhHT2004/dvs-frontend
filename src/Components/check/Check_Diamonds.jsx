@@ -243,6 +243,9 @@ const CheckDiamondBody = () => {
                       sx={{
                         fontSize: "20px",
                         "& fieldset": { borderRadius: 20 },
+                        '&:hover': { backgroundColor: "#f0f0f0", 
+                          borderRadius: 20,
+                        },
                       }}
                     />
                   </Grid>
@@ -265,6 +268,7 @@ const CheckDiamondBody = () => {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
+                          '&:hover': { backgroundColor: "#69CEE2" },
                         }}
                         onClick={() => CheckID()}
                       >

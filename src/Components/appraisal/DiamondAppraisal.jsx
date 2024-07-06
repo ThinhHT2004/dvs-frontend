@@ -66,17 +66,6 @@ const UserDiamondAppraisalBody = () => {
       setQuantity('');
     }
   };
-
-
-
-  const increment = () => {
-    setQuantity((prevValue) => (prevValue !== '' ? prevValue + 1 : 1));
-  };
-
-  const decrement = () => {
-    setValue((prevValue) => (prevValue !== '' ? prevValue - 1 : -1));
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setMessage('Request sent');
@@ -180,21 +169,7 @@ const UserDiamondAppraisalBody = () => {
                 value={quantity}
                 onChange={handleInputChange}
                 placeholder="Amount of Diamonds"
-                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Box display="flex" flexDirection="column">
-                        <IconButton onClick={increment} sx={{ padding: '0px' }}>
-                          <ArrowDropUpIcon />
-                        </IconButton>
-                        <IconButton onClick={decrement} sx={{ padding: '0px' }}>
-                          <ArrowDropDownIcon />
-                        </IconButton>
-                      </Box>
-                    </InputAdornment>
-                  ),
-                }}
+                type="number"
                 sx={{ backgroundColor: '#fff', fontSize: '20px', borderRadius: '4px', width: 800 }}
               />
             </Grid>
@@ -243,7 +218,7 @@ const UserDiamondAppraisalBody = () => {
 const DiamondAppraisal = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Box sx={{ flexGrow: 1, zIndex: 2 }}>
+      <Box sx={{ flexGrow: 2, zIndex: 2 }}>
         <Navbar />
       </Box>
       <Box

@@ -1,15 +1,16 @@
-import { Box, Typography, Grid, Link, IconButton } from '@mui/material';
+import { Box, Typography, Grid, Link, IconButton, CardHeader, CardContent, List, ListItem } from '@mui/material';
 import logoWeb from '../../assets/logo_v4.png'
 import './Footer.css'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import XIcon from '@mui/icons-material/X';
 import MapImg from '../../assets/Map.png'
-
+import { FiberManualRecord } from '@mui/icons-material';
+import testFooter from '../../assets/testFooter.png'
 const Footer = () => {
     return (
-        <div style={{ marginTop: '45px' }}>
-            <Box className="Footer" sx={{
+        <Box style={{ marginTop: '45px' }}>
+            <Box sx={{
                 padding: 3,
                 marginTop: 'auto',
                 display: 'flex',
@@ -17,17 +18,31 @@ const Footer = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 backgroundColor: '#f5f5f5',
+                backgroundImage: `url(${testFooter})`,
             }}>
                 <Box display='flex' justifyContent='flex-end' width='100%'>
 
-                    <Grid container spacing={3} right={0}>
-                        <Grid item xs={3} sx={{ marginBottom: '20px', position: 'relative', top: '-20px' }}>
-                            <div>
-                                <img src={logoWeb} alt="" className='logo' />
-                                <Typography variant="subtitle1" sx={{ color: '#989898' }}>
+                    <Grid container spacing={3} >
+                        <Grid item lg={4.5} xl={4.5}
+                            container
+                            direction="column"
+                            justifyContent="center"
+                        >
+                            <CardHeader
+                                title={<img src={logoWeb} alt="" style={{ width: 170, height: 108.5,  marginTop: -20 , marginBottom: -20}} />}
+                                sx={{
+                                    padding: 0,
+                                }}
+                                />
+                            <CardContent
+                            sx={{
+                                padding: 0,
+                            }}
+                            >
+                                <Typography variant="h5" sx={{ color: '#989898' }}>
                                     The top diamond price calculator in Vietnam.
                                 </Typography>
-                                <div>
+                                <Box>
                                     <Link href="https://www.facebook.com/" target="" rel="noopener noreferrer">
                                         <IconButton>
                                             <FacebookIcon />
@@ -43,43 +58,96 @@ const Footer = () => {
                                             <XIcon />
                                         </IconButton>
                                     </Link>
-                                </div>
-                            </div>
+                                </Box>
+                                </CardContent>
                         </Grid>
-                        <Grid item xs={3}>
-                            <Typography variant="h6">FEATURES</Typography>
-                            <ul>
-                                <li>Price calculator</li>
-                                <li>Price & Quality Check</li>
-                                <li>Make an appraisal appointment</li>
-                            </ul>
+                        <Grid item lg={2.5} xl={2.5}
+                            container
+                            direction="column"
+                            justifyContent="center"
+                        >
+                            <CardHeader
+                                title="FEATURES"
+                                titleTypographyProps={{ variant: 'h6' }}
+                                sx={{
+                                    padding: 0,
+                                }}
+                            />
+                            <CardContent>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Price calculator
+                                </Typography>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Price & Quality Check
+                                </Typography>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Make an appraisal appointment
+                                </Typography>
+                            </CardContent>
+
                         </Grid>
-                        <Grid item xs={3} sx={{ backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
-                            <Typography variant="h6">MORE</Typography>
-                            <ul>
-                                <li>Guides</li>
-                                <li>Blog</li>
-                                <li>Local Jewelers</li>
-                            </ul>
+                        <Grid item lg={2.5} xl={2.5}
+                            container
+                            direction="column"
+                            justifyContent="center"
+                        >
+                            <CardHeader
+                                title="MORE"
+                                titleTypographyProps={{ variant: 'h6' }}
+                                sx={{
+                                    padding: 0,
+                                }}
+                            />
+                            <CardContent>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Guides
+                                </Typography>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Blogs
+                                </Typography>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Local Jewelers
+                                </Typography>
+                            </CardContent>
                         </Grid>
-                        <Grid item xs={3} className="company-section">
+                        <Grid item lg={2.5} xl={2.5}
+                            container
+                            direction="column"
+                            justifyContent="center"
+                        >
                             <img src={MapImg} alt="Company Map" className="map-img" />
-                            <Typography variant="h6">COMPANY</Typography>
-                            <ul style={{paddingTop: '30px'}}>
-                                <li>About</li>
-                                <li>FAQ</li>
-                                <li>Privacy</li>
-                            </ul>
+                            <CardHeader
+                                title="COMPANY"
+                                titleTypographyProps={{ variant: 'h6' }}
+                                sx={{
+                                    padding: 0,
+                                }}
+                            />
+                            <CardContent>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> About
+                                </Typography>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> FAQ
+                                </Typography>
+                                <Typography padding={1} color={'#989898'}>
+                                    <FiberManualRecord sx={{ fontSize: 10 }} /> Privacy
+                                </Typography>
+                            </CardContent>
+
                         </Grid>
                     </Grid>
                 </Box>
+
+            </Box>
+            <Box sx={{ backgroundColor: '#f5f5f5', padding: 2 }}>
                 <Typography variant="body2" color="textSecondary" align="center">
                     {'© '}
                     {new Date().getFullYear()}
-                    {' Discover, Inc. All rights reserved.'}
+                    {' DiAsecur, Inc. All rights reserved.'}
                 </Typography>
             </Box>
-        </div>
+        </Box>
     );
 };
 

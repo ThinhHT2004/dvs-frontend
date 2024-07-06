@@ -193,7 +193,7 @@ const Calculate = () => {
                                   : "outlined"
                               }
                               onClick={() => setOrigin("NATURAL")}
-                              
+
                               sx={{
                                 width: '100%',
                                 fontSize: {
@@ -203,6 +203,22 @@ const Calculate = () => {
                                   lg: '12px',
                                   xl: '20px',
                                 },
+                                ...(origin === "NATURAL"
+                                  ? {
+                                    color: 'white',
+                                    backgroundColor: '#69CEE2',
+                                    '&:hover': {
+                                      backgroundColor: '#69CEE2',
+                                    },
+                                  }
+                                  : {
+                                    color: '#69CEE2',
+                                    borderColor: '#69CEE2',
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                      backgroundColor: '#f0f0f0',
+                                    },
+                                  }),
                               }}
                             >
                               Natural
@@ -214,7 +230,6 @@ const Calculate = () => {
                                 origin === "LAB" ? "contained" : "outlined"
                               }
                               onClick={() => setOrigin("LAB")}
-                              
                               sx={{
                                 width: '100%',
                                 fontSize: {
@@ -224,6 +239,22 @@ const Calculate = () => {
                                   lg: '12px',
                                   xl: '20px',
                                 },
+                                ...(origin === "LAB"
+                                  ? {
+                                    color: 'white',
+                                    backgroundColor: '#69CEE2',
+                                    '&:hover': {
+                                      backgroundColor: '#69CEE2',
+                                    },
+                                  }
+                                  : {
+                                    color: '#69CEE2',
+                                    borderColor: '#69CEE2',
+                                    backgroundColor: 'transparent',
+                                    '&:hover': {
+                                      backgroundColor: '#f0f0f0',
+                                    },
+                                  }),
                               }}
                             >
                               Lab
@@ -235,7 +266,7 @@ const Calculate = () => {
                         title='Shape'
                       />
                       <CardContent>
-                      <Grid container item lg={12} spacing={2}>
+                        <Grid container item lg={12} spacing={2}>
                           {shapeMap.map((c) => (
                             <Grid item lg={2.4} key={c}>
                               <Button
@@ -243,7 +274,7 @@ const Calculate = () => {
                                   shape === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setShape(c)}
-                                
+
                                 sx={{
                                   width: '100%',
                                   fontSize: {
@@ -253,6 +284,22 @@ const Calculate = () => {
                                     lg: '12px',
                                     xl: '15px',
                                   },
+                                  ...(shape === c
+                                    ? {
+                                      color: 'white',
+                                      backgroundColor: '#69CEE2',
+                                      '&:hover': {
+                                        backgroundColor: '#69CEE2',
+                                      },
+                                    }
+                                    : {
+                                      color: '#69CEE2',
+                                      borderColor: '#69CEE2',
+                                      backgroundColor: 'transparent',
+                                      '&:hover': {
+                                        backgroundColor: '#f0f0f0',
+                                      },
+                                    }),
                                 }}
                               >
                                 {c}
@@ -269,7 +316,10 @@ const Calculate = () => {
                           <Box display="flex" justifyContent="center">
                             <Chip
                               label={parseFloat(carat).toFixed(2)}
-                              color="primary"
+                              sx={{
+                                color: "white",
+                                backgroundColor: "#69CEE2",
+                              }}
                             ></Chip>
                           </Box>
                           <Slider
@@ -279,6 +329,9 @@ const Calculate = () => {
                             min={0.25}
                             max={5.0}
                             valueLabelDisplay="auto"
+                            sx={{
+                              color: "#69CEE2",
+                            }}
                             onChange={(e) => setCarat(e.target.value)}
                           ></Slider>
                         </Box>
@@ -295,7 +348,7 @@ const Calculate = () => {
                                   color === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setColor(c)}
-                                
+
                                 sx={{
                                   width: '100%',
                                   fontSize: {
@@ -305,6 +358,22 @@ const Calculate = () => {
                                     lg: '12px',
                                     xl: '15px',
                                   },
+                                  ...(color === c
+                                    ? {
+                                      color: 'white',
+                                      backgroundColor: '#69CEE2',
+                                      '&:hover': {
+                                        backgroundColor: '#69CEE2',
+                                      },
+                                    }
+                                    : {
+                                      color: '#69CEE2',
+                                      borderColor: '#69CEE2',
+                                      backgroundColor: 'transparent',
+                                      '&:hover': {
+                                        backgroundColor: '#f0f0f0',
+                                      },
+                                    }),
                                 }}
                               >
                                 {c}
@@ -326,7 +395,7 @@ const Calculate = () => {
                                   clarity === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setClarity(c)}
-                                
+
                                 sx={{
                                   width: '100%',
                                   fontSize: {
@@ -336,6 +405,22 @@ const Calculate = () => {
                                     lg: '12px',
                                     xl: '15px',
                                   },
+                                  ...(clarity === c
+                                    ? {
+                                      color: 'white',
+                                      backgroundColor: '#69CEE2',
+                                      '&:hover': {
+                                        backgroundColor: '#69CEE2',
+                                      },
+                                    }
+                                    : {
+                                      color: '#69CEE2',
+                                      borderColor: '#69CEE2',
+                                      backgroundColor: 'transparent',
+                                      '&:hover': {
+                                        backgroundColor: '#f0f0f0',
+                                      },
+                                    }),
                                 }}
                               >
                                 {c}
@@ -350,10 +435,10 @@ const Calculate = () => {
                             <Box display="flex" justifyContent="center">
                               <Button
                                 variant="contained"
-                                
+
                                 onClick={handleSearch}
                                 sx={{
-                                  width: "30%" ,
+                                  width: "30%",
                                   fontSize: {
                                     xs: '16px',
                                     sm: '18px',
@@ -361,6 +446,8 @@ const Calculate = () => {
                                     lg: '12px',
                                     xl: '15px',
                                   },
+                                  color: 'white',
+                                  backgroundColor: '#69CEE2',
                                 }}
                               >
                                 Submit
@@ -400,7 +487,7 @@ const Calculate = () => {
                                       cut === c ? "contained" : "outlined"
                                     }
                                     onClick={() => setCut(c)}
-                                   
+
                                     sx={{
                                       width: '100%',
                                       fontSize: {
@@ -410,6 +497,22 @@ const Calculate = () => {
                                         lg: '12px',
                                         xl: '15px',
                                       },
+                                      ...(cut === c
+                                        ? {
+                                          color: 'white',
+                                          backgroundColor: '#69CEE2',
+                                          '&:hover': {
+                                            backgroundColor: '#69CEE2',
+                                          },
+                                        }
+                                        : {
+                                          color: '#69CEE2',
+                                          borderColor: '#69CEE2',
+                                          backgroundColor: 'transparent',
+                                          '&:hover': {
+                                            backgroundColor: '#f0f0f0',
+                                          },
+                                        }),
                                     }}
                                   >
                                     {c}
@@ -432,7 +535,7 @@ const Calculate = () => {
                                         : "outlined"
                                     }
                                     onClick={() => setSymmetry(s)}
-                                    
+
                                     sx={{
                                       width: '100%',
                                       fontSize: {
@@ -442,6 +545,22 @@ const Calculate = () => {
                                         lg: '12px',
                                         xl: '15px',
                                       },
+                                      ...(symmetry === s
+                                        ? {
+                                          color: 'white',
+                                          backgroundColor: '#69CEE2',
+                                          '&:hover': {
+                                            backgroundColor: '#69CEE2',
+                                          },
+                                        }
+                                        : {
+                                          color: '#69CEE2',
+                                          borderColor: '#69CEE2',
+                                          backgroundColor: 'transparent',
+                                          '&:hover': {
+                                            backgroundColor: '#f0f0f0',
+                                          },
+                                        }),
                                     }}
                                   >
                                     {s}
@@ -462,7 +581,7 @@ const Calculate = () => {
                                       polish === p ? "contained" : "outlined"
                                     }
                                     onClick={() => setPolish(p)}
-                                    
+
                                     sx={{
                                       width: '100%',
                                       fontSize: {
@@ -472,6 +591,22 @@ const Calculate = () => {
                                         lg: '12px',
                                         xl: '15px',
                                       },
+                                      ...(polish === p
+                                        ? {
+                                          color: 'white',
+                                          backgroundColor: '#69CEE2',
+                                          '&:hover': {
+                                            backgroundColor: '#69CEE2',
+                                          },
+                                        }
+                                        : {
+                                          color: '#69CEE2',
+                                          borderColor: '#69CEE2',
+                                          backgroundColor: 'transparent',
+                                          '&:hover': {
+                                            backgroundColor: '#f0f0f0',
+                                          },
+                                        }),
                                     }}
                                   >
                                     {p}
@@ -484,9 +619,9 @@ const Calculate = () => {
                             title='Fluorescence'
                           />
                           <CardContent>
-                            <Grid container>
-                              <Grid item lg={12}>
+                            <Grid container spacing={1}>                             
                                 {fluorescenceMap.map((f) => (
+                                  <Grid item lg={2.4} key={f}>
                                   <Button
                                     variant={
                                       fluorescence === f
@@ -494,25 +629,37 @@ const Calculate = () => {
                                         : "outlined"
                                     }
                                     sx={{
-                                      width: "18%",
-                                      "&:not(:last-child)": {
-                                        marginRight: "2.5%",
-                                          fontSize: {
-                                            xs: '16px',
-                                            sm: '18px',
-                                            md: '20px',
-                                            lg: '12px',
-                                            xl: '15px',
-                                          },
-                                        
+                                      width: "100%",
+                                      fontSize: {
+                                        xs: '16px',
+                                        sm: '18px',
+                                        md: '20px',
+                                        lg: '12px',
+                                        xl: '15px',
                                       },
+                                      ...(fluorescence === f
+                                        ? {
+                                          color: 'white',
+                                          backgroundColor: '#69CEE2',
+                                          '&:hover': {
+                                            backgroundColor: '#69CEE2',
+                                          },
+                                        }
+                                        : {
+                                          color: '#69CEE2',
+                                          borderColor: '#69CEE2',
+                                          backgroundColor: 'transparent',
+                                          '&:hover': {
+                                            backgroundColor: '#f0f0f0',
+                                          },
+                                        }),
                                     }}
                                     onClick={() => setFluorescence(f)}
                                   >
                                     {f}
                                   </Button>
+                                  </Grid>
                                 ))}
-                              </Grid>
                             </Grid>
                           </CardContent>
 
@@ -520,10 +667,10 @@ const Calculate = () => {
                             <Box display="flex" justifyContent="center">
                               <Button
                                 variant="contained"
-                                
+
                                 onClick={handleSearch}
                                 sx={{
-                                  width: "30%" ,
+                                  width: "30%",
                                   fontSize: {
                                     xs: '16px',
                                     sm: '18px',
@@ -531,6 +678,8 @@ const Calculate = () => {
                                     lg: '12px',
                                     xl: '15px',
                                   },
+                                  color: 'white',
+                                  backgroundColor: '#69CEE2',
                                 }}
                               >
                                 Submit
@@ -615,14 +764,14 @@ const Calculate = () => {
 
                         <Box width="100%" marginTop={2}>
                           <Grid container>
-                            <Grid item lg={4}>
+                            <Grid item lg={4} xl={4}>
                               <Box
-                                
+
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
-                                  width: '100%',  
+                                  
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
@@ -639,14 +788,14 @@ const Calculate = () => {
                                 </Box>
                               </Box>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item lg={4} xl={4}>
                               <Box
-                                
+
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
-                                  width: '100%',
+                                  
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
@@ -662,14 +811,14 @@ const Calculate = () => {
                                 </Box>
                               </Box>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item lg={4} xl={4}>
                               <Box
-                                
+
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
-                                  width: '100%',
+                                  
                                   flexDirection: "column",
                                   backgroundColor: "#ACACAC33",
                                   padding: 2,
