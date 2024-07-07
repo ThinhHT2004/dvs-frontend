@@ -12,8 +12,8 @@ const Navbar = () => {
   const [activeButton, setActiveButton] = useState('');
   const navigator = useNavigate();
   const handleButtonClick = (buttonName) => {
-    setActiveButton(buttonName); // Set the clicked button as active
-    navigator(`/${buttonName}`); // Navigate based on button name
+    setActiveButton(buttonName);
+    navigator(`/${buttonName}`);
   };
   return (
     <AppBar
@@ -61,10 +61,10 @@ const Navbar = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Button sx={{ color: 'black', textDecoration: activeButton === 'diamond-check' ? 'underline' : 'none' }} 
-                onClick={() => handleButtonClick('diamond-check')}
+                <Button sx={{ color: 'black', textDecoration: activeButton === 'certification-check' ? 'underline' : 'none' }} 
+                onClick={() => handleButtonClick('certification-check')}
                 >
-                  Certificate Check</Button>
+                  Certification Check</Button>
               </Grid>
               <Grid item lg={4} xl={4} md={4} sm={4} xs={4}
                 container
