@@ -1,89 +1,93 @@
-import React from 'react';
-import { Button, Box, Typography, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Box, Typography, Grid, IconButton, Card } from '@mui/material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import Customer1 from '../../assets/Customer1.jpg';
 import Customer2 from '../../assets/Customer2.jpg';
 import Customer3 from '../../assets/Customer3.jpg';
 import Customer4 from '../../assets/Customer4.jpg';
+import Customer5 from '../../assets/Customer5.jpg';
+import Customer6 from '../../assets/Customer6.jpg';
 import { useNavigate } from 'react-router-dom';
 
 const Guider = () => {
     const navigator = useNavigate();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const images = [Customer1, Customer2, Customer3, Customer4, Customer5, Customer6];
+
+    const handlePrevClick = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 3 : prevIndex - 1));
+    };
+
+    const handleNextClick = () => {
+        setCurrentIndex((prevIndex) => (prevIndex === images.length - 3 ? 0 : prevIndex + 1));
+    };
+
     return (
-        <Box
-            sx={{
-            
-                backgroundColor: { xs: 'transparent', md: '#69CEE2' },
-                padding: { xs: '20px 0', md: '0' },
-                textAlign: 'center',
-                // padding: '20px',
-                width: '55%',
-                height: 'auto',
-                marginTop: '14%',
-                marginBottom: '14%',
-                marginLeft: '23%',
-                borderRadius: '10px',
-                display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: '20px'
-            }}
-        >
-            <Grid container spacing={2} style={{ flexGrow: 1 }}>
-                <Grid item xs={12} md={5} container spacing={2} alignItems="center">
-                    <Grid item xs={6} md={6}>
-                        <img
-                            src={Customer1}
-                            alt="Customer 1"
-                            style={{ width: '100%', borderRadius: '10px' }}
-                        />
+        <Box>
+            <Grid container spacing={0} alignItems="center" justifyContent="center">
+                <Grid item xl={8} lg={8} md={12} container>
+                    <Grid item xl={1} lg={1} md={1}
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <IconButton onClick={handlePrevClick}>
+                            <ArrowBack />
+                        </IconButton>
                     </Grid>
-                    <Grid item xs={6} md={6}>
-                        <img
-                            src={Customer3}
-                            alt="Customer 3"
-                            style={{ width: '100%', borderRadius: '10px' }}
-                        />
+                    <Grid item xl={10} lg={10} md={10} container spacing={2}>
+                        {images.slice(currentIndex, currentIndex + 3).map((image, index) => (
+                            <Grid item xl={4} lg={4} md={4} key={index}
+                                container
+                                direction="column"
+                                justifyContent="center"
+                                alignItems="center"
+                            >
+                                <img
+                                    src={image}
+                                    alt={`Customer ${currentIndex + index + 1}`}
+                                    style={{ width: '100%', borderRadius: '10px' }}
+                                />
+                            </Grid>
+                        ))}
                     </Grid>
-                    <Grid item xs={6} md={6}>
-                        <img
-                            src={Customer2}
-                            alt="Customer 2"
-                            style={{ width: '100%', borderRadius: '10px' }}
-                        />
-                    </Grid>
-                    <Grid item xs={6} md={6}>
-                        <img
-                            src={Customer4}
-                            alt="Customer 4"
-                            style={{ width: '100%', borderRadius: '10px' }}
-                        />
+                    <Grid item xl={1} lg={1} md={1}
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <IconButton onClick={handleNextClick}>
+                            <ArrowForward />
+                        </IconButton>
                     </Grid>
                 </Grid>
                 <Grid
                     item
-                    xs={12}
-                    md={7}
+                    xl={4} lg={4} md={12}
                     container
                     direction="column"
                     alignItems="center"
                     justifyContent="center"
                     sx={{
-                        backgroundColor: '#69CEE2',
+                        padding: { xs: '20px', md: '40px' },
+                        textAlign: 'center',
                     }}
-                >
-                    <Typography variant="h6" align="center" gutterBottom style={{ color: 'white' }}>
-                        See how over 1 million diamond shoppers saved money on DiAsecur
+                >   
+                    <Typography variant="h4" align="left">
+                        See how over 1 million diamond shoppers saved money on <span style={{color: "#69CEE2"}}>DiAsecur</span>
                     </Typography>
                     <Button
+                    
                         variant="contained"
                         style={{
-                            backgroundColor: '#39D9B9',
+                            backgroundColor: '#69CEE2',
                             color: '#fff',
-                            border: '2px solid',
-                            borderColor: '#C9C9C6',
                             borderRadius: '8px',
-                            marginTop: '10px'
+                            margin: 10,
+                            fontSize: '20px',
                         }}
                         onClick={() => navigator('/calculate')}
                     >

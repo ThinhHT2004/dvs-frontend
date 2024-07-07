@@ -116,7 +116,10 @@ const Calculate = () => {
       <Box>
         <Navbar></Navbar>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box 
+      marginTop={5}
+      marginBottom={5}
+      >
         <Box padding={4}>
           <Box>
             <Grid container>

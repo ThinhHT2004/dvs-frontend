@@ -123,7 +123,10 @@ const SignUp = () => {
       <Box>
         <Navbar></Navbar>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box 
+      marginTop={10}
+      marginBottom={5}
+      >
         <Grid
           container
           display={"flex"}

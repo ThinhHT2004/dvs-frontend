@@ -1,15 +1,15 @@
 import { Box, Typography, Grid, Link, IconButton, CardHeader, CardContent, List, ListItem } from '@mui/material';
 import logoWeb from '../../assets/logo_v4.png'
-import './Footer.css'
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import XIcon from '@mui/icons-material/X';
-import MapImg from '../../assets/Map.png'
 import { FiberManualRecord } from '@mui/icons-material';
 import testFooter from '../../assets/testFooter.png'
 const Footer = () => {
     return (
-        <Box style={{ marginTop: '45px' }}>
+        <Box
+        overflow={'hidden'}
+        >
             <Box sx={{
                 padding: 3,
                 marginTop: 'auto',
@@ -29,15 +29,15 @@ const Footer = () => {
                             justifyContent="center"
                         >
                             <CardHeader
-                                title={<img src={logoWeb} alt="" style={{ width: 170, height: 108.5,  marginTop: -20 , marginBottom: -20}} />}
+                                title={<img src={logoWeb} alt="" style={{ width: 170, height: 108.5, marginTop: -20, marginBottom: -20 }} />}
                                 sx={{
                                     padding: 0,
                                 }}
-                                />
+                            />
                             <CardContent
-                            sx={{
-                                padding: 0,
-                            }}
+                                sx={{
+                                    padding: 0,
+                                }}
                             >
                                 <Typography variant="h5" sx={{ color: '#989898' }}>
                                     The top diamond price calculator in Vietnam.
@@ -59,7 +59,7 @@ const Footer = () => {
                                         </IconButton>
                                     </Link>
                                 </Box>
-                                </CardContent>
+                            </CardContent>
                         </Grid>
                         <Grid item lg={2.5} xl={2.5}
                             container
@@ -115,7 +115,6 @@ const Footer = () => {
                             direction="column"
                             justifyContent="center"
                         >
-                            <img src={MapImg} alt="Company Map" className="map-img" />
                             <CardHeader
                                 title="COMPANY"
                                 titleTypographyProps={{ variant: 'h6' }}

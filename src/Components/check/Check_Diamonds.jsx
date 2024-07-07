@@ -569,10 +569,15 @@ const CheckDiamondBody = () => {
 const Check_Diamonds = () => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <Box sx={{ zIndex: 2 }}>
+      <Box>
         <Navbar />
       </Box>
-      <Box sx={{ flexGrow: 1, zIndex: 1 }}>{CheckDiamondBody()}</Box>
+      <Box 
+      marginTop={5}
+      marginBottom={5}
+      >
+        {CheckDiamondBody()}
+        </Box>
       <Box>
         <Footer />
       </Box>

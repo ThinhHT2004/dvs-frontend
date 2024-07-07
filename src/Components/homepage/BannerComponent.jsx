@@ -7,27 +7,21 @@ import { useNavigate } from 'react-router-dom'
 const Style = {
     Button: {
         backgroundColor: '#69CEE2',
-        border: '2px solid',
         borderColor: '#C9C9C6',
         borderRadius: '8px',
     },
-    img: {
-        width: 'auto',
-        maxHeight: '500px',
-        marginTop: '5px',
-    }
 }
 
 const Banner = () => {
     const navigator = useNavigate();
     const textProps = useSpring({
-        from: { marginLeft: '-500px' },
+        from: { marginLeft: '0px' },
         to: { marginLeft: '200px' },
         delay: 200
     });
     const imgProps = useSpring({
         from: { marginLeft: '120%', },
-        to: { marginLeft: '32.65%', },
+        to: { marginLeft: '0%', },
         delay: 200,
     });
 
@@ -36,30 +30,26 @@ const Banner = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            padding: 2,
-            backgroundImage: 'linear-gradient(to left, #d9f2f2 , white)',
-            width: 'auto',
-            maxHeight: '500px',
-            position: 'relative'
+            justifyContent: 'space-between',
+            backgroundColor: '#d9f2f2',
+            position: 'relative',
+            width: '100%',
         }}>
-            <animated.div style={imgProps}>
-                <img src={Model_Img} alt="An image with a model wearing diamond jewelry" style={Style.img} />
+            <animated.div style={{...imgProps, width: '100%'}}>
+                <img src={Model_Img} alt="" style={{ width: 1100, height: 550, float: 'right'}} />
             </animated.div>
             <Box sx={{
                 display: 'flex',
-                // flexDirection: 'column',
-                // alignItems: 'center',
-                // justifyContent: 'center',
                 position: 'absolute',
             }}>
                 <animated.div style={textProps} sx={Style.div}>
-                    <Typography variant="h4" fontSize="40px">
+                    <Typography variant="h2" fontWeight={'bold'}>
                         Compare Top-Rated
                     </Typography>
-                    <Typography variant="h4" fontSize="40px">
+                    <Typography variant="h3">
                         Jewelers & Save "Time & Money"
                     </Typography>
-                    <Typography variant="h5" gutterBottom color="#828282">
+                    <Typography variant="h5"  color="#828282">
                         Navigate the diamond market effortlessly.
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>

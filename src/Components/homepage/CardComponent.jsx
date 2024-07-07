@@ -1,24 +1,16 @@
 import React from 'react';
-import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Box, CardHeader } from '@mui/material';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
 const ReviewCard = ({ title, rating, review, reviewer }) => (
   <Card sx={{
-    width: '100%',
-    height: '100%',
     background: 'white',
-    borderColor: 'black',
-    borderRadius: '15px',
-    boxShadow: '2.5px 4px 4px 2.5px rgba(0, 0, 0, 0.2)',
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-
-
+    borderRadius: '10px',
   }}>
-    <CardContent>
-      <Typography
+    <CardHeader
+    title={
+      <Box>
+        <Typography
         variant="h1"
         sx={{
           fontSize: '20px',
@@ -26,17 +18,21 @@ const ReviewCard = ({ title, rating, review, reviewer }) => (
           alignItems: 'center',
           marginBottom: '10px',
           color: '#39d9b9'
-        }}>
+        }}
+      >
         {Array.from({ length: rating }, (_, i) => <StarRateIcon key={i} style={{ fontSize: '30px' }} />)}
       </Typography>
-      <Typography variant="h4" component="h2" sx={{ marginBottom: '10px' }}>
+            <Typography variant="h4" >
         {title}
       </Typography>
-      <Typography sx={{ fontSize: '20px', marginBottom: '10px' }} variant="body2" component="p">
+      </Box>
+    }
+    />
+    <CardContent>
+      <Typography  variant="h5" component="p">
         {review}
       </Typography>
-    </CardContent>
-    <Typography
+      <Typography
       variant="body1"
       component="p"
       sx={{
@@ -49,22 +45,14 @@ const ReviewCard = ({ title, rating, review, reviewer }) => (
       }} >
       - {reviewer}
     </Typography>
+    </CardContent>
+    
   </Card>
 );
 
 const Reviews = () => {
   return (
-    <Box sx={{
-      width: '100%',
-      minHeight: '100%',
-      height: '120%',
-      marginTop: '65px',
-      paddingLeft: '1%',
-      paddingRight: '1%',
-      boxSizing: 'border-box',
-      overflowX: 'hidden',
-      overflowY: 'auto',
-    }}>
+    <Box>
       <Grid container spacing={2}
         sx={{
           justifyContent: 'center',
@@ -74,6 +62,7 @@ const Reviews = () => {
         }}
       >
         <Grid item xs={12} sm={6} md={4} sx={{
+          display: 'flex',
         }}>
           <ReviewCard
             title="Highly Recommend Di'Asecur"

@@ -1,5 +1,5 @@
-import React from 'react'
-import "./Navbar.css"
+import React , {useState} from 'react'
+import "../../App.css"
 import logoWeb from '../../assets/logo_v4.png'
 import { useNavigate } from 'react-router-dom'
 import { Button, Grid } from '@mui/material'
@@ -9,14 +9,18 @@ import Toolbar from '@mui/material/Toolbar';
 import UserComponent from './UserComponent'
 
 const Navbar = () => {
-
+  const [activeButton, setActiveButton] = useState('');
   const navigator = useNavigate();
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName); // Set the clicked button as active
+    navigator(`/${buttonName}`); // Navigate based on button name
+  };
   return (
     <AppBar
       sx={{
         backgroundColor: 'white',
       }}
-      position="static"
+
     >
       <Toolbar>
         <Grid container spacing={5}>
@@ -26,7 +30,7 @@ const Navbar = () => {
             justifyContent="center"
             alignItems="center"
           >
-            <Button onClick={() => navigator('/')}><img src={logoWeb} alt="" style={{ width: 130, height: 68.5 }} />   </Button>
+            <Button onClick={() => navigator('/')}><img src={logoWeb} alt="" style={{ width: 130, height: 68.5 , marginTop: -20 , marginBottom: -20}} />   </Button>
           </Grid>
           <Grid item lg={6} xl={6} md={6} sm={6} xs={6}
             container
@@ -46,7 +50,10 @@ const Navbar = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Button sx={{ color: 'black' }} onClick={() => navigator('/calculate')}>Calculate</Button>
+                <Button sx={{ color: 'black', textDecoration: activeButton === 'calculate' ? 'underline' : 'none' }} 
+                onClick={() => handleButtonClick('calculate')}
+                >
+                  Calculate</Button>
               </Grid>
               <Grid item lg={4} xl={4} md={4} sm={4} xs={4}
                 container
@@ -54,7 +61,10 @@ const Navbar = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Button sx={{ color: 'black' }} onClick={() => navigator('/diamond-check')}>Diamond Check</Button>
+                <Button sx={{ color: 'black', textDecoration: activeButton === 'diamond-check' ? 'underline' : 'none' }} 
+                onClick={() => handleButtonClick('diamond-check')}
+                >
+                  Certificate Check</Button>
               </Grid>
               <Grid item lg={4} xl={4} md={4} sm={4} xs={4}
                 container
@@ -62,7 +72,10 @@ const Navbar = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Button sx={{ color: 'black' }} onClick={() => navigator('/diamond-appraisal')}>Appraisal</Button>
+                <Button sx={{ color: 'black' , textDecoration: activeButton === 'diamond-appraisal' ? 'underline' : 'none'}} 
+                onClick={() => handleButtonClick('diamond-appraisal')}
+                >
+                  Appraisal</Button>
               </Grid>
             </Grid>
           </Grid>

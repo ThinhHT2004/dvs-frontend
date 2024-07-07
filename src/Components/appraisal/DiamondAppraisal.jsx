@@ -218,15 +218,21 @@ const UserDiamondAppraisalBody = () => {
 const DiamondAppraisal = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Box sx={{ flexGrow: 2, zIndex: 2 }}>
+      <Box >
         <Navbar />
       </Box>
-      <Box
-        sx={{ flexGrow: 1, backgroundImage: `url(${background})`, 
+     <Box 
+      marginTop={5}
+     marginBottom={5}
+     >
+     <Box
+        sx={{ 
+        backgroundImage: `url(${background})`, 
         backgroundSize: 'cover', 
         backgroundPosition: 'center', 
         backgroundRepeat: 'no-repeat', 
-        zIndex: 1 }}
+        paddingTop: 5,
+      }}
       >
 
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0, margin: 5, background: 0 }} >
@@ -306,7 +312,7 @@ const DiamondAppraisal = () => {
           </CardContent>
         </Card>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box>
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
           <CardHeader
             title="The Appraisal Process"
@@ -328,7 +334,7 @@ const DiamondAppraisal = () => {
           </CardContent>
         </Card>
       </Box>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box>
         <Card variant='outlined' sx={{ borderRadius: 0, border: 0 }}>
           <CardHeader
             title="The Evaluation Process"
@@ -498,6 +504,7 @@ const DiamondAppraisal = () => {
           </CardContent>
         </Card>
       </Box>
+     </Box>
       <Box >
         <Footer></Footer>
       </Box>

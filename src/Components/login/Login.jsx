@@ -65,7 +65,10 @@ const Login = () => {
         <Box>
         <Navbar></Navbar>
         </Box>
-        <Box sx={{ flexGrow: 1}}>
+        <Box 
+        marginTop={10}
+        marginBottom={5}
+        >
         <Grid container display={'flex'} justifyContent={'center'} alignItems={'center'}>
             
             <Card component={Paper} sx={{width:400, padding: 5, margin: 5}} elevation={5}>
