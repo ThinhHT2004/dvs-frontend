@@ -195,7 +195,9 @@ const Admin_Accounts = () => {
                       {staff.lastName} {staff.firstName}
                     </TableCell>
                     <TableCell align="center">
-                      <Button onClick={() => handleViewEditClick(staff)}>
+                      <Button onClick={() => handleViewEditClick(staff)}
+                      sx={{color: '#30D5C8'}}  
+                      >
                         View & Edit
                       </Button>
                     </TableCell>
@@ -217,6 +219,7 @@ const Admin_Accounts = () => {
                 <TableCell align="right">
                   <Button 
                   onClick={handleAddClick}
+                  sx={{color: '#30D5C8'}}
                   >
                     Add New Staff
                   </Button>
@@ -337,8 +340,8 @@ const Admin_Accounts = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleUpdate}>Update</Button>
-          <Button onClick={handleDialogClose}>Cancel</Button>
+          <Button onClick={handleUpdate} sx={{color:"#30D5C8"}}>Update</Button>
+          <Button onClick={handleDialogClose} color="error">Cancel</Button>
         </DialogActions>
       </Dialog>
     
@@ -450,8 +453,8 @@ const Admin_Accounts = () => {
             
       </DialogContent>
       <DialogActions>
-          <Button onClick={handleAdd}>Add</Button>
-          <Button onClick={handleAddDialogClose}>Cancel</Button>
+          <Button onClick={handleAdd} sx={{color:'#30D5C8'}}>Add</Button>
+          <Button onClick={handleAddDialogClose} color="error">Cancel</Button>
         </DialogActions>
     </Dialog>
     </Box>

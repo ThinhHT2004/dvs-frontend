@@ -243,7 +243,7 @@ const CheckDiamondBody = () => {
                       sx={{
                         fontSize: "20px",
                         "& fieldset": { borderRadius: 20 },
-                        '&:hover': { backgroundColor: "#f0f0f0", 
+                        '&:hover': { backgroundColor: "white", 
                           borderRadius: 20,
                         },
                       }}

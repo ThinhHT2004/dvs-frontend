@@ -19,6 +19,8 @@ const Vault = () => {
     const customerId = sessionStorage.getItem("customerId");
     const [customerAcc, setCustomerAcc] = useState({});
     const [customer, setCustomer] = useState({});
+    const [originalCustomerAcc, setOriginalCustomerAcc] = useState({});
+    const [originalCustomer, setOriginalCustomer] = useState({});
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -26,6 +28,8 @@ const Vault = () => {
                 const responseAcc = await protectedApi.get('/accounts/' + customerId);
                 setCustomer(response.data);
                 setCustomerAcc(responseAcc.data);
+                setOriginalCustomer(response.data);
+                setOriginalCustomerAcc(responseAcc.data);
             } catch (error) {
                 console.error(error);
             }
@@ -39,6 +43,10 @@ const Vault = () => {
         setCustomer({ ...customer, [field]: value });
     };
     const handleSave = () => {
+    }
+    const handleCancel = () => {
+        setCustomer(originalCustomer);
+        setCustomerAcc(originalCustomerAcc);
     }
     return (
         <Box
@@ -184,6 +192,7 @@ const Vault = () => {
                                 borderColor: "red",
                                 borderRadius: "10px",
                             }}
+                            onClick={handleCancel}
                         >
                             Cancel
                         </Button>

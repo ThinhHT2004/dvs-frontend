@@ -280,7 +280,7 @@ const Admin_Services = () => {
                                         <TableCell align="center">{index + 1}</TableCell>
                                         <TableCell>{service.name}</TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleViewEditClick(service)}>View & Edit</Button>
+                                            <Button onClick={() => handleViewEditClick(service)} sx={{color: "#30D5C8"}}>View & Edit</Button>
                                         </TableCell>
                                         <TableCell>
                                             {
@@ -299,7 +299,7 @@ const Admin_Services = () => {
                                 <TableCell></TableCell>
                                 <TableCell></TableCell>
                                 <TableCell align='left'>
-                                    <Button onClick={handleCreateNewService}>Create new Service</Button>
+                                    <Button onClick={handleCreateNewService} sx={{color:"#30D5C8"}}>Create new Service</Button>
                                 </TableCell>
                             </TableRow>
                         </TableBody>
@@ -351,7 +351,7 @@ const Admin_Services = () => {
                     </Table>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleUpdateClick} color="primary">Update</Button>
+                    <Button onClick={handleUpdateClick} sx={{color: "#30D5C8"}}>Update</Button>
                     <Button onClick={handleCloseDialog} color="error">Cancel</Button>
                 </DialogActions>
             </Dialog>
@@ -406,7 +406,7 @@ const Admin_Services = () => {
                     </Table>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSaveNewService} color="primary">Save</Button>
+                    <Button onClick={handleSaveNewService} sx={{color:"#30D5C8"}}>Save</Button>
                     <Button onClick={handleCloseNewServiceDialog} color="error">Cancel</Button>
                 </DialogActions>
             </Dialog>
