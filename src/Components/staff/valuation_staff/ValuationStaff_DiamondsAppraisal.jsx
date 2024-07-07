@@ -186,7 +186,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid xl={7} lg={7} md={12}>
+          <Grid item xl={7} lg={7} md={12}>
             {selectedDiamond ? (
               <Box sx={{ p: 3 }}>
                 <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
