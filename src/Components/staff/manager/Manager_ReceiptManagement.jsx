@@ -288,7 +288,7 @@ const Manager_ReceiptManagement = () => {
                                         <ListItem key={diamondRow.id}>
                                           <Grid container>
                                             <Grid item lg={4} xl={4}>
-                                              <ListItemText primary={formatRequestId(diamondRow.id)} />
+                                              <ListItemText primary={formatRequestId(diamondRow.id)}  sx={{ textAlign: 'center' }}/>
                                             </Grid>
                                             <Grid item lg={4} xl={4}>
                                               <ListItemText sx={{ textAlign: 'center' }}>
