@@ -302,7 +302,7 @@ const CheckDiamondBody = () => {
         <Box>
           <Card variant="outlined" sx={{ borderRadius: 0, border: 0 }}>
             <CardHeader
-              title=" Welcome to DiAsecur Diamonds Check"
+              title=" Welcome to DiAsecur Certificate Check"
               titleTypographyProps={{
                 variant: "h4",
                 color: "#69CEE2",

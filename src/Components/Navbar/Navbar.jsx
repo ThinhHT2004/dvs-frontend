@@ -61,10 +61,10 @@ const Navbar = () => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <Button sx={{ color: 'black', textDecoration: activeButton === 'certification-check' ? 'underline' : 'none' }} 
-                onClick={() => handleButtonClick('certification-check')}
+                <Button sx={{ color: 'black', textDecoration: activeButton === 'certificate-check' ? 'underline' : 'none' }} 
+                onClick={() => handleButtonClick('certificate-check')}
                 >
-                  Certification Check</Button>
+                  Certificate Check</Button>
               </Grid>
               <Grid item lg={4} xl={4} md={4} sm={4} xs={4}
                 container
