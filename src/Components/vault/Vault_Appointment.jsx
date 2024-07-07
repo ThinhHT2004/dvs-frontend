@@ -41,6 +41,9 @@ const Vault = () => {
       case "WAITING":
         return "primary";
         break;
+      case "FINISHED":
+        return "success";
+        break;
     }
   };
   useEffect(() => {
