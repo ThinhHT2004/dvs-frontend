@@ -12,10 +12,13 @@ const Check_DiamondsDetails = () => {
     const diamondDetails = location.state?.diamondDetails;
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-            <Box sx={{ zIndex: 2 }}>
+            <Box >
                 <Navbar />
             </Box>
-            <Box sx={{ flexGrow: 1, zIndex: 1 }}>
+            <Box 
+            marginTop={5}
+            marginBottom={5}
+            >
                 <Box>
                     <Grid container spacing={2}>
                         <Grid
