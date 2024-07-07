@@ -256,8 +256,12 @@ const ConsultingStaff_Form = () => {
         return "success";
       case "COMPLETED":
         return "info";
-      default:
-        return "default";
+        case "SEALED":
+          return "error";
+          break;
+        case "COMMITTED":
+          return "error";
+          break;
     }
   };
 

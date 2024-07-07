@@ -263,6 +263,9 @@ const ConsultingStaff_ManageRequest = () => {
       case "COMPLETED":
         return "info";
         break;
+      case "FINISHED":
+        return "success";
+        break;
     }
   };
 

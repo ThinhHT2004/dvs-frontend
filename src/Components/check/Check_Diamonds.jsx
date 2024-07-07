@@ -268,7 +268,9 @@ const CheckDiamondBody = () => {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          '&:hover': { backgroundColor: "#69CEE2" },
+                          '&:hover': { backgroundColor: "#69CEE2", 
+                            borderRadius: 20,
+                          },
                         }}
                         onClick={() => CheckID()}
                       >
