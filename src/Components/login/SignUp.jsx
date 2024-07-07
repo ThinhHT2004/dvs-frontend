@@ -107,14 +107,6 @@ const SignUp = () => {
     return emailRegex.test(email);
   }
 
-  function signUp(){
-    let check = true;
-    if(password !== confirmPassword){
-        toast.error("Password does not match")
-        check = false;
-    }
-
-  }
 
 
   return (

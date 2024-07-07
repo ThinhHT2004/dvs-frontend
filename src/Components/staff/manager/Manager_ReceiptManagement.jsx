@@ -84,7 +84,7 @@ const Manager_ReceiptManagement = () => {
 
   function getAppraisers() {
     protectedApi
-      .get("/staffs/valuation-staffs")
+      .get("/staffs/valuation-staffs/active")
       .then((resp) => setAppraiserList(resp.data))
       .catch((err) => console.log(err));
   }

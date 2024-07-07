@@ -28,12 +28,24 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Toaster, toast } from "sonner";
 
+
 const Admin_Accounts = () => {
   const [staffs, setStaffs] = useState([]);
   const [editDiaLogOpen, setEditDiaLogOpen] = useState(false);
   const [dialogData, setDialogData] = useState(null);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [addDialogData, setAddDialogData] = useState(null);
+  const [registerRequest, setRegisterRequest] = useState({
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    dob: null,
+    phoneNumber: "",
+    role: "",
+    address: "",
+  });
   const roles = ["MANAGER", "CONSULTING_STAFF", "VALUATION_STAFF"];
   useEffect(() => {
     getStaffs();
@@ -71,16 +83,13 @@ const Admin_Accounts = () => {
   };
   const handleDialogClose = () => {
     setEditDiaLogOpen(false);
-    setDialogData(null);
   };
   const handleUpdate = async () => {
     try {
-      await protectedApi
-        .put("/staffs/update", dialogData)
-        .then(resp => {
-          console.log(resp.data);
-          toast.success("Update Successfully");
-        })
+      await protectedApi.put("/staffs/update", dialogData).then((resp) => {
+        console.log(resp.data);
+        toast.success("Update Successfully");
+      });
 
       getStaffs();
       handleDialogClose();
@@ -89,50 +98,118 @@ const Admin_Accounts = () => {
     }
   };
 
-  const handleDisable = async staff => {
+  const handleDisable = async (staff) => {
     try {
       await protectedApi
         .put("/accounts/disable/" + staff.id)
-        .then(resp => toast.success(resp.data));
-      getStaffs()
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const handleEnable = async staff => {
-    try {
-      await protectedApi
-        .put("/accounts/enable/" + staff.id)
-        .then(resp => toast.success(resp.data));
+        .then((resp) => toast.success(resp.data));
       getStaffs();
     } catch (err) {
       console.log(err);
     }
-  }
+  };
+
+  const handleEnable = async (staff) => {
+    try {
+      await protectedApi
+        .put("/accounts/enable/" + staff.id)
+        .then((resp) => toast.success(resp.data));
+      getStaffs();
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const handleAddClick = () => {
     setAddDialogOpen(true);
   };
   const handleAddDialogClose = () => {
     setAddDialogOpen(false);
+    setRegisterRequest({
+      username: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      dob: null,
+      phoneNumber: "",
+      role: "",
+      address: "",
+    });
   };
+
+  console.log(registerRequest);
   const handleAdd = async () => {
     try {
       await protectedApi
-        .post("/staffs/add", dialogData)
-        .then(resp => toast.success(resp.data));
-      getStaffs();
-      handleAddDialogClose();
+        .post("/staffs/create", registerRequest)
+        .then((resp) => {
+          if(resp.data.code === 1){
+            toast.success(resp.data.mess);
+            handleAddDialogClose();
+            getStaffs();
+          }else{
+            toast.error(resp.data.mess);
+          }
+        });
+      
+      
     } catch (err) {
       console.error(err);
     }
+  };
+
+
+  function checkFullFilled() {
+    let check = true;
+
+    for (let key in dialogData) {
+      if (dialogData.hasOwnProperty(key)) {
+        if (dialogData[key] === "") {
+          check = false;
+          break;
+        }
+      }
+    }
+
+    if(registerRequest.dob === null){
+      return false;
+    }
+
+    if (!check) {
+      return false;
+    } else {
+      if (!isValidEmailIgnoringTail()) {
+        return false;
+      }
+      if (!checkPhoneNumber()) {
+        return false;
+      }
+      if (!checkPhoneNumberString()) {
+        return false;
+      }
+      return true;
+    }
   }
-  const handleAddDialogChange = (field, value) => {
-    setAddDialogData({
-      ...addDialogData,
-      [field]: value,
-    });
+
+  function checkPhoneNumber() {
+    if (registerRequest.phoneNumber.length !== 10) {
+      return false;
+    } else {
+      return true;
+    }
   }
+
+  function checkPhoneNumberString() {
+    const digitRegex = /^\d+$/;
+    return digitRegex.test(registerRequest.phoneNumber);
+  }
+
+  function isValidEmailIgnoringTail() {
+    const emailRegex = /^[^\s@]+@[^\s@]+$/;
+
+    return emailRegex.test(registerRequest.email);
+  }
+
   return (
     <Box
       sx={{
@@ -203,9 +280,19 @@ const Admin_Accounts = () => {
                     </TableCell>
                     <TableCell align="center">
                       {staff.active === true ? (
-                        <Button sx={{ color: "red" }} onClick={() => handleDisable(staff)}>Disable</Button>
+                        <Button
+                          sx={{ color: "red" }}
+                          onClick={() => handleDisable(staff)}
+                        >
+                          Disable
+                        </Button>
                       ) : (
-                        <Button sx={{ color: "green" }} onClick={() => handleEnable(staff)}>Enable</Button>
+                        <Button
+                          sx={{ color: "green" }}
+                          onClick={() => handleEnable(staff)}
+                        >
+                          Enable
+                        </Button>
                       )}
                     </TableCell>
                   </TableRow>
@@ -344,119 +431,191 @@ const Admin_Accounts = () => {
           <Button onClick={handleDialogClose} color="error">Cancel</Button>
         </DialogActions>
       </Dialog>
-    
-    <Dialog
-    open={addDialogOpen}
-    onClose={handleAddDialogClose}
-    fullWidth
-    maxWidth='md'
-    >
-      <DialogContent>
-      <Box padding={1}>
-                <Grid container spacing={2}>
-                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-                    <TextField
-                    variant='standard'
-                    label='Username'
-                    fullWidth
-                    required
-                    onChange={(e) => handleAddDialogChange('username', e.target.value)}
+
+      <Dialog
+        open={addDialogOpen}
+        onClose={handleAddDialogClose}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogContent>
+          <Box padding={1}>
+            <Grid container spacing={2}>
+              <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                <TextField
+                  variant="standard"
+                  label="Username"
+                  fullWidth
+                  required
+                  onChange={(e) => {
+                    setRegisterRequest({
+                      ...registerRequest,
+                      username: e.target.value,
+                    });
+                    checkFullFilled();
+                  }}
                 />
-                    </Grid>
-                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-                    <FormControl fullWidth>
-                    <InputLabel>Role</InputLabel>
-                    <Select
+              </Grid>
+              <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Role</InputLabel>
+                  <Select
                     label="Role"
                     required
                     fullWidth
-                    onChange={(e) => handleAddDialogChange('role', e.target.value)}
-                    >
-                        {roles.map((role) => (
-                            <MenuItem key={role} value={role}>
-                                {role}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    onChange={(e) => {
+                      setRegisterRequest({
+                        ...registerRequest,
+                        role: e.target.value,
+                      });
+                      checkFullFilled();
+                    }}
+                  >
+                    {roles.map((role) => (
+                      <MenuItem key={role} value={role}>
+                        {role}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </FormControl>
-                    </Grid>
-                </Grid>
-
-            </Box>
-            <Box padding={1}>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box padding={1}>
+            <TextField
+              error={
+                registerRequest.email === ""
+                  ? false
+                  : !isValidEmailIgnoringTail()
+              }
+              helperText={
+                registerRequest.email === ""
+                  ? false
+                  : !isValidEmailIgnoringTail()
+                  ? "Email is invalid"
+                  : ""
+              }
+              variant="standard"
+              label="Email"
+              fullWidth
+              required
+              onChange={(e) => {
+                setRegisterRequest({
+                  ...registerRequest,
+                  email: e.target.value,
+                });
+                checkFullFilled();
+              }}
+            />
+          </Box>
+          <Box padding={1}>
+            <TextField
+              variant="standard"
+              label="Password"
+              fullWidth
+              required
+              onChange={(e) => {
+                setRegisterRequest({
+                  ...registerRequest,
+                  password: e.target.value,
+                });
+                checkFullFilled();
+              }}
+            />
+          </Box>
+          <Box padding={1}>
+            <Grid container spacing={2}>
+              <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
                 <TextField
-                    variant='standard'
-                    label='Email'
+                  variant="standard"
+                  label="First Name"
+                  fullWidth
+                  required
+                  onChange={(e) => {
+                    setRegisterRequest({
+                      ...registerRequest,
+                      firstName: e.target.value,
+                    });
+                    checkFullFilled();
+                  }}
+                />
+              </Grid>
+              <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
+                <TextField
+                  variant="standard"
+                  label="Last Name"
+                  fullWidth
+                  required
+                  onChange={(e) => {
+                    setRegisterRequest({
+                      ...registerRequest,
+                      lastName: e.target.value,
+                    });
+                    checkFullFilled();
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <Box padding={1}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                inputFormat="dd/MM/yyyy"
+                value={registerRequest.dob}
+                onChange={(newValue) => {
+                  setRegisterRequest({
+                    ...registerRequest,
+                    dob: newValue,
+                  });
+                  checkFullFilled();
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Day of Birth"
+                    placeholder="Day of Birth"
                     fullWidth
                     required
-                    onChange={(e) => handleAddDialogChange('email', e.target.value)}
-                />
-            </Box>
-            <Box padding={1}>
-                <TextField
-                    variant='standard'
-                    label='Password'
-                    fullWidth
-                    required
-                    onChange={(e) => handleAddDialogChange('password', e.target.value)}
-                />
-            </Box>
-            <Box padding={1}>
-                <Grid container spacing={2}>
-                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-                        <TextField
-                            variant='standard'
-                            label='First Name'
-                            fullWidth
-                            required
-                            onChange={(e) => handleAddDialogChange('firstName', e.target.value)}
-                        />
-                    </Grid>
-                    <Grid item xl={6} lg={6} md={6} sm={6} xs={6}>
-                        <TextField
-                            variant='standard'
-                            label='Last Name'
-                            fullWidth
-                            required
-                            onChange={(e) => handleAddDialogChange('lastName', e.target.value)}
-                        />
-                    </Grid>
-                </Grid>
-            </Box>
-            <Box padding={1}>
-                <TextField
-                    variant='standard'
-                    label='Day of Birth'
-                    fullWidth
-                    required
-                    onChange={(e) => handleAddDialogChange('dob', e.target.value)}
-                />
-            </Box>
-            <Box padding={1}>
-                <TextField
-                    variant='standard'
-                    label='Address'
-                    fullWidth
-                    required
-                    onChange={(e) => handleAddDialogChange('address', e.target.value)}
-                />
-            </Box>
-            <Box padding={1}>
-                <TextField
-                    variant='standard'
-                    label='Phone Number'
-                    fullWidth
-                    required
-                    onChange={(e) => handleAddDialogChange('phoneNumber', e.target.value)}
-                />
-            </Box>
-            
-      </DialogContent>
-      <DialogActions>
-          <Button onClick={handleAdd} sx={{color:'#30D5C8'}}>Add</Button>
-          <Button onClick={handleAddDialogClose} color="error">Cancel</Button>
+                    variant="standard"
+                  />
+                )}
+              ></DatePicker>
+            </LocalizationProvider>
+          </Box>
+          <Box padding={1}>
+            <TextField
+              variant="standard"
+              label="Address"
+              fullWidth
+              required
+              onChange={(e) =>{
+                setRegisterRequest({...registerRequest, address: e.target.value})
+                checkFullFilled();
+              }}
+            />
+          </Box>
+          <Box padding={1}>
+            <TextField
+             error={registerRequest.phoneNumber === "" ? false : !checkPhoneNumber()}
+             helperText={registerRequest.phoneNumber === "" ? false : !checkPhoneNumberString() ? "Phone must contain only digit" : !checkPhoneNumber() ? "Lenght must be 10" : ""}
+              variant="standard"
+              label="Phone Number"
+              fullWidth
+              required
+              onChange={(e) =>
+              {
+                setRegisterRequest({...registerRequest, phoneNumber: e.target.value})
+                checkFullFilled();
+              }
+              }
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleAdd} disabled={!checkFullFilled()}>Add</Button>
+          <Button onClick={handleAddDialogClose}>Cancel</Button>
         </DialogActions>
-    </Dialog>
+      </Dialog>
     </Box>
   );
 };
