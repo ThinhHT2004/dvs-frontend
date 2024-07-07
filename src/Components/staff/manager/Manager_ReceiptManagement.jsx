@@ -118,7 +118,7 @@ const Manager_ReceiptManagement = () => {
     } else {
       protectedApi
         .put(
-          "http://localhost:8080/api/assignment/assigns/" + currentrRequest.id + "/" + currentSample.id, appraiserList
+          "/assignment/assigns/" + currentrRequest.id + "/" + currentSample.id, appraiserList
         )
         .then((resp) => {
           console.log(resp.data);
