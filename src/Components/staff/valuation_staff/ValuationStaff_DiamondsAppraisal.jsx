@@ -32,7 +32,16 @@ const ValuationStaff_DiamondsAppraisal = () => {
   const drawerWidth = 240;
   const [assignments, setAssignments] = useState([]);
   const [price, setPrice] = useState(0);
-
+  const [origin, setOrigin] = useState("");
+  const [shape, setShape] = useState("");
+  const [carat, setCarat] = useState();
+  const [color, setColor] = useState("");
+  const [clarity, setClarity] = useState("");
+  const [cut, setCut] = useState("");
+  const [symmetry, setSymmetry] = useState("");
+  const [polish, setPolish] = useState("");
+  const [fluorescence, setFluorescence] = useState("");
+  const [diamonds, setDiamonds] = useState([]);
   console.log(staffId);
 
   useEffect(() => {
@@ -46,6 +55,42 @@ const ValuationStaff_DiamondsAppraisal = () => {
       return false;
     } else {
       return true;
+    }
+  }
+
+  function handleSearch() {
+    const data = {
+      origin,
+      shape,
+      carat,
+      color,
+      clarity,
+      cut,
+      symmetry,
+      polish,
+      fluorescence,
+    };
+    console.log(data);
+    try {
+      publicApi
+        .get("/diamond/search/false" + "?", {
+          params: data,
+        })
+        .then((resp) => setDiamonds(resp.data));
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  function generateMaxMin(list) {
+    if (list != null && list.length > 0) {
+      const prices = list.map((d) => d.price);
+      const min = Math.min(...prices);
+      const max = Math.max(...prices);
+
+      return "$" + min + " - " + "$" + max;
+    } else {
+      return "--";
     }
   }
 
@@ -87,6 +132,14 @@ const ValuationStaff_DiamondsAppraisal = () => {
     );
     setSelectedAssignment(assignment);
     getSelectDiamond(assignment.valuationRequestDetailId);
+    setOrigin(selectedDiamond.origin);
+    setShape(selectedDiamond.shape);
+    setCarat(selectedDiamond.caratWeight);
+    setColor(selectedDiamond.color);
+    setClarity(selectedDiamond.clarity);
+    setCut(selectedDiamond.cut);
+    setSymmetry(selectedDiamond.symmetry);
+    setFluorescence(selectedDiamond.fluorescence);
   };
 
   console.log(selectedAssignment);
@@ -257,7 +310,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                             </Box>
                             <Box>
                               <Typography>
-                                Market Price: $3400 ~ $5000
+                                Market Price: {diamonds.length > 0 ? generateMaxMin(diamonds) : "N/A"}
                               </Typography>
                             </Box>
                             <Box>
