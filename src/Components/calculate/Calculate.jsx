@@ -150,7 +150,7 @@ const Calculate = () => {
     console.log(data);
     try {
       publicApi
-        .get("/diamond/search/" + advanced + "/"+ 0 + "?", {
+        .get("/diamond/search/" + advanced + "/"+ 1 + "?", {
           params: data,
         })
         .then((resp) => {
@@ -160,7 +160,7 @@ const Calculate = () => {
       
      
         publicApi
-        .get("/diamond/search/" + advanced + "/" + 3 + "?", {
+        .get("/diamond/search/" + advanced + "/" + 2 + "?", {
           params: data,
         })
         .then((resp) => setOldDiamonds(resp.data));
