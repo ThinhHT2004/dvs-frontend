@@ -130,7 +130,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
         }}
       >
         <Grid container spacing={3}>
-          <Grid item xl={5} lg={5} md={12}>
+          <Grid item xl={6} lg={6} md={12}>
             <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
               <CardHeader
                 title='DIAMONDS APPRAISAL'
@@ -185,7 +185,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xl={7} lg={7} md={12}>
+          <Grid item xl={6} lg={6} md={12}>
             {selectedDiamond ? (
               <Box>
                 <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
@@ -345,7 +345,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                   </Typography>
                                 </Box>
                               </Box>
-                              <Box width="60%">
+                              <Box width="100%">
                                 <img
                                   src={
                                     selectedDiamond.valuationReport.proportion

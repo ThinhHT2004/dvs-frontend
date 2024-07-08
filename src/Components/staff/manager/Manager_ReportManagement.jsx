@@ -299,6 +299,7 @@ const Manager_ReportManagement = () => {
                                 placeholder="Enter note"
                                 value={currentValuationReport.note || ""}
                                 multiline
+                                sx={{ width: 600 }}
                                 rows={4}
                                 onChange={(e) =>
                                   setCurrentValuationReport({ ...currentValuationReport, note: e.target.value })

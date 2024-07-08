@@ -147,7 +147,9 @@ const Manager_ReceiptManagement = () => {
       );
     } else {
       return (
-        <Button>
+        <Button
+        disabled
+        >
           <Link
             href="#"
             sx={{
@@ -176,12 +178,19 @@ const Manager_ReceiptManagement = () => {
     switch (status) {
       case "ASSIGNED":
         return "success";
+        break;
       case "FILLING":
         return "primary";
+        break;
       case "FILLED":
         return "primary";
+        break;
       case "APPROVED":
+        return "primary"
+        break;
+      case "VALUATED":
         return "success"
+        break;
     }
   };
 
@@ -304,7 +313,6 @@ const Manager_ReceiptManagement = () => {
                                             </Grid>
                                           </Grid>
                                         </ListItem>
-                                     
                                     )
                                   )}
                                   

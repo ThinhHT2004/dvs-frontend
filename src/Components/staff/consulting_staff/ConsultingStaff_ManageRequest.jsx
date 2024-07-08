@@ -776,7 +776,7 @@ const ConsultingStaff_ManageRequest = () => {
             <IconButton
               sx={{ backgroundColor: "#69CEE2" }}
               size="small"
-              onClick={() => setOpen(true)}
+              onClick={() => setOpen(!open)}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>

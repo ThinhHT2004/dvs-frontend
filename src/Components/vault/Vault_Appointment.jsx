@@ -26,18 +26,28 @@ const Vault = () => {
     switch (status) {
       case "PROCESSING":
         return "warning";
+        break;
       case "RECEIVED":
         return "info";
+        break;
       case "ACCEPTED":
         return "success";
+        break;
       case "COMPLETED":
         return "info";
+        break;
       case "WAITING":
         return "primary";
+        break;
       case "FINISHED":
         return "success";
+        break;
+      case "SEALED":
+        return "error";
+        break;
       default:
         return "default";
+        break;
     }
   };
   useEffect(() => {

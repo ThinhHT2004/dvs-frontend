@@ -50,6 +50,9 @@ const ConsultingStaff_Home = () => {
       case "COMMITTED":
         return "error";
         break;
+      case "FINISHED":
+        return "success";
+        break;
     }
   };
 

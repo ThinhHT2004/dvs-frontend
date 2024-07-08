@@ -54,10 +54,13 @@ const ConsultingStaff_Form = () => {
     protectedApi
       .get(
         "/request/valuation-request/" +
-          consultignStaffId +
-          "/ACCEPTED/COMPLETED/SEALED"
+        consultignStaffId +
+        "/ACCEPTED/COMPLETED/SEALED"
       )
-      .then((resp) => setRequests(resp.data))
+      .then((resp) => {
+        setRequests(resp.data);
+        console.log(resp.data);
+      })
       .catch((err) => console.log(err));
   }
 
@@ -96,6 +99,8 @@ const ConsultingStaff_Form = () => {
           .then((resp) => {
             console.log(resp.data);
             handleClose();
+            getAcceptedRquest();
+            setForm({});
           });
       } catch (err) {
         console.log(err);
@@ -109,8 +114,7 @@ const ConsultingStaff_Form = () => {
     } else {
       protectedApi
         .post(
-          "/forms/create-receipt/" +
-            requestId,
+          "/forms/create-receipt/" + requestId,
           requestDetailList
         )
         .then((resp) => {
@@ -129,12 +133,7 @@ const ConsultingStaff_Form = () => {
       return;
     }
     protectedApi
-      .get(
-        "/service-prices/price/" +
-          id +
-          "/" +
-          size
-      )
+      .get("/service-prices/price/" + id + "/" + size)
       .then((resp) => {
         let newListSample = [...listSample];
         newListSample[index] = resp.data;
@@ -176,6 +175,7 @@ const ConsultingStaff_Form = () => {
     setOpen(false);
     setCurrentRequest(null);
     setSelectedOption("");
+    setForm({});
   };
 
   const handleSizeChange = (e, index, sample) => {
@@ -256,12 +256,12 @@ const ConsultingStaff_Form = () => {
         return "success";
       case "COMPLETED":
         return "info";
-        case "SEALED":
-          return "error";
-          break;
-        case "COMMITTED":
-          return "error";
-          break;
+      case "SEALED":
+        return "error";
+      case "COMMITTED":
+        return "error";
+      default:
+        return "default";
     }
   };
 
@@ -349,35 +349,35 @@ const ConsultingStaff_Form = () => {
                           />
                         </TableCell>
                         <TableCell align="center">
-                          <Button>
-                            <Link
-                              href="#"
-                              onClick={(event) =>
-                                handleClickOpen(event, request)
-                              }
-                              underline="none"
-                            >
-                              Create Form
-                            </Link>
+                          <Button
+                            onClick={(event) => handleClickOpen(event, request)}
+                          >
+                            Create Form
                           </Button>
                           <Menu
                             anchorEl={anchorEl}
                             open={Boolean(anchorEl)}
                             onClose={handleMenuClose}
                           >
-                            {[
-                              "RECEIPT",
-                              "SEALED",
-                              "COMMITMENT",
-                              "HAND OVER",
-                            ].map((option) => (
-                              <MenuItem
-                                key={option}
-                                onClick={() => handleMenuItemClick(option)}
-                              >
-                                {option}
-                              </MenuItem>
-                            ))}
+                            {["RECEIPT", "SEALED", "COMMITMENT", "HAND OVER"].map(
+                              (option) => (
+                                <MenuItem
+                                  key={option}
+                                  disabled={
+                                    (currentRequest?.status === "ACCEPTED" && option !== "RECEIPT") ||
+                                    (currentRequest?.status === "SEALED" && option !== "HAND OVER") ||
+                                    (currentRequest?.status === "COMPLETED" && option === "RECEIPT")
+                                  }
+                                  onClick={() => {
+                                    handleMenuItemClick(option)
+                                    console.log(option)
+                                    console.log(currentRequest.status)
+                                  }}
+                                >
+                                  {option}
+                                </MenuItem>
+                              )
+                            )}
                           </Menu>
                         </TableCell>
                       </TableRow>
