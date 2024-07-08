@@ -46,7 +46,7 @@ const App = () => {
             <Route path="/" element={<HomePage></HomePage>}></Route>
             <Route path="/calculate" element={<Calculate></Calculate>}></Route>
             <Route
-              path="/certificate-check"
+              path="/certificates-check"
               element={<Check_Diamonds></Check_Diamonds>}
             ></Route>
             <Route
@@ -56,7 +56,7 @@ const App = () => {
             <Route path="/accounts/signin" element={<Login></Login>}></Route>
             <Route path="/accounts/signup" element={<SignUp></SignUp>}></Route>
             <Route
-              path="/certificate-check/:id"
+              path="/certificates-check/:id"
               element={<Check_DiamondsDetails></Check_DiamondsDetails>}
             ></Route>
             <Route
