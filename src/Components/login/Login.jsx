@@ -45,7 +45,7 @@ const Login = () => {
                 sessionStorage.setItem("managerId", response.data.id);
                 sessionStorage.setItem("role", response.data.role);
                 toast.success(response.data.mess);
-                navigator('/manager/home');
+                navigator('/manager/receipt');
             }else if(response.data.role === 'ADMIN'){
                 sessionStorage.setItem("adminId", response.data.id);
                 sessionStorage.setItem("role", response.data.role);

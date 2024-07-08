@@ -199,7 +199,7 @@ const Manager_ReceiptManagement = () => {
     >
       <Toaster position="top-center" richColors></Toaster>
       <StaffDrawer
-        mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
+        mylist={["Receipt", "Pending Request",  "Report", "Sign Out"]}
         state="Receipt"
         handleClick={manager_navigator}
       />

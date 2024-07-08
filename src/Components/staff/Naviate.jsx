@@ -46,9 +46,9 @@ export const valuation_staff_navigator = (text, navigate) => {
 
 export const manager_navigator = (text, navigate) => {
   switch (text) {
-    case 'Home':
-      navigate('/manager/home');
-      break;
+    // case 'Home':
+    //   navigate('/manager/home');
+    //   break;
     case "Pending Request":
       navigate('/manager/pending-request');
       break;

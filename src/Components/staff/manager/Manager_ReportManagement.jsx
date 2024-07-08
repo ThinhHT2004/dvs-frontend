@@ -126,7 +126,7 @@ const Manager_ReportManagement = () => {
       }}
     >
       <StaffDrawer
-        mylist={["Home", "Pending Request", "Receipt", "Report", "Sign Out"]}
+        mylist={[ "Receipt","Pending Request", "Report", "Sign Out"]}
         state="Report"
         handleClick={manager_navigator}
       />

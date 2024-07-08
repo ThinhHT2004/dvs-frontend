@@ -86,9 +86,8 @@ const Manager_PendingRequest = () => {
     >
       <StaffDrawer
         mylist={[
-          "Home",
-          "Pending Request",
           "Receipt",
+          "Pending Request",
           "Report",
           "Sign Out",
         ]}
