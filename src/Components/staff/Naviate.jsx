@@ -77,7 +77,7 @@ export const vault_navigator = (text, navigate) => {
     case 'Calculate':
       navigate('/calculate');
       break;
-    case 'Check Diamonds':
+    case 'Check Certificates':
       navigate('/certificates-check');
       break;
     case 'Diamonds Appraisal':

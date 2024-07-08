@@ -302,7 +302,7 @@ const Check_DiamondsDetails = () => {
                                     >
                                         <Button
                                             variant="contained"
-                                            href="/certificate-check"
+                                            href="/certificates-check"
                                             sx={{
                                                 backgroundColor: "#69CEE2",
                                                 borderRadius: "8px",

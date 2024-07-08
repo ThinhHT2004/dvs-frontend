@@ -79,7 +79,7 @@ const Vault = () => {
           "Vault",
           "Settings",
           "Calculate",
-          "Check Diamonds",
+          "Check Certificates",
           "Diamonds Appraisal",
           "Sign Out",
         ]}
