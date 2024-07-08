@@ -75,10 +75,11 @@ const Calculate = () => {
     const oldPrice = calculateFairPrice(oldDiamonds);
     const newPrice = calculateFairPrice(newDiamonds);
 
-    let change = 100 - ((newPrice / oldPrice) * 100);
+    let change = Math.abs(100 - ((newPrice / oldPrice) * 100));
     change = change.toFixed(2);
 
     if(oldPrice === 0) change = 0;
+    
   
     if(newPrice === 0 && oldPrice === 0){
       return (
@@ -114,7 +115,7 @@ const Calculate = () => {
       }
       res = res / list.length;
     }
-    return res;
+    return res.toFixed(2);
   }
 
   function generateMaxMin(list) {
