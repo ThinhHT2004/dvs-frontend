@@ -78,25 +78,32 @@ const Calculate = () => {
     let change = 100 - ((newPrice / oldPrice) * 100);
     change = change.toFixed(2);
 
-    if (newPrice > oldPrice) {
-      return (
-        <Typography variant="h6" fontWeight="bold" sx={{ color: "green" }}>
-          {change}%
-        </Typography>
-      );
-    } else if (newPrice === oldPrice) {
+    if(oldPrice === 0) change = 0;
+  
+    if(newPrice === 0 && oldPrice === 0){
       return (
         <Typography variant="h6" fontWeight="bold" sx={{ color: "grey" }}>
           0.0%
         </Typography>
       );
-    } else {
-      return (
-        <Typography variant="h6" fontWeight="bold" sx={{ color: "red" }}>
-          {change}%
-        </Typography>
-      );
+    }else{
+      if (newPrice > oldPrice) {
+        return (
+          <Typography variant="h6" fontWeight="bold" sx={{ color: "green" }}>
+            {change}%
+          </Typography>
+        );
+      }else {
+        return (
+          <Typography variant="h6" fontWeight="bold" sx={{ color: "red" }}>
+            {change}%
+          </Typography>
+        );
+      }
     }
+
+
+    
   }
 
   function calculateFairPrice(list) {
@@ -143,17 +150,17 @@ const Calculate = () => {
     console.log(data);
     try {
       publicApi
-        .get("/diamond/search/false/"+ 2 + "?", {
+        .get("/diamond/search/" + advanced + "/"+ 0 + "?", {
           params: data,
         })
         .then((resp) => {
           setDiamonds(resp.data)
           console.log(resp.data)
         });
+      
      
-
-      publicApi
-        .get("/diamond/search/false/" + 3 + "?", {
+        publicApi
+        .get("/diamond/search/" + advanced + "/" + 3 + "?", {
           params: data,
         })
         .then((resp) => setOldDiamonds(resp.data));
