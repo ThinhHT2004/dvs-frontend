@@ -15,6 +15,7 @@ import StaffDrawer from "../StaffDrawer";
 import { useRequests } from "../consulting_staff/RequestContext";
 import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
+import protectedApi from '../../../APIs/ProtectedApi';
 
 function LinearProgressWithLabel(props) {
     return (
@@ -45,6 +46,7 @@ const Admin_Home = () => {
     const { waitingRequests, getAllWaitingRequests } = useRequests([]);
     const [statusData, setStatusData] = useState([]);
     const [fileContent, setFileContent] = useState('');
+    const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
     const [dbLoading, setDbLoading] = useState(false);
@@ -73,6 +75,7 @@ const Admin_Home = () => {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
+            setFile(file);
             setLoading(true);
             const reader = new FileReader();
             reader.onloadstart = () => {
@@ -109,9 +112,23 @@ const Admin_Home = () => {
         setFormattedList(formattedData);
     };
 
-    const handleAddToDb = () => {
+    const handleAddToDb =async () => {
         setDbLoading(true);
         setProgress(0);
+
+        try{
+            const formData = new FormData();
+            formData.append("file", file);
+            await protectedApi
+            .post("/files/read", formData, {
+                headers:{
+                    "Content-Type": "multipart/form-data"
+                }
+            })
+            .then(resp => console.log(resp.data));
+        }catch(err){
+            console.log(err);
+        }
 
         const duration = 5000; // 5 seconds
         const intervalTime = 100; // 0.1 seconds

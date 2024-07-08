@@ -27,9 +27,21 @@ import axios from "axios";
 import diaImg from "../../assets/DiaImg.png";
 import { useNavigate } from "react-router-dom";
 import publicApi from "../../APIs/PublicApi";
+import { grey } from "@mui/material/colors";
 
 const Calculate = () => {
-  const shapeMap = ["ROUND", "CUSHION", "EMERALD", "OVAL", "PRINCESS", "PEAR", "RADIANT", "MARQUISE", "ASSCHER", "HEART"];
+  const shapeMap = [
+    "ROUND",
+    "CUSHION",
+    "EMERALD",
+    "OVAL",
+    "PRINCESS",
+    "PEAR",
+    "RADIANT",
+    "MARQUISE",
+    "ASSCHER",
+    "HEART",
+  ];
 
   const colorMap = ["K", "J", "I", "H", "G", "F", "E", "D"];
   const clarityMap = ["SI2", "SI1", "VS2", "VS1", "VSS2", "VVS1", "IF", "FL"];
@@ -51,11 +63,40 @@ const Calculate = () => {
   const [polish, setPolish] = useState("EX.");
   const [fluorescence, setFluorescence] = useState("NON");
 
-  const [diamonds, setDiamonds] = useState(handleSearch);
+  const [diamonds, setDiamonds] = useState([]);
+  const [oldDiamonds, setOldDiamonds] = useState([]);
 
   function handleOpen() {
     setOpen(!open);
     setAdvanced(!advanced);
+  }
+
+  function calculateChange(oldDiamonds, newDiamonds) {
+    const oldPrice = calculateFairPrice(oldDiamonds);
+    const newPrice = calculateFairPrice(newDiamonds);
+
+    let change = 100 - ((newPrice / oldPrice) * 100);
+    change = change.toFixed(2);
+
+    if (newPrice > oldPrice) {
+      return (
+        <Typography variant="h6" fontWeight="bold" sx={{ color: "green" }}>
+          {change}%
+        </Typography>
+      );
+    } else if (newPrice === oldPrice) {
+      return (
+        <Typography variant="h6" fontWeight="bold" sx={{ color: "grey" }}>
+          0.0%
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography variant="h6" fontWeight="bold" sx={{ color: "red" }}>
+          {change}%
+        </Typography>
+      );
+    }
   }
 
   function calculateFairPrice(list) {
@@ -102,10 +143,20 @@ const Calculate = () => {
     console.log(data);
     try {
       publicApi
-        .get("/diamond/search/false" + "?", {
+        .get("/diamond/search/false/"+ 2 + "?", {
           params: data,
         })
-        .then((resp) => setDiamonds(resp.data));
+        .then((resp) => {
+          setDiamonds(resp.data)
+          console.log(resp.data)
+        });
+     
+
+      publicApi
+        .get("/diamond/search/false/" + 3 + "?", {
+          params: data,
+        })
+        .then((resp) => setOldDiamonds(resp.data));
     } catch (err) {
       console.log(err);
     }
@@ -116,27 +167,23 @@ const Calculate = () => {
       <Box>
         <Navbar></Navbar>
       </Box>
-      <Box 
-      marginTop={5}
-      marginBottom={5}
-      >
+      <Box marginTop={5} marginBottom={5}>
         <Box padding={4}>
           <Box>
             <Grid container>
               <Grid item md={6} xl={6}>
-
                 <CardHeader
                   title={
                     <Typography
                       variant="h3"
                       sx={{
                         fontSize: {
-                          xs: '1.5rem',
-                          sm: '1rem',
-                          md: '3rem',
-                          lg: '3rem',
-                          xl: '3rem',
-                        }
+                          xs: "1.5rem",
+                          sm: "1rem",
+                          md: "3rem",
+                          lg: "3rem",
+                          xl: "3rem",
+                        },
                       }}
                     >
                       Diamond Price Calculator
@@ -144,15 +191,12 @@ const Calculate = () => {
                   }
                 />
                 <CardContent>
-                  <Box >
-                    <Typography
-                      fontSize="1em"
-                      color="#989898"
-                    >
-                      Use our free diamond price calculator to estimate the current
-                      retail price for diamonds.Our price estimates are updated daily
-                      based on our massive database of online jeweler inventory
-                      sourced from top-rated jewelers.
+                  <Box>
+                    <Typography fontSize="1em" color="#989898">
+                      Use our free diamond price calculator to estimate the
+                      current retail price for diamonds.Our price estimates are
+                      updated daily based on our massive database of online
+                      jeweler inventory sourced from top-rated jewelers.
                     </Typography>
                   </Box>
                   <Box>
@@ -168,12 +212,11 @@ const Calculate = () => {
             </Grid>
           </Box>
           <Box>
-            <Box >
+            <Box>
               <Grid container spacing={2}>
                 <Grid item md={4}>
-
                   <CardHeader
-                    title='Calculator Input'
+                    title="Calculator Input"
                     titleTypographyProps={{ variant: "h4" }}
                   />
                   <CardContent>
@@ -181,47 +224,42 @@ const Calculate = () => {
                       sx={{
                         backgroundColor: "#F9FAFB",
                         borderRadius: "8px",
-                      }}>
-
-                      <CardHeader
-                        title='Diamond Origin'
-                      />
+                      }}
+                    >
+                      <CardHeader title="Diamond Origin" />
                       <CardContent>
                         <Grid container spacing={2}>
                           <Grid item md={6}>
                             <Button
                               variant={
-                                origin === "NATURAL"
-                                  ? "contained"
-                                  : "outlined"
+                                origin === "NATURAL" ? "contained" : "outlined"
                               }
                               onClick={() => setOrigin("NATURAL")}
-
                               sx={{
-                                width: '100%',
+                                width: "100%",
                                 fontSize: {
-                                  xs: '16px',
-                                  sm: '18px',
-                                  md: '20px',
-                                  lg: '12px',
-                                  xl: '20px',
+                                  xs: "16px",
+                                  sm: "18px",
+                                  md: "20px",
+                                  lg: "12px",
+                                  xl: "20px",
                                 },
                                 ...(origin === "NATURAL"
                                   ? {
-                                    color: 'white',
-                                    backgroundColor: '#69CEE2',
-                                    '&:hover': {
-                                      backgroundColor: '#69CEE2',
-                                    },
-                                  }
+                                      color: "white",
+                                      backgroundColor: "#69CEE2",
+                                      "&:hover": {
+                                        backgroundColor: "#69CEE2",
+                                      },
+                                    }
                                   : {
-                                    color: '#69CEE2',
-                                    borderColor: '#69CEE2',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                      backgroundColor: '#f0f0f0',
-                                    },
-                                  }),
+                                      color: "#69CEE2",
+                                      borderColor: "#69CEE2",
+                                      backgroundColor: "transparent",
+                                      "&:hover": {
+                                        backgroundColor: "#f0f0f0",
+                                      },
+                                    }),
                               }}
                             >
                               Natural
@@ -234,30 +272,30 @@ const Calculate = () => {
                               }
                               onClick={() => setOrigin("LAB")}
                               sx={{
-                                width: '100%',
+                                width: "100%",
                                 fontSize: {
-                                  xs: '16px',
-                                  sm: '18px',
-                                  md: '20px',
-                                  lg: '12px',
-                                  xl: '20px',
+                                  xs: "16px",
+                                  sm: "18px",
+                                  md: "20px",
+                                  lg: "12px",
+                                  xl: "20px",
                                 },
                                 ...(origin === "LAB"
                                   ? {
-                                    color: 'white',
-                                    backgroundColor: '#69CEE2',
-                                    '&:hover': {
-                                      backgroundColor: '#69CEE2',
-                                    },
-                                  }
+                                      color: "white",
+                                      backgroundColor: "#69CEE2",
+                                      "&:hover": {
+                                        backgroundColor: "#69CEE2",
+                                      },
+                                    }
                                   : {
-                                    color: '#69CEE2',
-                                    borderColor: '#69CEE2',
-                                    backgroundColor: 'transparent',
-                                    '&:hover': {
-                                      backgroundColor: '#f0f0f0',
-                                    },
-                                  }),
+                                      color: "#69CEE2",
+                                      borderColor: "#69CEE2",
+                                      backgroundColor: "transparent",
+                                      "&:hover": {
+                                        backgroundColor: "#f0f0f0",
+                                      },
+                                    }),
                               }}
                             >
                               Lab
@@ -265,44 +303,39 @@ const Calculate = () => {
                           </Grid>
                         </Grid>
                       </CardContent>
-                      <CardHeader
-                        title='Shape'
-                      />
+                      <CardHeader title="Shape" />
                       <CardContent>
                         <Grid container item lg={12} spacing={2}>
                           {shapeMap.map((c) => (
                             <Grid item lg={2.4} key={c}>
                               <Button
-                                variant={
-                                  shape === c ? "contained" : "outlined"
-                                }
+                                variant={shape === c ? "contained" : "outlined"}
                                 onClick={() => setShape(c)}
-
                                 sx={{
-                                  width: '100%',
+                                  width: "100%",
                                   fontSize: {
-                                    xs: '16px',
-                                    sm: '18px',
-                                    md: '20px',
-                                    lg: '12px',
-                                    xl: '15px',
+                                    xs: "16px",
+                                    sm: "18px",
+                                    md: "20px",
+                                    lg: "12px",
+                                    xl: "15px",
                                   },
                                   ...(shape === c
                                     ? {
-                                      color: 'white',
-                                      backgroundColor: '#69CEE2',
-                                      '&:hover': {
-                                        backgroundColor: '#69CEE2',
-                                      },
-                                    }
+                                        color: "white",
+                                        backgroundColor: "#69CEE2",
+                                        "&:hover": {
+                                          backgroundColor: "#69CEE2",
+                                        },
+                                      }
                                     : {
-                                      color: '#69CEE2',
-                                      borderColor: '#69CEE2',
-                                      backgroundColor: 'transparent',
-                                      '&:hover': {
-                                        backgroundColor: '#f0f0f0',
-                                      },
-                                    }),
+                                        color: "#69CEE2",
+                                        borderColor: "#69CEE2",
+                                        backgroundColor: "transparent",
+                                        "&:hover": {
+                                          backgroundColor: "#f0f0f0",
+                                        },
+                                      }),
                                 }}
                               >
                                 {c}
@@ -311,9 +344,7 @@ const Calculate = () => {
                           ))}
                         </Grid>
                       </CardContent>
-                      <CardHeader
-                        title='Carat'
-                      />
+                      <CardHeader title="Carat" />
                       <CardContent>
                         <Box>
                           <Box display="flex" justifyContent="center">
@@ -339,44 +370,39 @@ const Calculate = () => {
                           ></Slider>
                         </Box>
                       </CardContent>
-                      <CardHeader
-                        title='Color'
-                      />
+                      <CardHeader title="Color" />
                       <CardContent>
                         <Grid container item lg={12} spacing={2}>
                           {colorMap.map((c) => (
                             <Grid item lg={3} key={c}>
                               <Button
-                                variant={
-                                  color === c ? "contained" : "outlined"
-                                }
+                                variant={color === c ? "contained" : "outlined"}
                                 onClick={() => setColor(c)}
-
                                 sx={{
-                                  width: '100%',
+                                  width: "100%",
                                   fontSize: {
-                                    xs: '16px',
-                                    sm: '18px',
-                                    md: '20px',
-                                    lg: '12px',
-                                    xl: '15px',
+                                    xs: "16px",
+                                    sm: "18px",
+                                    md: "20px",
+                                    lg: "12px",
+                                    xl: "15px",
                                   },
                                   ...(color === c
                                     ? {
-                                      color: 'white',
-                                      backgroundColor: '#69CEE2',
-                                      '&:hover': {
-                                        backgroundColor: '#69CEE2',
-                                      },
-                                    }
+                                        color: "white",
+                                        backgroundColor: "#69CEE2",
+                                        "&:hover": {
+                                          backgroundColor: "#69CEE2",
+                                        },
+                                      }
                                     : {
-                                      color: '#69CEE2',
-                                      borderColor: '#69CEE2',
-                                      backgroundColor: 'transparent',
-                                      '&:hover': {
-                                        backgroundColor: '#f0f0f0',
-                                      },
-                                    }),
+                                        color: "#69CEE2",
+                                        borderColor: "#69CEE2",
+                                        backgroundColor: "transparent",
+                                        "&:hover": {
+                                          backgroundColor: "#f0f0f0",
+                                        },
+                                      }),
                                 }}
                               >
                                 {c}
@@ -385,9 +411,7 @@ const Calculate = () => {
                           ))}
                         </Grid>
                       </CardContent>
-                      <CardHeader
-                        title='Clarity'
-                      />
+                      <CardHeader title="Clarity" />
 
                       <CardContent>
                         <Grid container spacing={2}>
@@ -398,32 +422,31 @@ const Calculate = () => {
                                   clarity === c ? "contained" : "outlined"
                                 }
                                 onClick={() => setClarity(c)}
-
                                 sx={{
-                                  width: '100%',
+                                  width: "100%",
                                   fontSize: {
-                                    xs: '16px',
-                                    sm: '18px',
-                                    md: '20px',
-                                    lg: '12px',
-                                    xl: '15px',
+                                    xs: "16px",
+                                    sm: "18px",
+                                    md: "20px",
+                                    lg: "12px",
+                                    xl: "15px",
                                   },
                                   ...(clarity === c
                                     ? {
-                                      color: 'white',
-                                      backgroundColor: '#69CEE2',
-                                      '&:hover': {
-                                        backgroundColor: '#69CEE2',
-                                      },
-                                    }
+                                        color: "white",
+                                        backgroundColor: "#69CEE2",
+                                        "&:hover": {
+                                          backgroundColor: "#69CEE2",
+                                        },
+                                      }
                                     : {
-                                      color: '#69CEE2',
-                                      borderColor: '#69CEE2',
-                                      backgroundColor: 'transparent',
-                                      '&:hover': {
-                                        backgroundColor: '#f0f0f0',
-                                      },
-                                    }),
+                                        color: "#69CEE2",
+                                        borderColor: "#69CEE2",
+                                        backgroundColor: "transparent",
+                                        "&:hover": {
+                                          backgroundColor: "#f0f0f0",
+                                        },
+                                      }),
                                 }}
                               >
                                 {c}
@@ -438,19 +461,18 @@ const Calculate = () => {
                             <Box display="flex" justifyContent="center">
                               <Button
                                 variant="contained"
-
                                 onClick={handleSearch}
                                 sx={{
                                   width: "30%",
                                   fontSize: {
-                                    xs: '16px',
-                                    sm: '18px',
-                                    md: '20px',
-                                    lg: '12px',
-                                    xl: '15px',
+                                    xs: "16px",
+                                    sm: "18px",
+                                    md: "20px",
+                                    lg: "12px",
+                                    xl: "15px",
                                   },
-                                  color: 'white',
-                                  backgroundColor: '#69CEE2',
+                                  color: "white",
+                                  backgroundColor: "#69CEE2",
                                 }}
                               >
                                 Submit
@@ -459,13 +481,10 @@ const Calculate = () => {
                           </CardContent>
 
                           <Box
-
                             display="flex"
                             sx={{ justifyContent: "space-between" }}
                           >
-                            <CardHeader
-                              title='More Input'
-                            />
+                            <CardHeader title="More Input" />
                             <CardHeader
                               action={
                                 <IconButton onClick={handleOpen}>
@@ -476,11 +495,8 @@ const Calculate = () => {
                           </Box>
                         </Box>
                       ) : (
-
-                        <Box >
-                          <CardHeader
-                            title='Cut'
-                          />
+                        <Box>
+                          <CardHeader title="Cut" />
                           <CardContent>
                             <Grid container spacing={1}>
                               {cutMap.map((c) => (
@@ -490,32 +506,31 @@ const Calculate = () => {
                                       cut === c ? "contained" : "outlined"
                                     }
                                     onClick={() => setCut(c)}
-
                                     sx={{
-                                      width: '100%',
+                                      width: "100%",
                                       fontSize: {
-                                        xs: '16px',
-                                        sm: '18px',
-                                        md: '20px',
-                                        lg: '12px',
-                                        xl: '15px',
+                                        xs: "16px",
+                                        sm: "18px",
+                                        md: "20px",
+                                        lg: "12px",
+                                        xl: "15px",
                                       },
                                       ...(cut === c
                                         ? {
-                                          color: 'white',
-                                          backgroundColor: '#69CEE2',
-                                          '&:hover': {
-                                            backgroundColor: '#69CEE2',
-                                          },
-                                        }
+                                            color: "white",
+                                            backgroundColor: "#69CEE2",
+                                            "&:hover": {
+                                              backgroundColor: "#69CEE2",
+                                            },
+                                          }
                                         : {
-                                          color: '#69CEE2',
-                                          borderColor: '#69CEE2',
-                                          backgroundColor: 'transparent',
-                                          '&:hover': {
-                                            backgroundColor: '#f0f0f0',
-                                          },
-                                        }),
+                                            color: "#69CEE2",
+                                            borderColor: "#69CEE2",
+                                            backgroundColor: "transparent",
+                                            "&:hover": {
+                                              backgroundColor: "#f0f0f0",
+                                            },
+                                          }),
                                     }}
                                   >
                                     {c}
@@ -524,46 +539,41 @@ const Calculate = () => {
                               ))}
                             </Grid>
                           </CardContent>
-                          <CardHeader
-                            title='Symmetry'
-                          />
+                          <CardHeader title="Symmetry" />
                           <CardContent>
                             <Grid container spacing={1}>
                               {symmetryMap.map((s) => (
                                 <Grid item lg={3} key={s}>
                                   <Button
                                     variant={
-                                      symmetry === s
-                                        ? "contained"
-                                        : "outlined"
+                                      symmetry === s ? "contained" : "outlined"
                                     }
                                     onClick={() => setSymmetry(s)}
-
                                     sx={{
-                                      width: '100%',
+                                      width: "100%",
                                       fontSize: {
-                                        xs: '16px',
-                                        sm: '18px',
-                                        md: '20px',
-                                        lg: '12px',
-                                        xl: '15px',
+                                        xs: "16px",
+                                        sm: "18px",
+                                        md: "20px",
+                                        lg: "12px",
+                                        xl: "15px",
                                       },
                                       ...(symmetry === s
                                         ? {
-                                          color: 'white',
-                                          backgroundColor: '#69CEE2',
-                                          '&:hover': {
-                                            backgroundColor: '#69CEE2',
-                                          },
-                                        }
+                                            color: "white",
+                                            backgroundColor: "#69CEE2",
+                                            "&:hover": {
+                                              backgroundColor: "#69CEE2",
+                                            },
+                                          }
                                         : {
-                                          color: '#69CEE2',
-                                          borderColor: '#69CEE2',
-                                          backgroundColor: 'transparent',
-                                          '&:hover': {
-                                            backgroundColor: '#f0f0f0',
-                                          },
-                                        }),
+                                            color: "#69CEE2",
+                                            borderColor: "#69CEE2",
+                                            backgroundColor: "transparent",
+                                            "&:hover": {
+                                              backgroundColor: "#f0f0f0",
+                                            },
+                                          }),
                                     }}
                                   >
                                     {s}
@@ -572,9 +582,7 @@ const Calculate = () => {
                               ))}
                             </Grid>
                           </CardContent>
-                          <CardHeader
-                            title='Polish'
-                          />
+                          <CardHeader title="Polish" />
                           <CardContent>
                             <Grid container spacing={1}>
                               {polishMap.map((p) => (
@@ -584,32 +592,31 @@ const Calculate = () => {
                                       polish === p ? "contained" : "outlined"
                                     }
                                     onClick={() => setPolish(p)}
-
                                     sx={{
-                                      width: '100%',
+                                      width: "100%",
                                       fontSize: {
-                                        xs: '16px',
-                                        sm: '18px',
-                                        md: '20px',
-                                        lg: '12px',
-                                        xl: '15px',
+                                        xs: "16px",
+                                        sm: "18px",
+                                        md: "20px",
+                                        lg: "12px",
+                                        xl: "15px",
                                       },
                                       ...(polish === p
                                         ? {
-                                          color: 'white',
-                                          backgroundColor: '#69CEE2',
-                                          '&:hover': {
-                                            backgroundColor: '#69CEE2',
-                                          },
-                                        }
+                                            color: "white",
+                                            backgroundColor: "#69CEE2",
+                                            "&:hover": {
+                                              backgroundColor: "#69CEE2",
+                                            },
+                                          }
                                         : {
-                                          color: '#69CEE2',
-                                          borderColor: '#69CEE2',
-                                          backgroundColor: 'transparent',
-                                          '&:hover': {
-                                            backgroundColor: '#f0f0f0',
-                                          },
-                                        }),
+                                            color: "#69CEE2",
+                                            borderColor: "#69CEE2",
+                                            backgroundColor: "transparent",
+                                            "&:hover": {
+                                              backgroundColor: "#f0f0f0",
+                                            },
+                                          }),
                                     }}
                                   >
                                     {p}
@@ -618,13 +625,11 @@ const Calculate = () => {
                               ))}
                             </Grid>
                           </CardContent>
-                          <CardHeader
-                            title='Fluorescence'
-                          />
+                          <CardHeader title="Fluorescence" />
                           <CardContent>
-                            <Grid container spacing={1}>                             
-                                {fluorescenceMap.map((f) => (
-                                  <Grid item lg={2.4} key={f}>
+                            <Grid container spacing={1}>
+                              {fluorescenceMap.map((f) => (
+                                <Grid item lg={2.4} key={f}>
                                   <Button
                                     variant={
                                       fluorescence === f
@@ -634,35 +639,35 @@ const Calculate = () => {
                                     sx={{
                                       width: "100%",
                                       fontSize: {
-                                        xs: '16px',
-                                        sm: '18px',
-                                        md: '20px',
-                                        lg: '12px',
-                                        xl: '15px',
+                                        xs: "16px",
+                                        sm: "18px",
+                                        md: "20px",
+                                        lg: "12px",
+                                        xl: "15px",
                                       },
                                       ...(fluorescence === f
                                         ? {
-                                          color: 'white',
-                                          backgroundColor: '#69CEE2',
-                                          '&:hover': {
-                                            backgroundColor: '#69CEE2',
-                                          },
-                                        }
+                                            color: "white",
+                                            backgroundColor: "#69CEE2",
+                                            "&:hover": {
+                                              backgroundColor: "#69CEE2",
+                                            },
+                                          }
                                         : {
-                                          color: '#69CEE2',
-                                          borderColor: '#69CEE2',
-                                          backgroundColor: 'transparent',
-                                          '&:hover': {
-                                            backgroundColor: '#f0f0f0',
-                                          },
-                                        }),
+                                            color: "#69CEE2",
+                                            borderColor: "#69CEE2",
+                                            backgroundColor: "transparent",
+                                            "&:hover": {
+                                              backgroundColor: "#f0f0f0",
+                                            },
+                                          }),
                                     }}
                                     onClick={() => setFluorescence(f)}
                                   >
                                     {f}
                                   </Button>
-                                  </Grid>
-                                ))}
+                                </Grid>
+                              ))}
                             </Grid>
                           </CardContent>
 
@@ -670,19 +675,18 @@ const Calculate = () => {
                             <Box display="flex" justifyContent="center">
                               <Button
                                 variant="contained"
-
                                 onClick={handleSearch}
                                 sx={{
                                   width: "30%",
                                   fontSize: {
-                                    xs: '16px',
-                                    sm: '18px',
-                                    md: '20px',
-                                    lg: '12px',
-                                    xl: '15px',
+                                    xs: "16px",
+                                    sm: "18px",
+                                    md: "20px",
+                                    lg: "12px",
+                                    xl: "15px",
                                   },
-                                  color: 'white',
-                                  backgroundColor: '#69CEE2',
+                                  color: "white",
+                                  backgroundColor: "#69CEE2",
                                 }}
                               >
                                 Submit
@@ -693,9 +697,7 @@ const Calculate = () => {
                             display="flex"
                             sx={{ justifyContent: "space-between" }}
                           >
-                            <CardHeader
-                              title='Fewer Input'
-                            />
+                            <CardHeader title="Fewer Input" />
                             <CardHeader
                               action={
                                 <IconButton onClick={handleOpen}>
@@ -708,13 +710,10 @@ const Calculate = () => {
                       )}
                     </Card>
                   </CardContent>
-
-
                 </Grid>
                 <Grid item lg={8}>
-
                   <CardHeader
-                    title='Calculator Output'
+                    title="Calculator Output"
                     titleTypographyProps={{ variant: "h4" }}
                   />
                   <CardContent>
@@ -731,8 +730,11 @@ const Calculate = () => {
                         flexDirection="column"
                       >
                         <CardHeader
-                          title='Fair Price Estimate'
-                          titleTypographyProps={{ variant: "h5", color: "#ACACAC" }}
+                          title="Fair Price Estimate"
+                          titleTypographyProps={{
+                            variant: "h5",
+                            color: "#ACACAC",
+                          }}
                         />
                         <CardContent
                           sx={{
@@ -769,18 +771,15 @@ const Calculate = () => {
                           <Grid container>
                             <Grid item lg={4} xl={4}>
                               <Box
-
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
-                                  
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
                                   backgroundColor: "#ACACAC33",
                                   padding: 2,
-
                                 }}
                               >
                                 <Typography>Estimate Range</Typography>
@@ -793,12 +792,10 @@ const Calculate = () => {
                             </Grid>
                             <Grid item lg={4} xl={4}>
                               <Box
-
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
-                                  
                                   flexDirection: "column",
                                   borderRight: 3,
                                   borderColor: "#e6e3e3",
@@ -808,20 +805,16 @@ const Calculate = () => {
                               >
                                 <Typography>Last 30 Days Change</Typography>
                                 <Box>
-                                  <Typography variant="h6" fontWeight="bold">
-                                    --
-                                  </Typography>
+                                  {calculateChange(oldDiamonds, diamonds)}
                                 </Box>
                               </Box>
                             </Grid>
                             <Grid item lg={4} xl={4}>
                               <Box
-
                                 display="flex"
                                 justifyContent="center"
                                 alignItems="center"
                                 sx={{
-                                  
                                   flexDirection: "column",
                                   backgroundColor: "#ACACAC33",
                                   padding: 2,
@@ -849,7 +842,6 @@ const Calculate = () => {
                         borderRadius: "8px",
                       }}
                     >
-
                       <List disablePadding>
                         {diamonds?.map((d) => (
                           <Box borderBottom={1} borderColor="#c7ced9">
@@ -857,47 +849,118 @@ const Calculate = () => {
                               <ListItemButton href={d.source} target="_blank">
                                 <Grid
                                   container
-                                  direction='row'
+                                  direction="row"
                                   spacing={2}
-                                  sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                                  sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                  }}
                                 >
-                                  <Grid item
+                                  <Grid
+                                    item
                                     lg={2}
                                     container
                                     direction="column"
                                     justifyContent="center"
                                     alignItems="center"
                                   >
-                                    <img src={d.image} alt="" width="110px" height="110px" />
+                                    <img
+                                      src={d.image}
+                                      alt=""
+                                      width="110px"
+                                      height="110px"
+                                    />
                                   </Grid>
                                   <Grid item lg={2}>
-                                    <ListItemText primary={d.shape} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} ></ListItemText>
-                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                    <ListItemText
+                                      primary={d.shape}
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    ></ListItemText>
+                                    <Typography
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        color: "#989898",
+                                      }}
+                                    >
                                       Shape
                                     </Typography>
-
                                   </Grid>
                                   <Grid item lg={2}>
-                                    <ListItemText primary={d.caratWeight} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
-                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                    <ListItemText
+                                      primary={d.caratWeight}
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    ></ListItemText>
+                                    <Typography
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        color: "#989898",
+                                      }}
+                                    >
                                       Carat
                                     </Typography>
                                   </Grid>
                                   <Grid item lg={2}>
-                                    <ListItemText primary={d.color} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
-                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                    <ListItemText
+                                      primary={d.color}
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    ></ListItemText>
+                                    <Typography
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        color: "#989898",
+                                      }}
+                                    >
                                       Color
                                     </Typography>
                                   </Grid>
                                   <Grid item lg={2}>
-                                    <ListItemText primary={d.clarity} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
-                                    <Typography sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#989898' }}>
+                                    <ListItemText
+                                      primary={d.clarity}
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    ></ListItemText>
+                                    <Typography
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        color: "#989898",
+                                      }}
+                                    >
                                       Clarity
                                     </Typography>
                                   </Grid>
                                   <Grid item lg={2}>
-                                    <ListItemText primary={"$" + d.price} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}></ListItemText>
-
+                                    <ListItemText
+                                      primary={"$" + d.price}
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                      }}
+                                    ></ListItemText>
                                   </Grid>
                                 </Grid>
                               </ListItemButton>
