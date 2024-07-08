@@ -59,7 +59,7 @@ const Vault = () => {
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Appointments", "Settings", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Sign Out"]}
+                mylist={["Vault", "Settings", "Calculate", "Check Diamonds", "Diamonds Appraisal", "Sign Out"]}
                 state="Settings"
                 handleClick={vault_navigator}
             />

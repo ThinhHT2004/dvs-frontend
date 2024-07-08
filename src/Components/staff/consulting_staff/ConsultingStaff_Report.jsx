@@ -16,15 +16,14 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogTitle,
+  CardHeader,
   Chip,
-  ThemeProvider,
   List,
   ListItem,
   ListItemText,
-  CardHeader,
+
 } from "@mui/material";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -34,6 +33,10 @@ import axios from "axios";
 import logoWeb from "../../../assets/logo_v4.png";
 import moment from "moment";
 import protectedApi from "../../../APIs/ProtectedApi";
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import DiasecurStamp from "../../../assets/DiasecurStamp.png";
+import diasecurLogo from "../../../assets/diasecurLogo.png";
 const drawerWidth = 240;
 
 const ConsultingStaff_Report = () => {
@@ -42,12 +45,31 @@ const ConsultingStaff_Report = () => {
   const [selectedDiamond, setSelectedDiamond] = useState(null);
   const [selectedRequest, setSelectedRequest] = useState();
   const [requests, setRequests] = useState([]);
+  const pdfRef = useRef();
 
   useEffect(() => {
     getRequests();
   }, []);
 
-  console.log(selectedRequest);
+  const generatePdf = () => {
+    const input = pdfRef.current;
+    html2canvas(input, { useCORS: true, logging: true, allowTaint: true }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+      // Create a Blob from the PDF
+      const pdfBlob = pdf.output('blob');
+
+      // Create a URL for the Blob and open it in a new window
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl);
+    }).catch(error => {
+      console.error('Error generating PDF:', error);
+    });
+  };
 
   const renderLink = (request) => {
     if (request.status === "PROCESSING") {
@@ -59,7 +81,7 @@ const ConsultingStaff_Report = () => {
             underline="none"
             sx={{ color: "grey" }}
           >
-            Create Appoinment
+            Create Appointment
           </Link>
         </Button>
       );
@@ -71,7 +93,7 @@ const ConsultingStaff_Report = () => {
             onClick={() => handleAppointmentClick(request)}
             underline="none"
           >
-            Create Appoinment
+            Create Appointment
           </Link>
         </Button>
       );
@@ -121,10 +143,11 @@ const ConsultingStaff_Report = () => {
 
   const getRequests = () => {
     protectedApi
-      .get(
-        "/request/valuation-request/status/PROCESSING/COMPLETED"
-      )
-      .then((resp) => setRequests(resp.data))
+      .get("/request/valuation-request/status/PROCESSING/COMPLETED")
+      .then((resp) => {
+        setRequests(resp.data)
+        console.log(resp.data)
+      })
       .catch((err) => console.log(err));
   };
 
@@ -152,189 +175,228 @@ const ConsultingStaff_Report = () => {
       [field]: value,
     }));
   };
+
   const renderStatus = (status) => {
     switch (status) {
       case "PROCESSING":
         return "warning";
-        break;
       case "COMPLETED":
         return "info";
-        break;
     }
   };
+
   const renderDiamondReport = (diamond) => (
     <Dialog
       open={reportOpen}
       onClose={() => handleClose()}
-      maxWidth="md"
+      maxWidth='lg'
       fullWidth={true}
     >
       <CardHeader
-        title={`${formatSampleId(diamond.id)}  Report`}
-                  titleTypographyProps={{
-                    variant: 'h5',
-                    color: 'white',
-                  }}
-                  sx={{ backgroundColor: '#30D5C8' }}
-        />
-      <DialogContent sx={{ padding: 1}}>
-        
-          <Box  height="100%">
-            <Box height="6%">
-              <img src={logoWeb} style={{ width: "12%", height: "auto" }} />
-            </Box>
-            <Box height="95%">
-              <Typography
-                sx={{
-                  fontSize: "1em",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
+        title={`DIAMOND REPORT - ${formatSampleId(diamond.id)}`}
+        titleTypographyProps={{
+          variant: "h5",
+          color: "white",
+        }}
+        sx={{ backgroundColor: "#30D5C8" }}
+        action={
+          <Button onClick={generatePdf} sx={{color: 'white'}}>
+            View PDF
+          </Button>
+        }
+      />
+      {console.log(diamond.valuationReport)}
+      <DialogContent>
+        <Box height="100%" width={'auto'} padding={5} ref={pdfRef}>
+          <Box>
+            <Grid container>
+              <Grid item xl={3} lg={3}
+                container
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
               >
-                DIAMOND APPRAISAL
+                <img src={diasecurLogo} style={{ width: "180px", height: "auto", marginTop: -20, marginBottom: -20 }} />
+              </Grid>
+              <Grid item xl={9} lg={9} borderBottom={1}>
+                <img src={logoWeb} style={{ width: "auto", height: "200px", marginTop: -70, marginBottom: -70 }} />
+                <Typography variant="h5">
+                  Diamond Appraisal
+                </Typography>
+                <Typography variant="h7">
+                  Website: https://diasecur.systems - Email: diasecurappraiser@gmail.com - Phone: (+84)84913-5986
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box>
+            <Typography variant="h4" align="center" fontWeight={'bold'} padding={1}>
+              DIAMOND REPORT
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+              padding={1}
+            >
+              <Typography>
+                <span style={{ fontWeight: 'bold' }}>Date:</span>{" "}
+                {moment(diamond.valuationReport.createdDate).format(
+                  "YYYY-MM-DD"
+                )}{" "}
               </Typography>
-              <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                <Typography sx={{ fontWeight: "bold", fontSize: "0.8em" }}>
-                  Date:{" "}
-                  {moment(diamond.valuationReport.createdDate).format(
-                    "YYYY-MM-DD"
-                  )}{" "}
-                </Typography>
-                <Typography
-                  style={{
-                    fontWeight: "bold",
-                    marginLeft: "60%",
-                    fontSize: "0.8em",
-                  }}
-                >
-                  DAS Report: {formatSampleId(diamond.id)}
-                </Typography>
-              </div>
-              <div style={{ marginTop: "15px", marginBottom: "3%" }}>
-                <Typography fontSize="0.9em">Jack Gohyakuman</Typography>
-                <Typography fontSize="0.9em">1664 Bulanku Street</Typography>
-                <Typography fontSize="0.9em">
-                  Santa Barbara, CA 92475
-                </Typography>
-              </div>
-              <div sx={{ marginTop: "15%" }}>
-                <h4>DIAMOND</h4>
-                <Typography fontSize="0.9em">
-                  A round brilliant cut diamond is bezel set in a vintage style.
-                  A total of thirty single cut diamonds are bead set around the
-                  center stone. A total of forty-two rubies accent the design.
-                  The ring is cast, stamped 18k, and has a total gross weight of
-                  5.80 grams.
-                </Typography>
-              </div>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Grid container>
-                  <Grid item md={7}>
+              <Typography>
+                <span style={{ fontWeight: 'bold' }}>DAS Report:</span> {diamond.valuationReport.labId}
+              </Typography>
+            </Box>
+            <Box padding={2}>
+              <Typography variant="h5" fontWeight={'bold'}>Introduction</Typography>
+              <Typography>
+                {diamond.valuationReport.note}
+              </Typography>
+            </Box>
+            <Box padding={2}>
+              <Grid container>
+                <Grid item xl={7} lg={7}>
+                  <Box>
+                    <Box >
+                      <Typography variant="h5" fontWeight={'bold'}>Diamond Details</Typography>
+                      <Typography variant="h6" padding={1}>
+                        Shape
+                        .........................................{" "}
+                        {diamond.valuationReport.shape}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Carat Weight
+                        .........................................{" "}
+                        {diamond.valuationReport.caratWeight}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Measurement
+                        ........................................{" "}
+                        {diamond.valuationReport.measurement}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Origin
+                        ..............................................{" "}
+                        {diamond.valuationReport.origin}
+                      </Typography>
+                    </Box>
+                    <Box paddingTop={1}>
+                      <Typography variant="h5" fontWeight={'bold'}>Grading Details</Typography>
+                      <Typography variant="h6" padding={1}>
+                        Color Grade
+                        ...........................................{" "}
+                        {diamond.valuationReport.color}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Clarity Grade
+                        .........................................{" "}
+                        {diamond.valuationReport.clarity}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Cut Grade
+                        ........................................{" "}
+                        {diamond.valuationReport.cut}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Polish
+                        ........................................{" "}
+                        {diamond.valuationReport.polish}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Symmetry
+                        ........................................{" "}
+                        {diamond.valuationReport.symmetry}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Culet
+                        ..............................................{" "}
+                        {diamond.valuationReport.culet}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Girdle
+                        ............................................{" "}
+                        {diamond.valuationReport.girdle}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Table
+                        ..............................................{" "}
+                        {diamond.valuationReport.table}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Depth
+                        ..............................................{" "}
+                        {diamond.valuationReport.depth}
+                      </Typography>
+                      <Typography variant="h6" padding={1}>
+                        Fluorescence
+                        .....................................{" "}
+                        {diamond.valuationReport.fluorescence}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                </Grid>
+                <Grid item xl={5} lg={5}>
+                  <Box>
                     <Box>
-                      <div style={{ marginTop: "15px" }}>
-                        <h4>Diamond Attributes</h4>
-                        <Typography fontSize="0.9em">
-                          Cutting Style
-                          ..............................................................{" "}
-                          {diamond.valuationReport.shape}
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Measurement
-                          ............................................................{" "}
-                          {diamond.valuationReport.measurement}
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Carat Weight
-                          .............................................................{" "}
-                          {diamond.valuationReport.caratWeight} carat
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Polish
-                          ........................................................................{" "}
-                          {diamond.valuationReport.polish}
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Clarity Grade
-                          .............................................................{" "}
-                          {diamond.valuationReport.clarity}
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Color Grade
-                          ...............................................................{" "}
-                          {diamond.valuationReport.color}
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Symmetry
-                          ..................................................................{" "}
-                          {diamond.valuationReport.symmetry}
-                        </Typography>
-                        <Typography fontSize="0.9em">
-                          Cut Grade
-                          ..................................................................{" "}
-                          {diamond.valuationReport.cut}
-                        </Typography>
-                        <Typography></Typography>
-                      </div>
+                      <img
+                        src={diamond.valuationReport.proportion}
+                        style={{ width: "100%" }}
+                      ></img>
                     </Box>
+                    <Box>
+                      <img
+                        src={diamond.valuationReport.characteristic}
+                        style={{ width: "100%" }}
+                      ></img>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box>
+              <Typography variant="h5" fontWeight={'bold'} padding={1}>
+                Estimated Retail Replacement Value
+                ......................................................... $ {diamond.valuationReport.finalPrice}
+              </Typography>
+            </Box>
+            <Box>
+              <Box>
+                <Grid container>
+                  <Grid item xl={6} lg={6}
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+
                   </Grid>
-                  <Grid item md={5}>
-                    <Box display="flex" justifyContent="center" alignItems="center" sx={{ flexDirection: "column" }}>
-                      <Box>
-                        <img
-                          src={diamond.valuationReport.proportion}
-                          style={{ width: "100%" }}
-                        ></img>
-                      </Box>
-                      <Box>
-                        <img
-                          src={diamond.valuationReport.characteristic}
-                          style={{ width: "100%" }}
-                        ></img>
-                      </Box>
-                    </Box>
+                  <Grid item xl={6} lg={6}
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <img src={DiasecurStamp} style={{ width: "150px", margin: 10}} />
+                    <Typography padding={1}>
+                      2024-All Rights Reserved
+                    </Typography>
+                    <Typography>
+                      DiAsecur Jewelry Appraisal
+                    </Typography>
                   </Grid>
                 </Grid>
               </Box>
-              <Typography sx={{ fontSize: "0.9em" }}>
-                *Gemological findings may vary if the same gemstones are
-                evaluated un-mounted
-              </Typography>
-              <div style={{ display: "flex", marginTop: "15px" }}>
-                <Typography
-                  sx={{
-                    fontSize: "1em",
-                    fontWeight: "bold",
-                    textDecoration: "underline",
-                  }}
-                >
-                  Estimated Retail Replacement Value
-                </Typography>
-                <Typography sx={{ fontSize: "1em", fontWeight: "bold" }}>
-                  ......................................................... $
-                  {diamond.valuationReport.finalPrice}
-                </Typography>
-              </div>
-              <Box sx={{ justifyContent: "left", mt: "15px", mb: "15px" }}>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Typography sx={{ paddingLeft: "10%", fontSize: "0.9em" }}>
-                    02018-All Rights Reserved
-                  </Typography>
-                  <Typography sx={{ paddingLeft: "6%" }}>
-                    GA-GemSecure Jewelry Appraisale
-                  </Typography>
-                  <Typography sx={{ paddingLeft: "2%" }}>
-                    This appraisal is only valid including all 4 pages
-                  </Typography>
-                </div>
-              </Box>
             </Box>
           </Box>
-        
+        </Box>
       </DialogContent>
     </Dialog>
   );
-
-
 
   return (
     <Box
@@ -371,30 +433,51 @@ const ConsultingStaff_Report = () => {
       >
         <Grid container spacing={2}>
           <Grid item xl={12} lg={12}>
-                <TableContainer sx={{ borderRadius: 3}} component={Paper}>
-                <CardHeader
-                  title='MANAGE REPORTS'
-                  titleTypographyProps={{
-                    variant: 'h5',
-                    color: 'white',
-                  }}
-                  sx={{ backgroundColor: '#30D5C8' }}
-                />
-                <Table>
-                  <TableBody>
-                    <TableRow sx={{ backgroundColor: "white" }}>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }}>Customer Name</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Status</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Receiving Date</TableCell>
-                      <TableCell sx={{ width: 100 }}></TableCell>
-                    </TableRow>
-                
+            <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
+              <CardHeader
+                title="MANAGE REPORTS"
+                titleTypographyProps={{
+                  variant: "h5",
+                  color: "white",
+                }}
+                sx={{ backgroundColor: "#30D5C8" }}
+              />
+              <Table>
+                <TableBody>
+                  <TableRow sx={{ backgroundColor: "white" }}>
+                    <TableCell
+                      sx={{ fontSize: 20, width: 150, color: "#69CEE2" }}
+                      align="center"
+                    >
+                      Request ID
+                    </TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 200, color: "#69CEE2" }}>
+                      Customer Name
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontSize: 20, width: 200, color: "#69CEE2" }}
+                      align="center"
+                    >
+                      Status
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontSize: 20, width: 200, color: "#69CEE2" }}
+                      align="center"
+                    >
+                      Receiving Date
+                    </TableCell>
+                    <TableCell sx={{ width: 100 }}></TableCell>
+                  </TableRow>
+
                   {requests.map((request) => (
                     <Fragment key={request.id}>
                       <TableRow>
-                        <TableCell align="center">{formatRequestId(request.id)}</TableCell>
-                        <TableCell>{request.customer.last_name} {request.customer.first_name}</TableCell>
+                        <TableCell align="center">
+                          {formatRequestId(request.id)}
+                        </TableCell>
+                        <TableCell>
+                          {request.customer.last_name} {request.customer.first_name}
+                        </TableCell>
                         <TableCell align="center">
                           <Chip
                             label={request.status}
@@ -402,8 +485,13 @@ const ConsultingStaff_Report = () => {
                           ></Chip>
                         </TableCell>
                         <TableCell align="center">
-                          <Chip color="primary" size="small" label={moment(request.receivingDate).format("yyyy-MM-DD hh:mm A")}>
-                          </Chip>
+                          <Chip
+                            color="primary"
+                            size="small"
+                            label={moment(request.receivingDate).format(
+                              "yyyy-MM-DD hh:mm A"
+                            )}
+                          ></Chip>
                         </TableCell>
                         <TableCell>
                           <IconButton
@@ -421,42 +509,48 @@ const ConsultingStaff_Report = () => {
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell
-                          style={{ padding: 0 }}
-                          colSpan={6}
-                        >
-                        <Collapse in={open[request.id]} sx={{ backgroundColor: "#F0F0F0" }}>
-                          <List disablePadding >
-                            <Box>
-                              <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
-                                <Grid container>
-                                  <Grid item lg={6} xl={6}>
-                                    <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
-                                  </Grid>
-                                  <Grid item lg={6} xl={6}>
-                                    
-                                  </Grid>
-                                </Grid>
-                                <ListItemText />
-                              </ListItem>
-                              {request.valuationRequestDetailList.map((sample) => (
-                                <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                        <TableCell style={{ padding: 0 }} colSpan={6}>
+                          <Collapse
+                            in={open[request.id]}
+                            sx={{ backgroundColor: "#F0F0F0" }}
+                          >
+                            <List disablePadding>
+                              <Box>
+                                <ListItem
+                                  sx={{ borderBottom: 1, borderColor: "#c7ced9" }}
+                                >
                                   <Grid container>
                                     <Grid item lg={6} xl={6}>
-                                      <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                                      <Typography variant="h6" sx={{ textAlign: "center" }}>
+                                        Sample ID
+                                      </Typography>
                                     </Grid>
-                                    
-                                    <Grid item lg={6} xl={6} sx={{ textAlign: 'center' }} >
-                                    {renderReportLink(sample)} 
-                                    </Grid>
+                                    <Grid item lg={6} xl={6}></Grid>
                                   </Grid>
+                                  <ListItemText />
                                 </ListItem>
+                                {request.valuationRequestDetailList.map((sample) => (
+                                  <ListItem
+                                    key={sample.id}
+                                    sx={{ borderBottom: 1, borderColor: "#c7ced9" }}
+                                  >
+                                    <Grid container>
+                                      <Grid item lg={6} xl={6}>
+                                        <ListItemText
+                                          primary={formatSampleId(sample.id)}
+                                          sx={{ textAlign: "center" }}
+                                        />
+                                      </Grid>
 
-                              ))}
-
-                            </Box>
-                          </List>
-                        </Collapse>
+                                      <Grid item lg={6} xl={6} sx={{ textAlign: "center" }}>
+                                        {renderReportLink(sample)}
+                                      </Grid>
+                                    </Grid>
+                                  </ListItem>
+                                ))}
+                              </Box>
+                            </List>
+                          </Collapse>
                         </TableCell>
                       </TableRow>
                     </Fragment>

@@ -6,7 +6,6 @@ import {
   Grid,
   TextField,
   Typography,
-  Paper,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -14,13 +13,11 @@ import Navbar from "../Navbar/Navbar";
 import Footer from "../footer/Footer";
 import background from "../../assets/diamondCheckBackground.png";
 import Button from "@mui/material/Button";
-import Imac from "../../assets/imac.png";
+import Imac from "../../assets/imac1.png";
 import diamondDetails01 from "../../assets/diamondDetails01.png";
 import diamondDetails02 from "../../assets/diamondDetails02.png";
 import diamondCheckex from "../../assets/diamondCheckex.png";
-
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
-import axios from "axios";
 import { Toaster, toast } from "sonner";
 import publicApi from "../../APIs/PublicApi";
 const CheckDiamondBody = () => {
@@ -29,124 +26,11 @@ const CheckDiamondBody = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (diamondDetails) {
-      navigate(`/diamond-check/${diamondDetails.labId}`, {
+      navigate(`/certificate-check/${diamondDetails.labId}`, {
         state: { diamondDetails },
       });
     }
   });
-  const diamonds = [
-    {
-      CertificateLab: "DIA",
-      origin: "Natural",
-      reportNumber: "1122334455",
-      certificateDate: "2023-06-01",
-      fairPrice: "$12,000",
-      shape: "Round",
-      measurements: "6.5 x 6.5 x 4.0",
-      caratWeight: "1.00 ct",
-      colorGrade: "D",
-      clarityGrade: "VVS1",
-      cutGrade: "Excellent",
-      polish: "Excellent",
-      fluorescence: "None",
-      symmetry: "Excellent",
-      culet: "None",
-      table: "57%",
-      girdle: "Medium",
-      comments: "good diamond",
-      depth: "62.3%",
-    },
-    {
-      CertificateLab: "DIA",
-      origin: "Natural",
-      reportNumber: "2233445566",
-      certificateDate: "2023-07-15",
-      fairPrice: "$9,500",
-      shape: "Princess",
-      measurements: "5.5 x 5.5 x 4.2",
-      caratWeight: "1.02 ct",
-      colorGrade: "E",
-      clarityGrade: "VS1",
-      cutGrade: "Very Good",
-      polish: "Very Good",
-      fluorescence: "Faint",
-      symmetry: "Very Good",
-      culet: "None",
-      table: "75%",
-      girdle: "Slightly Thick",
-      comments: "good diamond",
-      depth: "68.0%",
-    },
-    {
-      CertificateLab: "DIA",
-      origin: "Lab Grown",
-      reportNumber: "3344556677",
-      certificateDate: "2023-08-20",
-      fairPrice: "$8,200",
-      shape: "Oval",
-      measurements: "7.0 x 5.0 x 3.5",
-      caratWeight: "1.15 ct",
-      colorGrade: "F",
-      clarityGrade: "SI1",
-      cutGrade: "Good",
-      polish: "Good",
-      fluorescence: "Medium",
-      symmetry: "Good",
-      culet: "None",
-      table: "53%",
-      girdle: "Thin to Thick",
-      comments: "good diamond",
-      depth: "63.5%",
-    },
-    {
-      CertificateLab: "DIA",
-      origin: "Lab Grown",
-      reportNumber: "4455667788",
-      certificateDate: "2023-09-10",
-      fairPrice: "$11,000",
-      shape: "Emerald",
-      measurements: "6.0 x 4.5 x 3.0",
-      caratWeight: "1.20 ct",
-      colorGrade: "G",
-      clarityGrade: "VS2",
-      cutGrade: "Very Good",
-      polish: "Excellent",
-      fluorescence: "None",
-      symmetry: "Very Good",
-      culet: "None",
-      table: "65%",
-      girdle: "Slightly Thick to Thick",
-      comments: "good diamond",
-      depth: "68.5%",
-    },
-    {
-      CertificateLab: "DIA",
-      origin: "Natural",
-      reportNumber: "5566778899",
-      certificateDate: "2023-10-05",
-      fairPrice: "$10,500",
-      shape: "Cushion",
-      measurements: "5.8 x 5.8 x 4.0",
-      caratWeight: "1.10 ct",
-      colorGrade: "H",
-      clarityGrade: "VVS2",
-      cutGrade: "Excellent",
-      polish: "Excellent",
-      fluorescence: "None",
-      symmetry: "Excellent",
-      culet: "None",
-      table: "58%",
-      girdle: "Medium to Slightly Thick",
-      comments: "good diamond",
-      depth: "64.8%",
-    },
-  ];
-
-  const getDiamondData = (id) => {
-    const diamond = diamonds.find((diamond) => diamond.reportNumber === id);
-    return diamond;
-  };
-
   async function CheckID(){
     try {
       await publicApi

@@ -34,16 +34,16 @@ const UserComponent = () => {
   }
 
   function handleVault(){
-    navigator('/vault/home');
+    navigator('/vault');
   }
   function handleVault_Settings(){
-    navigator('/vault/settings');
+    navigator('/settings');
   }
 
   function handleHome(){
     switch(role){
       case "CONSULTING_STAFF": navigator('/consulting-staff/home'); break;
-      case "VALUATION_STAFF": navigator('/valuation-staff/home'); break;
+      case "VALUATION_STAFF": navigator('/valuation-staff/diamonds-appraisal'); break;
       case "MANAGER": navigator('/manager/home'); break;
       case "ADMIN": navigator('/admin/home'); break;
     }

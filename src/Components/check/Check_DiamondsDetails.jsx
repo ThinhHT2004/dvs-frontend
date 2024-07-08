@@ -3,7 +3,7 @@ import exPic from "../../assets/examplediamondpic.png";
 import Diamond_Proportions from "../../assets/Diamond_Proportions.png";
 import errorImage from "../../assets/empty_image.jpg";
 import { useLocation } from 'react-router-dom';
-import { Box, Button, Card, CardContent, CardHeader, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, CardHeader, Grid, Typography, Chip } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../footer/Footer';
 import moment from 'moment';
@@ -15,9 +15,9 @@ const Check_DiamondsDetails = () => {
             <Box >
                 <Navbar />
             </Box>
-            <Box 
-            marginTop={5}
-            marginBottom={5}
+            <Box
+                marginTop={5}
+                marginBottom={5}
             >
                 <Box>
                     <Grid container spacing={2}>
@@ -32,8 +32,9 @@ const Check_DiamondsDetails = () => {
                             alignItems="center"
                         >
                             <img
-                                src={diamondDetails.image || errorImage}
-                                alt="example diamond"
+                                // src={diamondDetails?.image || errorImage}
+                                src={exPic}
+                                alt=""
                                 style={{ width: "450px", height: "450px", margin: 5 }}
                             />
                         </Grid>
@@ -50,7 +51,7 @@ const Check_DiamondsDetails = () => {
                                 <CardHeader
                                     title={
                                         <Typography variant="h3">
-                                            {`Certificate ID: ${diamondDetails?.labId}`}
+                                            {`Certificate ID: ${diamondDetails?.labId}`} <Chip label={diamondDetails?.origin + " DIAMOND"} color="success" />
                                         </Typography>
                                     }
                                 />
@@ -67,7 +68,7 @@ const Check_DiamondsDetails = () => {
                                                     alignItems: "center",
                                                 }}
                                             >
-                                                <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                     <Typography
                                                         sx={{
                                                             display: "flex",
@@ -88,7 +89,7 @@ const Check_DiamondsDetails = () => {
                                                         {diamondDetails?.finalPrice}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                     <Typography
                                                         sx={{
                                                             display: "flex",
@@ -97,7 +98,7 @@ const Check_DiamondsDetails = () => {
                                                             color: "#989898",
                                                         }}
                                                     >
-                                                        Origin
+                                                        Carat
                                                     </Typography>
                                                     <Typography
                                                         sx={{
@@ -106,31 +107,10 @@ const Check_DiamondsDetails = () => {
                                                             alignItems: "center",
                                                         }}
                                                     >
-                                                        {diamondDetails?.origin}
+                                                        {diamondDetails?.caratWeight}
                                                     </Typography>
                                                 </Grid>
-                                                <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
-                                                    <Typography
-                                                        sx={{
-                                                            display: "flex",
-                                                            justifyContent: "center",
-                                                            alignItems: "center",
-                                                            color: "#989898",
-                                                        }}
-                                                    >
-                                                        Cert Lab
-                                                    </Typography>
-                                                    <Typography
-                                                        sx={{
-                                                            display: "flex",
-                                                            justifyContent: "center",
-                                                            alignItems: "center",
-                                                        }}
-                                                    >
-                                                        N/A
-                                                    </Typography>
-                                                </Grid>
-                                                <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                     <Typography
                                                         sx={{
                                                             display: "flex",
@@ -169,7 +149,7 @@ const Check_DiamondsDetails = () => {
                                                         alignItems: "center",
                                                     }}
                                                 >
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                    <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                         <Typography
                                                             sx={{
                                                                 display: "flex",
@@ -190,7 +170,7 @@ const Check_DiamondsDetails = () => {
                                                             {diamondDetails?.shape}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                    <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                         <Typography
                                                             sx={{
                                                                 display: "flex",
@@ -211,28 +191,7 @@ const Check_DiamondsDetails = () => {
                                                             {diamondDetails?.measurement}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
-                                                        <Typography
-                                                            sx={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                color: "#989898",
-                                                            }}
-                                                        >
-                                                            Carat
-                                                        </Typography>
-                                                        <Typography
-                                                            sx={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                            }}
-                                                        >
-                                                            {diamondDetails?.caratWeight}
-                                                        </Typography>
-                                                    </Grid>
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                    <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                         <Typography
                                                             sx={{
                                                                 display: "flex",
@@ -266,7 +225,7 @@ const Check_DiamondsDetails = () => {
                                                         alignItems: "center",
                                                     }}
                                                 >
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                    <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                         <Typography
                                                             sx={{
                                                                 display: "flex",
@@ -287,7 +246,7 @@ const Check_DiamondsDetails = () => {
                                                             {diamondDetails?.clarity}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                    <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                         <Typography
                                                             sx={{
                                                                 display: "flex",
@@ -308,7 +267,7 @@ const Check_DiamondsDetails = () => {
                                                             {diamondDetails?.polish}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
+                                                    <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
                                                         <Typography
                                                             sx={{
                                                                 display: "flex",
@@ -329,27 +288,6 @@ const Check_DiamondsDetails = () => {
                                                             {diamondDetails?.fluorescence}
                                                         </Typography>
                                                     </Grid>
-                                                    <Grid item xl={3} md={3} sm={3} lg={3} xs={3}>
-                                                        <Typography
-                                                            sx={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                color: "#989898",
-                                                            }}
-                                                        >
-                                                            Symmetry
-                                                        </Typography>
-                                                        <Typography
-                                                            sx={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                            }}
-                                                        >
-                                                            {diamondDetails?.symmetry}
-                                                        </Typography>
-                                                    </Grid>
                                                 </Grid>
                                             </Grid>
                                         </CardContent>
@@ -364,7 +302,7 @@ const Check_DiamondsDetails = () => {
                                     >
                                         <Button
                                             variant="contained"
-                                            href="/diamond-check"
+                                            href="/certificate-check"
                                             sx={{
                                                 backgroundColor: "#69CEE2",
                                                 borderRadius: "8px",
@@ -613,7 +551,7 @@ const Check_DiamondsDetails = () => {
                                                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                                                         <Typography>
                                                             <span style={{ color: "#989898" }} >Depth:</span> {diamondDetails?.depth}
-                                                        </Typography>                                                      
+                                                        </Typography>
                                                     </Box>
                                                 </Grid>
                                                 <Grid item xl={3}>

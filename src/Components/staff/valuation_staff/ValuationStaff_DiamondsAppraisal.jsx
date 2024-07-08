@@ -115,14 +115,13 @@ const ValuationStaff_DiamondsAppraisal = () => {
       <Toaster position="top-center" richColors></Toaster>
       <Box>
         <StaffDrawer
-          mylist={["Home", "Diamonds Appraisal", "Sign Out"]}
+          mylist={["Diamonds Appraisal", "Sign Out"]}
           state="Diamonds Appraisal"
           handleClick={valuation_staff_navigator}
         />
       </Box>
       <Box
         sx={{
-          flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
@@ -188,7 +187,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
           </Grid>
           <Grid item xl={7} lg={7} md={12}>
             {selectedDiamond ? (
-              <Box sx={{ p: 3 }}>
+              <Box>
                 <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
                   <CardHeader
                     title={`DIAMOND DETAILS - ${formatSampleId(selectedDiamond.id)}`}

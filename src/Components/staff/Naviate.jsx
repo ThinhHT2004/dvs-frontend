@@ -33,9 +33,6 @@ export const consulting_staff_navigator = (text, navigate) => {
 
 export const valuation_staff_navigator = (text, navigate) => {
   switch (text) {
-    case "Home":
-      navigate("/valuation-staff/home");
-      break;
     case "Diamonds Appraisal":
       navigate("/valuation-staff/diamonds-appraisal");
       break;
@@ -71,11 +68,11 @@ export const manager_navigator = (text, navigate) => {
 
 export const vault_navigator = (text, navigate) => {
   switch (text) {
-    case 'Home':
-      navigate('/vault/home');
+    case 'Vault':
+      navigate('/vault');
       break;
-    case 'Appointments':
-      navigate('/vault/appointment');
+    case 'Settings':
+      navigate('/settings');
       break;
     case 'Calculate':
       navigate('/calculate');
@@ -85,9 +82,6 @@ export const vault_navigator = (text, navigate) => {
       break;
     case 'Diamonds Appraisal':
       navigate('/diamond-appraisal');
-      break;
-    case 'Settings':
-      navigate('/vault/settings');
       break;
     case "Sign Out":
       handleSignOut(navigate);

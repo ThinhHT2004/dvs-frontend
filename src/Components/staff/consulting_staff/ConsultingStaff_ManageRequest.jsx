@@ -40,6 +40,7 @@ import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { useRequests } from "./RequestContext";
 import protectedApi from "../../../APIs/ProtectedApi";
+import { de } from "date-fns/locale";
 
 
 const ConsultingStaff_ManageRequest = () => {
@@ -172,7 +173,7 @@ const ConsultingStaff_ManageRequest = () => {
     }
   }
 
-  function displayButton(sample, requestId) {
+  function displayEditButton(sample, requestId) {
     if (sample.status === "FILLING" || sample.status === "FILLED") {
       return (
         <Button
@@ -181,6 +182,7 @@ const ConsultingStaff_ManageRequest = () => {
             setRequestId(requestId);
             handleOpen();
           }}
+          sx={{ color: '#30D5C8' }}
         >
           Edit Information
         </Button>
@@ -200,7 +202,29 @@ const ConsultingStaff_ManageRequest = () => {
       );
     }
   }
-
+  function displayDenyButton(sample, requestId) {
+    switch (sample.status) {
+      case "FILLING":
+        return (
+          <Button
+            color="error"
+          >
+            Deny
+          </Button>
+        );
+        break;
+      default:
+        return (
+          <Button
+            color="error"
+            disabled
+          >
+            Deny
+          </Button>
+        );
+        break;
+    }
+  }
   const handleClose = () => {
     setOpen(false);
     setMeausurement("");
@@ -266,6 +290,9 @@ const ConsultingStaff_ManageRequest = () => {
       case "FINISHED":
         return "success";
         break;
+      case "SEALED":
+        return "error";
+        break;
     }
   };
 
@@ -283,10 +310,10 @@ const ConsultingStaff_ManageRequest = () => {
       case "APPROVED":
         return "success";
         break;
-        case "VALUATED":
+      case "VALUATED":
         return "secondary";
         break;
-        case "WAITING":
+      case "WAITING":
         return "primary";
         break;
     }
@@ -297,13 +324,13 @@ const ConsultingStaff_ManageRequest = () => {
       return (
         <Card component={Paper}>
           <CardHeader
-                    title={`SAMPLE ID: ${formatSampleId(text)}`}
-                    titleTypographyProps={{
-                      variant: 'h5',
-                      color: 'white',
-                    }}
-                    sx={{ backgroundColor: '#30D5C8' }}
-                  />
+            title={`SAMPLE ID: ${formatSampleId(text)}`}
+            titleTypographyProps={{
+              variant: 'h5',
+              color: 'white',
+            }}
+            sx={{ backgroundColor: '#30D5C8' }}
+          />
           <Grid container spacing={0}>
             <Grid item lg={6} borderRight={1}>
               <Card
@@ -742,59 +769,62 @@ const ConsultingStaff_ManageRequest = () => {
             <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
           </TableCell>
           <TableCell align="center">
-          <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
-          </Chip>
+            <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
+            </Chip>
           </TableCell>
           <TableCell align="center">
             <IconButton
               sx={{ backgroundColor: "#69CEE2" }}
               size="small"
-              onClick={() => setOpen(!open)}
+              onClick={() => setOpen(true)}
             >
               {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
           </TableCell>
         </TableRow>
-        <TableRow sx={{border: 0}} >
-          <TableCell style={{ padding: 0 ,border: 0}} colSpan={7}>
+        <TableRow sx={{ border: 0 }} >
+          <TableCell style={{ padding: 0, border: 0 }} colSpan={7}>
             <Collapse in={open}>
-            <List disablePadding >
-              <Box>
-                <ListItem sx={{borderBottom: 1 , borderColor: "#c7ced9"}}>
-                  <Grid container>
-                    <Grid item lg={4} xl={4}>
-                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
-                    </Grid>
-                    <Grid item lg={4} xl={4}>
-                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
-                    </Grid>
-                  </Grid>
-                  <ListItemText />
-                </ListItem>
-                {row.valuationRequestDetailList.map((sample) => (
-                  <ListItem key={sample.id} sx={{borderBottom: 1 , borderColor: "#c7ced9"}}>
+              <List disablePadding >
+                <Box>
+                  <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
                     <Grid container>
-                      <Grid item lg={4} xl={4}>
-                        <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                      <Grid item lg={3} xl={3}>
+                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
                       </Grid>
-                      <Grid item lg={4} xl={4}>
-                        <ListItemText sx={{ textAlign: 'center' }}>
-                          <Chip
-                            label={sample.status}
-                            color={renderSampleStatus(sample.status)}
-                            size="small"
-                          ></Chip>
-                        </ListItemText>
-                      </Grid>
-                      <Grid item lg={4} xl={4}>
-                        <ListItemText primary={displayButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                      <Grid item lg={3} xl={3}>
+                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
                       </Grid>
                     </Grid>
+                    <ListItemText />
                   </ListItem>
+                  {row.valuationRequestDetailList.map((sample) => (
+                    <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                      <Grid container>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                        </Grid>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText sx={{ textAlign: 'center' }}>
+                            <Chip
+                              label={sample.status}
+                              color={renderSampleStatus(sample.status)}
+                              size="small"
+                            ></Chip>
+                          </ListItemText>
+                        </Grid>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText primary={displayEditButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                        </Grid>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText primary={displayDenyButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                        </Grid>
+                      </Grid>
+                    </ListItem>
 
-                ))}
+                  ))}
 
-              </Box>
+                </Box>
               </List>
             </Collapse>
           </TableCell>

@@ -8,14 +8,14 @@ import ConsultingStaff_Home from "./Components/staff/consulting_staff/Consulting
 import ConsultingStaff_IncommingRequest from "./Components/staff/consulting_staff/ConsultingStaff_IncommingRequest";
 import Manager_Home from "./Components/staff/manager/Manager_Home";
 import Manager_PendingRequest from "./Components/staff/manager/Manager_PendingRequest";
-import ValuationStaff_Home from "./Components/staff/valuation_staff/ValuationStaff_Home";
+// import ValuationStaff_Home from "./Components/staff/valuation_staff/ValuationStaff_Home";
 import ConsultingStaff_ManageRequest from "./Components/staff/consulting_staff/ConsultingStaff_ManageRequest";
 import ValuationStaff_DiamondsAppraisal from "./Components/staff/valuation_staff/ValuationStaff_DiamondsAppraisal";
 import Manager_ReceiptManagement from "./Components/staff/manager/Manager_ReceiptManagement";
 import Manager_ReportManagement from "./Components/staff/manager/Manager_ReportManagement";
 import ConsultingStaff_Report from "./Components/staff/consulting_staff/ConsultingStaff_Report.jsx";
 import ConsultingStaff_Form from "./Components/staff/consulting_staff/ConsultingStaff_Form.jsx";
-import Vault_Home from "./Components/vault/Vault_Home.jsx";
+// import Vault_Home from "./Components/vault/Vault_Home.jsx";
 import Vault_Appointment from "./Components/vault/Vault_Appointment.jsx";
 import Vault_PriceAlert from "./Components/vault/Vault_PriceAlert.jsx";
 import Vault_Settings from "./Components/vault/Vault_Settings.jsx";
@@ -56,7 +56,7 @@ const App = () => {
             <Route path="/accounts/signin" element={<Login></Login>}></Route>
             <Route path="/accounts/signup" element={<SignUp></SignUp>}></Route>
             <Route
-              path="/diamond-check/:id"
+              path="/certificate-check/:id"
               element={<Check_DiamondsDetails></Check_DiamondsDetails>}
             ></Route>
             <Route
@@ -155,7 +155,7 @@ const App = () => {
                 ></RolesAuthRoute>
               }
             ></Route>
-            <Route
+            {/* <Route
               path="/valuation-staff/home"
               element={
                 <RolesAuthRoute
@@ -163,7 +163,7 @@ const App = () => {
                   allowedRoles={[roles.VALUATION_STAFF]}
                 ></RolesAuthRoute>
               }
-            ></Route>
+            ></Route> */}
 
             {/* Manager Site */}
             <Route
@@ -208,7 +208,7 @@ const App = () => {
             ></Route>
 
             {/* Customer Site */}
-            <Route
+            {/* <Route
               path="/vault/home"
               element={
                 <RolesAuthRoute
@@ -216,9 +216,9 @@ const App = () => {
                   allowedRoles={[roles.CUSTOMER]}
                 ></RolesAuthRoute>
               }
-            ></Route>
+            ></Route> */}
             <Route
-              path="/vault/appointment"
+              path="/vault"
               element={
                 <RolesAuthRoute
                   element={<Vault_Appointment></Vault_Appointment>}
@@ -226,7 +226,7 @@ const App = () => {
                 ></RolesAuthRoute>
               }
             ></Route>
-            <Route
+            {/* <Route
               path="/vault/price-alert"
               element={
                 <RolesAuthRoute
@@ -234,9 +234,9 @@ const App = () => {
                   allowedRoles={[roles.CUSTOMER]}
                 ></RolesAuthRoute>
               }
-            ></Route>
+            ></Route> */}
             <Route
-              path="/vault/settings"
+              path="/settings"
               element={
                 <RolesAuthRoute
                   element={<Vault_Settings></Vault_Settings>}

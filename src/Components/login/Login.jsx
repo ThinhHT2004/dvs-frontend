@@ -40,7 +40,7 @@ const Login = () => {
                 sessionStorage.setItem("valuationStaffId", response.data.id);
                 sessionStorage.setItem("role", response.data.role);
                 toast.success(response.data.mess);
-                navigator('/valuation-staff/home');
+                navigator('/valuation-staff/diamonds-appraisal');
             }else if(response.data.role === 'MANAGER'){
                 sessionStorage.setItem("managerId", response.data.id);
                 sessionStorage.setItem("role", response.data.role);
