@@ -50,13 +50,13 @@ const ConsultingStaff_IncommingRequest = () => {
         <StaffDrawer
           mylist={[
             "Home",
-            "Incomming Request",
+            "Incoming Request",
             "Request",
             "Report",
             "Form",
             "Sign Out",
           ]}
-          state="Incomming Request"
+          state="Incoming Request"
           handleClick={consulting_staff_navigator}
          
         />

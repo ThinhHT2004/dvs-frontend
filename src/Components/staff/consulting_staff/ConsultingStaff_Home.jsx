@@ -72,7 +72,7 @@ const ConsultingStaff_Home = () => {
           <StaffDrawer
             mylist={[
               "Home",
-              "Incomming Request",
+              "Incoming Request",
               "Request",
               "Report",
               "Form",
@@ -162,7 +162,7 @@ const ConsultingStaff_Home = () => {
                       <TableCell></TableCell>
                       <TableCell>
                         
-                        <Link href="/consulting-staff/incomming-request" underline="hover" sx={{color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline'}}>See more</Link>
+                        <Link href="/consulting-staff/incoming-request" underline="hover" sx={{color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline'}}>See more</Link>
                       </TableCell>
                      
                     </TableRow>
