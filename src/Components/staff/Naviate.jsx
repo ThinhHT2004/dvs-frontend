@@ -11,7 +11,7 @@ export const consulting_staff_navigator = (text, navigate) => {
     case "Home":
       navigate("/consulting-staff/home");
       break;
-    case "Incomming Request":
+    case "Incoming Request":
       navigate("/consulting-staff/incoming-request");
       break;
     case "Request":
