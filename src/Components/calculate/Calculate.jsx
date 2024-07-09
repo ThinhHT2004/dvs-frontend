@@ -154,7 +154,7 @@ const Calculate = () => {
     console.log(data);
     try {
       publicApi
-        .get("/diamond/search/" + advanced + "/"+ 0 + "?", {
+        .get("/diamond/search/" + advanced + "/"+ 1 + "?", {
           params: data,
         })
         .then((resp) => {
