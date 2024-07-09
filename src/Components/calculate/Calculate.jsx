@@ -79,10 +79,12 @@ const Calculate = () => {
     change = change.toFixed(2);
 
 
-    if(oldPrice === 0) change = 0;
-    
+    if(oldPrice == 0) change = 0;
+
+    console.log(oldPrice)
+    console.log(newPrice);
   
-    if(newPrice === 0 && oldPrice === 0){
+    if(newPrice === 0.00 || oldPrice === 0.00){
       return (
         <Typography variant="h6" fontWeight="bold" sx={{ color: "grey" }}>
           0.0%
