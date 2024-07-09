@@ -16,6 +16,7 @@ import { useRequests } from "../consulting_staff/RequestContext";
 import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
 import protectedApi from '../../../APIs/ProtectedApi';
+import { ca } from 'date-fns/locale';
 
 function LinearProgressWithLabel(props) {
     return (
@@ -42,6 +43,7 @@ const Admin_Home = () => {
         getAllWaitingRequests();
     }, []);
     const drawerWidth = 240;
+    const staffID = sessionStorage.getItem("adminId");
     const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
     const { waitingRequests, getAllWaitingRequests } = useRequests([]);
     const [statusData, setStatusData] = useState([]);
@@ -51,7 +53,7 @@ const Admin_Home = () => {
     const [loading, setLoading] = useState(false);
     const [dbLoading, setDbLoading] = useState(false);
     const [formattedList, setFormattedList] = useState([]);
-
+    const [staff, setStaff] = useState({});
     useEffect(() => {
         if (acceptedRequests.length > 0 && waitingRequests.length > 0) {
             const statusCounts1 = acceptedRequests.reduce((acc, { status }) => {
@@ -69,9 +71,18 @@ const Admin_Home = () => {
             }));
 
             setStatusData(formattedStatusData);
-        }
+            
+        };
+        const fetchData = async () => {
+            try {
+                const response = await protectedApi.get("/staffs/" + staffID);
+                setStaff(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
     }, [acceptedRequests]);
-
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -174,7 +185,7 @@ const Admin_Home = () => {
                     <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
                         <Card sx={{ borderRadius: 3 }}>
                             <CardContent>
-                                <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>Hua Tan Thinh</span></Typography>
+                                <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>{staff.lastName} {staff.firstName}</span></Typography>
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
                                 </Box>

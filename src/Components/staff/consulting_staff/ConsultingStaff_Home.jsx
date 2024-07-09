@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect , useState} from "react";
 import StaffDrawer from "../StaffDrawer";
 import {
   Box,
@@ -22,13 +22,21 @@ import WelcomeImg from "../../../assets/welcome_Img.png"
 import { useRequests } from "./RequestContext";
 import moment from "moment";
 import { formatRequestId} from "../../../Foramat";
+import protectedApi from "../../../APIs/ProtectedApi";
 const ConsultingStaff_Home = () => {
+  const staffID = sessionStorage.getItem("consultingStaffId");
   const { waitingRequests , getAllWaitingRequests} = useRequests([]);
   const { acceptedRequests , getAllAcceptedRequests} = useRequests([]);
+  const [staff, setStaff] = useState({});
   const drawerWidth = 240;
   useEffect(() => {
     getAllWaitingRequests();
     getAllAcceptedRequests();
+    const fetchData = async () => {
+      const response = await protectedApi.get('/staffs/' + staffID);
+      setStaff(response.data);
+    }
+    fetchData();
   }, []);
   const renderRowStatus = (status) => {
     switch (status) {
@@ -84,7 +92,7 @@ const ConsultingStaff_Home = () => {
             <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
               <Card sx={{ borderRadius: 3 }}>
                 <CardContent>
-                  <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>Hua Tan Thinh</span></Typography>
+                  <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>{staff.lastName} {staff.firstName}</span></Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
                   </Box>
