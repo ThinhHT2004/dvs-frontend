@@ -70,9 +70,8 @@ const Vault = () => {
   );
 
   const finishedRequests = requests.filter(
-    (request) => request.status === "FINISHED"
+    (request) => request.status === "FINISHED" 
   );
-
   return (
     <Box
       sx={{
@@ -179,12 +178,14 @@ const Vault = () => {
                       </TableCell>
                     </TableRow>
                   ))}
-                  {finishedRequests.map((row) => (
-                    row.valuationRequestDetailList.map(detail => (
+                  {finishedRequests.map((row) =>
+                    row.valuationRequestDetailList
+                      .filter((detail) => detail.status == "APPROVED")
+                      .map((detail) => (
                       <TableRow key={detail.valuationReport.labId}>
                         <TableCell align="center">{detail.valuationReport.labId}</TableCell>
                         <TableCell align="center">
-                          {formatRequestId(row.id)}
+                          {formatRequestId(row.id)} 
                         </TableCell>
                         <TableCell>{row.service.name}</TableCell>
                         <TableCell align="center">
@@ -207,7 +208,7 @@ const Vault = () => {
                         </TableCell>
                       </TableRow>
                     ))
-                  ))}
+                  )}
                 </TableBody>
               </Table>
             </TableContainer>
