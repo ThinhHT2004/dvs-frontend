@@ -47,7 +47,10 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   useEffect(() => {
     getAssignments();
-  }, []);
+    if(selectedDiamond){
+      handleSearch();
+    }
+  }, [selectedDiamond]);
 
   function checkFullFilled() {
     if (selectedAssignment.price === 0 || selectedAssignment.price === "") {
