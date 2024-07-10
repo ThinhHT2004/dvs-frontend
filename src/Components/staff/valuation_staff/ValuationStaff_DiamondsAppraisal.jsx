@@ -149,7 +149,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
     setPolish(selectedD?.valuationReport.polish);
     
     setSelectedDiamond(selected.data);
-    await handleSearch();
+    
   };
   console.log(diamonds)
 
