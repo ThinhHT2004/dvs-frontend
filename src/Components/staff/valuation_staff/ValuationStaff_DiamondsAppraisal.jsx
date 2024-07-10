@@ -24,6 +24,8 @@ import { formatSampleId, formatValuationId } from "../../../Foramat";
 import { Toaster, toast } from "sonner";
 import moment from "moment";
 import protectedApi from "../../../APIs/ProtectedApi";
+import publicApi from "../../../APIs/PublicApi";
+
 
 const ValuationStaff_DiamondsAppraisal = () => {
   const staffId = sessionStorage.getItem("valuationStaffId");
@@ -42,13 +44,10 @@ const ValuationStaff_DiamondsAppraisal = () => {
   const [polish, setPolish] = useState("");
   const [fluorescence, setFluorescence] = useState("");
   const [diamonds, setDiamonds] = useState([]);
-  console.log(staffId);
 
   useEffect(() => {
     getAssignments();
   }, []);
-
-  console.log(selectedAssignment);
 
   function checkFullFilled() {
     if (selectedAssignment.price === 0 || selectedAssignment.price === "") {
@@ -58,7 +57,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
     }
   }
 
-  function handleSearch() {
+  async function handleSearch() {
     const data = {
       origin,
       shape,
@@ -72,8 +71,8 @@ const ValuationStaff_DiamondsAppraisal = () => {
     };
     console.log(data);
     try {
-      publicApi
-        .get("/diamond/search/false" + "?", {
+      await publicApi
+        .get("/diamond/search/true/" + 0 + "?", {
           params: data,
         })
         .then((resp) => setDiamonds(resp.data));
@@ -83,6 +82,9 @@ const ValuationStaff_DiamondsAppraisal = () => {
   }
 
   function generateMaxMin(list) {
+    
+    console.log(diamonds);
+    
     if (list != null && list.length > 0) {
       const prices = list.map((d) => d.price);
       const min = Math.min(...prices);
@@ -119,30 +121,35 @@ const ValuationStaff_DiamondsAppraisal = () => {
       .catch((err) => console.log(err));
   };
 
-  const getSelectDiamond = (id) => {
-    protectedApi
+  const getSelectDiamond = async (id) => {
+    return await protectedApi
       .get("/request-detail/find/" + id)
-      .then((resp) => setSelectedDiamond(resp.data))
       .catch((err) => console.log(err));
   };
 
-  const handleAction = (idDiamond) => {
+  const handleAction = async (idDiamond) => {
     const assignment = assignments.find(
       (a) => a.valuationRequestDetailId === idDiamond
     );
     setSelectedAssignment(assignment);
-    getSelectDiamond(assignment.valuationRequestDetailId);
-    setOrigin(selectedDiamond.origin);
-    setShape(selectedDiamond.shape);
-    setCarat(selectedDiamond.caratWeight);
-    setColor(selectedDiamond.color);
-    setClarity(selectedDiamond.clarity);
-    setCut(selectedDiamond.cut);
-    setSymmetry(selectedDiamond.symmetry);
-    setFluorescence(selectedDiamond.fluorescence);
-  };
+    const selected = await getSelectDiamond(assignment.valuationRequestDetailId);
+    const selectedD = selected.data;
 
-  console.log(selectedAssignment);
+    setOrigin(selectedD?.valuationReport.origin);
+    setShape(selectedD?.valuationReport.shape);
+    setCarat(selectedD?.valuationReport.caratWeight);
+    setColor(selectedD?.valuationReport.color);
+    setClarity(selectedD?.valuationReport.clarity);
+    setCut(selectedD?.valuationReport.cut);
+    setSymmetry(selectedD?.valuationReport.symmetry);
+    setFluorescence(selectedD?.valuationReport.fluorescence);
+    setPolish(selectedD?.valuationReport.polish);
+    
+    setSelectedDiamond(selected.data);
+    await handleSearch();
+  };
+  console.log(diamonds)
+
   const handleSave = (selectedAssignment) => {
     if (parseFloat(selectedAssignment.price) < 0) {
       toast.error("The price must not be negative");
@@ -250,9 +257,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                     }}
                     sx={{ backgroundColor: '#30D5C8' }}
                   />
-                  <Table>
-                    <TableBody>
-                      <Box sx={{ width: "100%", height: "77vh" }}>
+                  <Box sx={{ width: "100%", height: "77vh" }}>
                         <Box width="100%" height="100%" display="flex">
                           <Box
                             width="50%"
@@ -430,8 +435,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
                           </Box>
                         </Box>
                       </Box>
-                    </TableBody>
-                  </Table>
                 </TableContainer>
               </Box>
             ) : (
