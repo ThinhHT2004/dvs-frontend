@@ -44,7 +44,7 @@ const Calculate = () => {
   ];
 
   const colorMap = ["K", "J", "I", "H", "G", "F", "E", "D"];
-  const clarityMap = ["SI2", "SI1", "VS2", "VS1", "VSS2", "VVS1", "IF", "FL"];
+  const clarityMap = ["SI2", "SI1", "VS2", "VS1", "VVS2", "VVS1", "IF", "FL"];
   const cutMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const polishMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
   const symmetryMap = ["FAIR", "GOOD", "V.GOOD", "EX."];
