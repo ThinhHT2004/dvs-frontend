@@ -19,6 +19,7 @@ import {
   TableContainer,
   TableRow,
   TextField,
+  Typography,
 } from "@mui/material";
 
 import StaffDrawer from "../StaffDrawer";
@@ -58,7 +59,7 @@ const Admin_Accounts = () => {
         staffData.map(async (staff) => {
           const roleResp = await protectedApi.get(`/accounts/${staff.id}`);
           const roleData = roleResp.data;
-          return { ...staff, role: roleData.role, active: roleData.active };
+          return { ...staff, role: roleData.role, active: roleData.active, username: roleData.username, password: roleData.password };
         })
       );
       const fillteredStaffs = staffWithRoles.filter(
@@ -73,6 +74,7 @@ const Admin_Accounts = () => {
   const handleViewEditClick = (staffData) => {
     setEditDiaLogOpen(true);
     setDialogData(staffData);
+    console.log(staffData)
     console.log("View/Edit staff with id: ", staffData);
   };
   const handleDialogChange = (field, value) => {
@@ -81,6 +83,7 @@ const Admin_Accounts = () => {
       [field]: value,
     });
   };
+
   const handleDialogClose = () => {
     setEditDiaLogOpen(false);
   };
@@ -143,16 +146,16 @@ const Admin_Accounts = () => {
       await protectedApi
         .post("/staffs/create", registerRequest)
         .then((resp) => {
-          if(resp.data.code === 1){
+          if (resp.data.code === 1) {
             toast.success(resp.data.mess);
             handleAddDialogClose();
             getStaffs();
-          }else{
+          } else {
             toast.error(resp.data.mess);
           }
         });
-      
-      
+
+
     } catch (err) {
       console.error(err);
     }
@@ -171,7 +174,7 @@ const Admin_Accounts = () => {
       }
     }
 
-    if(registerRequest.dob === null){
+    if (registerRequest.dob === null) {
       return false;
     }
 
@@ -273,7 +276,7 @@ const Admin_Accounts = () => {
                     </TableCell>
                     <TableCell align="center">
                       <Button onClick={() => handleViewEditClick(staff)}
-                      sx={{color: '#30D5C8'}}  
+                        sx={{ color: '#30D5C8' }}
                       >
                         View & Edit
                       </Button>
@@ -304,9 +307,9 @@ const Admin_Accounts = () => {
                 <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell align="right">
-                  <Button 
-                  onClick={handleAddClick}
-                  sx={{color: '#30D5C8'}}
+                  <Button
+                    onClick={handleAddClick}
+                    sx={{ color: '#30D5C8' }}
                   >
                     Add New Staff
                   </Button>
@@ -322,6 +325,11 @@ const Admin_Accounts = () => {
         maxWidth="md"
         fullWidth
       >
+        <CardHeader
+          title={"Username: " + dialogData?.username}
+          titleTypographyProps={{ variant: "h5", color: "white" }}
+          sx={{ backgroundColor: "#30D5C8" }}
+        />
         <DialogContent>
           <Box padding={1}>
             <Grid container spacing={2}>
@@ -427,7 +435,7 @@ const Admin_Accounts = () => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleUpdate} sx={{color:"#30D5C8"}}>Update</Button>
+          <Button onClick={handleUpdate} sx={{ color: "#30D5C8" }}>Update</Button>
           <Button onClick={handleDialogClose} color="error">Cancel</Button>
         </DialogActions>
       </Dialog>
@@ -492,8 +500,8 @@ const Admin_Accounts = () => {
                 registerRequest.email === ""
                   ? false
                   : !isValidEmailIgnoringTail()
-                  ? "Email is invalid"
-                  : ""
+                    ? "Email is invalid"
+                    : ""
               }
               variant="standard"
               label="Email"
@@ -588,23 +596,22 @@ const Admin_Accounts = () => {
               label="Address"
               fullWidth
               required
-              onChange={(e) =>{
-                setRegisterRequest({...registerRequest, address: e.target.value})
+              onChange={(e) => {
+                setRegisterRequest({ ...registerRequest, address: e.target.value })
                 checkFullFilled();
               }}
             />
           </Box>
           <Box padding={1}>
             <TextField
-             error={registerRequest.phoneNumber === "" ? false : !checkPhoneNumber()}
-             helperText={registerRequest.phoneNumber === "" ? false : !checkPhoneNumberString() ? "Phone must contain only digit" : !checkPhoneNumber() ? "Lenght must be 10" : ""}
+              error={registerRequest.phoneNumber === "" ? false : !checkPhoneNumber()}
+              helperText={registerRequest.phoneNumber === "" ? false : !checkPhoneNumberString() ? "Phone must contain only digit" : !checkPhoneNumber() ? "Lenght must be 10" : ""}
               variant="standard"
               label="Phone Number"
               fullWidth
               required
-              onChange={(e) =>
-              {
-                setRegisterRequest({...registerRequest, phoneNumber: e.target.value})
+              onChange={(e) => {
+                setRegisterRequest({ ...registerRequest, phoneNumber: e.target.value })
                 checkFullFilled();
               }
               }
