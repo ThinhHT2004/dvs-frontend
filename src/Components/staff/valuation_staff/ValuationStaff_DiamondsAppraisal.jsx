@@ -413,13 +413,13 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                   }
                                   alt=""
                                   width="100%"
-                                  height="100%"
+                                  height="auto"
                                 />
                               </Box>
                             </Box>
                             <Box height="60%" sx={{ paddingTop: 3 }}>
                               <Box>
-                                <Typography>
+                                <Typography variant="h5">
                                   Clarity Characteristic
                                 </Typography>
                               </Box>
@@ -430,7 +430,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                                       .characteristic
                                   }
                                   alt=""
-                                  height="100%"
+                                  height="auto"
                                   width="100%"
                                 />
                               </Box>
@@ -444,65 +444,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
               <Typography></Typography>
             )}
           </Grid>
-          {/* {selectedDiamond && (
-              <Grid item xs={12} >
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 700, borderRadius: 10 }}>
-                    <TableHead sx={{ backgroundColor: "#69CEE2" }}>
-                      <TableRow>
-                        <TableCell colSpan={2} sx={{ color: 'black', fontSize: '20px' }}>Diamond Details - {formatSampleId(selectedDiamond.id)}</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell>Carat Weight</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.caratWeight}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Clarity</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.clarity}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Origin</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.origin}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Polish</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.polish}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Color</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.color}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Symmetry</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.symmetry}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Fluorescence</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.fluorescence}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Shape</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.shape}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Measurement</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.measurement}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Proportion</TableCell>
-                        <TableCell>{selectedDiamond.valuationReport.proportion}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Market price</TableCell>
-                        <TableCell>N/A</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Grid>
-            )} */}
         </Grid>
       </Box>
     </Box>
