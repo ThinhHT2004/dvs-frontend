@@ -16,7 +16,7 @@ const Banner = () => {
     const navigator = useNavigate();
     const textProps = useSpring({
         from: { marginLeft: '0px' },
-        to: { marginLeft: '200px' },
+        to: { marginLeft: '80px' },
         delay: 200
     });
     const imgProps = useSpring({
