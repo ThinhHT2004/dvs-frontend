@@ -197,10 +197,10 @@ const Manager_ReportManagement = () => {
                     titleTypographyProps={{ variant: 'h5', color: 'white' }}
                     sx={{ backgroundColor: "#30D5C8" }}
                   />
-                  <Grid container spacing={0.5}>
+                  <Grid container spacing={0.1}>
                     {currentDiamond.assignmentList.map((assignment) => (
                       <Grid item lg={4} xl={4} key={assignment.id}>
-                        <Card sx={{ maxWidth: '260px', margin: 1, backgroundColor: '#F2F2F2' }}>
+                        <Card sx={{  margin: 1, backgroundColor: '#F2F2F2' }}>
                           <CardHeader
                             title={assignment.valuationStaff.firstName}
                           />
@@ -217,16 +217,13 @@ const Manager_ReportManagement = () => {
 
                     ))}
                   </Grid>
-                  <Table>
-                    <TableBody>
-                      <TableRow >
-                        <TableCell
+                        <Box
                           sx={{
-                            borderBottom: "none",
                             display: "flex",
                             alignItems: "center",
 
                           }}
+                          padding={2}
                         >
                           <Typography  marginRight={2}>Final price: {" "}</Typography>
                             <FormControl
@@ -243,11 +240,9 @@ const Manager_ReportManagement = () => {
                               />
                             </FormControl>
                           
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell colSpan={3} style={{ borderBottom: "none" }}>
-
+                        </Box>
+                      
+                        <Box padding={2}>
                           <Grid container spacing={2}>
                             <Grid item xl={4} lg={4}>
                               <Button
@@ -282,14 +277,13 @@ const Manager_ReportManagement = () => {
                               </Button>
                             </Grid>
                           </Grid>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow sx={{ "& td": { borderBottom: "none" } }}>
-                        <TableCell
+                        </Box>
+                      
+                        <Box
                         sx={{
-                          borderBottom: "none",
                           display: "flex",
                         }}
+                        padding={2}
                         >
                    
                           <Typography marginRight={2}>Notes:</Typography>
@@ -299,7 +293,7 @@ const Manager_ReportManagement = () => {
                                 placeholder="Enter note"
                                 value={currentValuationReport.note || ""}
                                 multiline
-                                sx={{ width: 600 }}
+                                sx={{ width: 500 }}
                                 rows={4}
                                 onChange={(e) =>
                                   setCurrentValuationReport({ ...currentValuationReport, note: e.target.value })
@@ -309,17 +303,10 @@ const Manager_ReportManagement = () => {
                             </FormControl>
                           
                 
-                        </TableCell>
-                      </TableRow>
-                      <TableRow
-                        sx={{ backgroundColor: "#FFF", borderBottom: "none" }}
-                      >
-                        <TableCell
-                          sx={{ borderBottom: "none", textAlign: "left" }}
-                        >
+                        </Box>
+                      
                           <Box display={"flex"} justifyContent={"right"} padding={2}>
                             <Button
-
                               variant="contained"
                               sx={{ backgroundColor: "#69CEE2" }}
                               onClick={() =>
@@ -338,10 +325,6 @@ const Manager_ReportManagement = () => {
                               Cancel
                             </Button>
                           </Box>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
                 </TableContainer>
               </Box>
             )}
