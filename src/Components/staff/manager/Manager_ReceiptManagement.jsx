@@ -191,6 +191,9 @@ const Manager_ReceiptManagement = () => {
       case "VALUATED":
         return "success"
         break;
+      case "DENIED":
+        return "error";
+        break;
     }
   };
 

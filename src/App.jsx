@@ -103,7 +103,7 @@ const App = () => {
               }
             ></Route>
             <Route
-              path="/consulting-staff/incomming-request"
+              path="/consulting-staff/incoming-request"
               element={
                 <RolesAuthRoute
                   element={

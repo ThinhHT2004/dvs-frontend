@@ -78,10 +78,13 @@ const Calculate = () => {
     let change = Math.abs(100 - ((newPrice / oldPrice) * 100));
     change = change.toFixed(2);
 
-    if(oldPrice === 0) change = 0;
-    
+
+    if(oldPrice == 0) change = 0;
+
+    console.log(oldPrice)
+    console.log(newPrice);
   
-    if(newPrice === 0 && oldPrice === 0){
+    if(newPrice === 0.00 || oldPrice === 0.00){
       return (
         <Typography variant="h6" fontWeight="bold" sx={{ color: "grey" }}>
           0.0%
@@ -151,7 +154,7 @@ const Calculate = () => {
     console.log(data);
     try {
       publicApi
-        .get("/diamond/search/" + advanced + "/"+ 1 + "?", {
+        .get("/diamond/search/" + advanced + "/"+ 0 + "?", {
           params: data,
         })
         .then((resp) => {

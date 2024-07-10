@@ -142,7 +142,10 @@ const Admin_Services = () => {
         try{
             protectedApi
             .put("/services/disable/" + service.id)
-            .then(resp => toast.success(resp.data));
+            .then(resp => {
+                toast.success(resp.data);
+                getServices();
+            });
         }catch(err){
             console.log(err);
         }
@@ -152,7 +155,10 @@ const Admin_Services = () => {
         try{
             protectedApi
             .put("/services/enable/" + service.id)
-            .then(resp => toast.success(resp.data));
+            .then(resp => {
+                toast.success(resp.data);
+                getServices();
+            });
         }catch(err){
             console.log(err);
         }
@@ -287,7 +293,7 @@ const Admin_Services = () => {
                                                 service.active === true ? (
                                                     <Button onClick={() => handleDisable(service)} sx={{color: "red"}}>Disable</Button>
                                                 ) : (
-                                                    <Button onClick={() => handleEnable(service)} sx={{color: "green"}}>Enabale</Button>
+                                                    <Button onClick={() => handleEnable(service)} sx={{color: "green"}}>Enable</Button>
                                                 )
                                             }
                                         </TableCell>

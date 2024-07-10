@@ -17,6 +17,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
 import protectedApi from '../../../APIs/ProtectedApi';
 import { ca } from 'date-fns/locale';
+import { toast, Toaster } from 'sonner';
 
 function LinearProgressWithLabel(props) {
     return (
@@ -150,7 +151,7 @@ const Admin_Home = () => {
                 if (prev >= 100) {
                     clearInterval(interval);
                     setDbLoading(false);
-                    alert("Data added to the database!");
+                    toast.success("Data addeed to Database");
                     console.log("Formatted List:", formattedList);
                     return 100;
                 }
@@ -161,6 +162,7 @@ const Admin_Home = () => {
 
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
+            <Toaster position='top-center' richColors></Toaster>
             <StaffDrawer
                 mylist={[
                     "Home",

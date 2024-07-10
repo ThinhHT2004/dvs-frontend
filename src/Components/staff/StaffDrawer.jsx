@@ -82,7 +82,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const iconMapping = {
   "Home": <HomeIcon />,
-  "Incomming Request": <RequestIcon />,
+  "Incoming Request": <RequestIcon />,
   "Diamonds Appraisal": <DiamondIcon />,
   "Pending Request": <PendingActionsIcon />,
   "Request": <ManageIcon />,

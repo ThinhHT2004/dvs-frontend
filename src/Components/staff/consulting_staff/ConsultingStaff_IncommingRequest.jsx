@@ -50,13 +50,13 @@ const ConsultingStaff_IncommingRequest = () => {
         <StaffDrawer
           mylist={[
             "Home",
-            "Incomming Request",
+            "Incoming Request",
             "Request",
             "Report",
             "Form",
             "Sign Out",
           ]}
-          state="Incomming Request"
+          state="Incoming Request"
           handleClick={consulting_staff_navigator}
          
         />
@@ -72,7 +72,7 @@ const ConsultingStaff_IncommingRequest = () => {
           <Grid item lg={12} xl={12} md={12} sm={12} xs={12}>
           <TableContainer sx={{borderRadius: 3}} component={Paper}>
           <CardHeader
-                    title='INCOMMING REQUESTS'
+                    title='INCOMING REQUESTS'
                     titleTypographyProps={{
                       variant: 'h5',
                       color: 'white',

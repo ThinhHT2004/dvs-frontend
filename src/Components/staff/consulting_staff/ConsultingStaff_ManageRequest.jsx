@@ -41,6 +41,7 @@ import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { useRequests } from "./RequestContext";
 import protectedApi from "../../../APIs/ProtectedApi";
 import { de } from "date-fns/locale";
+import { toast } from "sonner";
 
 
 const ConsultingStaff_ManageRequest = () => {
@@ -202,12 +203,28 @@ const ConsultingStaff_ManageRequest = () => {
       );
     }
   }
+
+  async function denySample(sample){
+    console.log(sample);
+    try{
+      await protectedApi.
+      put("/request-detail/deny/" + sample.id)
+      .then(resp => {
+        toast.success("Sample Denied")
+        getAllAcceptedRequests();
+      })
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   function displayDenyButton(sample, requestId) {
     switch (sample.status) {
       case "FILLING":
         return (
           <Button
             color="error"
+            onClick={() => denySample(sample)}
           >
             Deny
           </Button>
@@ -315,6 +332,9 @@ const ConsultingStaff_ManageRequest = () => {
         break;
       case "WAITING":
         return "primary";
+        break;
+      case "DENIED":
+        return "error";
         break;
     }
   };
@@ -848,7 +868,7 @@ const ConsultingStaff_ManageRequest = () => {
         <StaffDrawer
           mylist={[
             "Home",
-            "Incomming Request",
+            "Incoming Request",
             "Request",
             "Report",
             "Form",
