@@ -249,7 +249,7 @@ const Manager_ReportManagement = () => {
                         <TableCell colSpan={3} style={{ borderBottom: "none" }}>
 
                           <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                            <Grid item xl={4} lg={4}>
                               <Button
                                 variant="contained"
                                 sx={{ background: "#30D5C8" }}
@@ -259,7 +259,7 @@ const Manager_ReportManagement = () => {
                                 Min
                               </Button>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xl={4} lg={4}>
                               <Button
                                 variant="contained"
                                 sx={{ background: "#30D5C8" }}
@@ -269,7 +269,7 @@ const Manager_ReportManagement = () => {
                                 Average
                               </Button>
                             </Grid>
-                            <Grid item xs={4}>
+                            <Grid item xl={4} lg={4}>
                               <Button
                                 variant="contained"
                                 sx={{
