@@ -29,6 +29,7 @@ import Admin_Accounts from "./Components/staff/admin/Admin_Accounts";
 import AccessDenied from "./Components/exception/AccessDenied.jsx";
 import RolesAuthRoute from "./Components/route/RolesAuthRoute.jsx";
 import { ro } from "date-fns/locale";
+import ResetPassword from "./Components/login/ResetPassword.jsx";
 const App = () => {
   const roles = {
     ADMIN: "ADMIN",
@@ -55,6 +56,7 @@ const App = () => {
             ></Route>
             <Route path="/accounts/signin" element={<Login></Login>}></Route>
             <Route path="/accounts/signup" element={<SignUp></SignUp>}></Route>
+            <Route path="/accounts/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
             <Route
               path="/certificates-check/:id"
               element={<Check_DiamondsDetails></Check_DiamondsDetails>}

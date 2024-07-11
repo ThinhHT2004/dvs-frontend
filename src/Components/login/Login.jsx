@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Navbar from '../Navbar/Navbar'
-import { Box, Grid, Paper, TextField , Button, Typography, Link, Card , CardHeader} from '@mui/material'
+import { Box, Grid, Paper, TextField, Button, Typography, Link, Card, CardHeader } from '@mui/material'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'sonner'
@@ -18,69 +18,69 @@ const Login = () => {
 
     const navigator = useNavigate();
 
-    const paperStyle = {padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px'}
+    const paperStyle = { padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px' }
 
-    function handleLogin(){
+    function handleLogin() {
         publicApi
-        .post('/auth/authenticate', {username: username, password: password})
-        .then(response => {
-            localStorage.setItem("token", response.data.token);
-            if(response.data.role === 'CUSTOMER'){
-                sessionStorage.setItem('username', username);
-                sessionStorage.setItem('customerId', response.data.id);
-                sessionStorage.setItem("role", response.data.role);       
-                navigator('/');
-                toast.success(response.data.mess);
-            }else if(response.data.role === 'CONSULTING_STAFF'){
-                sessionStorage.setItem("consultingStaffId", response.data.id);
-                sessionStorage.setItem("role", response.data.role);
-                toast.success(response.data.mess);
-                navigator('/consulting-staff/home');
-            }else if(response.data.role === 'VALUATION_STAFF'){
-                sessionStorage.setItem("valuationStaffId", response.data.id);
-                sessionStorage.setItem("role", response.data.role);
-                toast.success(response.data.mess);
-                navigator('/valuation-staff/diamonds-appraisal');
-            }else if(response.data.role === 'MANAGER'){
-                sessionStorage.setItem("managerId", response.data.id);
-                sessionStorage.setItem("role", response.data.role);
-                toast.success(response.data.mess);
-                navigator('/manager/receipt');
-            }else if(response.data.role === 'ADMIN'){
-                sessionStorage.setItem("adminId", response.data.id);
-                sessionStorage.setItem("role", response.data.role);
-                toast.success(response.data.mess);
-                navigator('/admin/home');
+            .post('/auth/authenticate', { username: username, password: password })
+            .then(response => {
+                localStorage.setItem("token", response.data.token);
+                if (response.data.role === 'CUSTOMER') {
+                    sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('customerId', response.data.id);
+                    sessionStorage.setItem("role", response.data.role);
+                    navigator('/');
+                    toast.success(response.data.mess);
+                } else if (response.data.role === 'CONSULTING_STAFF') {
+                    sessionStorage.setItem("consultingStaffId", response.data.id);
+                    sessionStorage.setItem("role", response.data.role);
+                    toast.success(response.data.mess);
+                    navigator('/consulting-staff/home');
+                } else if (response.data.role === 'VALUATION_STAFF') {
+                    sessionStorage.setItem("valuationStaffId", response.data.id);
+                    sessionStorage.setItem("role", response.data.role);
+                    toast.success(response.data.mess);
+                    navigator('/valuation-staff/diamonds-appraisal');
+                } else if (response.data.role === 'MANAGER') {
+                    sessionStorage.setItem("managerId", response.data.id);
+                    sessionStorage.setItem("role", response.data.role);
+                    toast.success(response.data.mess);
+                    navigator('/manager/receipt');
+                } else if (response.data.role === 'ADMIN') {
+                    sessionStorage.setItem("adminId", response.data.id);
+                    sessionStorage.setItem("role", response.data.role);
+                    toast.success(response.data.mess);
+                    navigator('/admin/home');
+                }
+                else {
+                    toast.error(response.data.mess);
+                }
             }
-            else{
-                toast.error(response.data.mess);
-            }
-        }        
-        )
-        .catch(error => toast.error(error));
+            )
+            .catch(error => toast.error(error));
     }
-  return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Toaster position="top-center" richColors></Toaster>
-        <Box>
-        <Navbar></Navbar>
-        </Box>
-        <Box 
-        marginTop={10}
-        marginBottom={5}
-        >
-        <Grid container display={'flex'} justifyContent={'center'} alignItems={'center'}>
-            
-            <Card component={Paper} sx={{width:400, padding: 5, margin: 5}} elevation={5}>
-                    <CardHeader 
-                    title="Sign In"
-                    titleTypographyProps={{variant:'h4' , align: 'center'}}
-                    />
-                    <Box padding={1}>
-                    <TextField label='Username' placeholder='Username' fullWidth required variant='standard' margin='normal' value={username} onChange={(e) => setUsername(e.target.value)}></TextField>
-                    </Box>
-                    <Box padding={1}>
-                    <FormControl
+    return (
+        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+            <Toaster position="top-center" richColors></Toaster>
+            <Box>
+                <Navbar></Navbar>
+            </Box>
+            <Box
+                marginTop={10}
+                marginBottom={5}
+            >
+                <Grid container display={'flex'} justifyContent={'center'} alignItems={'center'}>
+
+                    <Card component={Paper} sx={{ width: 400, padding: 5, margin: 5 }} elevation={5}>
+                        <CardHeader
+                            title="Sign In"
+                            titleTypographyProps={{ variant: 'h4', align: 'center' }}
+                        />
+                        <Box padding={1}>
+                            <TextField label='Username' placeholder='Username' fullWidth required variant='standard' margin='normal' value={username} onChange={(e) => setUsername(e.target.value)}></TextField>
+                        </Box>
+                        <Box padding={1}>
+                            <FormControl
                                 fullWidth
                                 required
                                 variant='standard'
@@ -90,7 +90,7 @@ const Login = () => {
                                     id="password"
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder='Password'
-                                    value={password} 
+                                    value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     endAdornment={
                                         <InputAdornment position="end" >
@@ -108,25 +108,29 @@ const Login = () => {
                                 />
                             </FormControl>
                         </Box>
-                    <Box padding={3} textAlign={'center'}>
-                        <Button variant="contained" sx={{background: '#69CEE2', borderRadius: '8px' }} onClick={() => handleLogin()} >Sign In</Button>
+                        <Box padding={3} textAlign={'center'}>
+                            <Button variant="contained" sx={{ background: '#69CEE2', borderRadius: '8px' }} onClick={() => handleLogin()} >Sign In</Button>
                         </Box>
 
-                    <Typography padding={3} textAlign={'center'}>
-                        Don't have an account? <Link href="/accounts/signup" underline='none'>Sign up</Link>
-                    </Typography>
-                
-                
-            </Card>
-            
-        </Grid>  
+                        <Typography padding={3} textAlign={'center'}>
+                            Don't have an account? <Link href="/accounts/signup" underline='none'>Sign up</Link>
+                        </Typography>
+
+                        <Typography padding={3} textAlign={'center'} sx={{marginTop: '-35px'}}>
+                            Forgot your password? <Link href="/accounts/resetpassword" underline='none'>Reset password</Link>
+                        </Typography>
+
+
+                    </Card>
+
+                </Grid>
+            </Box>
+            <Box>
+                <Footer></Footer>
+            </Box>
+
         </Box>
-        <Box>
-        <Footer></Footer>
-        </Box>
-              
-    </Box>
-  )
+    )
 }
 
 export default Login
