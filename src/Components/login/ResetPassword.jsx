@@ -16,7 +16,8 @@ import Footer from "../footer/Footer";
 import publicApi from "../../APIs/PublicApi";
 
 const ResetPassword = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const navigator = useNavigate();
 
@@ -33,9 +34,11 @@ const ResetPassword = () => {
       .catch((error) => console.error(error));
   }
 
-  function isValidEmail() {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  function checkFullFilled(){
+    if(username === ''){
+      return false;
+    }
+    return true;
   }
 
   return (
@@ -90,6 +93,7 @@ const ResetPassword = () => {
                 <Button
                   variant="outlined"
                   sx={{ borderRadius: '8px' }}
+                  color="error"
                   onClick={() => navigator("/accounts/signin")}
                 >
                   Cancel
