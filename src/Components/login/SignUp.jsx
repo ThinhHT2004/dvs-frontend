@@ -41,7 +41,6 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassowrd] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [signedUp, setSignedUp] = useState(false);
 
   function handleSignUp() {
     publicApi
@@ -57,9 +56,9 @@ const SignUp = () => {
       .then((response) => {
         console.log(response.data);
         if (response.data.code === 1) {
-          setSignedUp(true);
-          //toast.success("TEXT");
-          // navigator("/accounts/signin");
+          
+          
+          navigator("/accounts/verification");
         } else {
           return toast.error(response.data.mess);
         }
@@ -131,17 +130,7 @@ const SignUp = () => {
           justifyContent={"center"}
           alignItems={"center"}
         >
-          {signedUp ? ( // if signed up, show this message
-            <Box padding={5} >
-              <Typography variant="h4" align="center">
-                A verification mail has been sent to your mail address
-              </Typography>
-              <Typography variant="h5" align="center">
-                Please click on the link in your email to complete the sign-up process
-              </Typography>
-            </Box >
-          ) : (
-            <Card
+          <Card
               component={Paper}
               sx={{ width: 900, padding: 0, margin: 5, borderRadius: 2 }}
               elevation={5}
@@ -386,7 +375,7 @@ const SignUp = () => {
                   </Box>
                 </Grid>
               </Grid>
-            </Card>)}
+            </Card>
         </Grid>
       </Box>
       <Box sx={{ mt: "auto" }}>
