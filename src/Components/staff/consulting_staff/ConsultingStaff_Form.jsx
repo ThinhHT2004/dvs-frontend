@@ -107,14 +107,17 @@ const ConsultingStaff_Form = () => {
       }
     }
   }
+  console.log(totalPrice);
 
   function createReceipt(requestDetailList, requestId) {
     if (checkNegative(requestDetailList)) {
       toast.error("The size must not be negative");
     } else {
+      let data = new FormData();
+      data.append("total", totalPrice);
       protectedApi
         .post(
-          "/forms/create-receipt/" + requestId,
+          "/forms/create-receipt/" + requestId + "/" + totalPrice,
           requestDetailList
         )
         .then((resp) => {
