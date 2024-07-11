@@ -11,7 +11,7 @@ import {
   Card,
   FormHelperText,
 } from "@mui/material";
-import axios from "axios";
+// import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import Footer from "../footer/Footer";
@@ -58,6 +58,7 @@ const SignUp = () => {
         console.log(response.data);
         if (response.data.code === 1) {
           setSignedUp(true);
+          //toast.success("TEXT");
           // navigator("/accounts/signin");
         } else {
           return toast.error(response.data.mess);
@@ -114,9 +115,6 @@ const SignUp = () => {
 
     return emailRegex.test(email);
   }
-
-
-
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Toaster position="top-center" richColors></Toaster>

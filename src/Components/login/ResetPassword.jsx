@@ -13,7 +13,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import Footer from "../footer/Footer";
-import DiasecurWhiteLogo from "../../assets/DiasecurWhiteLogo.png";
 import publicApi from "../../APIs/PublicApi";
 
 const ResetPassword = () => {
@@ -22,7 +21,7 @@ const ResetPassword = () => {
   const navigator = useNavigate();
 
   function handleResetPassword() {
-    setSubmitted(true); // Set submitted to true immediately
+    setSubmitted(true); //
 
     publicApi
       .post("/auth/resetpassword", { email })
@@ -50,9 +49,6 @@ const ResetPassword = () => {
         marginBottom={5}
       >
         <Grid container display={'flex'} justifyContent={'center'} alignItems={'center'}>
-
-
-
           {submitted ? (
             <Box padding={5}>
               <Typography variant="h4" align="center">
