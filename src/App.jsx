@@ -31,6 +31,7 @@ import RolesAuthRoute from "./Components/route/RolesAuthRoute.jsx";
 import { ro } from "date-fns/locale";
 import ResetPassword from "./Components/login/ResetPassword.jsx";
 import ChangePassword from "./Components/login/ChangePassword.jsx";
+import WaitingVerification from "./Components/login/WaitingVerification.jsx";
 const App = () => {
   const roles = {
     ADMIN: "ADMIN",
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="/accounts/signup" element={<SignUp></SignUp>}></Route>
             <Route path="/accounts/resetpassword" element={<ResetPassword></ResetPassword>}></Route>
             <Route path="/accounts/newpassword" element={<ChangePassword></ChangePassword>}></Route>
+            <Route path="/accounts/verification" element={<WaitingVerification></WaitingVerification>}></Route>
             <Route
               path="/certificates-check/:id"
               element={<Check_DiamondsDetails></Check_DiamondsDetails>}
