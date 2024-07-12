@@ -135,6 +135,7 @@ const ResetPassword = () => {
               <Button
                 variant="outlined"
                 sx={{ borderRadius: '8px' }}
+                color="error"
                 onClick={() => navigator("/accounts/signin")}
               >
                 Cancel

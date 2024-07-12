@@ -1,6 +1,4 @@
 import React from 'react'
-import exPic from "../../assets/examplediamondpic.png";
-import Diamond_Proportions from "../../assets/Diamond_Proportions.png";
 import errorImage from "../../assets/empty_image.jpg";
 import { useLocation } from 'react-router-dom';
 import { Box, Button, Card, CardContent, CardHeader, Grid, Typography, Chip } from '@mui/material';
@@ -10,6 +8,7 @@ import moment from 'moment';
 const Check_DiamondsDetails = () => {
     const location = useLocation();
     const diamondDetails = location.state?.diamondDetails;
+    console.log(diamondDetails);
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <Box >
@@ -32,8 +31,7 @@ const Check_DiamondsDetails = () => {
                             alignItems="center"
                         >
                             <img
-                                // src={diamondDetails?.image || errorImage}
-                                src={exPic}
+                                src={diamondDetails?.image || errorImage}
                                 alt=""
                                 style={{ width: "450px", height: "450px", margin: 5 }}
                             />
