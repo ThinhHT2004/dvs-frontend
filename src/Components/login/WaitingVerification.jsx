@@ -11,36 +11,43 @@ import {
 } from "@mui/material";
 import Footer from "../footer/Footer";
 import publicApi from "../../APIs/PublicApi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
 
 const WaitingVerification = () => {
   const [token, setToken] = useState("");
-    const navigator = useNavigate();
+  const navigator = useNavigate();
+  const location = useLocation();
+  const type = location.state?.type
+  const username = location.state?.username
 
-  const confirmToken = async () =>{
-    try{
-        
-        await publicApi
-        .get("/auth/confirm/register/" + token)
-        .then(resp => {
-            console.log(resp.data);
-            if(resp.data.code === 1){
-                navigator('/accounts/signin');
-            }else{
-                
-                toast.error(resp.data.text);
-            }
-        })
-    }catch(err){
-        console.log(err);
+  console.log(username)
+  console.log(type)
+
+  const confirmToken = async () => {
+    try {
+      await publicApi.get("/auth/confirm/" + type + "/" + token).then((resp) => {
+        console.log(resp.data);
+        if (resp.data.code === 1) {
+          if(resp.data.type === 'Register'){
+            navigator("/accounts/signin");
+          }else{
+            navigator("/accounts/newpassword", {
+              state: {username}
+            });
+          }
+        } else {
+          toast.error(resp.data.text);
+        }
+      });
+    } catch (err) {
+      console.log(err);
     }
-  }
-
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-        <Toaster position="top-center" richColors></Toaster>
+      <Toaster position="top-center" richColors></Toaster>
       <Box>
         <Navbar></Navbar>
       </Box>
@@ -75,7 +82,9 @@ const WaitingVerification = () => {
               />
             </Box>
             <Box padding={3} textAlign={"center"}>
-              <Button variant="contained" onClick={() => confirmToken()}>Verify</Button>
+              <Button variant="contained" onClick={() => confirmToken()}>
+                Verify
+              </Button>
             </Box>
           </Card>
         </Grid>

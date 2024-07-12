@@ -15,7 +15,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Toaster, toast } from "sonner";
 import Footer from "../footer/Footer";
 import publicApi from "../../APIs/PublicApi";
@@ -23,20 +23,21 @@ import publicApi from "../../APIs/PublicApi";
 const ResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [submitted, setSubmitted] = useState(false);
   const navigator = useNavigate();
+  const location = useLocation();
+  const username = location.state?.username
 
   function handleResetPassword() {
     publicApi
-      .post("/auth/resetpassword", { password, confirmPassword})
+      .put("/auth/change-password", { username,password})
       .then((response) => {
         if (response.data.code === 1) {
-          toast.success("Updated password successfully");
+          toast.success("Updated password successfully", {timeOut: 1000});
+          navigator("/accounts/signin");
         } else {
-          toast.error(response.data.message);
+          toast.error(response.data.mess);
         }
       })
       .catch((error) => console.error(error));
@@ -100,7 +101,6 @@ const ResetPassword = () => {
                   value={confirmPassword}
                   onChange={(e) => {
                     setConfirmPassword(e.target.value);
-                    checkFullFilled();
                   }}
                   endAdornment={
                     <InputAdornment position="end">

@@ -17,18 +17,19 @@ import publicApi from "../../APIs/PublicApi";
 
 const ResetPassword = () => {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
   const navigator = useNavigate();
+  const type = 'reset'
 
   function handleResetPassword() {
-    setSubmitted(true); //
+  
 
     publicApi
-      .post("/auth/resetpassword", { email })
+      .get("/auth/send-verification/" + username)
       .then((response) => {
-        if (response.data.code !== 1) {
-          toast.error(response.data.message);
+        if (response.data === 1) {
+          navigator("/accounts/verification", {
+            state: {type: type, username: username}
+          });
         }
       })
       .catch((error) => console.error(error));
@@ -52,34 +53,20 @@ const ResetPassword = () => {
         marginBottom={5}
       >
         <Grid container display={'flex'} justifyContent={'center'} alignItems={'center'}>
-          {submitted ? (
-            <Box padding={5}>
-              <Typography variant="h4" align="center">
-                A reset password link has been sent to your email address
-              </Typography>
-              <Typography variant="h5" align="center">
-                Please check your email to reset your password
-              </Typography>
-            </Box>
-          ) : (
-            <Card component={Paper} sx={{ width: 400, padding: 5, margin: 5 }} elevation={5}>
+        <Card component={Paper} sx={{ width: 400, padding: 5, margin: 5 }} elevation={5}>
               <CardHeader
                 title="Reset Password"
                 titleTypographyProps={{ variant: 'h4', align: 'center' }}
               />
               <Box padding={1}>
                 <TextField
-                  error={email !== "" && !isValidEmail()}
-                  helperText={
-                    email !== "" && !isValidEmail() ? "Email is invalid" : ""
-                  }
-                  label="Email"
-                  placeholder="Email"
+                  label="Username"
+                  placeholder="Username"
                   fullWidth
                   required
                   variant="standard"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 ></TextField>
               </Box>
               <Box padding={3} textAlign={'center'}>
@@ -88,7 +75,7 @@ const ResetPassword = () => {
                   sx={{ background: '#69CEE2', borderRadius: '8px', marginRight: 1 }}
                   onClick={handleResetPassword}
                 >
-                  Reset
+                  Send
                 </Button>
                 <Button
                   variant="outlined"
@@ -100,7 +87,6 @@ const ResetPassword = () => {
                 </Button>
               </Box>  
             </Card>
-          )}
         </Grid>
       </Box>
       <Box sx={{ mt: "auto" }}>

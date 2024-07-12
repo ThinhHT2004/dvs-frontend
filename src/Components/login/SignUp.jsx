@@ -41,6 +41,7 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassowrd] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const type = 'register';
 
   function handleSignUp() {
     publicApi
@@ -58,7 +59,9 @@ const SignUp = () => {
         if (response.data.code === 1) {
           
           
-          navigator("/accounts/verification");
+          navigator("/accounts/verification", {
+            state: {type}
+          });
         } else {
           return toast.error(response.data.mess);
         }
