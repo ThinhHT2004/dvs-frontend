@@ -8,7 +8,7 @@ import testFooter from '../../assets/testFooter.png'
 const Footer = () => {
     return (
         <Box
-        overflow={'hidden'}
+            overflow={'hidden'}
         >
             <Box sx={{
                 padding: 3,
@@ -19,6 +19,10 @@ const Footer = () => {
                 alignItems: 'center',
                 backgroundColor: '#f5f5f5',
                 backgroundImage: `url(${testFooter})`,
+                backgroundSize: 'contain', // Changed from 'cover' to 'contain'
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                width: '100%', // Ensure the Box takes the full width of its parent
             }}>
                 <Box display='flex' justifyContent='flex-end' width='100%'>
 
