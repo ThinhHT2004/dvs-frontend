@@ -54,7 +54,7 @@ const Banner = () => {
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
                         <Button sx={Style.Button} variant="contained" onClick={() => navigator('/calculate')}>Calculate price</Button>
-                        <Button sx={Style.Button} variant="contained" onClick={() => navigator('/diamond-check')}>Check your diamond</Button>
+                        <Button sx={Style.Button} variant="contained" onClick={() => navigator('/certificates-check')}>Check Certificates</Button>
                     </Box>
                 </animated.div>
             </Box>

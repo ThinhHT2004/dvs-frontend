@@ -30,7 +30,6 @@ const ConsultingStaff_IncommingRequest = () => {
   useEffect(() => {
     getAllWaitingRequests();
   }, []);
- 
   const { waitingRequests, getAllWaitingRequests } = useRequests();
   const acceptRequest = (requestId) => {
     protectedApi
@@ -42,8 +41,6 @@ const ConsultingStaff_IncommingRequest = () => {
       })
       .catch((err) => console.log(err));
   };
-
-
   return (
     <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF",width: "100%", minHeight: "100vh"}}>
       <Box>

@@ -13,24 +13,24 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow,
     Paper,
     TableFooter,
-
+    Avatar,
+    Stack,
 } from "@mui/material";
-import WelcomeImg from "../../../assets/welcome_Img.png";
 import StaffDrawer from "../StaffDrawer";
 import { useRequests } from "../consulting_staff/RequestContext";
 import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
 import protectedApi from '../../../APIs/ProtectedApi';
-import { ca } from 'date-fns/locale';
 import { toast, Toaster } from 'sonner';
 import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
-import { SmsFailedTwoTone } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-
+import ReceiptIcon from '@mui/icons-material/Receipt';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import { BarChart } from '@mui/x-charts/BarChart';
 function LinearProgressWithLabel(props) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -49,32 +49,42 @@ function LinearProgressWithLabel(props) {
 LinearProgressWithLabel.propTypes = {
     value: PropTypes.number.isRequired,
 };
-
+function formatPrice(price) {
+    const numPrice = Number(price);
+    if (numPrice >= 1000000) {
+        return `${(numPrice / 1000000).toFixed(1)}tr`;
+    } else if (numPrice >= 1000) {
+        return numPrice.toLocaleString('vi-VN');
+    } else {
+        return numPrice.toString();
+    }
+}
 const Admin_Home = () => {
+    const { acceptedRequests, getAllAcceptedRequests } = useRequests();
+    const { waitingRequests, getAllWaitingRequests } = useRequests();
+
     const drawerWidth = 240;
-    const staffID = sessionStorage.getItem("adminId");
-    const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
-    const { waitingRequests, getAllWaitingRequests } = useRequests([]);
     const [statusData, setStatusData] = useState([]);
-    const [fileContent, setFileContent] = useState('');
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(0);
-    const [loading, setLoading] = useState(false);
     const [dbLoading, setDbLoading] = useState(false);
     const [formattedList, setFormattedList] = useState([]);
-    const [staff, setStaff] = useState({});
     const [staffs, setStaffs] = useState([]);
     const [services, setServices] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [forms, setForms] = useState([]);
+    const [quantity, setQuantity] = useState([]);
+    const [appointment, setAppointment] = useState([]);
     useEffect(() => {
-        const fetchData = async () => {
-            await getAllAcceptedRequests();
-            await getAllWaitingRequests();
-            await getStatusData();
-            await getStaffInfor();
-            await getStaffs();
-            await getServices();
-        };
-        fetchData().catch(console.error);
+        getAllAcceptedRequests();
+        getAllWaitingRequests();
+        getStaffs();
+        getServices();
+        getCustomers();
+        getForms();
+    }, []);
+    useEffect(() => {
+        getStatusData();
     }, [acceptedRequests, waitingRequests]);
     const getServices = async () => {
         try {
@@ -82,14 +92,6 @@ const Admin_Home = () => {
             setServices(resp.data);
         } catch (err) {
             console.log(err);
-        }
-    };
-    const getStaffInfor = async () => {
-        try {
-            const response = await protectedApi.get("/staffs/" + staffID);
-            setStaff(response.data);
-        } catch (error) {
-            console.error(error);
         }
     };
     const getStatusData = async () => {
@@ -108,6 +110,28 @@ const Admin_Home = () => {
                 value: statusCounts[key],
             }));
             setStatusData(formattedStatusData);
+            const sortedWaitingRequests = waitingRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
+            const sortedAcceptedRequests = acceptedRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
+            const mergedRequests = [...sortedWaitingRequests, ...sortedAcceptedRequests];
+            const requestCountByDate = mergedRequests.reduce((acc, { requestDate }) => {
+                const date = new Date(requestDate).toDateString();
+                acc[date] = (acc[date] || 0) + 1;
+                return acc;
+            }, {});
+            const formattedRequestCountByDate = Object.keys(requestCountByDate).map(date => ({
+                date,
+                quantity: requestCountByDate[date],
+            }));
+            const formattedQuantity = formattedRequestCountByDate.map(request => request.quantity);
+            const formattedAppointment = formattedRequestCountByDate.map(request => {
+                const date = new Date(request.date);
+                const day = date.getDate().toString().padStart(2, '0');
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            });
+            setQuantity(formattedQuantity);
+            setAppointment(formattedAppointment);
         } catch (error) {
             console.error(error);
         }
@@ -136,41 +160,45 @@ const Admin_Home = () => {
         const file = event.target.files[0];
         if (file) {
             setFile(file);
-            setLoading(true);
+            // setLoading(true);
             const reader = new FileReader();
-            reader.onloadstart = () => {
-                setProgress(0);
-            };
-            reader.onprogress = (data) => {
-                if (data.lengthComputable) {
-                    const progress = Math.round((data.loaded / data.total) * 100);
-                    setProgress(progress);
-                }
-            };
-            reader.onloadend = (e) => {
-                const content = e.target.result;
-                setFileContent(content);
-                setLoading(false);
-                setProgress(100);
-                formatFileContent(content);
-            };
+            // reader.onloadstart = () => {
+            //     setProgress(0);
+            // };
+            // reader.onprogress = (data) => {
+            //     if (data.lengthComputable) {
+            //         const progress = Math.round((data.loaded / data.total) * 100);
+            //         setProgress(progress);
+            //     }
+            // };
+            // reader.onloadend = (e) => {
+            //     const content = e.target.result;
+            //     setFileContent(content);
+            //     // setLoading(false);
+            //     setProgress(100);
+            //     formatFileContent(content);
+            // };
             reader.readAsText(file);
         }
     };
-
-    const formatFileContent = (content) => {
-        const lines = content.split('\n');
-        const keys = ["price", "shape", "carat_weight", "color", "clarity", "polish", "fluorescence", "symmetry", "cut", "measurement", "origin", "source", "proportion"];
-        const formattedData = lines.map(line => {
-            const values = line.split(',').map(item => item.trim());
-            let formattedItem = {};
-            keys.forEach((key, index) => {
-                formattedItem[key] = values[index];
-            });
-            return formattedItem;
-        });
-        setFormattedList(formattedData);
+    const getForms = async () => {
+        try {
+            const resp = await protectedApi.get("/forms/receipt");
+            setForms(resp.data);
+        } catch (err) {
+            console.log(err);
+        }
     };
+    const getCustomers = async () => {
+        try {
+            const resp = await protectedApi.get("/customers/all");
+            setCustomers(resp.data);
+        } catch (err) {
+            console.log(err);
+        }
+    }; 
+    console.log(waitingRequests);
+    console.log(forms);
 
     const handleAddToDb = async () => {
         setDbLoading(true);
@@ -207,7 +235,6 @@ const Admin_Home = () => {
             });
         }, intervalTime);
     };
-
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
             <Toaster position='top-center' richColors></Toaster>
@@ -232,133 +259,150 @@ const Admin_Home = () => {
                 }}
             >
                 <Grid container spacing={5}>
-                    <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                        <Card sx={{ borderRadius: 3 }}>
-                            <CardContent>
-                                <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>{staff.lastName} {staff.firstName}</span></Typography>
-                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
-                                </Box>
-                            </CardContent>
-                        </Card>
-                        <Card sx={{ borderRadius: 3, marginTop: 5 }}>
-                            <CardHeader
-                                title="FILE UPLOAD"
-                                titleTypographyProps={{ variant: 'h6', color: 'white' }}
-                                sx={{ backgroundColor: "#30D5C8" }}
-                            />
-                            <CardContent>
-                                <input type="file" accept=".txt" onChange={handleFileChange} />
-                                {loading && <LinearProgressWithLabel value={progress} />}
-                                {fileContent && (
-                                    <Box sx={{ mt: 2 }}>
-                                        <Button
-                                            variant="contained"
-                                            sx={{ mt: 2 }}
-                                            onClick={handleAddToDb}
-                                            disabled={dbLoading}
-                                        >
-                                            Add to Database
-                                        </Button>
-                                        {dbLoading && <LinearProgressWithLabel value={progress} />}
-                                    </Box>
-                                )}
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                        <Card sx={{ borderRadius: 3 }}>
-                            <CardHeader
-                                title="REQUESTS STATUS"
-                                titleTypographyProps={{ variant: 'h6', color: 'white' }}
-                                sx={{ backgroundColor: "#30D5C8" }}
-                            />
-                            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                                <PieChart
-                                    series={[
-                                        {
-                                            data: statusData,
-                                            innerRadius: 80,
-                                            outerRadius: 120,
-                                            cx: 200,
-                                        },
-                                    ]}
-                                    height={300}
+                    <Grid item lg={12} xl={12} md={12} sm={12} xs={12}
+                        container
+                        spacing={4}
+                    >
+                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                            <Card sx={{ borderRadius: 3, height: 150 }}>
+                                <CardContent>
+                                    <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
+                                        <Stack spacing={1}>
+                                            <Typography color="text.secondary" variant="h5">
+                                                Total Profit
+                                            </Typography>
+                                            <Typography variant="h2">
+                                                {formatPrice(forms.reduce((acc, form) => acc + parseFloat(form.note), 0).toString())}
+                                            </Typography>
+                                        </Stack>
+                                        <Avatar sx={{ backgroundColor: '#30D5C8', height: '70px', width: '70px' }}>
+                                            <ReceiptIcon fontSize='large' />
+                                        </Avatar>
+                                    </Stack>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                            <Card sx={{ borderRadius: 3, height: 150 }}>
+                                <CardContent>
+                                    <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
+                                        <Stack spacing={1}>
+                                            <Typography color="text.secondary" variant="h5">
+                                                Total Customers
+                                            </Typography>
+                                            <Typography variant="h2"> {customers.length}</Typography>
+                                        </Stack>
+                                        <Avatar sx={{ backgroundColor: '#30D5C8', height: '70px', width: '70px' }}>
+                                            <PeopleAltIcon fontSize='large' />
+                                        </Avatar>
+                                    </Stack>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                            <Card sx={{ borderRadius: 3, height: 150 }}>
+                                <CardContent>
+                                    <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
+                                        <Stack spacing={1}>
+                                            <Typography color="text.secondary" variant="h5">
+                                                Total Requests
+                                            </Typography>
+                                            <Typography variant="h2">
+                                                {acceptedRequests.length + waitingRequests.length}
+                                            </Typography>
+                                        </Stack>
+                                        <Avatar sx={{ backgroundColor: '#30D5C8', height: '70px', width: '70px' }}>
+                                            <RequestQuoteIcon fontSize='large' />
+                                        </Avatar>
+                                    </Stack>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                            <Card sx={{ borderRadius: 3, height: 150 }}>
+                                <CardHeader
+                                    title="FILE UPLOAD"
+                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
+                                    sx={{ backgroundColor: "#30D5C8" }}
                                 />
-                            </Box>
-                        </Card>
-                        <Card sx={{ borderRadius: 3, marginTop: 5 }}>
-                            <CardHeader
-                                title="REQUESTS STATISTICS"
-                                titleTypographyProps={{ variant: 'h6', color: 'white' }}
-                                sx={{ backgroundColor: "#30D5C8" }}
-                            />
-                            <CardContent>
-                                <Box>
-                                    <Typography variant="h5">Finished Requests</Typography>
-                                    <SparkLineChart
-                                        data={[1, 4, 2, 5, 7, 2, 4, 6]}
-                                        xAxis={{
-                                            scaleType: 'time',
-                                            data: [
-                                                new Date(2022, 5, 1),
-                                                new Date(2022, 5, 2),
-                                                new Date(2022, 5, 5),
-                                                new Date(2022, 5, 6),
-                                                new Date(2022, 5, 7),
-                                                new Date(2022, 5, 8),
-                                                new Date(2022, 5, 11),
-                                                new Date(2022, 5, 12),
-                                            ],
-                                        }}
-                                        height={100}
-                                        showTooltip
-                                        showHighlight
-                                    />
-                                </Box>
-                                <Box>
-                                    <Typography variant="h5">Waiting Requests</Typography>
-                                    <SparkLineChart
-                                        data={[1, 4, 2, 5, 7, 2, 4, 6]}
-                                        xAxis={{
-                                            scaleType: 'time',
-                                            data: [
-                                                new Date(2022, 5, 1),
-                                                new Date(2022, 5, 2),
-                                                new Date(2022, 5, 5),
-                                                new Date(2022, 5, 6),
-                                                new Date(2022, 5, 7),
-                                                new Date(2022, 5, 8),
-                                                new Date(2022, 5, 11),
-                                                new Date(2022, 5, 12),
-                                            ],
-                                        }}
-                                        height={100}
-                                        showTooltip
-                                        showHighlight
-                                    />
-                                </Box>
-                            </CardContent>
-                        </Card>
+                                <CardContent>
+                                    <input type="file" accept=".txt" onChange={handleFileChange} />
+                                    <Grid container>
+                                        <Grid item lg={10} xl={10} md={10} sm={10} xs={10}>
+                                            {dbLoading && <LinearProgressWithLabel value={progress} />}
+                                        </Grid>
+                                        <Grid item lg={2} xl={2} md={2} sm={2} xs={2}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{ backgroundColor: "#30D5C8", color: "white" }}
+                                                onClick={handleAddToDb}
+                                            >
+                                                Add
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                            </Card>
+                        </Grid>
                     </Grid>
                     <Grid item lg={12} xl={12} md={12} sm={12} xs={12}
                         container
-                        spacing={2}
+                        spacing={4}
+                    >
+                        <Grid item lg={4} xl={4} md={4} sm={4} xs={4}>
+                            <Card sx={{ borderRadius: 3 , height: '100%'}}>
+                                <CardHeader
+                                    title="REQUESTS STATUS"
+                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
+                                    sx={{ backgroundColor: "#30D5C8" }}
+                                />
+                                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                    <PieChart
+                                        series={[
+                                            {
+                                                data: statusData,
+                                                innerRadius: 80,
+                                                outerRadius: 120,
+                                                cx: 200,
+                                            },
+                                        ]}
+                                        height={300}
+                                    />
+                                </Box>
+                            </Card>
+                        </Grid>
+                        <Grid item lg={8} xl={8} md={8} sm={8} xs={8}>
+                            <Card sx={{ borderRadius: 3 }}>
+                                <CardHeader
+                                    title="REQUESTS STATISTICS"
+                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
+                                    sx={{ backgroundColor: "#30D5C8" }}
+                                />
+                                <CardContent>
+                                    <BarChart
+                                        xAxis={[{ scaleType: 'band', data: appointment }]}
+                                        series={[{ data: quantity }]}
+                                        width={1000}
+                                        height={300}
+
+                                    />
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
+
+                    <Grid item lg={12} xl={12} md={12} sm={12} xs={12}
+                        container
+                        spacing={4}
                     >
                         <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                            <TableContainer component={Paper} sx={{borderRadius: 3}}>
+                            <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
                                 <CardHeader
                                     title="STAFFS"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
                                     sx={{ backgroundColor: "#30D5C8" }}
                                 />
-                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell sx={{ fontSize: 20, color: '#69CEE2' }}>Staff Name</TableCell>
-                                            <TableCell align="right" sx={{ fontSize: 20, color: '#69CEE2' }}>Role</TableCell>
-                                        </TableRow>
-                                    </TableHead>
+                                <Table>
                                     <TableBody>
                                         {staffs.map((staff) => (
                                             <TableRow
@@ -382,24 +426,19 @@ const Admin_Home = () => {
                             </TableContainer>
                         </Grid>
                         <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                            <TableContainer component={Paper} sx={{borderRadius: 3}}>
+                            <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
                                 <CardHeader
                                     title="SERVICES"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
                                     sx={{ backgroundColor: "#30D5C8" }}
                                 />
                                 <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell sx={{ fontSize: 20, color: '#69CEE2' }}>Service Name</TableCell>
-                                        </TableRow>
-                                    </TableHead>
                                     <TableBody>
                                         {services.map((service) => (
                                             <TableRow
                                                 key={service.id}
                                             >
-                                                <TableCell component="th" scope="row">{service.serviceName}</TableCell>
+                                                <TableCell component="th" scope="row">{service.name}</TableCell>
                                             </TableRow>
                                         ))}
                                     </TableBody>
