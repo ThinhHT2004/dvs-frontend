@@ -34,10 +34,10 @@ import { BarChart } from '@mui/x-charts/BarChart';
 function LinearProgressWithLabel(props) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ width: '100%', mr: 1 }}>
+            <Box sx={{ width: 'auto', mr: 1 }}>
                 <LinearProgress variant="determinate" {...props} />
             </Box>
-            <Box sx={{ minWidth: 35 }}>
+            <Box >
                 <Typography variant="body2" color="text.secondary">{`${Math.round(
                     props.value,
                 )}%`}</Typography>
@@ -268,7 +268,7 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
                                         <Stack spacing={1}>
-                                            <Typography color="text.secondary" variant="h5">
+                                            <Typography color="text.secondary" variant="h6">
                                                 Total Profit
                                             </Typography>
                                             <Typography variant="h2">
@@ -287,7 +287,7 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
                                         <Stack spacing={1}>
-                                            <Typography color="text.secondary" variant="h5">
+                                            <Typography color="text.secondary" variant="h6">
                                                 Total Customers
                                             </Typography>
                                             <Typography variant="h2"> {customers.length}</Typography>
@@ -304,7 +304,7 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
                                         <Stack spacing={1}>
-                                            <Typography color="text.secondary" variant="h5">
+                                            <Typography color="text.secondary" variant="h6">
                                                 Total Requests
                                             </Typography>
                                             <Typography variant="h2">
@@ -327,11 +327,13 @@ const Admin_Home = () => {
                                 />
                                 <CardContent>
                                     <input type="file" accept=".txt" onChange={handleFileChange} />
-                                    <Grid container>
-                                        <Grid item lg={10} xl={10} md={10} sm={10} xs={10}>
+                                    <Grid container
+                                    spacing={0}
+                                    >
+                                        <Grid item lg={9} xl={9} md={9} sm={9} xs={9}>
                                             {dbLoading && <LinearProgressWithLabel value={progress} />}
                                         </Grid>
-                                        <Grid item lg={2} xl={2} md={2} sm={2} xs={2}>
+                                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
                                             <Button
                                                 variant="contained"
                                                 sx={{ backgroundColor: "#30D5C8", color: "white" }}
@@ -364,15 +366,24 @@ const Admin_Home = () => {
                                                 innerRadius: 80,
                                                 outerRadius: 120,
                                                 cx: 200,
+                                                
                                             },
                                         ]}
-                                        height={300}
+                                        slotProps={{
+                                            legend: {
+                                              direction: 'row',
+                                              position: { vertical: 'bottom', horizontal: 'middle' },
+                                              padding: 10,
+                                              
+                                            },
+                                          }}
+                                        height={400}
                                     />
                                 </Box>
                             </Card>
                         </Grid>
                         <Grid item lg={8} xl={8} md={8} sm={8} xs={8}>
-                            <Card sx={{ borderRadius: 3 }}>
+                            <Card sx={{ borderRadius: 3, height: '100%'}}>
                                 <CardHeader
                                     title="REQUESTS STATISTICS"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
@@ -382,9 +393,7 @@ const Admin_Home = () => {
                                     <BarChart
                                         xAxis={[{ scaleType: 'band', data: appointment }]}
                                         series={[{ data: quantity }]}
-                                        width={1000}
-                                        height={300}
-
+                                        height={400}
                                     />
                                 </CardContent>
                             </Card>
