@@ -21,7 +21,10 @@ const Login = () => {
     const paperStyle = { padding: 20, height: '70vh', width: 350, margin: "20px auto", marginTop: '150px' }
 
     function handleLogin() {
-        publicApi
+        if(username === '' || password === ''){
+            toast.error("Username or Password must not be empty");
+        }else{
+            publicApi
             .post('/auth/authenticate', { username: username, password: password })
             .then(response => {
                 localStorage.setItem("token", response.data.token);
@@ -29,28 +32,38 @@ const Login = () => {
                     sessionStorage.setItem('username', username);
                     sessionStorage.setItem('customerId', response.data.id);
                     sessionStorage.setItem("role", response.data.role);
-                    navigator('/');
                     toast.success(response.data.mess);
+                    setTimeout(() =>{
+                        navigator('/');
+                    }, 1000);
                 } else if (response.data.role === 'CONSULTING_STAFF') {
                     sessionStorage.setItem("consultingStaffId", response.data.id);
                     sessionStorage.setItem("role", response.data.role);
                     toast.success(response.data.mess);
-                    navigator('/consulting-staff/home');
+                    setTimeout(() =>{
+                        navigator('/consulting-staff/home');
+                    }, 1000)
                 } else if (response.data.role === 'VALUATION_STAFF') {
                     sessionStorage.setItem("valuationStaffId", response.data.id);
                     sessionStorage.setItem("role", response.data.role);
                     toast.success(response.data.mess);
-                    navigator('/valuation-staff/diamonds-appraisal');
+                    setTimeout(() =>{
+                        navigator('/valuation-staff/diamonds-appraisal');
+                    }, 1000)
                 } else if (response.data.role === 'MANAGER') {
                     sessionStorage.setItem("managerId", response.data.id);
                     sessionStorage.setItem("role", response.data.role);
                     toast.success(response.data.mess);
-                    navigator('/manager/receipt');
+                    setTimeout(() =>{
+                        navigator('/manager/receipt');
+                    }, 1000)
                 } else if (response.data.role === 'ADMIN') {
                     sessionStorage.setItem("adminId", response.data.id);
                     sessionStorage.setItem("role", response.data.role);
                     toast.success(response.data.mess);
-                    navigator('/admin/home');
+                    setTimeout(() =>{
+                        navigator('/admin/home');
+                    }, 1000)
                 }
                 else {
                     toast.error(response.data.mess);
@@ -58,6 +71,8 @@ const Login = () => {
             }
             )
             .catch(error => toast.error(error));
+        }
+        
     }
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
