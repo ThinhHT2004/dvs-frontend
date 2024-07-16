@@ -98,8 +98,11 @@ export const admin_navigator = (text, navigate) => {
     case 'Services':
       navigate('/admin/services');
       break;
-    case 'Accounts':
-      navigate('/admin/accounts');
+    case 'Staffs':
+      navigate('/admin/staffs');
+      break;
+    case 'Customers':
+      navigate('/admin/customers');
       break;
     case "Sign Out":
       handleSignOut(navigate);

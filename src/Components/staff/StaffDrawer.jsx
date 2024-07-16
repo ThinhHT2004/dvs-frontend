@@ -32,6 +32,7 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import LibraryAddCheckIcon from '@mui/icons-material/LibraryAddCheck';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SourceIcon from '@mui/icons-material/Source';
+import GroupIcon from '@mui/icons-material/Group';
 const drawerWidth = 260;
 
 const openedMixin = (theme) => ({
@@ -97,8 +98,9 @@ const iconMapping = {
   "Calculate": <CalculateIcon />,
   "Check Certificates": <LibraryAddCheckIcon />,
   "Settings": <ManageAccountsIcon />,
-  "Accounts": <ManageAccountsIcon />,
+  "Staffs": <ManageAccountsIcon />,
   "Vault": <SourceIcon />,
+  "Customers": <GroupIcon />,
 };
 
 const StaffDrawer = ({ mylist, state, handleClick, badgeCount }) => {

@@ -89,7 +89,8 @@ const Admin_Home = () => {
     const getServices = async () => {
         try {
             const resp = await protectedApi.get("/services/");
-            setServices(resp.data);
+            const filterdServices = resp.data.filter(service => service.active === true);
+            setServices(filterdServices);
         } catch (err) {
             console.log(err);
         }
@@ -197,9 +198,6 @@ const Admin_Home = () => {
             console.log(err);
         }
     }; 
-    console.log(waitingRequests);
-    console.log(forms);
-
     const handleAddToDb = async () => {
         setDbLoading(true);
         setProgress(0);
@@ -426,7 +424,7 @@ const Admin_Home = () => {
                                         <TableRow>
                                             <TableCell></TableCell>
                                             <TableCell align='right'>
-                                                <Link to="/admin/accounts" color='black'>View All</Link>
+                                                <Link to="/admin/staffs" color='black'>View All</Link>
                                             </TableCell>
                                         </TableRow>
                                     </TableFooter>

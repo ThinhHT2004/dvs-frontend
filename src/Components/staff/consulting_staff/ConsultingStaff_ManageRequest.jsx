@@ -5,11 +5,8 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
-  IconButton,
   Collapse,
-  Link,
   Button,
   Grid,
   Typography,
@@ -23,29 +20,130 @@ import {
   CardHeader,
   CardContent,
   Input,
-  CardActionArea,
-  CardActions,
   ListItem,
   ListItemText,
-  colors,
   List,
+  TableFooter,
+  TablePagination,
+  Menu,
+
 } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
 import StaffDrawer from "../StaffDrawer";
 import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import axios from "axios";
 import moment from "moment";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
 import { useRequests } from "./RequestContext";
 import protectedApi from "../../../APIs/ProtectedApi";
-import { de } from "date-fns/locale";
 import { toast } from "sonner";
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import FilterListIcon from '@mui/icons-material/FilterList';
+//TablePaginationActions
+function TablePaginationActions(props) {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange, onFilterChange } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [filter, setFilter] = useState('');
 
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleFilterChange = (value) => {
+    setFilter(value);
+    onFilterChange(value);
+    handleMenuClose();
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5, display: 'flex' }}>
+      <Button onClick={handleMenuOpen} startIcon={<FilterListIcon />}
+        sx={{ textTransform: 'none', fontFamily: 'arial-label', fontSize: 16 , color: '#000000DE'}}
+      >
+        Filter
+      </Button>
+       <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={ () => handleFilterChange('')}>All</MenuItem>
+        <MenuItem onClick={ () => handleFilterChange("PROCESSING")}>Processing</MenuItem>
+        <MenuItem onClick={ () => handleFilterChange('RECEIVED')}>Received</MenuItem>
+        <MenuItem onClick={() => handleFilterChange('FINISHED')}>Finish</MenuItem>
+      </Menu>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
+};
+//End of TablePaginationActions
 
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
+  const [filter, setFilter] = useState('');
   useEffect(() => {
     getAllAcceptedRequests();
   }, []);
@@ -92,6 +190,29 @@ const ConsultingStaff_ManageRequest = () => {
   const [clarityImageUrl, setClarityImageUrl] = useState("");
   const [diamondImageUrl, setDiamondImageUrl] = useState("");
   const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
+  const filteredRequests = acceptedRequests.filter((request) => {
+    if (!filter) return true;
+    console.log(filter);
+    return request.status === filter;
+  });
+  // Need to under the acceptedRequests data structure to implement the following function
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setPage(0); // Reset to first page when filter changes
+  };
+  //End of TablePaginationActions
 
   const valuationReport = {
     measurement: measurement,
@@ -204,16 +325,16 @@ const ConsultingStaff_ManageRequest = () => {
     }
   }
 
-  async function denySample(sample){
+  async function denySample(sample) {
     console.log(sample);
-    try{
+    try {
       await protectedApi.
-      put("/request-detail/deny/" + sample.id)
-      .then(resp => {
-        toast.success("Sample Denied")
-        getAllAcceptedRequests();
-      })
-    }catch(err){
+        put("/request-detail/deny/" + sample.id)
+        .then(resp => {
+          toast.success("Sample Denied")
+          getAllAcceptedRequests();
+        })
+    } catch (err) {
       console.log(err);
     }
   }
@@ -910,10 +1031,36 @@ const ConsultingStaff_ManageRequest = () => {
                       <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
                       <TableCell sx={{ width: 100 }}></TableCell>
                     </TableRow>
-                    {acceptedRequests.map((row) => (
+                    {(rowsPerPage > 0 ? filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredRequests).map((row) => (
                       <Row key={row.id} row={row} />
                     ))}
+                    {/* check emptyRows */}
                   </TableBody>
+                  {/* TablePagination need to be in the Table component and out of the TableBody */}
+                  <TableFooter>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+
+                      <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                        colSpan={7}
+                        count={filteredRequests.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        slotProps={{
+                          select: {
+                            inputProps: {
+                              'aria-label': 'rows per page',
+                            },
+                            native: true,
+                          },
+                        }}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        ActionsComponent={(subprops) => <TablePaginationActions {...subprops} onFilterChange={handleFilterChange} />}
+                      />
+
+                    </TableRow>
+                  </TableFooter>
                 </Table>
               </TableContainer>
             </Box>

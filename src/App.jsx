@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./Components/homepage/HomePage";
 import DiamondAppraisal from "./Components/appraisal/DiamondAppraisal";
 import Login from "./Components/login/Login";
@@ -17,7 +17,6 @@ import ConsultingStaff_Report from "./Components/staff/consulting_staff/Consulti
 import ConsultingStaff_Form from "./Components/staff/consulting_staff/ConsultingStaff_Form.jsx";
 // import Vault_Home from "./Components/vault/Vault_Home.jsx";
 import Vault_Appointment from "./Components/vault/Vault_Appointment.jsx";
-import Vault_PriceAlert from "./Components/vault/Vault_PriceAlert.jsx";
 import Vault_Settings from "./Components/vault/Vault_Settings.jsx";
 import Calculate from "./Components/calculate/Calculate.jsx";
 import Check_Diamonds from "./Components/check/Check_Diamonds.jsx";
@@ -28,10 +27,10 @@ import Admin_Services from "./Components/staff/admin/Admin_Services";
 import Admin_Accounts from "./Components/staff/admin/Admin_Accounts";
 import AccessDenied from "./Components/exception/AccessDenied.jsx";
 import RolesAuthRoute from "./Components/route/RolesAuthRoute.jsx";
-import { ro } from "date-fns/locale";
 import ResetPassword from "./Components/login/ResetPassword.jsx";
 import ChangePassword from "./Components/login/ChangePassword.jsx";
 import WaitingVerification from "./Components/login/WaitingVerification.jsx";
+import Admin_Customers from "./Components/staff/admin/Admin_Customers.jsx";
 const App = () => {
   const roles = {
     ADMIN: "ADMIN",
@@ -90,13 +89,18 @@ const App = () => {
               }
             ></Route>
             <Route
-              path="/admin/accounts"
+              path="/admin/staffs"
               element={
                 <RolesAuthRoute
                   element={<Admin_Accounts></Admin_Accounts>}
                   allowedRoles={[roles.ADMIN]}
                 ></RolesAuthRoute>
               }
+            ></Route>
+            <Route
+              path="/admin/customers"
+              element={<Admin_Customers></Admin_Customers>}
+              allowedRoles={[roles.ADMIN]}
             ></Route>
             {/* Consulting Staff Site */}
             <Route

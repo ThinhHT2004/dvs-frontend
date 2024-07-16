@@ -16,13 +16,83 @@ import {
     DialogContent,
     DialogActions,
     TableHead,
+    TableFooter,
+    TablePagination
 } from "@mui/material";
 import StaffDrawer from "../StaffDrawer";
 import { styled } from '@mui/material/styles';
 import { tableCellClasses } from '@mui/material/TableCell';
-import axios from 'axios';
 import protectedApi from '../../../APIs/ProtectedApi';
 import { Toaster, toast } from 'sonner';
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+
+
+function TablePaginationActions(props) {
+    const theme = useTheme();
+    const { count, page, rowsPerPage, onPageChange } = props;
+
+    const handleFirstPageButtonClick = (event) => {
+        onPageChange(event, 0);
+    };
+
+    const handleBackButtonClick = (event) => {
+        onPageChange(event, page - 1);
+    };
+
+    const handleNextButtonClick = (event) => {
+        onPageChange(event, page + 1);
+    };
+
+    const handleLastPageButtonClick = (event) => {
+        onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    };
+
+    return (
+        <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+            <IconButton
+                onClick={handleFirstPageButtonClick}
+                disabled={page === 0}
+                aria-label="first page"
+            >
+                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+            </IconButton>
+            <IconButton
+                onClick={handleBackButtonClick}
+                disabled={page === 0}
+                aria-label="previous page"
+            >
+                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            </IconButton>
+            <IconButton
+                onClick={handleNextButtonClick}
+                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                aria-label="next page"
+            >
+                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            </IconButton>
+            <IconButton
+                onClick={handleLastPageButtonClick}
+                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                aria-label="last page"
+            >
+                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+            </IconButton>
+        </Box>
+    );
+}
+
+TablePaginationActions.propTypes = {
+    count: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+};
 const drawerWidth = 240;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -92,12 +162,12 @@ const Admin_Services = () => {
     }, []);
 
 
-    async function updateService(){
-        try{
+    async function updateService() {
+        try {
             await protectedApi
-            .put('/services/update', selectedService)
-            .then(resp => console.log(resp.data))
-        }catch(err){
+                .put('/services/update', selectedService)
+                .then(resp => console.log(resp.data))
+        } catch (err) {
             console.log(err);
         }
     }
@@ -123,43 +193,43 @@ const Admin_Services = () => {
         });
     };
 
-    const handleDelete = async service =>{
+    const handleDelete = async service => {
         console.log(service);
-        try{
+        try {
             protectedApi
-            .delete("/services/delete/" + service.id)
-            .then(resp => {
-                toast.success(resp.data);
-                getServices();
-            });
-            
-        }catch(err){
+                .delete("/services/delete/" + service.id)
+                .then(resp => {
+                    toast.success(resp.data);
+                    getServices();
+                });
+
+        } catch (err) {
             console.log(err);
         }
     }
 
-    const handleDisable = async service =>{
-        try{
+    const handleDisable = async service => {
+        try {
             protectedApi
-            .put("/services/disable/" + service.id)
-            .then(resp => {
-                toast.success(resp.data);
-                getServices();
-            });
-        }catch(err){
+                .put("/services/disable/" + service.id)
+                .then(resp => {
+                    toast.success(resp.data);
+                    getServices();
+                });
+        } catch (err) {
             console.log(err);
         }
     }
 
-    const handleEnable = async service =>{
-        try{
+    const handleEnable = async service => {
+        try {
             protectedApi
-            .put("/services/enable/" + service.id)
-            .then(resp => {
-                toast.success(resp.data);
-                getServices();
-            });
-        }catch(err){
+                .put("/services/enable/" + service.id)
+                .then(resp => {
+                    toast.success(resp.data);
+                    getServices();
+                });
+        } catch (err) {
             console.log(err);
         }
     }
@@ -190,25 +260,25 @@ const Admin_Services = () => {
                 : service
         );
         setServices(updatedServices);
-        
+
         setDialogOpen(false);
         console.log("Updated service price list:", servicePriceList);
     };
 
     const handleSaveNewService = async () => {
 
-        try{
+        try {
             await protectedApi
-            .post("/services/create", newService)
-            .then(console.log(resp => {
-                console.log(resp.data);
-            }))
-        }catch(err){
+                .post("/services/create", newService)
+                .then(console.log(resp => {
+                    console.log(resp.data);
+                }))
+        } catch (err) {
             console.log(err);
         }
 
 
-        
+
         setServices([...services, newService]);
         setNewServiceDialogOpen(false);
         console.log("New service added:", newService);
@@ -239,11 +309,20 @@ const Admin_Services = () => {
             }))
         });
     };
-
     const handleCreateNewService = () => {
         setNewServiceDialogOpen(true);
     };
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
     return (
         <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
             <Toaster position='top-center' richColors></Toaster>
@@ -251,7 +330,8 @@ const Admin_Services = () => {
                 mylist={[
                     "Home",
                     "Services",
-                    "Accounts",
+                    "Staffs",
+                    "Customers",
                     "Sign Out",
                 ]}
                 state="Services"
@@ -271,6 +351,9 @@ const Admin_Services = () => {
                     <CardHeader title="SERVICE PRICING MANAGEMENT"
                         titleTypographyProps={{ variant: 'h5', color: 'white' }}
                         sx={{ backgroundColor: "#30D5C8" }}
+                        action={
+                            <Button onClick={handleCreateNewService} sx={{ color: "white" }}>Create new Service</Button>
+                        }
                     />
                     <Table>
                         <TableBody>
@@ -280,35 +363,49 @@ const Admin_Services = () => {
                                 <TableCell sx={{ width: 100 }}></TableCell>
                                 <TableCell sx={{ width: 100 }}></TableCell>
                             </TableRow>
-                            {services.map((service, index) => (
+                            {(rowsPerPage > 0 ? services.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : services).map((service, index) => (
                                 <Fragment key={service.id || index}>
                                     <TableRow>
                                         <TableCell align="center">{index + 1}</TableCell>
                                         <TableCell>{service.name}</TableCell>
                                         <TableCell>
-                                            <Button onClick={() => handleViewEditClick(service)} sx={{color: "#30D5C8"}}>View & Edit</Button>
+                                            <Button onClick={() => handleViewEditClick(service)} sx={{ color: "#30D5C8" }}>View & Edit</Button>
                                         </TableCell>
                                         <TableCell>
                                             {
                                                 service.active === true ? (
-                                                    <Button onClick={() => handleDisable(service)} sx={{color: "red"}}>Disable</Button>
+                                                    <Button onClick={() => handleDisable(service)} sx={{ color: "red" }}>Disable</Button>
                                                 ) : (
-                                                    <Button onClick={() => handleEnable(service)} sx={{color: "green"}}>Enable</Button>
+                                                    <Button onClick={() => handleEnable(service)} sx={{ color: "green" }}>Enable</Button>
                                                 )
                                             }
                                         </TableCell>
                                     </TableRow>
                                 </Fragment>
                             ))}
-                            <TableRow>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell></TableCell>
-                                <TableCell align='left'>
-                                    <Button onClick={handleCreateNewService} sx={{color:"#30D5C8"}}>Create new Service</Button>
-                                </TableCell>
-                            </TableRow>
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                                    colSpan={5}
+                                    count={services.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    slotProps={{
+                                        select: {
+                                            inputProps: {
+                                                'aria-label': 'rows per page',
+                                            },
+                                            native: true,
+                                        },
+                                    }}
+                                    onPageChange={handleChangePage}
+                                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                    ActionsComponent={TablePaginationActions}
+                                />
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </TableContainer>
             </Box>
@@ -357,7 +454,7 @@ const Admin_Services = () => {
                     </Table>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleUpdateClick} sx={{color: "#30D5C8"}}>Update</Button>
+                    <Button onClick={handleUpdateClick} sx={{ color: "#30D5C8" }}>Update</Button>
                     <Button onClick={handleCloseDialog} color="error">Cancel</Button>
                 </DialogActions>
             </Dialog>
@@ -373,6 +470,7 @@ const Admin_Services = () => {
                         label="Service Duration"
                         value={newService.duration || ''}
                         onChange={e => setNewService({ ...newService, duration: parseInt(e.target.value) })}
+                        sx={{ marginLeft: 2 }}
                     />
                 </DialogTitle>
                 <DialogContent>
@@ -412,7 +510,7 @@ const Admin_Services = () => {
                     </Table>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSaveNewService} sx={{color:"#30D5C8"}}>Save</Button>
+                    <Button onClick={handleSaveNewService} sx={{ color: "#30D5C8" }}>Save</Button>
                     <Button onClick={handleCloseNewServiceDialog} color="error">Cancel</Button>
                 </DialogActions>
             </Dialog>

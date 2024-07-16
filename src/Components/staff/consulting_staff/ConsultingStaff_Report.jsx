@@ -5,14 +5,11 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
-  IconButton,
   Collapse,
   Typography,
   Link,
   Grid,
-  TextField,
   Button,
   Dialog,
   DialogContent,
@@ -21,7 +18,8 @@ import {
   List,
   ListItem,
   ListItemText,
-
+  TableFooter,
+  TablePagination,
 } from "@mui/material";
 import React, { Fragment, useEffect, useState, useRef } from "react";
 import StaffDrawer from "../StaffDrawer";
@@ -29,7 +27,6 @@ import { consulting_staff_navigator } from "../Naviate";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
-import axios from "axios";
 import logoWeb from "../../../assets/logo_v4.png";
 import moment from "moment";
 import protectedApi from "../../../APIs/ProtectedApi";
@@ -37,6 +34,73 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import DiasecurStamp from "../../../assets/DiasecurStamp.png";
 import diasecurLogo from "../../../assets/diasecurLogo.png";
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+function TablePaginationActions(props) {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+};
 const drawerWidth = 240;
 
 const ConsultingStaff_Report = () => {
@@ -70,36 +134,6 @@ const ConsultingStaff_Report = () => {
       console.error('Error generating PDF:', error);
     });
   };
-
-  const renderLink = (request) => {
-    if (request.status === "PROCESSING") {
-      return (
-        <Button disabled>
-          <Link
-            href="#"
-            onClick={() => handleAppointmentClick(request)}
-            underline="none"
-            sx={{ color: "grey" }}
-          >
-            Create Appointment
-          </Link>
-        </Button>
-      );
-    } else {
-      return (
-        <Button>
-          <Link
-            href="#"
-            onClick={() => handleAppointmentClick(request)}
-            underline="none"
-          >
-            Create Appointment
-          </Link>
-        </Button>
-      );
-    }
-  };
-
   const renderReportLink = (diamond) => {
     if (diamond.status === "APPROVED") {
       return (
@@ -128,19 +162,6 @@ const ConsultingStaff_Report = () => {
       );
     }
   };
-
-  const handleSaveAppointment = (request) => {
-    const formData = new FormData();
-    formData.append("id", request.id);
-    formData.append("receiveDate", request.receivingDate);
-    console.log(formData.get("receiveDate"));
-    protectedApi
-      .put("/request/create-appointment", formData)
-      .then((resp) => console.log(resp.data))
-      .catch((err) => console.log(err));
-    setSelectedRequest();
-  };
-
   const getRequests = () => {
     protectedApi
       .get("/request/valuation-request/status/PROCESSING/COMPLETED")
@@ -163,17 +184,6 @@ const ConsultingStaff_Report = () => {
   const handleReportClick = (diamond) => {
     setReportOpen(true);
     setSelectedDiamond(diamond);
-  };
-
-  const handleAppointmentClick = (request) => {
-    setSelectedRequest(request);
-  };
-
-  const handleAppointmentChange = (idRequest, field, value) => {
-    setTempAppointmentData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
   };
 
   const renderStatus = (status) => {
@@ -200,7 +210,7 @@ const ConsultingStaff_Report = () => {
         }}
         sx={{ backgroundColor: "#30D5C8" }}
         action={
-          <Button onClick={generatePdf} sx={{color: 'white'}}>
+          <Button onClick={generatePdf} sx={{ color: 'white' }}>
             View PDF
           </Button>
         }
@@ -381,7 +391,7 @@ const ConsultingStaff_Report = () => {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <img src={DiasecurStamp} style={{ width: "150px", margin: 10}} />
+                    <img src={DiasecurStamp} style={{ width: "150px", margin: 10 }} />
                     <Typography padding={1}>
                       2024-All Rights Reserved
                     </Typography>
@@ -397,7 +407,17 @@ const ConsultingStaff_Report = () => {
       </DialogContent>
     </Dialog>
   );
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
     <Box
       sx={{
@@ -556,6 +576,28 @@ const ConsultingStaff_Report = () => {
                     </Fragment>
                   ))}
                 </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                      colSpan={5}
+                      count={requests.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      slotProps={{
+                        select: {
+                          inputProps: {
+                            'aria-label': 'rows per page',
+                          },
+                          native: true,
+                        },
+                      }}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      ActionsComponent={TablePaginationActions}
+                    />
+                  </TableRow>
+                </TableFooter>
               </Table>
             </TableContainer>
           </Grid>
