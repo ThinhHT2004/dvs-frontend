@@ -10,7 +10,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import admin_navigator from '../Naviate';
+import {admin_navigator} from '../Naviate';
 function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -125,7 +125,7 @@ const Admin_Customers = () => {
             }}
         >
             <StaffDrawer
-                mylist={["Home", "Services", "customers", "Customers", "Sign Out"]}
+                mylist={["Home", "Services", "Staffs", "Customers", "Sign Out"]}
                 state="Customers"
                 handleClick={admin_navigator}
             />

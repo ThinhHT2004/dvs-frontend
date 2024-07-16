@@ -25,7 +25,6 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
 import protectedApi from '../../../APIs/ProtectedApi';
 import { toast, Toaster } from 'sonner';
-import { SparkLineChart } from '@mui/x-charts/SparkLineChart';
 import { Link } from 'react-router-dom';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -240,7 +239,8 @@ const Admin_Home = () => {
                 mylist={[
                     "Home",
                     "Services",
-                    "Accounts",
+                    "Staffs",
+                    "Customers",
                     "Sign Out",
                 ]}
                 state="Home"

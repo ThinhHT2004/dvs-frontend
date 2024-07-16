@@ -7,9 +7,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
-  IconButton,
   Collapse,
   FormControl,
   InputLabel,
@@ -23,17 +21,85 @@ import {
   ListItem,
   ListItemText,
   List,
+  TableFooter,
+  TablePagination,
 } from "@mui/material";
 import { manager_navigator } from "../Naviate";
 import StaffDrawer from "../StaffDrawer";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import axios from "axios";
 import { formatRequestId, formatSampleId } from "../../../Foramat";
-import { flushSync } from "react-dom";
 import { Toaster, toast } from "sonner";
 import protectedApi from "../../../APIs/ProtectedApi";
-import publicApi from "../../../APIs/PublicApi";
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+
+
+function TablePaginationActions(props) {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+};
 
 const Manager_ReceiptManagement = () => {
   const [open, setOpen] = useState({});
@@ -148,7 +214,7 @@ const Manager_ReceiptManagement = () => {
     } else {
       return (
         <Button
-        disabled
+          disabled
         >
           <Link
             href="#"
@@ -197,9 +263,17 @@ const Manager_ReceiptManagement = () => {
     }
   };
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   return (
-
-
     <Box
       sx={{
         display: "flex",
@@ -211,7 +285,7 @@ const Manager_ReceiptManagement = () => {
     >
       <Toaster position="top-center" richColors></Toaster>
       <StaffDrawer
-        mylist={["Receipt", "Pending Request",  "Report", "Sign Out"]}
+        mylist={["Receipt", "Pending Request", "Report", "Sign Out"]}
         state="Receipt"
         handleClick={manager_navigator}
       />
@@ -247,7 +321,7 @@ const Manager_ReceiptManagement = () => {
                       <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
                       <TableCell sx={{ width: 100 }}></TableCell>
                     </TableRow>
-                    {rows.map((row) => (
+                    {(rowsPerPage > 0 ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : rows).map((row) => (
                       <React.Fragment key={row.id}>
                         <TableRow sx={{ backgroundColor: "white" }}>
                           <TableCell align="center">{formatRequestId(row.id)}</TableCell>
@@ -283,43 +357,43 @@ const Manager_ReceiptManagement = () => {
                               unmountOnExit
                             >
                               <List disablePadding >
-                              <Box>
-                                <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
-                                  <Grid container>
-                                    <Grid item lg={4} xl={4}>
-                                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
+                                <Box>
+                                  <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                                    <Grid container>
+                                      <Grid item lg={4} xl={4}>
+                                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
+                                      </Grid>
+                                      <Grid item lg={4} xl={4}>
+                                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
+                                      </Grid>
                                     </Grid>
-                                    <Grid item lg={4} xl={4}>
-                                      <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
-                                    </Grid>
-                                  </Grid>
-                                  <ListItemText />
-                                </ListItem>
-                                    {row.valuationRequestDetailList.map(
-                                      (diamondRow) => (
-                                        <ListItem key={diamondRow.id}>
-                                          <Grid container>
-                                            <Grid item lg={4} xl={4}>
-                                              <ListItemText primary={formatRequestId(diamondRow.id)}  sx={{ textAlign: 'center' }}/>
-                                            </Grid>
-                                            <Grid item lg={4} xl={4}>
-                                              <ListItemText sx={{ textAlign: 'center' }}>
-                                                <Chip
-                                                  label={diamondRow.status}
-                                                  color={renderSampleStatus(diamondRow.status)}
-                                                  size="small"
-                                                ></Chip>
-                                              </ListItemText>
-                                            </Grid>
-                                            <Grid item lg={4} xl={4}>
-                                              <ListItemText primary={displayLink(diamondRow, row)} sx={{ textAlign: 'center' }} />
-                                            </Grid>
+                                    <ListItemText />
+                                  </ListItem>
+                                  {row.valuationRequestDetailList.map(
+                                    (diamondRow) => (
+                                      <ListItem key={diamondRow.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                                        <Grid container>
+                                          <Grid item lg={4} xl={4}>
+                                            <ListItemText primary={formatRequestId(diamondRow.id)} sx={{ textAlign: 'center' }} />
                                           </Grid>
-                                        </ListItem>
+                                          <Grid item lg={4} xl={4}>
+                                            <ListItemText sx={{ textAlign: 'center' }}>
+                                              <Chip
+                                                label={diamondRow.status}
+                                                color={renderSampleStatus(diamondRow.status)}
+                                                size="small"
+                                              ></Chip>
+                                            </ListItemText>
+                                          </Grid>
+                                          <Grid item lg={4} xl={4}>
+                                            <ListItemText primary={displayLink(diamondRow, row)} sx={{ textAlign: 'center' }} />
+                                          </Grid>
+                                        </Grid>
+                                      </ListItem>
                                     )
                                   )}
-                                  
-                              </Box>
+
+                                </Box>
                               </List>
                             </Collapse>
                           </TableCell>
@@ -327,6 +401,30 @@ const Manager_ReceiptManagement = () => {
                       </React.Fragment>
                     ))}
                   </TableBody>
+                  <TableFooter>
+                    <TableRow
+                      sx={{ backgroundColor: "white" }}
+                    >
+                      <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                        colSpan={5}
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        slotProps={{
+                          select: {
+                            inputProps: {
+                              'aria-label': 'rows per page',
+                            },
+                            native: true,
+                          },
+                        }}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        ActionsComponent={TablePaginationActions}
+                      />
+                    </TableRow>
+                  </TableFooter>
                 </Table>
               </TableContainer>
             </Box>
@@ -335,11 +433,11 @@ const Manager_ReceiptManagement = () => {
             <Grid item xl={4} lg={4}>
               <Box
               >
-                <TableContainer component={Paper} sx={{borderRadius:3}}>
-              <CardHeader
+                <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
+                  <CardHeader
                     title={`Edit Appraiser - ${formatRequestId(currentDiamond.id)}`}
                     titleTypographyProps={{ variant: 'h5', color: 'white' }}
-                    sx={{ backgroundColor: "#30D5C8"}}
+                    sx={{ backgroundColor: "#30D5C8" }}
                   />
                   <Table >
                     <TableBody>

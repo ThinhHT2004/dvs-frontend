@@ -6,15 +6,20 @@ import {
   CardHeader,
   Chip,
   Grid,
-  IconButton,
-  Input,
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Slider,
   Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  TableFooter,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar";
@@ -22,12 +27,77 @@ import Footer from "../footer/Footer";
 import moment from "moment";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import axios from "axios";
-
-import diaImg from "../../assets/DiaImg.png";
 import { useNavigate } from "react-router-dom";
 import publicApi from "../../APIs/PublicApi";
-import { grey } from "@mui/material/colors";
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+
+
+function TablePaginationActions(props) {
+  const theme = useTheme();
+  const { count, page, rowsPerPage, onPageChange } = props;
+
+  const handleFirstPageButtonClick = (event) => {
+    onPageChange(event, 0);
+  };
+
+  const handleBackButtonClick = (event) => {
+    onPageChange(event, page - 1);
+  };
+
+  const handleNextButtonClick = (event) => {
+    onPageChange(event, page + 1);
+  };
+
+  const handleLastPageButtonClick = (event) => {
+    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+  };
+
+  return (
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="first page"
+      >
+        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="previous page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="next page"
+      >
+        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="last page"
+      >
+        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
+}
+
+TablePaginationActions.propTypes = {
+  count: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  rowsPerPage: PropTypes.number.isRequired,
+};
 
 const Calculate = () => {
   const shapeMap = [
@@ -79,25 +149,25 @@ const Calculate = () => {
     change = change.toFixed(2);
 
 
-    if(oldPrice == 0) change = 0;
+    if (oldPrice == 0) change = 0;
 
     console.log(oldPrice)
     console.log(newPrice);
-  
-    if(newPrice === 0.00 || oldPrice === 0.00){
+
+    if (newPrice === 0.00 || oldPrice === 0.00) {
       return (
         <Typography variant="h6" fontWeight="bold" sx={{ color: "grey" }}>
           0.0%
         </Typography>
       );
-    }else{
+    } else {
       if (newPrice > oldPrice) {
         return (
           <Typography variant="h6" fontWeight="bold" sx={{ color: "green" }}>
             {change}%
           </Typography>
         );
-      }else {
+      } else {
         return (
           <Typography variant="h6" fontWeight="bold" sx={{ color: "red" }}>
             {change}%
@@ -107,7 +177,7 @@ const Calculate = () => {
     }
 
 
-    
+
   }
 
   function calculateFairPrice(list) {
@@ -154,16 +224,16 @@ const Calculate = () => {
     console.log(data);
     try {
       publicApi
-        .get("/diamond/search/" + advanced + "/"+ 0 + "?", {
+        .get("/diamond/search/" + advanced + "/" + 0 + "?", {
           params: data,
         })
         .then((resp) => {
           setDiamonds(resp.data)
           console.log(resp.data)
         });
-      
-     
-        publicApi
+
+
+      publicApi
         .get("/diamond/search/" + advanced + "/" + 2 + "?", {
           params: data,
         })
@@ -172,6 +242,16 @@ const Calculate = () => {
       console.log(err);
     }
   }
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -257,20 +337,20 @@ const Calculate = () => {
                                 },
                                 ...(origin === "NATURAL"
                                   ? {
-                                      color: "white",
+                                    color: "white",
+                                    backgroundColor: "#69CEE2",
+                                    "&:hover": {
                                       backgroundColor: "#69CEE2",
-                                      "&:hover": {
-                                        backgroundColor: "#69CEE2",
-                                      },
-                                    }
+                                    },
+                                  }
                                   : {
-                                      color: "#69CEE2",
-                                      borderColor: "#69CEE2",
-                                      backgroundColor: "transparent",
-                                      "&:hover": {
-                                        backgroundColor: "#f0f0f0",
-                                      },
-                                    }),
+                                    color: "#69CEE2",
+                                    borderColor: "#69CEE2",
+                                    backgroundColor: "transparent",
+                                    "&:hover": {
+                                      backgroundColor: "#f0f0f0",
+                                    },
+                                  }),
                               }}
                             >
                               Natural
@@ -293,20 +373,20 @@ const Calculate = () => {
                                 },
                                 ...(origin === "LAB"
                                   ? {
-                                      color: "white",
+                                    color: "white",
+                                    backgroundColor: "#69CEE2",
+                                    "&:hover": {
                                       backgroundColor: "#69CEE2",
-                                      "&:hover": {
-                                        backgroundColor: "#69CEE2",
-                                      },
-                                    }
+                                    },
+                                  }
                                   : {
-                                      color: "#69CEE2",
-                                      borderColor: "#69CEE2",
-                                      backgroundColor: "transparent",
-                                      "&:hover": {
-                                        backgroundColor: "#f0f0f0",
-                                      },
-                                    }),
+                                    color: "#69CEE2",
+                                    borderColor: "#69CEE2",
+                                    backgroundColor: "transparent",
+                                    "&:hover": {
+                                      backgroundColor: "#f0f0f0",
+                                    },
+                                  }),
                               }}
                             >
                               Lab
@@ -333,20 +413,20 @@ const Calculate = () => {
                                   },
                                   ...(shape === c
                                     ? {
-                                        color: "white",
+                                      color: "white",
+                                      backgroundColor: "#69CEE2",
+                                      "&:hover": {
                                         backgroundColor: "#69CEE2",
-                                        "&:hover": {
-                                          backgroundColor: "#69CEE2",
-                                        },
-                                      }
+                                      },
+                                    }
                                     : {
-                                        color: "#69CEE2",
-                                        borderColor: "#69CEE2",
-                                        backgroundColor: "transparent",
-                                        "&:hover": {
-                                          backgroundColor: "#f0f0f0",
-                                        },
-                                      }),
+                                      color: "#69CEE2",
+                                      borderColor: "#69CEE2",
+                                      backgroundColor: "transparent",
+                                      "&:hover": {
+                                        backgroundColor: "#f0f0f0",
+                                      },
+                                    }),
                                 }}
                               >
                                 {c}
@@ -400,20 +480,20 @@ const Calculate = () => {
                                   },
                                   ...(color === c
                                     ? {
-                                        color: "white",
+                                      color: "white",
+                                      backgroundColor: "#69CEE2",
+                                      "&:hover": {
                                         backgroundColor: "#69CEE2",
-                                        "&:hover": {
-                                          backgroundColor: "#69CEE2",
-                                        },
-                                      }
+                                      },
+                                    }
                                     : {
-                                        color: "#69CEE2",
-                                        borderColor: "#69CEE2",
-                                        backgroundColor: "transparent",
-                                        "&:hover": {
-                                          backgroundColor: "#f0f0f0",
-                                        },
-                                      }),
+                                      color: "#69CEE2",
+                                      borderColor: "#69CEE2",
+                                      backgroundColor: "transparent",
+                                      "&:hover": {
+                                        backgroundColor: "#f0f0f0",
+                                      },
+                                    }),
                                 }}
                               >
                                 {c}
@@ -444,20 +524,20 @@ const Calculate = () => {
                                   },
                                   ...(clarity === c
                                     ? {
-                                        color: "white",
+                                      color: "white",
+                                      backgroundColor: "#69CEE2",
+                                      "&:hover": {
                                         backgroundColor: "#69CEE2",
-                                        "&:hover": {
-                                          backgroundColor: "#69CEE2",
-                                        },
-                                      }
+                                      },
+                                    }
                                     : {
-                                        color: "#69CEE2",
-                                        borderColor: "#69CEE2",
-                                        backgroundColor: "transparent",
-                                        "&:hover": {
-                                          backgroundColor: "#f0f0f0",
-                                        },
-                                      }),
+                                      color: "#69CEE2",
+                                      borderColor: "#69CEE2",
+                                      backgroundColor: "transparent",
+                                      "&:hover": {
+                                        backgroundColor: "#f0f0f0",
+                                      },
+                                    }),
                                 }}
                               >
                                 {c}
@@ -528,20 +608,20 @@ const Calculate = () => {
                                       },
                                       ...(cut === c
                                         ? {
-                                            color: "white",
+                                          color: "white",
+                                          backgroundColor: "#69CEE2",
+                                          "&:hover": {
                                             backgroundColor: "#69CEE2",
-                                            "&:hover": {
-                                              backgroundColor: "#69CEE2",
-                                            },
-                                          }
+                                          },
+                                        }
                                         : {
-                                            color: "#69CEE2",
-                                            borderColor: "#69CEE2",
-                                            backgroundColor: "transparent",
-                                            "&:hover": {
-                                              backgroundColor: "#f0f0f0",
-                                            },
-                                          }),
+                                          color: "#69CEE2",
+                                          borderColor: "#69CEE2",
+                                          backgroundColor: "transparent",
+                                          "&:hover": {
+                                            backgroundColor: "#f0f0f0",
+                                          },
+                                        }),
                                     }}
                                   >
                                     {c}
@@ -571,20 +651,20 @@ const Calculate = () => {
                                       },
                                       ...(symmetry === s
                                         ? {
-                                            color: "white",
+                                          color: "white",
+                                          backgroundColor: "#69CEE2",
+                                          "&:hover": {
                                             backgroundColor: "#69CEE2",
-                                            "&:hover": {
-                                              backgroundColor: "#69CEE2",
-                                            },
-                                          }
+                                          },
+                                        }
                                         : {
-                                            color: "#69CEE2",
-                                            borderColor: "#69CEE2",
-                                            backgroundColor: "transparent",
-                                            "&:hover": {
-                                              backgroundColor: "#f0f0f0",
-                                            },
-                                          }),
+                                          color: "#69CEE2",
+                                          borderColor: "#69CEE2",
+                                          backgroundColor: "transparent",
+                                          "&:hover": {
+                                            backgroundColor: "#f0f0f0",
+                                          },
+                                        }),
                                     }}
                                   >
                                     {s}
@@ -614,20 +694,20 @@ const Calculate = () => {
                                       },
                                       ...(polish === p
                                         ? {
-                                            color: "white",
+                                          color: "white",
+                                          backgroundColor: "#69CEE2",
+                                          "&:hover": {
                                             backgroundColor: "#69CEE2",
-                                            "&:hover": {
-                                              backgroundColor: "#69CEE2",
-                                            },
-                                          }
+                                          },
+                                        }
                                         : {
-                                            color: "#69CEE2",
-                                            borderColor: "#69CEE2",
-                                            backgroundColor: "transparent",
-                                            "&:hover": {
-                                              backgroundColor: "#f0f0f0",
-                                            },
-                                          }),
+                                          color: "#69CEE2",
+                                          borderColor: "#69CEE2",
+                                          backgroundColor: "transparent",
+                                          "&:hover": {
+                                            backgroundColor: "#f0f0f0",
+                                          },
+                                        }),
                                     }}
                                   >
                                     {p}
@@ -658,20 +738,20 @@ const Calculate = () => {
                                       },
                                       ...(fluorescence === f
                                         ? {
-                                            color: "white",
+                                          color: "white",
+                                          backgroundColor: "#69CEE2",
+                                          "&:hover": {
                                             backgroundColor: "#69CEE2",
-                                            "&:hover": {
-                                              backgroundColor: "#69CEE2",
-                                            },
-                                          }
+                                          },
+                                        }
                                         : {
-                                            color: "#69CEE2",
-                                            borderColor: "#69CEE2",
-                                            backgroundColor: "transparent",
-                                            "&:hover": {
-                                              backgroundColor: "#f0f0f0",
-                                            },
-                                          }),
+                                          color: "#69CEE2",
+                                          borderColor: "#69CEE2",
+                                          backgroundColor: "transparent",
+                                          "&:hover": {
+                                            backgroundColor: "#f0f0f0",
+                                          },
+                                        }),
                                     }}
                                     onClick={() => setFluorescence(f)}
                                   >
@@ -847,139 +927,165 @@ const Calculate = () => {
                     </Card>
                   </CardContent>
                   <CardContent>
-                    <Card
+                    <Table
                       sx={{
                         backgroundColor: "#F9FAFB",
                         borderRadius: "8px",
                       }}
                     >
-                      <List disablePadding>
-                        {diamonds?.map((d) => (
-                          <Box borderBottom={1} borderColor="#c7ced9">
-                            <ListItem disablePadding>
-                              <ListItemButton href={d.source} target="_blank">
-                                <Grid
-                                  container
-                                  direction="row"
-                                  spacing={2}
-                                  sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                  }}
-                                >
+                      <TableBody>
+                        {(rowsPerPage > 0 ? diamonds.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : diamonds).map((d) => (
+                          <List disablePadding>
+                            <Box borderBottom={1} borderColor="#c7ced9" key={d.source}>
+                              <ListItem disablePadding>
+                                <ListItemButton href={d.source} target="_blank">
                                   <Grid
-                                    item
-                                    lg={2}
                                     container
-                                    direction="column"
-                                    justifyContent="center"
-                                    alignItems="center"
+                                    direction="row"
+                                    spacing={2}
+                                    sx={{
+                                      display: "flex",
+                                      justifyContent: "center",
+                                      alignItems: "center",
+                                    }}
                                   >
-                                    <img
-                                      src={d.image}
-                                      alt=""
-                                      width="110px"
-                                      height="110px"
-                                    />
-                                  </Grid>
-                                  <Grid item lg={2}>
-                                    <ListItemText
-                                      primary={d.shape}
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                      }}
-                                    ></ListItemText>
-                                    <Typography
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        color: "#989898",
-                                      }}
+                                    <Grid
+                                      item
+                                      lg={2}
+                                      container
+                                      direction="column"
+                                      justifyContent="center"
+                                      alignItems="center"
                                     >
-                                      Shape
-                                    </Typography>
+                                      <img
+                                        src={d.image}
+                                        alt=""
+                                        width="110px"
+                                        height="110px"
+                                      />
+                                    </Grid>
+                                    <Grid item lg={2}>
+                                      <ListItemText
+                                        primary={d.shape}
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                        }}
+                                      ></ListItemText>
+                                      <Typography
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          color: "#989898",
+                                        }}
+                                      >
+                                        Shape
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item lg={2}>
+                                      <ListItemText
+                                        primary={d.caratWeight}
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                        }}
+                                      ></ListItemText>
+                                      <Typography
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          color: "#989898",
+                                        }}
+                                      >
+                                        Carat
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item lg={2}>
+                                      <ListItemText
+                                        primary={d.color}
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                        }}
+                                      ></ListItemText>
+                                      <Typography
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          color: "#989898",
+                                        }}
+                                      >
+                                        Color
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item lg={2}>
+                                      <ListItemText
+                                        primary={d.clarity}
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                        }}
+                                      ></ListItemText>
+                                      <Typography
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                          color: "#989898",
+                                        }}
+                                      >
+                                        Clarity
+                                      </Typography>
+                                    </Grid>
+                                    <Grid item lg={2}>
+                                      <ListItemText
+                                        primary={"$" + d.price}
+                                        sx={{
+                                          display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center",
+                                        }}
+                                      ></ListItemText>
+                                    </Grid>
                                   </Grid>
-                                  <Grid item lg={2}>
-                                    <ListItemText
-                                      primary={d.caratWeight}
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                      }}
-                                    ></ListItemText>
-                                    <Typography
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        color: "#989898",
-                                      }}
-                                    >
-                                      Carat
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item lg={2}>
-                                    <ListItemText
-                                      primary={d.color}
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                      }}
-                                    ></ListItemText>
-                                    <Typography
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        color: "#989898",
-                                      }}
-                                    >
-                                      Color
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item lg={2}>
-                                    <ListItemText
-                                      primary={d.clarity}
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                      }}
-                                    ></ListItemText>
-                                    <Typography
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                        color: "#989898",
-                                      }}
-                                    >
-                                      Clarity
-                                    </Typography>
-                                  </Grid>
-                                  <Grid item lg={2}>
-                                    <ListItemText
-                                      primary={"$" + d.price}
-                                      sx={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                        alignItems: "center",
-                                      }}
-                                    ></ListItemText>
-                                  </Grid>
-                                </Grid>
-                              </ListItemButton>
-                            </ListItem>
-                          </Box>
+                                </ListItemButton>
+                              </ListItem>
+                            </Box>
+                          </List>
                         ))}
-                      </List>
-                    </Card>
+                      </TableBody>
+                      {diamonds && diamonds.length > 0 && (
+                      <TableFooter>
+                        <TableRow>
+                          <TablePagination
+                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            colSpan={5}
+                            count={diamonds.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            slotProps={{
+                              select: {
+                                inputProps: {
+                                  'aria-label': 'rows per page',
+                                },
+                                native: true,
+                              },
+                            }}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                          />
+                        </TableRow>
+                      </TableFooter>
+                      )}
+                    </Table>
                   </CardContent>
                 </Grid>
               </Grid>
