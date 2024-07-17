@@ -107,10 +107,9 @@ const ConsultingStaff_Form = () => {
     note: "",
   });
 
-  console.log(form);
   useEffect(() => {
     getAcceptedRquest();
-  }, []);
+  }, [requests]);
 
   useEffect(() => {
     getTotalPrice();
@@ -125,7 +124,6 @@ const ConsultingStaff_Form = () => {
       )
       .then((resp) => {
         setRequests(resp.data);
-        console.log(resp.data);
       })
       .catch((err) => console.log(err));
   }
@@ -151,7 +149,6 @@ const ConsultingStaff_Form = () => {
     return check;
   }
 
-  console.log(selectedOption);
   function createForm() {
     if (selectedOption === "RECEIPT") {
       createReceipt(
@@ -163,7 +160,6 @@ const ConsultingStaff_Form = () => {
         protectedApi
           .post("/forms/create-form", form)
           .then((resp) => {
-            console.log(resp.data);
             handleClose();
             getAcceptedRquest();
             setForm({});
@@ -173,7 +169,6 @@ const ConsultingStaff_Form = () => {
       }
     }
   }
-  console.log(totalPrice);
 
   function createReceipt(requestDetailList, requestId) {
     if (checkNegative(requestDetailList)) {
@@ -449,8 +444,6 @@ const ConsultingStaff_Form = () => {
                                   }
                                   onClick={() => {
                                     handleMenuItemClick(option)
-                                    console.log(option)
-                                    console.log(currentRequest.status)
                                   }}
                                 >
                                   {option}

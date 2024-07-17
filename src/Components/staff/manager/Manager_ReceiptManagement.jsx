@@ -115,9 +115,7 @@ const Manager_ReceiptManagement = () => {
   const drawerWidth = 240;
   useEffect(() => {
     getProcessingRequest();
-  }, []);
-
-  console.log(appraisers)
+  }, [rows]);
 
   function checkFullFilled() {
     let check = true;
@@ -162,8 +160,6 @@ const Manager_ReceiptManagement = () => {
     }));
   };
 
-  console.log(currentrRequest);
-
   const handleBoxOpen = (diamond, request) => {
     setCurrentDiamond(diamond);
     setCurrentRequest(request);
@@ -187,7 +183,6 @@ const Manager_ReceiptManagement = () => {
           "/assignment/assigns/" + currentrRequest.id + "/" + currentSample.id, appraiserList
         )
         .then((resp) => {
-          console.log(resp.data);
           getProcessingRequest();
           handleBoxClose();
         })

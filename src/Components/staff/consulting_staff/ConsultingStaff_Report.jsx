@@ -107,13 +107,12 @@ const ConsultingStaff_Report = () => {
   const [open, setOpen] = useState({});
   const [reportOpen, setReportOpen] = useState(false);
   const [selectedDiamond, setSelectedDiamond] = useState(null);
-  const [selectedRequest, setSelectedRequest] = useState();
   const [requests, setRequests] = useState([]);
   const pdfRef = useRef();
 
   useEffect(() => {
     getRequests();
-  }, []);
+  }, [requests]);
 
   const generatePdf = () => {
     const input = pdfRef.current;
@@ -167,7 +166,6 @@ const ConsultingStaff_Report = () => {
       .get("/request/valuation-request/status/PROCESSING/COMPLETED")
       .then((resp) => {
         setRequests(resp.data)
-        console.log(resp.data)
       })
       .catch((err) => console.log(err));
   };
@@ -215,7 +213,6 @@ const ConsultingStaff_Report = () => {
           </Button>
         }
       />
-      {console.log(diamond.valuationReport)}
       <DialogContent>
         <Box height="100%" width={'auto'} padding={5} ref={pdfRef}>
           <Box>

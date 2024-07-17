@@ -48,7 +48,7 @@ const App = () => {
             <Route path="/" element={<HomePage></HomePage>}></Route>
             <Route path="/calculate" element={<Calculate></Calculate>}></Route>
             <Route
-              path="/certificates-check"
+              path="/diamonds-check"
               element={<Check_Diamonds></Check_Diamonds>}
             ></Route>
             <Route
@@ -61,7 +61,7 @@ const App = () => {
             <Route path="/accounts/newpassword" element={<ChangePassword></ChangePassword>}></Route>
             <Route path="/accounts/verification" element={<WaitingVerification></WaitingVerification>}></Route>
             <Route
-              path="/certificates-check/:id"
+              path="/diamonds-check/:id"
               element={<Check_DiamondsDetails></Check_DiamondsDetails>}
             ></Route>
             <Route

@@ -113,12 +113,13 @@ const ValuationStaff_DiamondsAppraisal = () => {
   const [diamonds, setDiamonds] = useState([]);
 
   useEffect(() => {
-    getAssignments();
     if(selectedDiamond){
       handleSearch();
     }
   }, [selectedDiamond]);
-
+  useEffect(() => {
+    getAssignments();
+  }, [assignments]);
   function checkFullFilled() {
     if (selectedAssignment.price === 0 || selectedAssignment.price === "") {
       return false;
@@ -139,7 +140,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
       polish,
       fluorescence,
     };
-    console.log(data);
     try {
       await publicApi
         .get("/diamond/search/true/" + 0 + "?", {
@@ -152,9 +152,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
   }
 
   function generateMaxMin(list) {
-    
-    console.log(diamonds);
-    
     if (list != null && list.length > 0) {
       const prices = list.map((d) => d.price);
       const min = Math.min(...prices);
@@ -218,7 +215,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
     setSelectedDiamond(selected.data);
     
   };
-  console.log(diamonds)
 
   const handleSave = (selectedAssignment) => {
     if (parseFloat(selectedAssignment.price) < 0) {
@@ -227,7 +223,6 @@ const ValuationStaff_DiamondsAppraisal = () => {
       protectedApi
         .put("/assignment/update", selectedAssignment)
         .then((resp) => {
-          console.log(resp.data);
           getAssignments();
           handleClose();
         })

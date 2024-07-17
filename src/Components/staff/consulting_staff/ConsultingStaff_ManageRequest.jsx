@@ -86,19 +86,19 @@ function TablePaginationActions(props) {
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5, display: 'flex' }}>
       <Button onClick={handleMenuOpen} startIcon={<FilterListIcon />}
-        sx={{ textTransform: 'none', fontFamily: 'arial-label', fontSize: 16 , color: '#000000DE'}}
+        sx={{ textTransform: 'none', fontFamily: 'arial-label', fontSize: 16, color: '#000000DE' }}
       >
         Filter
       </Button>
-       <Menu
+      <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={ () => handleFilterChange('')}>All</MenuItem>
-        <MenuItem onClick={ () => handleFilterChange("PROCESSING")}>Processing</MenuItem>
-        <MenuItem onClick={ () => handleFilterChange('RECEIVED')}>Received</MenuItem>
-        <MenuItem onClick={() => handleFilterChange('FINISHED')}>Finish</MenuItem>
+        <MenuItem onClick={() => handleFilterChange('')}>All</MenuItem>
+        <MenuItem onClick={() => handleFilterChange('ACCEPTED')}>Accepted</MenuItem>
+        <MenuItem onClick={() => handleFilterChange('RECEIVED')}>Received</MenuItem>
+        <MenuItem onClick={() => handleFilterChange("PROCESSING")}>Processing</MenuItem>
       </Menu>
       <IconButton
         onClick={handleFirstPageButtonClick}
@@ -144,9 +144,7 @@ TablePaginationActions.propTypes = {
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const [filter, setFilter] = useState('');
-  useEffect(() => {
-    getAllAcceptedRequests();
-  }, []);
+
   const [open, setOpen] = useState(false);
   const [proportionImage, setProportionImage] = useState(null);
   const [clarityImage, setClarityImage] = useState(null);
@@ -190,11 +188,7 @@ const ConsultingStaff_ManageRequest = () => {
   const [clarityImageUrl, setClarityImageUrl] = useState("");
   const [diamondImageUrl, setDiamondImageUrl] = useState("");
   const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
-  const filteredRequests = acceptedRequests.filter((request) => {
-    if (!filter) return true;
-    console.log(filter);
-    return request.status === filter;
-  });
+  
   // Need to under the acceptedRequests data structure to implement the following function
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -263,7 +257,6 @@ const ConsultingStaff_ManageRequest = () => {
         valuationReport
       );
       const detail = await getValuationRequestDetail(sampleId);
-      console.log(detail);
       saveImage(detail.valuationReport.id);
       handleClose();
     } catch (err) {
@@ -277,10 +270,8 @@ const ConsultingStaff_ManageRequest = () => {
     data.append("file2", clarityImage);
     data.append("file3", diamondImage);
     data.append("valuationReportId", reportId);
-    console.log(data.get("file1"));
     protectedApi
       .post("/cloudinary/upload", data)
-      .then((resp) => console.log(resp.data))
       .catch((err) => console.log(err));
   }
 
@@ -326,7 +317,6 @@ const ConsultingStaff_ManageRequest = () => {
   }
 
   async function denySample(sample) {
-    console.log(sample);
     try {
       await protectedApi.
         put("/request-detail/deny/" + sample.id)
@@ -894,185 +884,203 @@ const ConsultingStaff_ManageRequest = () => {
     } else {
     }
   }
+  // Sort and Filter
+  const filteredStatusRequests = acceptedRequests.filter(request =>
+    request.status !== 'FINISHED'
+  );
+  const statusOrder = ['ACCEPTED', 'RECEIVED', 'PROCESSING'];
+  const sortedRequests = filteredStatusRequests.sort((a, b) => {
+    const statusComparison = statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+    if (statusComparison !== 0) return statusComparison;
+    return new Date(b.requestDate) - new Date(a.requestDate);
+  });
+  const filteredRequests = sortedRequests.filter((request) => {
+    if (!filter) return true;
+    console.log(filter);
+    return request.status === filter;
+  });
+    useEffect(() => {
+      getAllAcceptedRequests();
+    }, [filteredRequests]);
+    
+    function Row(props) {
+      const { row } = props;
+      const [open, setOpen] = useState(false);
 
-  function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = useState(false);
-
-    return (
-      <Fragment>
-        <TableRow sx={{ backgroundColor: "white" }}>
-          <TableCell align="center">{formatRequestId(row.id)}</TableCell>
-          <TableCell>{row.customer.last_name} {row.customer.first_name}</TableCell>
-          <TableCell>{row.service.name}</TableCell>
-          <TableCell align="center">{row.quantity}</TableCell>
-          <TableCell align="center">
-            <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
-          </TableCell>
-          <TableCell align="center">
-            <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
-            </Chip>
-          </TableCell>
-          <TableCell align="center">
-            <IconButton
-              sx={{ backgroundColor: "#69CEE2" }}
-              size="small"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-          </TableCell>
-        </TableRow>
-        <TableRow sx={{ border: 0 }} >
-          <TableCell style={{ padding: 0, border: 0 }} colSpan={7}>
-            <Collapse in={open}>
-              <List disablePadding >
-                <Box>
-                  <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
-                    <Grid container>
-                      <Grid item lg={3} xl={3}>
-                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
-                      </Grid>
-                      <Grid item lg={3} xl={3}>
-                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
-                      </Grid>
-                    </Grid>
-                    <ListItemText />
-                  </ListItem>
-                  {row.valuationRequestDetailList.map((sample) => (
-                    <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+      return (
+        <Fragment>
+          <TableRow sx={{ backgroundColor: "white" }}>
+            <TableCell align="center">{formatRequestId(row.id)}</TableCell>
+            <TableCell>{row.customer.last_name} {row.customer.first_name}</TableCell>
+            <TableCell>{row.service.name}</TableCell>
+            <TableCell align="center">{row.quantity}</TableCell>
+            <TableCell align="center">
+              <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
+            </TableCell>
+            <TableCell align="center">
+              <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
+              </Chip>
+            </TableCell>
+            <TableCell align="center">
+              <IconButton
+                sx={{ backgroundColor: "#69CEE2" }}
+                size="small"
+                onClick={() => setOpen(!open)}
+              >
+                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              </IconButton>
+            </TableCell>
+          </TableRow>
+          <TableRow sx={{ border: 0 }} >
+            <TableCell style={{ padding: 0, border: 0 }} colSpan={7}>
+              <Collapse in={open}>
+                <List disablePadding >
+                  <Box>
+                    <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
                       <Grid container>
                         <Grid item lg={3} xl={3}>
-                          <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                          <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
                         </Grid>
                         <Grid item lg={3} xl={3}>
-                          <ListItemText sx={{ textAlign: 'center' }}>
-                            <Chip
-                              label={sample.status}
-                              color={renderSampleStatus(sample.status)}
-                              size="small"
-                            ></Chip>
-                          </ListItemText>
-                        </Grid>
-                        <Grid item lg={3} xl={3}>
-                          <ListItemText primary={displayEditButton(sample, row.id)} sx={{ textAlign: 'center' }} />
-                        </Grid>
-                        <Grid item lg={3} xl={3}>
-                          <ListItemText primary={displayDenyButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                          <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
                         </Grid>
                       </Grid>
+                      <ListItemText />
                     </ListItem>
+                    {row.valuationRequestDetailList.map((sample) => (
+                      <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                        <Grid container>
+                          <Grid item lg={3} xl={3}>
+                            <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                          </Grid>
+                          <Grid item lg={3} xl={3}>
+                            <ListItemText sx={{ textAlign: 'center' }}>
+                              <Chip
+                                label={sample.status}
+                                color={renderSampleStatus(sample.status)}
+                                size="small"
+                              ></Chip>
+                            </ListItemText>
+                          </Grid>
+                          <Grid item lg={3} xl={3}>
+                            <ListItemText primary={displayEditButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                          </Grid>
+                          <Grid item lg={3} xl={3}>
+                            <ListItemText primary={displayDenyButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                          </Grid>
+                        </Grid>
+                      </ListItem>
 
-                  ))}
+                    ))}
 
-                </Box>
-              </List>
-            </Collapse>
-          </TableCell>
-        </TableRow>
+                  </Box>
+                </List>
+              </Collapse>
+            </TableCell>
+          </TableRow>
 
-      </Fragment>
-    );
-  }
+        </Fragment>
+      );
+    }
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        backgroundColor: "#FAF6EF",
-        width: "100%", minHeight: "100vh"
-
-      }}
-    >
-      <Box>
-        <StaffDrawer
-          mylist={[
-            "Home",
-            "Incoming Request",
-            "Request",
-            "Report",
-            "Form",
-            "Sign Out",
-          ]}
-          state="Request"
-          handleClick={consulting_staff_navigator}
-        ></StaffDrawer>
-      </Box>
+    return (
       <Box
         sx={{
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          flexDirection: "row",
+          backgroundColor: "#FAF6EF",
+          width: "100%", minHeight: "100vh"
+
         }}
       >
-        <Grid container spacing={2}>
-          <Grid item lg={12}>
-            <Box>
-              <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
-                <CardHeader
-                  title='MANAGE REQUESTS'
-                  titleTypographyProps={{
-                    variant: 'h5',
-                    color: 'white',
-                  }}
-                  sx={{ backgroundColor: '#30D5C8' }}
-                />
-                <Table>
-                  <TableBody>
-                    <TableRow sx={{ backgroundColor: "white" }}>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
-                      <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
-                      <TableCell sx={{ width: 100 }}></TableCell>
-                    </TableRow>
-                    {(rowsPerPage > 0 ? filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredRequests).map((row) => (
-                      <Row key={row.id} row={row} />
-                    ))}
-                    {/* check emptyRows */}
-                  </TableBody>
-                  {/* TablePagination need to be in the Table component and out of the TableBody */}
-                  <TableFooter>
-                    <TableRow sx={{ backgroundColor: "white" }}>
+        <Box>
+          <StaffDrawer
+            mylist={[
+              "Home",
+              "Incoming Request",
+              "Request",
+              "Report",
+              "Form",
+              "Sign Out",
+            ]}
+            state="Request"
+            handleClick={consulting_staff_navigator}
+          ></StaffDrawer>
+        </Box>
+        <Box
+          sx={{
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item lg={12}>
+              <Box>
+                <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
+                  <CardHeader
+                    title='MANAGE REQUESTS'
+                    titleTypographyProps={{
+                      variant: 'h5',
+                      color: 'white',
+                    }}
+                    sx={{ backgroundColor: '#30D5C8' }}
+                  />
+                  <Table>
+                    <TableBody>
+                      <TableRow sx={{ backgroundColor: "white" }}>
+                        <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+                        <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                        <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
+                        <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
+                        <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                        <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
+                        <TableCell sx={{ width: 100 }}></TableCell>
+                      </TableRow>
+                      {(rowsPerPage > 0 ? filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredRequests).map((row) => (
+                        <Row key={row.id} row={row} />
+                      ))}
+                      {/* check emptyRows */}
+                    </TableBody>
+                    {/* TablePagination need to be in the Table component and out of the TableBody */}
+                    <TableFooter>
+                      <TableRow sx={{ backgroundColor: "white" }}>
 
-                      <TablePagination
-                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                        colSpan={7}
-                        count={filteredRequests.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        slotProps={{
-                          select: {
-                            inputProps: {
-                              'aria-label': 'rows per page',
+                        <TablePagination
+                          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                          colSpan={7}
+                          count={filteredRequests.length}
+                          rowsPerPage={rowsPerPage}
+                          page={page}
+                          slotProps={{
+                            select: {
+                              inputProps: {
+                                'aria-label': 'rows per page',
+                              },
+                              native: true,
                             },
-                            native: true,
-                          },
-                        }}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                        ActionsComponent={(subprops) => <TablePaginationActions {...subprops} onFilterChange={handleFilterChange} />}
-                      />
+                          }}
+                          onPageChange={handleChangePage}
+                          onRowsPerPageChange={handleChangeRowsPerPage}
+                          ActionsComponent={(subprops) => <TablePaginationActions {...subprops} onFilterChange={handleFilterChange} />}
+                        />
 
-                    </TableRow>
-                  </TableFooter>
-                </Table>
-              </TableContainer>
-            </Box>
+                      </TableRow>
+                    </TableFooter>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Grid>
+            <Grid item lg={12}>
+              {open && displayBox(sampleId, requestId)}
+            </Grid>
           </Grid>
-          <Grid item lg={12}>
-            {open && displayBox(sampleId, requestId)}
-          </Grid>
-        </Grid>
+        </Box>
       </Box>
-    </Box>
 
-  );
-};
+    );
+  };
 
-export default ConsultingStaff_ManageRequest;
+  export default ConsultingStaff_ManageRequest;

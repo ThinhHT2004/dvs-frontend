@@ -76,15 +76,25 @@ const Admin_Home = () => {
     const [appointment, setAppointment] = useState([]);
     useEffect(() => {
         getAllAcceptedRequests();
+    }, [acceptedRequests]);
+    useEffect(() => {
         getAllWaitingRequests();
+    }, [waitingRequests]);
+    useEffect(() => {
         getStaffs();
+    }, [staffs]);
+    useEffect(() => {
         getServices();
-        getCustomers();
+    }, [services]);
+    useEffect(() => {
         getForms();
-    }, []);
+    }, [forms]);
+    useEffect(() => {
+        getCustomers();
+    }, [customers]);
     useEffect(() => {
         getStatusData();
-    }, [acceptedRequests, waitingRequests]);
+    }, [statusData]);
     const getServices = async () => {
         try {
             const resp = await protectedApi.get("/services/");
@@ -132,8 +142,8 @@ const Admin_Home = () => {
             });
             setQuantity(formattedQuantity);
             setAppointment(formattedAppointment);
-        } catch (error) {
-            console.error(error);
+        } catch (err) {
+            console.log(err);
         }
     };
     const getStaffs = async () => {
@@ -153,7 +163,7 @@ const Admin_Home = () => {
             );
             setStaffs(fillteredStaffs);
         } catch (err) {
-            console.error(err);
+            console.log(err);
         }
     };
     const handleFileChange = (event) => {
@@ -210,7 +220,6 @@ const Admin_Home = () => {
                         "Content-Type": "multipart/form-data"
                     }
                 })
-                .then(resp => console.log(resp.data));
         } catch (err) {
             console.log(err);
         }
@@ -225,7 +234,6 @@ const Admin_Home = () => {
                     clearInterval(interval);
                     setDbLoading(false);
                     toast.success("Data addeed to Database");
-                    console.log("Formatted List:", formattedList);
                     return 100;
                 }
                 return prev + increment;

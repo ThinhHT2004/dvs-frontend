@@ -76,11 +76,10 @@ const Admin_Customers = () => {
     const [customers, setCustomers] = useState([]);
     useEffect(() => {
         getCustomers();
-    }, []);
+    }, [customers]);
     const getCustomers = async () => {
         const resp = await protectedApi.get('/customers/all');
         setCustomers(resp.data);
-        console.log(resp.data);
     }
     const handleDisable = async (customer) => {
         try {

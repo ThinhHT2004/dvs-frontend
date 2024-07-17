@@ -112,7 +112,9 @@ const ConsultingStaff_IncommingRequest = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  const sortedRequests = waitingRequests.sort((a, b) => {
+    return new Date(b.requestDate) - new Date(a.requestDate);
+  });
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -120,7 +122,7 @@ const ConsultingStaff_IncommingRequest = () => {
   const drawerWidth = 240;
   useEffect(() => {
     getAllWaitingRequests();
-  }, []);
+  }, [sortedRequests]);
   return (
     <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
       <Box>
@@ -160,14 +162,16 @@ const ConsultingStaff_IncommingRequest = () => {
                 <TableBody>
                   <TableRow>
                     <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Phone Number</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
                     <TableCell sx={{ width: 150 }} align="center"></TableCell>
                   </TableRow>
-                  {(rowsPerPage > 0 ? waitingRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : waitingRequests).map((request) => (
+                  {(rowsPerPage > 0 ? sortedRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : sortedRequests).map((request) => (
                     <TableRow key={request.id}>
                       <TableCell sx={{ fontSize: 15 }}>{request.customer.last_name} {request.customer.first_name}</TableCell>
+                      <TableCell sx={{ fontSize: 15 }}>{request.customer.phoneNumber}</TableCell>
                       <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
                       <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
                       <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>
@@ -190,8 +194,8 @@ const ConsultingStaff_IncommingRequest = () => {
                   <TableRow>
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                      colSpan={5}
-                      count={waitingRequests.length}
+                      colSpan={6}
+                      count={sortedRequests.length}
                       rowsPerPage={rowsPerPage}
                       page={page}
                       slotProps={{

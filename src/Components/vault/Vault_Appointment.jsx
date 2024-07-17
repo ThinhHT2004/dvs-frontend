@@ -52,13 +52,12 @@ const Vault = () => {
   };
   useEffect(() => {
     getRequests();
-  }, []);
+  }, [requests]);
 
   const getRequests = () => {
     try {
       protectedApi.get("/customers/request/" + customerId).then((resp) => {
         setRequests(resp.data);
-        console.log(resp.data);
       });
     } catch (err) {
       console.log(err);

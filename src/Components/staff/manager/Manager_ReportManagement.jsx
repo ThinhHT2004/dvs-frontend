@@ -105,7 +105,7 @@ const Manager_ReportManagement = () => {
 
   useEffect(() => {
     getSamples();
-  }, []);
+  }, [samples]);
 
   const handleEditPriceClick = (diamond) => {
     setCurrentDiamond(diamond);
@@ -158,7 +158,6 @@ const Manager_ReportManagement = () => {
     protectedApi
       .put("/request-detail/update", diamond)
       .then((resp) => {
-        console.log(resp.data);
         getSamples();
         handleCancel();
       })

@@ -1,14 +1,71 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import errorImage from "../../assets/empty_image.jpg";
 import { useLocation } from 'react-router-dom';
 import { Box, Button, Card, CardContent, CardHeader, Grid, Typography, Chip } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../footer/Footer';
 import moment from 'moment';
+import publicApi from '../../APIs/PublicApi';
+
 const Check_DiamondsDetails = () => {
+    const [diamonds, setDiamonds] = useState([]);
+    async function handleSearch() {
+        const data = {
+          origin,
+          shape,
+          carat,
+          color,
+          clarity,
+          cut,
+          symmetry,
+          polish,
+          fluorescence,
+        };
+        console.log(data);
+        try {
+          await publicApi
+            .get("/diamond/search/true/" + 0 + "?", {
+              params: data,
+            })
+            .then((resp) => setDiamonds(resp.data));
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    
+      function generateMaxMin(list) {
+        
+        console.log(diamonds);
+        
+        if (list != null && list.length > 0) {
+          const prices = list.map((d) => d.price);
+          const min = Math.min(...prices);
+          const max = Math.max(...prices);
+    
+          return "$" + min + " - " + "$" + max;
+        } else {
+          return "--";
+        }
+      }
+      function generateAvg(list) {
+        if (list != null && list.length > 0) {
+            const prices = list.map((d) => d.price);
+            const sum = prices.reduce((a, b) => a + b, 0);
+            const avg = sum / prices.length;
+            return "$" + avg;
+            }
+            else {
+                return "--";
+            }
+        }
     const location = useLocation();
     const diamondDetails = location.state?.diamondDetails;
     console.log(diamondDetails);
+    useEffect(() => {
+        if(diamondDetails){
+          handleSearch();
+        }
+      }, [diamondDetails]);
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <Box >
@@ -54,6 +111,20 @@ const Check_DiamondsDetails = () => {
                                     }
                                 />
                                 <CardContent>
+                                    <Box
+                                    padding={1}
+                                    >
+                                    <Typography variant="h6">
+                                        Fair Price Estimate: {diamonds.length > 0 ? generateAvg(diamonds) : "N/A"}
+                                    </Typography>
+                                    </Box>
+                                    <Box
+                                    padding={1}
+                                    >
+                                    <Typography variant="h7">
+                                        Estimate Range: {diamonds.length > 0 ? generateMaxMin(diamonds) : "N/A"}
+                                    </Typography>
+                                    </Box>
                                     <Card sx={{ margin: 2 }}>
                                         <CardContent>
                                             <Grid
@@ -84,7 +155,7 @@ const Check_DiamondsDetails = () => {
                                                             alignItems: "center",
                                                         }}
                                                     >
-                                                        {diamondDetails?.finalPrice}
+                                                        {diamonds.length > 0 ? generateAvg(diamonds) : "N/A"}
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item xl={4} md={4} sm={4} lg={4} xs={4}>
@@ -300,7 +371,7 @@ const Check_DiamondsDetails = () => {
                                     >
                                         <Button
                                             variant="contained"
-                                            href="/certificates-check"
+                                            href="/diamonds-check"
                                             sx={{
                                                 backgroundColor: "#69CEE2",
                                                 borderRadius: "8px",
@@ -329,7 +400,7 @@ const Check_DiamondsDetails = () => {
                                 <Grid item xl={6} md={6}>
                                     <Card sx={{ height: "100%" }}>
                                         <CardHeader
-                                            title="CERTIFICATE DETAILS"
+                                            title="DIAMOND DETAILS"
                                             titleTypographyProps={{ variant: "h6" }}
                                             sx={{ backgroundColor: "#274472", color: "#fff" }}
                                         />

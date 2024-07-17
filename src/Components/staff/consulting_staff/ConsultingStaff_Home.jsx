@@ -28,16 +28,23 @@ const ConsultingStaff_Home = () => {
   const { waitingRequests , getAllWaitingRequests} = useRequests([]);
   const { acceptedRequests , getAllAcceptedRequests} = useRequests([]);
   const [staff, setStaff] = useState({});
+  const sortedRequests = waitingRequests.sort((a, b) => {
+    return new Date(b.requestDate) - new Date(a.requestDate);
+  });
   const drawerWidth = 240;
   useEffect(() => {
-    getAllWaitingRequests();
-    getAllAcceptedRequests();
     const fetchData = async () => {
       const response = await protectedApi.get('/staffs/' + staffID);
       setStaff(response.data);
     }
     fetchData();
   }, []);
+  useEffect(() => {
+    getAllWaitingRequests();
+  }, [sortedRequests]);
+  useEffect(() => {
+    getAllAcceptedRequests();
+  }, [acceptedRequests]);
   const renderRowStatus = (status) => {
     switch (status) {
       case "PROCESSING":

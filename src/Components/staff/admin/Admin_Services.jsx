@@ -155,18 +155,14 @@ const Admin_Services = () => {
         }))
     });
 
-    console.log(newService);
-
     useEffect(() => {
         getServices();
-    }, []);
-
+    }, [services]);
 
     async function updateService() {
         try {
             await protectedApi
                 .put('/services/update', selectedService)
-                .then(resp => console.log(resp.data))
         } catch (err) {
             console.log(err);
         }
@@ -192,21 +188,6 @@ const Admin_Services = () => {
             }))
         });
     };
-
-    const handleDelete = async service => {
-        console.log(service);
-        try {
-            protectedApi
-                .delete("/services/delete/" + service.id)
-                .then(resp => {
-                    toast.success(resp.data);
-                    getServices();
-                });
-
-        } catch (err) {
-            console.log(err);
-        }
-    }
 
     const handleDisable = async service => {
         try {
@@ -237,7 +218,6 @@ const Admin_Services = () => {
 
     const handlePriceChange = (index, fieldName, value) => {
         const updatedServicePriceList = [...servicePriceList];
-        console.log(parseFloat(value));
         updatedServicePriceList[index][fieldName] = parseFloat(value);
         setServicePriceList(updatedServicePriceList);
     };
@@ -262,7 +242,6 @@ const Admin_Services = () => {
         setServices(updatedServices);
 
         setDialogOpen(false);
-        console.log("Updated service price list:", servicePriceList);
     };
 
     const handleSaveNewService = async () => {
@@ -270,9 +249,6 @@ const Admin_Services = () => {
         try {
             await protectedApi
                 .post("/services/create", newService)
-                .then(console.log(resp => {
-                    console.log(resp.data);
-                }))
         } catch (err) {
             console.log(err);
         }
@@ -281,7 +257,6 @@ const Admin_Services = () => {
 
         setServices([...services, newService]);
         setNewServiceDialogOpen(false);
-        console.log("New service added:", newService);
         resetNewService();
         getServices();
     };

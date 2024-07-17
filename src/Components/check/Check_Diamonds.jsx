@@ -26,7 +26,7 @@ const CheckDiamondBody = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (diamondDetails) {
-      navigate(`/certificates-check/${diamondDetails.labId}`, {
+      navigate(`/diamonds-check/${diamondDetails.labId}`, {
         state: { diamondDetails },
       });
     }
@@ -188,7 +188,7 @@ const CheckDiamondBody = () => {
         <Box>
           <Card variant="outlined" sx={{ borderRadius: 0, border: 0 }}>
             <CardHeader
-              title=" Welcome to DiAsecur Certificate Check"
+              title=" Welcome to DiAsecur Diamonds Check"
               titleTypographyProps={{
                 variant: "h4",
                 color: "#69CEE2",
@@ -242,7 +242,7 @@ const CheckDiamondBody = () => {
                 <Grid item xl={6} sm={12} md={6}>
                   <Card variant="outlined" sx={{ borderRadius: 0, border: 0 }}>
                     <CardHeader
-                      title="Certificate Details"
+                      title="Diamonds Details"
                       titleTypographyProps={{ fontWeight: "bold" }}
                     />
                     <CardContent>

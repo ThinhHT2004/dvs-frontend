@@ -100,10 +100,6 @@ const Manager_PendingRequest = () => {
   const [listForms, setListForms] = useState([]);
   const drawerWidth = 240;
 
-  const handleAction = (id) => {
-    setData(prevData => prevData.filter(row => row.id !== id));
-  };
-
   function approveForm(id) {
     try {
       protectedApi
@@ -130,7 +126,7 @@ const Manager_PendingRequest = () => {
 
   useEffect(() => {
     getWaitingForms();
-  }, [])
+  }, [listForms]);
 
   function getWaitingForms() {
     try {

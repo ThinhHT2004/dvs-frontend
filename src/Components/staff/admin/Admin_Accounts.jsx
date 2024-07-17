@@ -119,7 +119,7 @@ const Admin_Accounts = () => {
   const roles = ["MANAGER", "CONSULTING_STAFF", "VALUATION_STAFF"];
   useEffect(() => {
     getStaffs();
-  }, []);
+  }, [staffs]);
   const getStaffs = async () => {
     try {
       const staffResp = await protectedApi.get("/staffs/");
@@ -143,8 +143,6 @@ const Admin_Accounts = () => {
   const handleViewEditClick = (staffData) => {
     setEditDiaLogOpen(true);
     setDialogData(staffData);
-    console.log(staffData)
-    console.log("View/Edit staff with id: ", staffData);
   };
   const handleDialogChange = (field, value) => {
     setDialogData({
@@ -209,7 +207,6 @@ const Admin_Accounts = () => {
     });
   };
 
-  console.log(registerRequest);
   const handleAdd = async () => {
     try {
       await protectedApi
