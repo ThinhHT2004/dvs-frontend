@@ -144,7 +144,6 @@ TablePaginationActions.propTypes = {
 const ConsultingStaff_ManageRequest = () => {
   const drawerWidth = 240;
   const [filter, setFilter] = useState('');
-
   const [open, setOpen] = useState(false);
   const [proportionImage, setProportionImage] = useState(null);
   const [clarityImage, setClarityImage] = useState(null);
@@ -329,7 +328,7 @@ const ConsultingStaff_ManageRequest = () => {
     }
   }
 
-  function displayDenyButton(sample, requestId) {
+  function displayDenyButton(sample) {
     switch (sample.status) {
       case "FILLING":
         return (
@@ -368,6 +367,7 @@ const ConsultingStaff_ManageRequest = () => {
     setDepth("");
     setGirdle("");
     setCulet("");
+    setCutGrade("");
     setProportionImageUrl("");
     setClarityImageUrl("");
     setDiamondImageUrl("");
@@ -452,7 +452,9 @@ const ConsultingStaff_ManageRequest = () => {
 
   function displayBox(text, requestId) {
     if (text !== "") {
+      {console.log(requestId)}
       return (
+        
         <Card component={Paper}>
           <CardHeader
             title={`SAMPLE ID: ${formatSampleId(text)}`}
@@ -905,7 +907,7 @@ const ConsultingStaff_ManageRequest = () => {
     
     function Row(props) {
       const { row } = props;
-      const [open, setOpen] = useState(false);
+      const [openCollapse, setOpenCollapse] = useState(false);
 
       return (
         <Fragment>
@@ -925,15 +927,15 @@ const ConsultingStaff_ManageRequest = () => {
               <IconButton
                 sx={{ backgroundColor: "#69CEE2" }}
                 size="small"
-                onClick={() => setOpen(!open)}
+                onClick={() => setOpenCollapse(!openCollapse)}
               >
-                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
               </IconButton>
             </TableCell>
           </TableRow>
           <TableRow sx={{ border: 0 }} >
             <TableCell style={{ padding: 0, border: 0 }} colSpan={7}>
-              <Collapse in={open}>
+              <Collapse in={openCollapse}>
                 <List disablePadding >
                   <Box>
                     <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>

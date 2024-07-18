@@ -433,7 +433,7 @@ const ConsultingStaff_Form = () => {
                             open={Boolean(anchorEl)}
                             onClose={handleMenuClose}
                           >
-                            {["RECEIPT", "SEALED", "COMMITMENT", "HAND OVER"].map(
+                            {["RECEIPT", "SEAL", "COMMITMENT", "HAND OVER"].map(
                               (option) => (
                                 <MenuItem
                                   key={option}
