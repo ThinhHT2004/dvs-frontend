@@ -161,7 +161,7 @@ const Manager_PendingRequest = () => {
     >
       <StaffDrawer
         mylist={[
-          "Receipt",
+          "Request",
           "Pending Request",
           "Report",
           "Sign Out",

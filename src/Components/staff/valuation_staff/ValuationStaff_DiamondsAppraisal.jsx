@@ -142,7 +142,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
     };
     try {
       await publicApi
-        .get("/diamond/search/true/" + 0 + "?", {
+        .get("/diamond/search/true/" + 1 + "?", {
           params: data,
         })
         .then((resp) => setDiamonds(resp.data));

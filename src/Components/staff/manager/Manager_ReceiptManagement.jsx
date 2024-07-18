@@ -280,8 +280,8 @@ const Manager_ReceiptManagement = () => {
     >
       <Toaster position="top-center" richColors></Toaster>
       <StaffDrawer
-        mylist={["Receipt", "Pending Request", "Report", "Sign Out"]}
-        state="Receipt"
+        mylist={["Request", "Pending Request", "Report", "Sign Out"]}
+        state="Request"
         handleClick={manager_navigator}
       />
 
@@ -300,7 +300,7 @@ const Manager_ReceiptManagement = () => {
             <Box>
               <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
                 <CardHeader
-                  title='MANAGE RECEIPTS'
+                  title='MANAGE REQUESTS'
                   titleTypographyProps={{
                     variant: 'h5',
                     color: 'white',

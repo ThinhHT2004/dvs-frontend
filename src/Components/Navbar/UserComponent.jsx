@@ -44,7 +44,7 @@ const UserComponent = () => {
     switch(role){
       case "CONSULTING_STAFF": navigator('/consulting-staff/home'); break;
       case "VALUATION_STAFF": navigator('/valuation-staff/diamonds-appraisal'); break;
-      case "MANAGER": navigator('/manager/home'); break;
+      case "MANAGER": navigator('/manager/receipt'); break;
       case "ADMIN": navigator('/admin/home'); break;
     }
   }

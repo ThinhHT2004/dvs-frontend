@@ -52,7 +52,7 @@ export const manager_navigator = (text, navigate) => {
     case "Pending Request":
       navigate('/manager/pending-request');
       break;
-    case 'Receipt':
+    case 'Request':
       navigate('/manager/receipt');
       break;
     case 'Report':
