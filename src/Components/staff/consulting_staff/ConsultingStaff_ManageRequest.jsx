@@ -901,7 +901,7 @@ const ConsultingStaff_ManageRequest = () => {
   });
     useEffect(() => {
       getAllAcceptedRequests();
-    }, [filteredRequests]);
+    }, []);
     
     function Row(props) {
       const { row } = props;

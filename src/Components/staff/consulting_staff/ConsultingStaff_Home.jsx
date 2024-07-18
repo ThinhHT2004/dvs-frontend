@@ -39,12 +39,21 @@ const ConsultingStaff_Home = () => {
     }
     fetchData();
   }, []);
+  const filteredStatusRequests = acceptedRequests.filter(request =>
+    request.status !== 'FINISHED'
+  );
+  const statusOrder = ['ACCEPTED', 'RECEIVED', 'PROCESSING'];
+  const sortedAllRequests = filteredStatusRequests.sort((a, b) => {
+    const statusComparison = statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
+    if (statusComparison !== 0) return statusComparison;
+    return new Date(b.requestDate) - new Date(a.requestDate);
+  });
   useEffect(() => {
     getAllWaitingRequests();
   }, [sortedRequests]);
   useEffect(() => {
     getAllAcceptedRequests();
-  }, [acceptedRequests]);
+  }, [sortedAllRequests]);
   const renderRowStatus = (status) => {
     switch (status) {
       case "PROCESSING":
@@ -113,7 +122,7 @@ const ConsultingStaff_Home = () => {
                 />
                 <Table>   
                   <TableBody>
-                    {acceptedRequests?.slice(0, 5).map((request) => (
+                    {sortedAllRequests?.slice(0, 5).map((request) => (
                       <TableRow key={request.id}>
                         <TableCell sx={{ fontSize: 15 }}>{formatRequestId(request.id)}</TableCell>
                         <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
