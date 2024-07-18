@@ -107,7 +107,7 @@ const ConsultingStaff_Home = () => {
               </Card>
               <TableContainer  sx={{ borderRadius: 3 , marginTop: 5}} component={Paper}>
                 <CardHeader
-                title="REQUEST MANAGEMENT"
+                title="REQUESTS"
                 titleTypographyProps={{ variant: 'h6', color: 'white'}}
                 sx={{ backgroundColor: "#30D5C8"}}
                 />
@@ -143,7 +143,7 @@ const ConsultingStaff_Home = () => {
             <Grid item lg={6} xl={6}>
               <TableContainer  sx={{ borderRadius: 3 }} component={Paper}>
               <CardHeader
-                title="INCOMING REQUEST"
+                title="INCOMING REQUESTS"
                 titleTypographyProps={{ variant: 'h6', color: 'white'}}
                 sx={{ backgroundColor: "#30D5C8"}}
                 />
