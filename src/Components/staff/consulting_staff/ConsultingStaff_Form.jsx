@@ -262,23 +262,29 @@ const ConsultingStaff_Form = () => {
               }}
             >
               <TableCell>
-                <Box display="flex" alignItems="center">
-                  <Box width={"50%"} display={"flex"}>
+                <Box >
+                  <Box>
                     <Typography>ID Sample {sample.id}:</Typography>
-                    <TextField
-                      sx={{ marginLeft: 2, width: "40%" }}
-                      onChange={(e) => handleSizeChange(e, index, sample)}
-                      label="Size"
-                      type="number"
-                    />
                   </Box>
                   <Box>
-                    <TextField
-                      sx={{ width: "70%" }}
-                      value={listSample[index] || 0}
-                      label="Service Price"
-                      disabled
-                    />
+                    <Grid container spacing={2}>
+                      <Grid item xl={4} lg={4}>
+                        <TextField
+                          fullWidth
+                          onChange={(e) => handleSizeChange(e, index, sample)}
+                          label="Size"
+                          type="number"
+                        />
+                      </Grid>
+                      <Grid item xl={8} lg={8}>
+                        <TextField
+                          fullWidth
+                          value={listSample[index] || 0}
+                          label="Service Price"
+                          disabled
+                        />
+                      </Grid>
+                    </Grid>
                   </Box>
                 </Box>
               </TableCell>

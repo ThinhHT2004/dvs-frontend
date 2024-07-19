@@ -453,11 +453,11 @@ const Vault = () => {
                   <TableRow>
                     <TableCell
                       align="center"
-                      sx={{ fontSize: 20, width: 50, color: "#69CEE2" }}
+                      sx={{ fontSize: 20, width: 100, color: "#69CEE2" }}
                     >
                       Request ID
                     </TableCell>
-                    <TableCell sx={{ fontSize: 20, width: 100, color: "#69CEE2" }}>
+                    <TableCell sx={{ fontSize: 20, width: 200, color: "#69CEE2" }}>
                       Service
                     </TableCell>
                     <TableCell
@@ -468,13 +468,13 @@ const Vault = () => {
                     </TableCell>
                     <TableCell
                       align="center"
-                      sx={{ fontSize: 20, width: 100, color: "#69CEE2" }}
+                      sx={{ fontSize: 20, width: 180, color: "#69CEE2" }}
                     >
                       Appointment Date
                     </TableCell>
                     <TableCell
                       align="center"
-                      sx={{ fontSize: 20, width: 100, color: "#69CEE2" }}
+                      sx={{ fontSize: 20, width: 180, color: "#69CEE2" }}
                     >
                       Receive Date
                     </TableCell>

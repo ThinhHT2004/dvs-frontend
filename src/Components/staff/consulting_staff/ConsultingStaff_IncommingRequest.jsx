@@ -151,7 +151,7 @@ const ConsultingStaff_IncommingRequest = () => {
           <Grid item lg={12} xl={12} md={12} sm={12} xs={12}>
             <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
               <CardHeader
-                title='INCOMING REQUESTS'
+                title='MANAGE INCOMING REQUESTS'
                 titleTypographyProps={{
                   variant: 'h5',
                   color: 'white',
@@ -162,10 +162,10 @@ const ConsultingStaff_IncommingRequest = () => {
                 <TableBody>
                   <TableRow>
                     <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
-                    <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Phone Number</TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }}>Phone Number</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
-                    <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
                     <TableCell sx={{ width: 150 }} align="center"></TableCell>
                   </TableRow>
                   {(rowsPerPage > 0 ? sortedRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : sortedRequests).map((request) => (

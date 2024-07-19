@@ -108,7 +108,7 @@ const ConsultingStaff_Home = () => {
             <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
               <Card sx={{ borderRadius: 3 }}>
                 <CardContent>
-                  <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>{staff.lastName} {staff.firstName}</span></Typography>
+                  <Typography variant="h4">Welcome <span style={{ color: "#69CEE2" }}>{staff.firstName}</span></Typography>
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <img src={WelcomeImg} alt="" style={{ width: '230px', height: '172px' }} />
                   </Box>
@@ -135,7 +135,7 @@ const ConsultingStaff_Home = () => {
                     ))}
                     <TableRow>
                     <TableCell>
-                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start'}}>Showing {Math.min(acceptedRequests.length, 5)} of {acceptedRequests.length}</Typography>
+                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start', fontSize: 13}}>Showing {Math.min(acceptedRequests.length, 5)} of {acceptedRequests.length}</Typography>
                       </TableCell>
                     <TableCell></TableCell>
                       <TableCell></TableCell>
@@ -160,7 +160,6 @@ const ConsultingStaff_Home = () => {
                   <TableBody>
                     {waitingRequests?.slice(0, 5).map((request) => (
                       <TableRow key={request.id}>
-                        <TableCell sx={{ fontSize: 15 }}>{request.customer.last_name} {request.customer.first_name}</TableCell>
                         <TableCell sx={{ fontSize: 15 }}>{request.service.name}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}>{request.quantity}</TableCell>
                         <TableCell sx={{ fontSize: 15, textAlign: 'center' }}> 
@@ -172,9 +171,8 @@ const ConsultingStaff_Home = () => {
                     ))}
                     <TableRow>
                     <TableCell>
-                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start'}}>Showing {Math.min(waitingRequests.length, 5)} of {waitingRequests.length}</Typography>
+                        <Typography sx={{  color: "#989898", display: 'flex', justifyContent: 'flex-start', fontSize: 13}}>Showing {Math.min(waitingRequests.length, 5)} of {waitingRequests.length}</Typography>
                       </TableCell>
-                    <TableCell></TableCell>
                       <TableCell></TableCell>
                       <TableCell>
                         

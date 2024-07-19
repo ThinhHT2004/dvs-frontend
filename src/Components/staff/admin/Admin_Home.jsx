@@ -18,6 +18,7 @@ import {
     TableFooter,
     Avatar,
     Stack,
+    Link,
 } from "@mui/material";
 import StaffDrawer from "../StaffDrawer";
 import { useRequests } from "../consulting_staff/RequestContext";
@@ -25,7 +26,6 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
 import protectedApi from '../../../APIs/ProtectedApi';
 import { toast, Toaster } from 'sonner';
-import { Link } from 'react-router-dom';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
@@ -206,7 +206,7 @@ const Admin_Home = () => {
         } catch (err) {
             console.log(err);
         }
-    }; 
+    };
     const handleAddToDb = async () => {
         setDbLoading(true);
         setProgress(0);
@@ -274,15 +274,47 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
                                         <Stack spacing={1}>
-                                            <Typography color="text.secondary" variant="h6">
+                                            <Typography color="text.secondary"
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '1.2rem',
+                                                        lg: '1rem',
+                                                    }
+                                                }}
+                                            >
                                                 Total Profit
                                             </Typography>
-                                            <Typography variant="h2">
+                                            <Typography
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '4rem',
+                                                        lg: '3rem',
+                                                    }
+                                                }}
+                                            >
                                                 {formatPrice(forms.reduce((acc, form) => acc + parseFloat(form.note), 0).toString())}
                                             </Typography>
                                         </Stack>
-                                        <Avatar sx={{ backgroundColor: '#30D5C8', height: '70px', width: '70px' }}>
-                                            <ReceiptIcon fontSize='large' />
+                                        <Avatar sx={{
+                                            backgroundColor: '#30D5C8',
+                                            height: {
+                                                xl: '70px',
+                                                lg: '45px',
+                                            },
+                                            width: {
+                                                xl: '70px',
+                                                lg: '45px',
+                                            }
+                                        }}
+                                        >
+                                            <ReceiptIcon
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '35px',
+                                                        lg: '25px',
+                                                    }
+                                                }}
+                                            />
                                         </Avatar>
                                     </Stack>
                                 </CardContent>
@@ -293,13 +325,48 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
                                         <Stack spacing={1}>
-                                            <Typography color="text.secondary" variant="h6">
+                                            <Typography color="text.secondary"
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '1.2rem',
+                                                        lg: '1rem',
+                                                    }
+                                                }}
+                                            >
                                                 Total Customers
                                             </Typography>
-                                            <Typography variant="h2"> {customers.length}</Typography>
+                                            <Typography
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '4rem',
+                                                        lg: '3rem',
+                                                    }
+                                                }}
+                                            >
+                                                {customers.length}
+                                            </Typography>
                                         </Stack>
-                                        <Avatar sx={{ backgroundColor: '#30D5C8', height: '70px', width: '70px' }}>
-                                            <PeopleAltIcon fontSize='large' />
+                                        <Avatar sx={{
+                                            backgroundColor: '#30D5C8',
+                                            height: {
+                                                xl: '70px',
+                                                lg: '45px',
+                                            },
+                                            width: {
+                                                xl: '70px',
+                                                lg: '45px',
+                                            }
+
+                                        }}
+                                        >
+                                            <PeopleAltIcon
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '35px',
+                                                        lg: '25px',
+                                                    }
+                                                }}
+                                            />
                                         </Avatar>
                                     </Stack>
                                 </CardContent>
@@ -310,15 +377,46 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
                                         <Stack spacing={1}>
-                                            <Typography color="text.secondary" variant="h6">
+                                            <Typography color="text.secondary"
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '1.2rem',
+                                                        lg: '1rem',
+                                                    }
+                                                }}
+                                            >
                                                 Total Requests
                                             </Typography>
-                                            <Typography variant="h2">
+                                            <Typography
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '4rem',
+                                                        lg: '3rem',
+                                                    }
+                                                }}
+                                            >
                                                 {acceptedRequests.length + waitingRequests.length}
                                             </Typography>
                                         </Stack>
-                                        <Avatar sx={{ backgroundColor: '#30D5C8', height: '70px', width: '70px' }}>
-                                            <RequestQuoteIcon fontSize='large' />
+                                        <Avatar sx={{
+                                            backgroundColor: '#30D5C8',
+                                            height: {
+                                                xl: '70px',
+                                                lg: '45px',
+                                            },
+                                            width: {
+                                                xl: '70px',
+                                                lg: '45px',
+                                            }
+                                        }}>
+                                            <RequestQuoteIcon
+                                                sx={{
+                                                    fontSize: {
+                                                        xl: '35px',
+                                                        lg: '25px',
+                                                    }
+                                                }}
+                                            />
                                         </Avatar>
                                     </Stack>
                                 </CardContent>
@@ -334,7 +432,7 @@ const Admin_Home = () => {
                                 <CardContent>
                                     <input type="file" accept=".txt" onChange={handleFileChange} />
                                     <Grid container
-                                    spacing={0}
+                                        spacing={0}
                                     >
                                         <Grid item lg={9} xl={9} md={9} sm={9} xs={9}>
                                             {dbLoading && <LinearProgressWithLabel value={progress} />}
@@ -358,7 +456,7 @@ const Admin_Home = () => {
                         spacing={4}
                     >
                         <Grid item lg={4} xl={4} md={4} sm={4} xs={4}>
-                            <Card sx={{ borderRadius: 3 , height: '100%'}}>
+                            <Card sx={{ borderRadius: 3, height: '100%' }}>
                                 <CardHeader
                                     title="REQUESTS STATUS"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
@@ -373,23 +471,24 @@ const Admin_Home = () => {
                                                 outerRadius: 120,
                                                 cx: 200,
                                                 
+
                                             },
                                         ]}
                                         slotProps={{
                                             legend: {
-                                              direction: 'row',
-                                              position: { vertical: 'bottom', horizontal: 'middle' },
-                                              padding: 10,
-                                              
+                                                direction: 'row',
+                                                position: { vertical: 'bottom', horizontal: 'middle' },
+                                                padding: 10,
+
                                             },
-                                          }}
+                                        }}
                                         height={400}
                                     />
                                 </Box>
                             </Card>
                         </Grid>
                         <Grid item lg={8} xl={8} md={8} sm={8} xs={8}>
-                            <Card sx={{ borderRadius: 3, height: '100%'}}>
+                            <Card sx={{ borderRadius: 3, height: '100%' }}>
                                 <CardHeader
                                     title="REQUESTS STATISTICS"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
@@ -432,7 +531,7 @@ const Admin_Home = () => {
                                         <TableRow>
                                             <TableCell></TableCell>
                                             <TableCell align='right'>
-                                                <Link to="/admin/staffs" color='black'>View All</Link>
+                                                <Link href="/admin/staffs" underline="hover" sx={{ color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline' }}>View All</Link>
                                             </TableCell>
                                         </TableRow>
                                     </TableFooter>
@@ -460,7 +559,7 @@ const Admin_Home = () => {
                                     <TableFooter>
                                         <TableRow>
                                             <TableCell align='right'>
-                                                <Link to="/admin/services" color='black'>View All</Link>
+                                                <Link href="/admin/services" underline="hover" sx={{ color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline' }}>View All</Link>
                                             </TableCell>
                                         </TableRow>
                                     </TableFooter>
