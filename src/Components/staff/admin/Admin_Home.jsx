@@ -76,10 +76,10 @@ const Admin_Home = () => {
     const [appointment, setAppointment] = useState([]);
     useEffect(() => {
         getAllAcceptedRequests();
-    }, [acceptedRequests]);
+    }, []);
     useEffect(() => {
         getAllWaitingRequests();
-    }, [waitingRequests]);
+    }, []);
     useEffect(() => {
         getStaffs();
     }, [staffs]);
