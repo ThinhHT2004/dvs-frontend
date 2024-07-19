@@ -218,13 +218,22 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   const handleSave = (selectedAssignment) => {
     if (parseFloat(selectedAssignment.price) < 0) {
-      toast.error("The price must not be negative");
-    } else {
+      if(selectedDiamond.note === ""){
+        toast.error("The price must not be negative and note must not be empty")
+      }else{
+        toast.error("The price must not be negative");
+      }
+    }else if(selectedDiamond.note === ''){
+      toast.error("The note must not be empty")
+    } 
+    
+    else {
       protectedApi
         .put("/assignment/update", selectedAssignment)
         .then((resp) => {
           getAssignments();
           handleClose();
+          toast.success("The diamond has been valuated")
         })
         .catch((err) => console.log(err));
     }
