@@ -117,11 +117,13 @@ const Manager_ReceiptManagement = () => {
     getProcessingRequest();
   }, [rows]);
 
+  console.log(appraisers);
+
   function checkFullFilled() {
     let check = true;
-    if (staff1 === undefined) check = false;
-    if (staff2 === undefined) check = false;
-    if (staff3 === undefined) check = false;
+    if (staff1.firstName === '') check = false;
+    if (staff2.firstName === '') check = false;
+    if (staff3.firstName === '') check = false;
 
     return check;
   }
@@ -175,19 +177,25 @@ const Manager_ReceiptManagement = () => {
   };
 
   const handleSave = (currentSample, staffList) => {
-    if (checkDuplicate()) {
-      toast.error("The Staff is duplicated");
-    } else {
-      protectedApi
-        .put(
-          "/assignment/assigns/" + currentrRequest.id + "/" + currentSample.id, appraiserList
-        )
-        .then((resp) => {
-          getProcessingRequest();
-          handleBoxClose();
-        })
-        .catch((err) => console.log(err));
+    if(!checkFullFilled()){
+      toast.error("The staffs are not assgined");
+    }else{
+      if (checkDuplicate()) {
+        toast.error("The Staff is duplicated");
+      } else {
+        protectedApi
+          .put(
+            "/assignment/assigns/" + currentrRequest.id + "/" + currentSample.id, appraiserList
+          )
+          .then((resp) => {
+            getProcessingRequest();
+            handleBoxClose();
+            toast.success("Staffs are assigned successfully");
+          })
+          .catch((err) => console.log(err));
+      }
     }
+    
   };
 
   function displayLink(sample, request) {
@@ -572,7 +580,7 @@ const Manager_ReceiptManagement = () => {
                             onClick={() => handleSave(currentDiamond, appraisers)}
                             sx={{ backgroundColor: "#69CEE2" }}
                             variant="contained"
-                            disabled={!checkFullFilled()}
+                            
                           >
                             Save
                           </Button>

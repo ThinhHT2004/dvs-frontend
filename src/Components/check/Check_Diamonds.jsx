@@ -33,7 +33,13 @@ const CheckDiamondBody = () => {
   });
   async function CheckID(){
     try {
-      await publicApi
+      if(checkid === ''){
+        toast.error("The input must not be empty")
+      }
+      else if(!/^\d+$/.test(checkid)){
+        toast.error("The input must be number")
+      }else{
+        await publicApi
         .get(
           "/reports/diamond/" +
             checkid
@@ -41,6 +47,10 @@ const CheckDiamondBody = () => {
         .then((resp) => {
          setDiamondDetails(resp.data);
         });
+      }
+
+
+      
     } catch (err) {
       toast.error("Diamond Not Found");
       

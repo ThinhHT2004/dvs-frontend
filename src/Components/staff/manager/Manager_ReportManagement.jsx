@@ -32,6 +32,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { toast, Toaster } from "sonner";
 
 
 function TablePaginationActions(props) {
@@ -134,6 +135,14 @@ const Manager_ReportManagement = () => {
     return min;
   };
 
+
+  function checkFullFilled(){
+    if(currentValuationReport.finalPrice === '') return false;
+    if(currentValuationReport.note === '') return false
+
+    return true;
+  }
+
   const handleAverage = (diamond) => {
     let avg = 0;
     for (let i = 0; i < diamond.assignmentList.length; ++i) {
@@ -152,16 +161,29 @@ const Manager_ReportManagement = () => {
         break;
     }
   };
+
+  console.log(currentValuationReport)
   const handleSave = (diamond) => {
     currentValuationReport.createdDate = new Date();
     diamond.valuationReport = currentValuationReport;
-    protectedApi
-      .put("/request-detail/update", diamond)
-      .then((resp) => {
-        getSamples();
-        handleCancel();
-      })
-      .catch((err) => console.log(err));
+    
+    if(!checkFullFilled()){
+      toast.error("The price and note must not be empty");
+    }else{
+      if(parseFloat(diamond.valuationReport.finalPrice) < 0){
+        toast.error("The input must not be negative")
+      }else{
+        protectedApi
+        .put("/request-detail/update", diamond)
+        .then((resp) => {
+          getSamples();
+          handleCancel();
+          toast.success("Edit final price successfully");
+        })
+        .catch((err) => console.log(err));
+      }
+    }
+    
 
   };
 
@@ -198,6 +220,7 @@ const Manager_ReportManagement = () => {
         minHeight: "100vh",
       }}
     >
+      <Toaster position="top-center" richColors></Toaster>
       <StaffDrawer
         mylist={[ "Request","Pending Request", "Report", "Sign Out"]}
         state="Report"
@@ -410,7 +433,7 @@ const Manager_ReportManagement = () => {
                               onClick={() =>
                                 handleSave(currentDiamond)
                               }
-
+                              
                             >
                               Save
 

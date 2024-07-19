@@ -218,12 +218,13 @@ const ValuationStaff_DiamondsAppraisal = () => {
 
   const handleSave = (selectedAssignment) => {
     if (parseFloat(selectedAssignment.price) < 0) {
-      if(selectedDiamond.note === ""){
+      console.log(selectedAssignment.note);
+      if(selectedAssignment.note === null || selectedAssignment.note === ''){
         toast.error("The price must not be negative and note must not be empty")
       }else{
         toast.error("The price must not be negative");
       }
-    }else if(selectedDiamond.note === ''){
+    }else if(selectedAssignment.note === '' || selectedAssignment.note === null){
       toast.error("The note must not be empty")
     } 
     

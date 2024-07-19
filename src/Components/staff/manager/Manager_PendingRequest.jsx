@@ -25,6 +25,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { toast, Toaster } from 'sonner';
 
 
 function TablePaginationActions(props) {
@@ -108,6 +109,7 @@ const Manager_PendingRequest = () => {
 
         .then(() => {
           getWaitingForms();
+          toast.success("The request has been approved")
         })
     } catch (err) {
       console.log(err);
@@ -119,6 +121,7 @@ const Manager_PendingRequest = () => {
       protectedApi.post("/forms/deny/" + id)
         .then(() => {
           getWaitingForms();
+          toast.success("The request has been declined");
         })
     } catch (err) {
       console.log(err);
@@ -169,6 +172,7 @@ const Manager_PendingRequest = () => {
         minHeight: "100vh",
       }}
     >
+      <Toaster position='top-center' richColors></Toaster>
       <StaffDrawer
         mylist={[
           "Request",
