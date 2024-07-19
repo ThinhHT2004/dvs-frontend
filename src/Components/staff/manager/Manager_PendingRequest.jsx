@@ -11,6 +11,7 @@ import {
   CardHeader,
   TableFooter,
   TablePagination,
+  Chip,
 } from "@mui/material";
 import { manager_navigator } from '../Naviate';
 import StaffDrawer from '../StaffDrawer';
@@ -148,7 +149,16 @@ const Manager_PendingRequest = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  const renderStatus = (status) => {
+    switch (status) {
+      case "WAITING":
+        return "info";
+        break;
+      default:
+        return "info";
+        break;
+    }
+  };
   return (
     <Box
       sx={{
@@ -201,8 +211,13 @@ const Manager_PendingRequest = () => {
                 {(rowsPerPage > 0 ? listForms.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : listForms).map((row) => (
                   <TableRow key={row.id} sx={{ backgroundColor: "white" }}>
                     <TableCell align="center">{formatValuationId(row.valuationRequestId)}</TableCell>
-                    <TableCell align="center">{moment(row.createdDate).format("yyyy-MM-dd")}</TableCell>
-                    <TableCell align="center">{row.status}</TableCell>
+                    <TableCell align="center">{moment(row.createdDate).format("dd-MM-yyyy")}</TableCell>
+                    <TableCell align="center">
+                    <Chip
+                            label={row.status}
+                            color={renderStatus(row.status)}
+                          ></Chip>
+                    </TableCell>
                     <TableCell align="center">{row.formType}</TableCell>
                     <TableCell>
                       <Link href="#" sx={{ color: "#69CEE2" }} underline="none"

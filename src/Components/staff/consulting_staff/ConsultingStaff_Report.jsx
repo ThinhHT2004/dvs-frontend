@@ -109,10 +109,50 @@ const ConsultingStaff_Report = () => {
   const [selectedDiamond, setSelectedDiamond] = useState(null);
   const [requests, setRequests] = useState([]);
   const pdfRef = useRef();
+  const DottedLine = ({ label, value }) => {
+    const labelRef = useRef(null);
+    const valueRef = useRef(null);
+    const [labelWidth, setLabelWidth] = useState(0);
+    const [valueWidth, setValueWidth] = useState(0);
 
+    useEffect(() => {
+      if (labelRef.current) {
+        setLabelWidth(labelRef.current.offsetWidth);
+      }
+      if (valueRef.current) {
+        setValueWidth(valueRef.current.offsetWidth);
+      }
+    }, [label, value]);
+
+    const totalWidth = 500;
+    const dotWidth = 6; 
+    const remainingWidth = totalWidth - labelWidth - valueWidth;
+    const numDots = Math.floor(remainingWidth / dotWidth);
+    const dots = '.'.repeat(numDots);
+
+    return (
+      <Grid container alignItems="center" justifyContent="space-between" style={{ width: totalWidth }}>
+        <Grid item>
+          <Typography variant="h6" ref={labelRef}>
+            {label}
+          </Typography>
+        </Grid>
+        <Grid item style={{ flexGrow: 1 }}>
+          <Typography variant="h6" style={{ textAlign: 'center' }}>
+            {dots}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" ref={valueRef}>
+            {value}
+          </Typography>
+        </Grid>
+      </Grid>
+    );
+  };
   useEffect(() => {
     getRequests();
-  }, [requests]);
+  }, []);
 
   const generatePdf = () => {
     const input = pdfRef.current;
@@ -163,7 +203,7 @@ const ConsultingStaff_Report = () => {
   };
   const getRequests = () => {
     protectedApi
-      .get("/request/valuation-request/status/PROCESSING/COMPLETED")
+      .get("/request/valuation-request/status/PROCESSING/COMPLETED/FINISHED")
       .then((resp) => {
         setRequests(resp.data)
       })
@@ -188,8 +228,13 @@ const ConsultingStaff_Report = () => {
     switch (status) {
       case "PROCESSING":
         return "warning";
+        break;
       case "COMPLETED":
         return "info";
+        break;
+      case "FINISHED":
+        return "success";
+        break;
     }
   };
 
@@ -237,7 +282,7 @@ const ConsultingStaff_Report = () => {
             </Grid>
           </Box>
           <Box>
-            <Typography variant="h4" align="center" fontWeight={'bold'} padding={1}>
+            <Typography variant="h3" align="center" fontWeight={'bold'} padding={1}>
               DIAMOND REPORT
             </Typography>
             <Box
@@ -259,8 +304,16 @@ const ConsultingStaff_Report = () => {
               </Typography>
             </Box>
             <Box padding={2}>
-              <Typography variant="h5" fontWeight={'bold'}>Introduction</Typography>
-              <Typography>
+              <Typography variant="h4" fontWeight={'bold'}>Introduction</Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  wordBreak: 'break-word',
+                  overflowWrap: 'break-word',
+                  maxWidth: '100%',
+                }}
+                padding={1}
+              >
                 {diamond.valuationReport.note}
               </Typography>
             </Box>
@@ -268,81 +321,29 @@ const ConsultingStaff_Report = () => {
               <Grid container>
                 <Grid item xl={7} lg={7}>
                   <Box>
-                    <Box >
-                      <Typography variant="h5" fontWeight={'bold'}>Diamond Details</Typography>
-                      <Typography variant="h6" padding={1}>
-                        Shape
-                        .........................................{" "}
-                        {diamond.valuationReport.shape}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Carat Weight
-                        .........................................{" "}
-                        {diamond.valuationReport.caratWeight}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Measurement
-                        ........................................{" "}
-                        {diamond.valuationReport.measurement}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Origin
-                        ..............................................{" "}
-                        {diamond.valuationReport.origin}
-                      </Typography>
+                    <Box paddingBottom={2}>
+                      <Typography variant="h4" fontWeight={'bold'}>Diamond Details</Typography>
+                      <Box padding={1}>
+                        <DottedLine label="Color Grade" value={diamond.valuationReport.color} />
+                        <DottedLine label="Clarity Grade" value={diamond.valuationReport.clarity} />
+                        <DottedLine label="Cut Grade" value={diamond.valuationReport.cut} />
+                        <DottedLine label="Polish" value={diamond.valuationReport.polish} />
+                      </Box>
                     </Box>
-                    <Box paddingTop={1}>
-                      <Typography variant="h5" fontWeight={'bold'}>Grading Details</Typography>
-                      <Typography variant="h6" padding={1}>
-                        Color Grade
-                        ...........................................{" "}
-                        {diamond.valuationReport.color}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Clarity Grade
-                        .........................................{" "}
-                        {diamond.valuationReport.clarity}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Cut Grade
-                        ........................................{" "}
-                        {diamond.valuationReport.cut}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Polish
-                        ........................................{" "}
-                        {diamond.valuationReport.polish}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Symmetry
-                        ........................................{" "}
-                        {diamond.valuationReport.symmetry}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Culet
-                        ..............................................{" "}
-                        {diamond.valuationReport.culet}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Girdle
-                        ............................................{" "}
-                        {diamond.valuationReport.girdle}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Table
-                        ..............................................{" "}
-                        {diamond.valuationReport.table}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Depth
-                        ..............................................{" "}
-                        {diamond.valuationReport.depth}
-                      </Typography>
-                      <Typography variant="h6" padding={1}>
-                        Fluorescence
-                        .....................................{" "}
-                        {diamond.valuationReport.fluorescence}
-                      </Typography>
+                    <Box paddingTop={2}>
+                      <Typography variant="h4" fontWeight={'bold'}>Grading Details</Typography>
+                      <Box padding={1}>
+                        <DottedLine label="Color Grade" value={diamond.valuationReport.color} />
+                        <DottedLine label="Clarity Grade" value={diamond.valuationReport.clarity} />
+                        <DottedLine label="Cut Grade" value={diamond.valuationReport.cut} />
+                        <DottedLine label="Polish" value={diamond.valuationReport.polish} />
+                        <DottedLine label="Symmetry" value={diamond.valuationReport.symmetry} />
+                        <DottedLine label="Culet" value={diamond.valuationReport.culet} />
+                        <DottedLine label="Girdle" value={diamond.valuationReport.girdle} />
+                        <DottedLine label="Table" value={diamond.valuationReport.table} />
+                        <DottedLine label="Depth" value={diamond.valuationReport.depth} />
+                        <DottedLine label="Fluorescence" value={diamond.valuationReport.fluorescence} />
+                      </Box>
                     </Box>
                   </Box>
 
@@ -387,6 +388,7 @@ const ConsultingStaff_Report = () => {
                     direction="column"
                     justifyContent="center"
                     alignItems="center"
+                    marginTop={10}
                   >
                     <img src={DiasecurStamp} style={{ width: "150px", margin: 10 }} />
                     <Typography padding={1}>
@@ -486,7 +488,7 @@ const ConsultingStaff_Report = () => {
                     <TableCell sx={{ width: 100 }}></TableCell>
                   </TableRow>
 
-                  {requests.map((request) => (
+                  {(rowsPerPage > 0? requests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage): requests).map((request) => (
                     <Fragment key={request.id}>
                       <TableRow>
                         <TableCell align="center">
@@ -510,7 +512,7 @@ const ConsultingStaff_Report = () => {
                             )}
                           ></Chip>
                         </TableCell>
-                        <TableCell>
+                        <TableCell align="center">
                           <IconButton
                             aria-label="expand row"
                             size="small"
