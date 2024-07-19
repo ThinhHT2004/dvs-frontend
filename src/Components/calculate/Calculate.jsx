@@ -141,6 +141,8 @@ const Calculate = () => {
     setAdvanced(!advanced);
   }
 
+  
+
   function calculateChange(oldDiamonds, newDiamonds) {
     const oldPrice = calculateFairPrice(oldDiamonds);
     const newPrice = calculateFairPrice(newDiamonds);
@@ -175,9 +177,12 @@ const Calculate = () => {
         );
       }
     }
+  }
 
+  function calculatePricePerCarat(list){
+    let price = calculateFairPrice(list);
 
-
+    return parseFloat(price * 1 / carat).toFixed(2); 
   }
 
   function calculateFairPrice(list) {
@@ -916,7 +921,7 @@ const Calculate = () => {
                                 </Typography>
                                 <Box>
                                   <Typography variant="h6" fontWeight="bold">
-                                    {calculateFairPrice(diamonds)}
+                                    ${calculatePricePerCarat(diamonds)}
                                   </Typography>
                                 </Box>
                               </Box>
