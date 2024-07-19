@@ -89,7 +89,7 @@ const WaitingVerification = () => {
           </Card>
         </Grid>
       </Box>
-      <Box>
+      <Box sx={{ mt: "auto" }}>
         <Footer></Footer>
       </Box>
     </Box>
