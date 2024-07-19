@@ -266,7 +266,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
         }}
       >
         <Grid container spacing={3}>
-          <Grid item xl={6} lg={6} md={12}>
+          <Grid item xl={6} lg={12} md={12}>
             <TableContainer sx={{ borderRadius: 3 }} component={Paper}>
               <CardHeader
                 title='DIAMONDS APPRAISAL'
@@ -281,8 +281,8 @@ const ValuationStaff_DiamondsAppraisal = () => {
                   <TableRow sx={{ backgroundColor: "white" }}>
                     <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Valuation ID</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Sample ID</TableCell>
-                    <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }}>Price</TableCell>
-                    <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Deadline</TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 105, color: '#69CEE2' }}>Price</TableCell>
+                    <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Deadline</TableCell>
                     <TableCell sx={{ width: 100 }}></TableCell>
                   </TableRow>
                   {(rowsPerPage > 0 ? assignments.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : assignments).map((assign) => (
@@ -343,7 +343,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xl={6} lg={6} md={12}>
+          <Grid item xl={6} lg={12} md={12}>
             {selectedDiamond ? (
               <Box>
                 <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
@@ -364,7 +364,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                           >
                             <Box marginBottom={1.5}>
                               <Typography>
-                                Cutting Style:{" "}
+                                Shape:{" "}
                                 {selectedDiamond.valuationReport.shape}
                               </Typography>
                             </Box>

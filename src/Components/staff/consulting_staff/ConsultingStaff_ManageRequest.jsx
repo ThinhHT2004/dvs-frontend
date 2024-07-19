@@ -187,7 +187,7 @@ const ConsultingStaff_ManageRequest = () => {
   const [clarityImageUrl, setClarityImageUrl] = useState("");
   const [diamondImageUrl, setDiamondImageUrl] = useState("");
   const { acceptedRequests, getAllAcceptedRequests } = useRequests([]);
-  
+
   // Need to under the acceptedRequests data structure to implement the following function
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -452,9 +452,9 @@ const ConsultingStaff_ManageRequest = () => {
 
   function displayBox(text, requestId) {
     if (text !== "") {
-      {console.log(requestId)}
+      { console.log(requestId) }
       return (
-        
+
         <Card component={Paper}>
           <CardHeader
             title={`SAMPLE ID: ${formatSampleId(text)}`}
@@ -640,7 +640,7 @@ const ConsultingStaff_ManageRequest = () => {
                             <img
                               src={clarityImageUrl}
                               alt="Clarity Characteristics"
-                              style={{ width: "300px", height: "200px" }}
+                              style={{ width: "100%", height: "auto" }}
                             />
                           )}
                         </Box>
@@ -683,7 +683,7 @@ const ConsultingStaff_ManageRequest = () => {
                             <img
                               src={diamondImageUrl}
                               alt="Diamond Picture"
-                              style={{ width: "250px", height: "250px" }}
+                              style={{ width: "100%", height: "auto" }}
                             />
                           )}
                         </Box>
@@ -799,65 +799,75 @@ const ConsultingStaff_ManageRequest = () => {
                   <CardContent sx={{ paddingBottom: "0px" }}>
                     <Box padding={2}>
                       <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                          <TextField
-                            type="text"
-                            placeholder="Depth"
-                            variant="standard"
-                            fullWidth
-                            onChange={(e) => setDepth(e.target.value)}
-                          />
+                      <Grid item lg={6} container>
+                          <Grid item xl={12} lg={12}>
+                            <TextField
+                              type="text"
+                              placeholder="Depth"
+                              variant="standard"
+                              fullWidth
+                              sx={{ padding: 2 }}
+                              onChange={(e) => setDepth(e.target.value)}
+                            />
+                          </Grid>
+                          <Grid item xl={12} lg={12}>
+                            <TextField
+                              type="text"
+                              placeholder="Table"
+                              variant="standard"
+                              fullWidth
+                              sx={{ padding: 2 }}
+                              onChange={(e) => setTable(e.target.value)}
+                            />
+                          </Grid>
+                          <Grid item xl={12} lg={12}>
+                            <TextField
+                              type="text"
+                              placeholder="Girdle"
+                              variant="standard"
+                              fullWidth
+                              sx={{ padding: 2 }}
+                              onChange={(e) => setGirdle(e.target.value)}
+                            />
+                          </Grid>
+                          <Grid item xl={12} lg={12}>
+                            <TextField
+                              type="text"
+                              placeholder="Culet"
+                              variant="standard"
+                              fullWidth
+                              sx={{ padding: 2 }}
+                              onChange={(e) => setCulet(e.target.value)}
+                            />
+                          </Grid>
                         </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            type="text"
-                            placeholder="Table"
-                            variant="standard"
-                            fullWidth
-                            onChange={(e) => setTable(e.target.value)}
-                          />
+                        <Grid item lg={6}>
+                          <Box padding={2}>
+                            <Input
+                              type="file"
+                              onChange={handleProportionImageUpload}
+                            />
+                          </Box>
+                          <Box padding={2}
+                            sx={{
+                              flex: 1,
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            {proportionImageUrl && (
+                              <img
+                                src={proportionImageUrl}
+                                alt="Proportions"
+                                style={{ width: "100%", height: "auto" }}
+                              />
+                            )}
+                          </Box>
                         </Grid>
                       </Grid>
                     </Box>
-                    <Box padding={2}>
-                      <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                          <TextField
-                            type="text"
-                            placeholder="Girdle"
-                            variant="standard"
-                            fullWidth
-                            onChange={(e) => setGirdle(e.target.value)}
-                          />
-                        </Grid>
-                        <Grid item xs={6}>
-                          <TextField
-                            type="text"
-                            placeholder="Culet"
-                            variant="standard"
-                            fullWidth
-                            onChange={(e) => setCulet(e.target.value)}
-                          />
-                        </Grid>
-                      </Grid>
-                    </Box>
-
-                    <Box padding={2}>
-                      <Input
-                        type="file"
-                        onChange={handleProportionImageUpload}
-                      />
-                    </Box>
-                    <Box padding={2}>
-                      {proportionImageUrl && (
-                        <img
-                          src={proportionImageUrl}
-                          alt="Proportions"
-                          style={{ width: "350px", height: "250px" }}
-                        />
-                      )}
-                    </Box>
-                    <Box display={"flex"} justifyContent={"right"} padding={2}>
+                    <Box display={"flex"} justifyContent={"right"} padding={2} marginTop={6}>
                       <Button
                         variant="contained"
                         sx={{ backgroundColor: "#69CEE2" }}
@@ -901,188 +911,188 @@ const ConsultingStaff_ManageRequest = () => {
     console.log(filter);
     return request.status === filter;
   });
-    useEffect(() => {
-      getAllAcceptedRequests();
-    }, []);
-    
-    function Row(props) {
-      const { row } = props;
-      const [openCollapse, setOpenCollapse] = useState(false);
+  useEffect(() => {
+    getAllAcceptedRequests();
+  }, []);
 
-      return (
-        <Fragment>
-          <TableRow sx={{ backgroundColor: "white" }}>
-            <TableCell align="center">{formatRequestId(row.id)}</TableCell>
-            <TableCell>{row.customer.last_name} {row.customer.first_name}</TableCell>
-            <TableCell>{row.service.name}</TableCell>
-            <TableCell align="center">{row.quantity}</TableCell>
-            <TableCell align="center">
-              <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
-            </TableCell>
-            <TableCell align="center">
-              <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
-              </Chip>
-            </TableCell>
-            <TableCell align="center">
-              <IconButton
-                sx={{ backgroundColor: "#69CEE2" }}
-                size="small"
-                onClick={() => setOpenCollapse(!openCollapse)}
-              >
-                {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </TableCell>
-          </TableRow>
-          <TableRow sx={{ border: 0 }} >
-            <TableCell style={{ padding: 0, border: 0 }} colSpan={7}>
-              <Collapse in={openCollapse}>
-                <List disablePadding >
-                  <Box>
-                    <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
-                      <Grid container>
-                        <Grid item lg={3} xl={3}>
-                          <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
-                        </Grid>
-                        <Grid item lg={3} xl={3}>
-                          <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
-                        </Grid>
-                      </Grid>
-                      <ListItemText />
-                    </ListItem>
-                    {row.valuationRequestDetailList.map((sample) => (
-                      <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
-                        <Grid container>
-                          <Grid item lg={3} xl={3}>
-                            <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
-                          </Grid>
-                          <Grid item lg={3} xl={3}>
-                            <ListItemText sx={{ textAlign: 'center' }}>
-                              <Chip
-                                label={sample.status}
-                                color={renderSampleStatus(sample.status)}
-                                size="small"
-                              ></Chip>
-                            </ListItemText>
-                          </Grid>
-                          <Grid item lg={3} xl={3}>
-                            <ListItemText primary={displayEditButton(sample, row.id)} sx={{ textAlign: 'center' }} />
-                          </Grid>
-                          <Grid item lg={3} xl={3}>
-                            <ListItemText primary={displayDenyButton(sample, row.id)} sx={{ textAlign: 'center' }} />
-                          </Grid>
-                        </Grid>
-                      </ListItem>
-
-                    ))}
-
-                  </Box>
-                </List>
-              </Collapse>
-            </TableCell>
-          </TableRow>
-
-        </Fragment>
-      );
-    }
+  function Row(props) {
+    const { row } = props;
+    const [openCollapse, setOpenCollapse] = useState(false);
 
     return (
+      <Fragment>
+        <TableRow sx={{ backgroundColor: "white" }}>
+          <TableCell align="center">{formatRequestId(row.id)}</TableCell>
+          <TableCell>{row.customer.last_name} {row.customer.first_name}</TableCell>
+          <TableCell>{row.service.name}</TableCell>
+          <TableCell align="center">{row.quantity}</TableCell>
+          <TableCell align="center">
+            <Chip label={row.status} color={renderRowStatus(row.status)}></Chip>
+          </TableCell>
+          <TableCell align="center">
+            <Chip color="primary" size="small" label={moment(row.appointmentDate).format("yyyy-MM-DD hh:mm A")}>
+            </Chip>
+          </TableCell>
+          <TableCell align="center">
+            <IconButton
+              sx={{ backgroundColor: "#69CEE2" }}
+              size="small"
+              onClick={() => setOpenCollapse(!openCollapse)}
+            >
+              {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+        </TableRow>
+        <TableRow sx={{ border: 0 }} >
+          <TableCell style={{ padding: 0, border: 0 }} colSpan={7}>
+            <Collapse in={openCollapse}>
+              <List disablePadding >
+                <Box>
+                  <ListItem sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                    <Grid container>
+                      <Grid item lg={3} xl={3}>
+                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Sample ID</Typography>
+                      </Grid>
+                      <Grid item lg={3} xl={3}>
+                        <Typography variant="h6" sx={{ textAlign: 'center' }}>Status</Typography>
+                      </Grid>
+                    </Grid>
+                    <ListItemText />
+                  </ListItem>
+                  {row.valuationRequestDetailList.map((sample) => (
+                    <ListItem key={sample.id} sx={{ borderBottom: 1, borderColor: "#c7ced9" }}>
+                      <Grid container>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText primary={formatSampleId(sample.id)} sx={{ textAlign: 'center' }} />
+                        </Grid>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText sx={{ textAlign: 'center' }}>
+                            <Chip
+                              label={sample.status}
+                              color={renderSampleStatus(sample.status)}
+                              size="small"
+                            ></Chip>
+                          </ListItemText>
+                        </Grid>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText primary={displayEditButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                        </Grid>
+                        <Grid item lg={3} xl={3}>
+                          <ListItemText primary={displayDenyButton(sample, row.id)} sx={{ textAlign: 'center' }} />
+                        </Grid>
+                      </Grid>
+                    </ListItem>
+
+                  ))}
+
+                </Box>
+              </List>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+
+      </Fragment>
+    );
+  }
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "#FAF6EF",
+        width: "100%", minHeight: "100vh"
+
+      }}
+    >
+      <Box>
+        <StaffDrawer
+          mylist={[
+            "Home",
+            "Incoming Request",
+            "Request",
+            "Report",
+            "Form",
+            "Sign Out",
+          ]}
+          state="Request"
+          handleClick={consulting_staff_navigator}
+        ></StaffDrawer>
+      </Box>
       <Box
         sx={{
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           display: "flex",
-          flexDirection: "row",
-          backgroundColor: "#FAF6EF",
-          width: "100%", minHeight: "100vh"
-
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Box>
-          <StaffDrawer
-            mylist={[
-              "Home",
-              "Incoming Request",
-              "Request",
-              "Report",
-              "Form",
-              "Sign Out",
-            ]}
-            state="Request"
-            handleClick={consulting_staff_navigator}
-          ></StaffDrawer>
-        </Box>
-        <Box
-          sx={{
-            p: 3,
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Grid container spacing={2}>
-            <Grid item lg={12}>
-              <Box>
-                <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
-                  <CardHeader
-                    title='MANAGE REQUESTS'
-                    titleTypographyProps={{
-                      variant: 'h5',
-                      color: 'white',
-                    }}
-                    sx={{ backgroundColor: '#30D5C8' }}
-                  />
-                  <Table>
-                    <TableBody>
-                      <TableRow sx={{ backgroundColor: "white" }}>
-                        <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
-                        <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
-                        <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
-                        <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
-                        <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
-                        <TableCell sx={{ fontSize: 20, width: 200, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
-                        <TableCell sx={{ width: 100 }}></TableCell>
-                      </TableRow>
-                      {(rowsPerPage > 0 ? filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredRequests).map((row) => (
-                        <Row key={row.id} row={row} />
-                      ))}
-                      {/* check emptyRows */}
-                    </TableBody>
-                    {/* TablePagination need to be in the Table component and out of the TableBody */}
-                    <TableFooter>
-                      <TableRow sx={{ backgroundColor: "white" }}>
+        <Grid container spacing={2}>
+          <Grid item lg={12}>
+            <Box>
+              <TableContainer sx={{ borderRadius: 3, backgroundColor: "#F0F0F0" }} component={Paper}>
+                <CardHeader
+                  title='MANAGE REQUESTS'
+                  titleTypographyProps={{
+                    variant: 'h5',
+                    color: 'white',
+                  }}
+                  sx={{ backgroundColor: '#30D5C8' }}
+                />
+                <Table>
+                  <TableBody>
+                    <TableRow sx={{ backgroundColor: "white" }}>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Request ID</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Customer Name</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }}>Service</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 100, color: '#69CEE2' }} align="center">Quantity</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Status</TableCell>
+                      <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
+                      <TableCell sx={{ width: 100 }}></TableCell>
+                    </TableRow>
+                    {(rowsPerPage > 0 ? filteredRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : filteredRequests).map((row) => (
+                      <Row key={row.id} row={row} />
+                    ))}
+                    {/* check emptyRows */}
+                  </TableBody>
+                  {/* TablePagination need to be in the Table component and out of the TableBody */}
+                  <TableFooter>
+                    <TableRow sx={{ backgroundColor: "white" }}>
 
-                        <TablePagination
-                          rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                          colSpan={7}
-                          count={filteredRequests.length}
-                          rowsPerPage={rowsPerPage}
-                          page={page}
-                          slotProps={{
-                            select: {
-                              inputProps: {
-                                'aria-label': 'rows per page',
-                              },
-                              native: true,
+                      <TablePagination
+                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                        colSpan={7}
+                        count={filteredRequests.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        slotProps={{
+                          select: {
+                            inputProps: {
+                              'aria-label': 'rows per page',
                             },
-                          }}
-                          onPageChange={handleChangePage}
-                          onRowsPerPageChange={handleChangeRowsPerPage}
-                          ActionsComponent={(subprops) => <TablePaginationActions {...subprops} onFilterChange={handleFilterChange} />}
-                        />
+                            native: true,
+                          },
+                        }}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        ActionsComponent={(subprops) => <TablePaginationActions {...subprops} onFilterChange={handleFilterChange} />}
+                      />
 
-                      </TableRow>
-                    </TableFooter>
-                  </Table>
-                </TableContainer>
-              </Box>
-            </Grid>
-            <Grid item lg={12}>
-              {open && displayBox(sampleId, requestId)}
-            </Grid>
+                    </TableRow>
+                  </TableFooter>
+                </Table>
+              </TableContainer>
+            </Box>
           </Grid>
-        </Box>
+          <Grid item lg={12}>
+            {open && displayBox(sampleId, requestId)}
+          </Grid>
+        </Grid>
       </Box>
+    </Box>
 
-    );
-  };
+  );
+};
 
-  export default ConsultingStaff_ManageRequest;
+export default ConsultingStaff_ManageRequest;

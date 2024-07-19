@@ -376,18 +376,22 @@ const Manager_ReportManagement = () => {
                         <Box
                         sx={{
                           display: "flex",
+                          width: "100%",
                         }}
                         padding={2}
+                        
                         >
                    
                           <Typography marginRight={2}>Notes:</Typography>
-                            <FormControl variant='standard'>
+                            <FormControl variant='standard'
+                            fullWidth
+                            >
                               <InputLabel htmlFor="note-input" />
                               <TextField
                                 placeholder="Enter note"
                                 value={currentValuationReport.note || ""}
                                 multiline
-                                sx={{ width: 500 }}
+                                fullWidth
                                 rows={4}
                                 onChange={(e) =>
                                   setCurrentValuationReport({ ...currentValuationReport, note: e.target.value })
