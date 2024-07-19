@@ -211,7 +211,7 @@ const Manager_PendingRequest = () => {
                 {(rowsPerPage > 0 ? listForms.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : listForms).map((row) => (
                   <TableRow key={row.id} sx={{ backgroundColor: "white" }}>
                     <TableCell align="center">{formatValuationId(row.valuationRequestId)}</TableCell>
-                    <TableCell align="center">{moment(row.createdDate).format("dd-MM-yyyy")}</TableCell>
+                    <TableCell align="center">{moment(row.createdDate).format("DD-MM-yyyy")}</TableCell>
                     <TableCell align="center">
                     <Chip
                             label={row.status}

@@ -355,7 +355,7 @@ const ValuationStaff_DiamondsAppraisal = () => {
                     }}
                     sx={{ backgroundColor: '#30D5C8' }}
                   />
-                  <Box sx={{ width: "100%", height: "77vh" }}>
+                  <Box sx={{ width: "100%"}}>
                         <Box width="100%" height="100%" display="flex">
                           <Box
                             width="50%"
