@@ -168,8 +168,8 @@ const Vault = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Day of Birth"
-                    placeholder="Day of Birth"
+                    label="Date of Birth"
+                    placeholder="Date of Birth"
                     fullWidth
                     variant="outlined"
                     sx={{ backgroundColor: "#fff" }}
