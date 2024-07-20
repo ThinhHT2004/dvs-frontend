@@ -38,17 +38,21 @@ const Vault = () => {
     };
     fetchData();
   }, []);
+
   console.log(customer);
-  console.log(customerAcc);
   const drawerWidth = 240;
   const handleChange = (field, value) => {
     setCustomer({ ...customer, [field]: value });
   };
   const handleSave = async () => {
     try {
-      await protectedApi
-        .put("/customers/update", customer)
-        .then((resp) => toast.success("Update Information Successfully"));
+      await protectedApi.put("/customers/update", customer).then((resp) => {
+        if (resp.data.code == 0) {
+          toast.error(resp.data.message);
+        } else {
+          toast.success(resp.data.message);
+        }
+      });
       if (newPass !== "") {
         setCustomerAcc({ ...customerAcc, password: newPass });
         await protectedApi
@@ -59,6 +63,38 @@ const Vault = () => {
       console.log(err);
     }
   };
+
+  function checkPhoneNumber() {
+    if (customer.phoneNumber?.length !== 10) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function checkFullFilled(){
+    if(customer.first_name === '' || customer.last_name === '' || customer.address === '' || customer.email === '' || customer.dob === null || customer.phoneNumber === ''){
+      return false;
+    }
+
+    if(!checkPhoneNumber() || !checkPhoneNumberString() || !isValidEmailIgnoringTail()){
+      return false;
+    }
+
+    return true;
+  }
+
+  function checkPhoneNumberString() {
+    const digitRegex = /^\d+$/;
+    return digitRegex.test(customer.phoneNumber);
+  }
+
+  function isValidEmailIgnoringTail() {
+    const emailRegex = /^[^\s@]+@[^\s@]+$/;
+
+    return emailRegex.test(customer.email);
+  }
+
   const handleCancel = () => {
     setCustomer(originalCustomer);
     setCustomerAcc(originalCustomerAcc);
@@ -128,6 +164,14 @@ const Vault = () => {
           </Box>
           <Box padding={1}>
             <TextField
+              error={customer.email === "" ? false : !isValidEmailIgnoringTail()}
+              helperText={
+                customer.email === ""
+                  ? false
+                  : !isValidEmailIgnoringTail()
+                  ? "Email is invalid"
+                  : ""
+              }
               label="Email"
               variant="outlined"
               placeholder="Email"
@@ -139,6 +183,16 @@ const Vault = () => {
           </Box>
           <Box padding={1}>
             <TextField
+              error={customer.phoneNumber === "" ? false : !checkPhoneNumber()}
+              helperText={
+                customer.phoneNumber === ""
+                  ? false
+                  : !checkPhoneNumberString()
+                  ? "Phone must contain only digit"
+                  : !checkPhoneNumber()
+                  ? "Lenght must be 10"
+                  : ""
+              }
               label="Phone Number"
               variant="outlined"
               placeholder="Phone Number"
@@ -203,6 +257,7 @@ const Vault = () => {
                 borderRadius: "10px",
               }}
               onClick={handleSave}
+              disabled={!checkFullFilled()}
             >
               Save
             </Button>

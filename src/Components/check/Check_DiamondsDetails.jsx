@@ -11,20 +11,20 @@ const Check_DiamondsDetails = () => {
     const [diamonds, setDiamonds] = useState([]);
     async function handleSearch() {
         const data = {
-          origin,
-          shape,
-          carat,
-          color,
-          clarity,
-          cut,
-          symmetry,
-          polish,
-          fluorescence,
+            origin : diamondDetails.origin,
+          shape : diamondDetails.shape,
+          carat : diamondDetails.caratWeight,
+          color : diamondDetails.color,
+          clarity : diamondDetails.clarity,
+          cut: diamondDetails.cut,
+          symmetry : diamondDetails.symmetry,
+          polish : diamondDetails.polish,
+          fluorescence : diamondDetails.fluorescence,
         };
         console.log(data);
         try {
           await publicApi
-            .get("/diamond/search/true/" + 0 + "?", {
+            .get("/diamond/search/true/" + 1 + "?", {
               params: data,
             })
             .then((resp) => setDiamonds(resp.data));
@@ -121,7 +121,7 @@ const Check_DiamondsDetails = () => {
                                     <Box
                                     padding={1}
                                     >
-                                    <Typography variant="h7">
+                                    <Typography variant="h6">
                                         Estimate Range: {diamonds.length > 0 ? generateMaxMin(diamonds) : "N/A"}
                                     </Typography>
                                     </Box>

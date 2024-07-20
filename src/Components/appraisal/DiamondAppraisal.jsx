@@ -61,7 +61,11 @@ const UserDiamondAppraisalBody = () => {
   const handleInputChange = (event) => {
     const newValue = event.target.value;
     if (!isNaN(newValue) && newValue !== '') {
-      setQuantity(Number(newValue));
+      if(Number(newValue) < 0){
+        setQuantity(Number('0'));
+      }else{
+        setQuantity(Number(newValue));
+      }
     } else if (newValue === '') {
       setQuantity('');
     }
@@ -78,6 +82,11 @@ const UserDiamondAppraisalBody = () => {
       .catch(error => console.log(error))
   }
 
+  function checkFullFilled(){
+    if(serviceObject === null || quantity === '' || date === null) return false;
+    if(date < new Date()) return false;
+    return true;
+  }
 
   if (username === null) {
     return (
@@ -176,6 +185,7 @@ const UserDiamondAppraisalBody = () => {
             <Grid item xs={12}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateTimePicker
+                  disablePast
                   inputFormat="dd/MM/yyyy hh:mm aa"
                   value={date}
                   onChange={(newValue) => setDate(newValue)}
@@ -204,6 +214,7 @@ const UserDiamondAppraisalBody = () => {
                   display: 'flex',
                   justifyContent: 'center',
                 }} onClick={() => submitRequest()}
+                disabled={!checkFullFilled()}
               >
                 Submit
               </Button>
