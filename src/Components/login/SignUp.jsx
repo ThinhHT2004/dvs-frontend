@@ -92,13 +92,13 @@ const SignUp = () => {
       if (!checkPhoneNumberString()) {
         return false;
       }
-      if(checkEmailLength){
+      if(checkEmailLength()){
         return false;
       }
-      if(checkPasswordLength){
+      if(checkPasswordLength()){
         return false;
       }
-      if(checkuUsernameLength){
+      if(checkuUsernameLength()){
         return false;
       }
       return true;

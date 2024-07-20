@@ -37,6 +37,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
+  
 
   const handleFirstPageButtonClick = (event) => {
     onPageChange(event, 0);
@@ -96,11 +97,12 @@ TablePaginationActions.propTypes = {
 };
 
 const ConsultingStaff_IncommingRequest = () => {
+  const staffId = sessionStorage.getItem("consultingStaffId");
   const { waitingRequests, getAllWaitingRequests } = useRequests();
   const acceptRequest = (requestId) => {
     protectedApi
       .put(
-        "/request/" + requestId + "/assign/3"
+        "/request/" + requestId + "/assign/" + staffId
       )
       .then(() => {
         getAllWaitingRequests();
