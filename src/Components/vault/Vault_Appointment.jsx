@@ -543,7 +543,7 @@ const Vault = () => {
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{ padding: 0 }} colSpan={6}>
+                        <TableCell style={{ padding: 0 }} colSpan={7}>
                           <Collapse
                             in={open[row.id]}
                             sx={{ backgroundColor: "#F0F0F0" }}
