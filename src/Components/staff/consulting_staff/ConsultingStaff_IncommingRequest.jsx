@@ -37,7 +37,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
-  
+
 
   const handleFirstPageButtonClick = (event) => {
     onPageChange(event, 0);
@@ -109,6 +109,16 @@ const ConsultingStaff_IncommingRequest = () => {
       })
       .catch((err) => console.log(err));
   };
+  const cancelRequest = (requestId) => {
+    protectedApi
+      .post(
+        "/request/cancel/" + requestId
+      )
+      .then(() => {
+        getAllWaitingRequests();
+      })
+      .catch((err) => console.log(err));
+  };
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const handleChangePage = (event, newPage) => {
@@ -124,7 +134,7 @@ const ConsultingStaff_IncommingRequest = () => {
   const drawerWidth = 240;
   useEffect(() => {
     getAllWaitingRequests();
-  }, [sortedRequests]);
+  }, []); 
   return (
     <Box sx={{ display: "flex", flexDirection: "row", backgroundColor: "#FAF6EF", width: "100%", minHeight: "100vh" }}>
       <Box>
@@ -169,6 +179,7 @@ const ConsultingStaff_IncommingRequest = () => {
                     <TableCell sx={{ fontSize: 20, width: 150, color: '#69CEE2' }} align="center">Quantity</TableCell>
                     <TableCell sx={{ fontSize: 20, width: 250, color: '#69CEE2' }} align="center">Appointment Date</TableCell>
                     <TableCell sx={{ width: 150 }} align="center"></TableCell>
+                    <TableCell sx={{ width: 150 }} align="center"></TableCell>
                   </TableRow>
                   {(rowsPerPage > 0 ? sortedRequests.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : sortedRequests).map((request) => (
                     <TableRow key={request.id}>
@@ -189,6 +200,16 @@ const ConsultingStaff_IncommingRequest = () => {
                           Accept
                         </Button>
                       </TableCell>
+                      <TableCell sx={{ fontSize: 15 }} align="center">
+                        <Button
+                          variant="outlined"
+                          sx={{ borderRadius: "8px" }}
+                          onClick={() => cancelRequest(request.id)}
+                          color="error"
+                        >
+                          Cancel
+                        </Button>
+                    </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

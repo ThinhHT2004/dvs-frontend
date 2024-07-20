@@ -201,6 +201,16 @@ const Vault = () => {
       console.log(err);
     }
   }
+  const cancelRequest = (requestId) => {
+    protectedApi
+      .post(
+        "/request/cancel/" + requestId
+      )
+      .then(() => {
+        getRequests();
+      })
+      .catch((err) => console.log(err));
+  };
   const DottedLine = ({ label, value }) => {
     const labelRef = useRef(null);
     const valueRef = useRef(null);
@@ -479,6 +489,7 @@ const Vault = () => {
                       Receive Date
                     </TableCell>
                     <TableCell sx={{ width: 100 }}></TableCell>
+                    <TableCell sx={{ width: 100 }}></TableCell>
                   </TableRow>
                   {sortedRequests.map((row) => (
                     <Fragment key={row.id}>
@@ -504,6 +515,17 @@ const Vault = () => {
                             : moment(row.receivingDate).format(
                               "yyyy-MM-DD hh:mm a"
                             )}
+                        </TableCell>
+                        <TableCell align="center">
+                          <Button
+                            variant="outlined"
+                            sx={{ borderRadius: "8px" }}
+                            disabled={row.status !== "WAITING"}
+                            onClick={() => cancelRequest(row.id)}
+                            color="error"
+                            >
+                              Cancel
+                            </Button>
                         </TableCell>
                         <TableCell align="center">
                           <IconButton
