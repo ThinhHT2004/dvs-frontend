@@ -19,6 +19,7 @@ import {
     Avatar,
     Stack,
     Link,
+    TextField,
 } from "@mui/material";
 import StaffDrawer from "../StaffDrawer";
 import { useRequests } from "../consulting_staff/RequestContext";
@@ -30,6 +31,10 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import { BarChart } from '@mui/x-charts/BarChart';
+import { DatePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
 function LinearProgressWithLabel(props) {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -61,7 +66,6 @@ function formatPrice(price) {
 const Admin_Home = () => {
     const { acceptedRequests, getAllAcceptedRequests } = useRequests();
     const { waitingRequests, getAllWaitingRequests } = useRequests();
-
     const drawerWidth = 240;
     const [statusData, setStatusData] = useState([]);
     const [file, setFile] = useState(null);
@@ -74,27 +78,31 @@ const Admin_Home = () => {
     const [forms, setForms] = useState([]);
     const [quantity, setQuantity] = useState([]);
     const [appointment, setAppointment] = useState([]);
+    const [requests, setRequests] = useState([]);
+    const [receipts, setReceipts] = useState([]);
+    const currentDate = new Date();
+    const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    const [startDate, setStartDate] = useState(firstDayOfMonth.toLocaleDateString('en-CA'));
+    const [endDate, setEndDate] = useState(lastDayOfMonth.toLocaleDateString('en-CA'));
+
     useEffect(() => {
         getAllAcceptedRequests();
-    }, []);
-    useEffect(() => {
         getAllWaitingRequests();
+        getStaffs();
+        getServices();
+        getForms();
+        getCustomers();
+        getReceipts();
     }, []);
     useEffect(() => {
-        getStaffs();
-    }, [staffs]);
-    useEffect(() => {
-        getServices();
-    }, [services]);
-    useEffect(() => {
-        getForms();
-    }, [forms]);
-    useEffect(() => {
-        getCustomers();
-    }, [customers]);
-    useEffect(() => {
-        getStatusData();
-    }, [statusData]);
+        const getDataRequests = async () => {
+            const fetchRequests = await getRequests();
+            getStatusData(fetchRequests);
+            console.log(fetchRequests);
+        }
+        getDataRequests();
+    }, [startDate, endDate]);
     const getServices = async () => {
         try {
             const resp = await protectedApi.get("/services/");
@@ -104,26 +112,19 @@ const Admin_Home = () => {
             console.log(err);
         }
     };
-    const getStatusData = async () => {
+    const getStatusData = async (data) => {
         try {
-            const statusCounts1 = acceptedRequests.reduce((acc, { status }) => {
+            const statusCounts = data.reduce((acc, { status }) => {
                 acc[status] = (acc[status] || 0) + 1;
                 return acc;
             }, {});
-            const statusCounts2 = waitingRequests.reduce((acc, { status }) => {
-                acc[status] = (acc[status] || 0) + 1;
-                return acc;
-            }, {});
-            const statusCounts = { ...statusCounts1, ...statusCounts2 };
             const formattedStatusData = Object.keys(statusCounts).map(key => ({
                 label: key,
                 value: statusCounts[key],
             }));
             setStatusData(formattedStatusData);
-            const sortedWaitingRequests = waitingRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
-            const sortedAcceptedRequests = acceptedRequests.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
-            const mergedRequests = [...sortedWaitingRequests, ...sortedAcceptedRequests];
-            const requestCountByDate = mergedRequests.reduce((acc, { requestDate }) => {
+            const sortedRequests = data.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
+            const requestCountByDate = sortedRequests.reduce((acc, { requestDate }) => {
                 const date = new Date(requestDate).toDateString();
                 acc[date] = (acc[date] || 0) + 1;
                 return acc;
@@ -132,8 +133,9 @@ const Admin_Home = () => {
                 date,
                 quantity: requestCountByDate[date],
             }));
-            const formattedQuantity = formattedRequestCountByDate.map(request => request.quantity);
-            const formattedAppointment = formattedRequestCountByDate.map(request => {
+            const sortedRequestCountByDate = formattedRequestCountByDate.sort((a, b) => new Date(a.date) - new Date(b.date));
+            const formattedQuantity = sortedRequestCountByDate.map(request => request.quantity);
+            const formattedAppointment = sortedRequestCountByDate.map(request => {
                 const date = new Date(request.date);
                 const day = date.getDate().toString().padStart(2, '0');
                 const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -170,26 +172,43 @@ const Admin_Home = () => {
         const file = event.target.files[0];
         if (file) {
             setFile(file);
-            // setLoading(true);
             const reader = new FileReader();
-            // reader.onloadstart = () => {
-            //     setProgress(0);
-            // };
-            // reader.onprogress = (data) => {
-            //     if (data.lengthComputable) {
-            //         const progress = Math.round((data.loaded / data.total) * 100);
-            //         setProgress(progress);
-            //     }
-            // };
-            // reader.onloadend = (e) => {
-            //     const content = e.target.result;
-            //     setFileContent(content);
-            //     // setLoading(false);
-            //     setProgress(100);
-            //     formatFileContent(content);
-            // };
             reader.readAsText(file);
         }
+    };
+    const getReceipts = async () => {
+        try {
+            const resp = await protectedApi.get("/forms/receipt/" + startDate + "/" + endDate);
+            setReceipts(resp.data);
+            console.log(resp.data);
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    const getRequests = async () => {
+        try {
+            const resp = await protectedApi.get("/request/valuation-request/filter/" + startDate + "/" + endDate);
+            console.log(resp.data);
+            return resp.data;
+
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    const handleChangeStartDate = (date) => {
+        setStartDate(date.toLocaleDateString('en-CA'));
+        setEndDate(endDate);
+        getReceipts();
+        getRequests();
+    };
+    const handleChangeEndDate = (date) => {
+        setEndDate(date.toLocaleDateString('en-CA'));
+        setStartDate(startDate);
+        getReceipts();
+        getRequests();
     };
     const getForms = async () => {
         try {
@@ -292,7 +311,7 @@ const Admin_Home = () => {
                                                     }
                                                 }}
                                             >
-                                                {formatPrice(forms.reduce((acc, form) => acc + parseFloat(form.note), 0).toString())}
+                                                {formatPrice(receipts.reduce((acc, form) => acc + parseFloat(form.note), 0).toString())}
                                             </Typography>
                                         </Stack>
                                         <Avatar sx={{
@@ -320,58 +339,7 @@ const Admin_Home = () => {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
-                            <Card sx={{ borderRadius: 3, height: 150 }}>
-                                <CardContent>
-                                    <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
-                                        <Stack spacing={1}>
-                                            <Typography color="text.secondary"
-                                                sx={{
-                                                    fontSize: {
-                                                        xl: '1.2rem',
-                                                        lg: '1rem',
-                                                    }
-                                                }}
-                                            >
-                                                Total Customers
-                                            </Typography>
-                                            <Typography
-                                                sx={{
-                                                    fontSize: {
-                                                        xl: '4rem',
-                                                        lg: '3rem',
-                                                    }
-                                                }}
-                                            >
-                                                {customers.length}
-                                            </Typography>
-                                        </Stack>
-                                        <Avatar sx={{
-                                            backgroundColor: '#30D5C8',
-                                            height: {
-                                                xl: '70px',
-                                                lg: '45px',
-                                            },
-                                            width: {
-                                                xl: '70px',
-                                                lg: '45px',
-                                            }
 
-                                        }}
-                                        >
-                                            <PeopleAltIcon
-                                                sx={{
-                                                    fontSize: {
-                                                        xl: '35px',
-                                                        lg: '25px',
-                                                    }
-                                                }}
-                                            />
-                                        </Avatar>
-                                    </Stack>
-                                </CardContent>
-                            </Card>
-                        </Grid>
                         <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
                             <Card sx={{ borderRadius: 3, height: 150 }}>
                                 <CardContent>
@@ -423,6 +391,53 @@ const Admin_Home = () => {
                             </Card>
                         </Grid>
                         <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                            <Card sx={{ borderRadius: 3, height: "100%" }}>
+                                <CardHeader
+                                    title="FILTER"
+                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
+                                    sx={{ backgroundColor: "#30D5C8" }}
+                                />
+                                <Box display={'flex'}>
+                                    <Typography color="text.secondary" margin={1}>
+                                        From
+                                    </Typography>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <DatePicker
+                                            inputFormat="yyyy-MM-dd"
+                                            value={startDate}
+                                            onChange={(value) => handleChangeStartDate(value)}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    placeholder="Start Date"
+                                                    variant="outlined"
+                                                    sx={{ backgroundColor: "#fff", fontSize: '10px' }}
+                                                />
+                                            )}
+                                        />
+                                    </LocalizationProvider>
+                                    <Typography color="text.secondary" margin={1}>
+                                        To
+                                    </Typography>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <DatePicker
+                                            inputFormat="yyyy-MM-dd"
+                                            value={endDate}
+                                            onChange={(value) => handleChangeEndDate(value)}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    placeholder="End Date"
+                                                    variant="outlined"
+                                                    sx={{ backgroundColor: "#fff" }}
+                                                />
+                                            )}
+                                        />
+                                    </LocalizationProvider>
+                                </Box>
+                            </Card>
+                        </Grid>
+                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
                             <Card sx={{ borderRadius: 3, height: 150 }}>
                                 <CardHeader
                                     title="FILE UPLOAD"
@@ -456,7 +471,7 @@ const Admin_Home = () => {
                         spacing={4}
                     >
                         <Grid item lg={4} xl={4} md={4} sm={4} xs={4}>
-                            <Card sx={{ borderRadius: 3, height: '100%' }}>
+                            <Card sx={{ borderRadius: 3, height: 'auto' }}>
                                 <CardHeader
                                     title="REQUESTS STATUS"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
@@ -470,7 +485,7 @@ const Admin_Home = () => {
                                                 innerRadius: 80,
                                                 outerRadius: 120,
                                                 cx: 200,
-                                                
+
 
                                             },
                                         ]}
@@ -496,8 +511,8 @@ const Admin_Home = () => {
                                 />
                                 <CardContent>
                                     <BarChart
-                                        xAxis={[{ scaleType: 'band', data: appointment }]}
-                                        series={[{ data: quantity }]}
+                                        xAxis={[{ scaleType: 'band', data: appointment, label: 'Request Date' }]}
+                                        series={[{ data: quantity, label: 'Quantity', color: '#2c98ec' }]}
                                         height={400}
                                     />
                                 </CardContent>
@@ -510,37 +525,47 @@ const Admin_Home = () => {
                         spacing={4}
                     >
                         <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                            <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
-                                <CardHeader
-                                    title="STAFFS"
-                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
-                                    sx={{ backgroundColor: "#30D5C8" }}
-                                />
-                                <Table>
-                                    <TableBody>
-                                        {staffs.map((staff) => (
-                                            <TableRow
-                                                key={staff.id}
-                                            >
-                                                <TableCell component="th" scope="row">{staff.lastName} {staff.firstName}</TableCell>
-                                                <TableCell align="right">{staff.role}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                    <TableFooter>
-                                        <TableRow>
-                                            <TableCell></TableCell>
-                                            <TableCell align='right'>
-                                                <Link href="/admin/staffs" underline="hover" sx={{ color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline' }}>View All</Link>
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableFooter>
-                                </Table>
-
-                            </TableContainer>
-                        </Grid>
-                        <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
-                            <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
+                            <Card sx={{ borderRadius: 3, }}>
+                                <CardContent
+                                    sx={{
+                                        display: 'flex',
+                                    }}
+                                >
+                                    <Avatar sx={{
+                                        backgroundColor: '#30D5C8',
+                                        height: {
+                                            xl: '70px',
+                                            lg: '45px',
+                                        },
+                                        width: {
+                                            xl: '70px',
+                                            lg: '45px',
+                                        },
+                                        marginRight: { xl: '20px', lg: '10px' }
+                                    }}
+                                    >
+                                        <PeopleAltIcon
+                                            sx={{
+                                                fontSize: {
+                                                    xl: '35px',
+                                                    lg: '25px',
+                                                }
+                                            }}
+                                        />
+                                    </Avatar>
+                                    <Typography color="text.secondary"
+                                        sx={{
+                                            fontSize: {
+                                                xl: '3rem',
+                                                lg: '3rem',
+                                            }
+                                        }}
+                                    >
+                                        Total Customers: <span style={{ fontSize: { xl: '4rem', lg: '3rem' }, color: 'black' }}>{customers.length}</span>
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                            <TableContainer component={Paper} sx={{ borderRadius: 3, marginTop: 5 }}>
                                 <CardHeader
                                     title="SERVICES"
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
@@ -564,6 +589,37 @@ const Admin_Home = () => {
                                         </TableRow>
                                     </TableFooter>
                                 </Table>
+                            </TableContainer>
+
+                        </Grid>
+                        <Grid item lg={6} xl={6} md={6} sm={6} xs={6}>
+                            <TableContainer component={Paper} sx={{ borderRadius: 3 }}>
+                                <CardHeader
+                                    title="STAFFS"
+                                    titleTypographyProps={{ variant: 'h6', color: 'white' }}
+                                    sx={{ backgroundColor: "#30D5C8" }}
+                                />
+                                <Table>
+                                    <TableBody>
+                                        {staffs.slice(0, 6).map((staff) => (
+                                            <TableRow
+                                                key={staff.id}
+                                            >
+                                                <TableCell component="th" scope="row">{staff.lastName} {staff.firstName}</TableCell>
+                                                <TableCell align="right">{staff.role}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                    <TableFooter>
+                                        <TableRow>
+                                            <TableCell></TableCell>
+                                            <TableCell align='right'>
+                                                <Link href="/admin/staffs" underline="hover" sx={{ color: '#69CEE2', display: 'flex', justifyContent: 'flex-end', textDecoration: 'underline' }}>View All</Link>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableFooter>
+                                </Table>
+
                             </TableContainer>
                         </Grid>
                     </Grid>
