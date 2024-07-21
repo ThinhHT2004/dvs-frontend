@@ -98,7 +98,6 @@ const Admin_Home = () => {
         const getDataRequests = async () => {
             const fetchRequests = await getRequests();
             getStatusData(fetchRequests);
-            console.log(fetchRequests);
         }
         getDataRequests();
         getReceipts();
@@ -180,7 +179,6 @@ const Admin_Home = () => {
         try {
             const resp = await protectedApi.get("/forms/receipt/" + startDate + "/" + endDate);
             setReceipts(resp.data);
-            console.log(resp.data);
         }
         catch (err) {
             console.log(err);
@@ -189,7 +187,6 @@ const Admin_Home = () => {
     const getRequests = async () => {
         try {
             const resp = await protectedApi.get("/request/valuation-request/filter/" + startDate + "/" + endDate);
-            console.log(resp.data);
             return resp.data;
 
 
@@ -393,8 +390,8 @@ const Admin_Home = () => {
                                     titleTypographyProps={{ variant: 'h6', color: 'white' }}
                                     sx={{ backgroundColor: "#30D5C8" }}
                                 />
-                                <Box display={'flex'}>
-                                    <Typography color="text.secondary" margin={1}>
+                                <Box display={'flex'} padding={2}>
+                                    <Typography color="text.secondary" marginRight={1}>
                                         From
                                     </Typography>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
