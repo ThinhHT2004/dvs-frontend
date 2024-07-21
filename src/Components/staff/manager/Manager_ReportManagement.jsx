@@ -138,7 +138,7 @@ const Manager_ReportManagement = () => {
 
   function checkFullFilled(){
     if(currentValuationReport.finalPrice === '') return false;
-    if(currentValuationReport.note === '') return false
+    if(currentValuationReport.note === '' || currentValuationReport.note === null) return false
 
     return true;
   }

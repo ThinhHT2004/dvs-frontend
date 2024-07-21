@@ -46,15 +46,9 @@ const UserDiamondAppraisalBody = () => {
   }
   useEffect(() => {
     getAllServices();
-    fetchService();
-  });
-  function fetchService() {
-    protectedApi.get('/services/' + service)
-      .then(response => {
-        setServiceObject(response.data);
-      })
-      .catch(error => console.log(error));
-  }
+    
+  }, []);
+
   const request = { consultingStaffId: null, customer: customer, service: serviceObject, quantity: quantity, status: 'WAITING', appointmentDate: date, receivingDate: null, requestDate: new Date() };
 
 
@@ -82,9 +76,11 @@ const UserDiamondAppraisalBody = () => {
       .catch(error => console.log(error))
   }
 
+  console.log(date)
+
   function checkFullFilled(){
-    if(serviceObject === null || quantity === '' || date === null) return false;
-    if(date < new Date()) return false;
+    if(serviceObject === null || quantity === '' || date === null || date === 'Invalid Date' || isNaN(date.getTime())) return false;
+    if(date === 'Invalid Date') return false;
     return true;
   }
 
@@ -149,7 +145,7 @@ const UserDiamondAppraisalBody = () => {
                 <Select
                   id="service-select"
                   value={service}
-                  onChange={(e) => setService(e.target.value)}
+                  onChange={(e) => setServiceObject(e.target.value)}
                   displayEmpty
                   renderValue={(selected) => {
                     if (selected === '') {
