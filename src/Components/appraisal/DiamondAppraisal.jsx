@@ -60,14 +60,14 @@ const UserDiamondAppraisalBody = () => {
 
   const handleInputChange = (event) => {
     const newValue = event.target.value;
-    if (!isNaN(newValue) && newValue !== '') {
-      if(Number(newValue) < 0){
-        setQuantity(Number('0'));
-      }else{
+    if(event.target.value.match(/[^0-9]/)){
+      event.preventDefault();
+    }else{
+      if (!isNaN(newValue) && newValue !== '') {
         setQuantity(Number(newValue));
+      } else if (newValue === '') {
+        setQuantity('');
       }
-    } else if (newValue === '') {
-      setQuantity('');
     }
   };
   const handleSubmit = (event) => {
@@ -179,6 +179,7 @@ const UserDiamondAppraisalBody = () => {
                 onChange={handleInputChange}
                 placeholder="Amount of Diamonds"
                 type="number"
+              
                 sx={{ backgroundColor: '#fff', fontSize: '20px', borderRadius: '4px', width: 800 }}
               />
             </Grid>
