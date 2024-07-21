@@ -22,7 +22,6 @@ import {
     TextField,
 } from "@mui/material";
 import StaffDrawer from "../StaffDrawer";
-import { useRequests } from "../consulting_staff/RequestContext";
 import { PieChart } from '@mui/x-charts/PieChart';
 import PropTypes from 'prop-types';
 import protectedApi from '../../../APIs/ProtectedApi';
@@ -56,7 +55,7 @@ LinearProgressWithLabel.propTypes = {
 function formatPrice(price) {
     const numPrice = Number(price);
     if (numPrice >= 1000000) {
-        return `${(numPrice / 1000000).toFixed(1)}tr`;
+        return `${(numPrice / 1000000).toFixed(2)}tr`;
     } else if (numPrice >= 1000) {
         return numPrice.toLocaleString('vi-VN');
     } else {
@@ -64,18 +63,14 @@ function formatPrice(price) {
     }
 }
 const Admin_Home = () => {
-    const { acceptedRequests, getAllAcceptedRequests } = useRequests();
-    const { waitingRequests, getAllWaitingRequests } = useRequests();
     const drawerWidth = 240;
     const [statusData, setStatusData] = useState([]);
     const [file, setFile] = useState(null);
     const [progress, setProgress] = useState(0);
     const [dbLoading, setDbLoading] = useState(false);
-    const [formattedList, setFormattedList] = useState([]);
     const [staffs, setStaffs] = useState([]);
     const [services, setServices] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const [forms, setForms] = useState([]);
     const [quantity, setQuantity] = useState([]);
     const [appointment, setAppointment] = useState([]);
     const [requests, setRequests] = useState([]);
@@ -87,12 +82,10 @@ const Admin_Home = () => {
     const [endDate, setEndDate] = useState(lastDayOfMonth.toLocaleDateString('en-CA'));
 
     useEffect(() => {
-        getAllAcceptedRequests();
-        getAllWaitingRequests();
         getStaffs();
         getServices();
-        getForms();
         getCustomers();
+        getStatusData()
     }, []);
     useEffect(() => {
         const getDataRequests = async () => {
@@ -113,7 +106,7 @@ const Admin_Home = () => {
     };
     const getStatusData = async (data) => {
         try {
-            const statusCounts = data.reduce((acc, { status }) => {
+            const statusCounts = (data || []).reduce((acc, { status }) => {
                 acc[status] = (acc[status] || 0) + 1;
                 return acc;
             }, {});
@@ -122,7 +115,7 @@ const Admin_Home = () => {
                 value: statusCounts[key],
             }));
             setStatusData(formattedStatusData);
-            const sortedRequests = data.sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
+            const sortedRequests = (data || []).sort((a, b) => new Date(a.requestDate) - new Date(b.requestDate));
             const requestCountByDate = sortedRequests.reduce((acc, { requestDate }) => {
                 const date = new Date(requestDate).toDateString();
                 acc[date] = (acc[date] || 0) + 1;
@@ -187,9 +180,8 @@ const Admin_Home = () => {
     const getRequests = async () => {
         try {
             const resp = await protectedApi.get("/request/valuation-request/filter/" + startDate + "/" + endDate);
+            setRequests(resp.data);
             return resp.data;
-
-
         }
         catch (err) {
             console.log(err);
@@ -202,14 +194,6 @@ const Admin_Home = () => {
     const handleChangeEndDate = (date) => {
         setEndDate(date.toLocaleDateString('en-CA'));
         setStartDate(startDate);
-    };
-    const getForms = async () => {
-        try {
-            const resp = await protectedApi.get("/forms/receipt");
-            setForms(resp.data);
-        } catch (err) {
-            console.log(err);
-        }
     };
     const getCustomers = async () => {
         try {
@@ -356,7 +340,7 @@ const Admin_Home = () => {
                                                     }
                                                 }}
                                             >
-                                                {acceptedRequests.length + waitingRequests.length}
+                                                {requests.length}
                                             </Typography>
                                         </Stack>
                                         <Avatar sx={{
@@ -383,7 +367,7 @@ const Admin_Home = () => {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                        <Grid item lg={3.3} xl={3.3} md={3} sm={3} xs={3}>
                             <Card sx={{ borderRadius: 3, height: "100%" }}>
                                 <CardHeader
                                     title="FILTER"
@@ -391,7 +375,7 @@ const Admin_Home = () => {
                                     sx={{ backgroundColor: "#30D5C8" }}
                                 />
                                 <Box display={'flex'} padding={2}>
-                                    <Typography color="text.secondary" marginRight={1}>
+                                    <Typography color="text.secondary" marginRight={1} marginTop={1} marginBottom={1}>
                                         From
                                     </Typography>
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -422,7 +406,7 @@ const Admin_Home = () => {
                                                     {...params}
                                                     placeholder="End Date"
                                                     variant="outlined"
-                                                    sx={{ backgroundColor: "#fff" }}
+                                                    sx={{ backgroundColor: "#fff" , fontSize: '10px'}}
                                                 />
                                             )}
                                         />
@@ -430,7 +414,7 @@ const Admin_Home = () => {
                                 </Box>
                             </Card>
                         </Grid>
-                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                        <Grid item lg={2.7} xl={2.7} md={3} sm={3} xs={3}>
                             <Card sx={{ borderRadius: 3, height: 150 }}>
                                 <CardHeader
                                     title="FILE UPLOAD"
@@ -442,10 +426,10 @@ const Admin_Home = () => {
                                     <Grid container
                                         spacing={0}
                                     >
-                                        <Grid item lg={9} xl={9} md={9} sm={9} xs={9}>
+                                        <Grid item lg={9.5} xl={9.5} md={9} sm={9} xs={9}>
                                             {dbLoading && <LinearProgressWithLabel value={progress} />}
                                         </Grid>
-                                        <Grid item lg={3} xl={3} md={3} sm={3} xs={3}>
+                                        <Grid item lg={2.5} xl={2.5} md={3} sm={3} xs={3}>
                                             <Button
                                                 variant="contained"
                                                 sx={{ backgroundColor: "#30D5C8", color: "white" }}
