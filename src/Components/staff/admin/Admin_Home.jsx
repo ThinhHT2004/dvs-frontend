@@ -93,7 +93,6 @@ const Admin_Home = () => {
         getServices();
         getForms();
         getCustomers();
-        getReceipts();
     }, []);
     useEffect(() => {
         const getDataRequests = async () => {
@@ -102,6 +101,7 @@ const Admin_Home = () => {
             console.log(fetchRequests);
         }
         getDataRequests();
+        getReceipts();
     }, [startDate, endDate]);
     const getServices = async () => {
         try {
@@ -201,14 +201,10 @@ const Admin_Home = () => {
     const handleChangeStartDate = (date) => {
         setStartDate(date.toLocaleDateString('en-CA'));
         setEndDate(endDate);
-        getReceipts();
-        getRequests();
     };
     const handleChangeEndDate = (date) => {
         setEndDate(date.toLocaleDateString('en-CA'));
         setStartDate(startDate);
-        getReceipts();
-        getRequests();
     };
     const getForms = async () => {
         try {
