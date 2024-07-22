@@ -46,8 +46,18 @@ const UserDiamondAppraisalBody = () => {
   }
   useEffect(() => {
     getAllServices();
-    
-  }, []);
+    getService();
+  }, [service]);
+
+  function getService(){
+    protectedApi.get("/services/" + service)
+    .then(resp =>{
+      console.log(resp.data);
+      setServiceObject(resp.data);
+    })
+    .catch(err => console.log(err));
+  }
+
 
   const request = { consultingStaffId: null, customer: customer, service: serviceObject, quantity: quantity, status: 'WAITING', appointmentDate: date, receivingDate: null, requestDate: new Date() };
 
@@ -145,10 +155,10 @@ const UserDiamondAppraisalBody = () => {
                 <Select
                   id="service-select"
                   value={service}
-                  onChange={(e) => setServiceObject(e.target.value)}
+                  onChange={(e) => setService(e.target.value)}
                   displayEmpty
                   renderValue={(selected) => {
-                    if (selected === '') {
+                    if (selected === '' || selected === null) {
                       return <em style={{ color: '#989898', fontStyle: 'normal' }}>Select Type of Appraisal</em>;
                     }
                     return services.find(option => option.id === selected)?.name;
