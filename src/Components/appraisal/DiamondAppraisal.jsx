@@ -32,7 +32,6 @@ const UserDiamondAppraisalBody = () => {
   const [customer, setCustomer] = useState(() => {
     protectedApi.get('/customers/' + customerId)
       .then(response => {
-        console.log(response.data);
         setCustomer(response.data);
       })
       .catch(error => console.log(error));
@@ -52,7 +51,6 @@ const UserDiamondAppraisalBody = () => {
   function getService(){
     protectedApi.get("/services/" + service)
     .then(resp =>{
-      console.log(resp.data);
       setServiceObject(resp.data);
     })
     .catch(err => console.log(err));
@@ -80,13 +78,10 @@ const UserDiamondAppraisalBody = () => {
   };
 
   const submitRequest = () => {
-    console.log(request);
     protectedApi.post('/request/create', request)
-      .then(response => console.log(response.data))
       .catch(error => console.log(error))
   }
 
-  console.log(date)
 
   function checkFullFilled(){
     if(serviceObject === null || quantity === '' || date === null || date === 'Invalid Date' || isNaN(date.getTime())) return false;

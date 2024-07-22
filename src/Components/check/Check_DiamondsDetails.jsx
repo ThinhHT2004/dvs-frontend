@@ -21,7 +21,6 @@ const Check_DiamondsDetails = () => {
           polish : diamondDetails.polish,
           fluorescence : diamondDetails.fluorescence,
         };
-        console.log(data);
         try {
           await publicApi
             .get("/diamond/search/true/" + 1 + "?", {
@@ -34,9 +33,6 @@ const Check_DiamondsDetails = () => {
       }
     
       function generateMaxMin(list) {
-        
-        console.log(diamonds);
-        
         if (list != null && list.length > 0) {
           const prices = list.map((d) => d.price);
           const min = Math.min(...prices);
@@ -60,7 +56,6 @@ const Check_DiamondsDetails = () => {
         }
     const location = useLocation();
     const diamondDetails = location.state?.diamondDetails;
-    console.log(diamondDetails);
     useEffect(() => {
         if(diamondDetails){
           handleSearch();

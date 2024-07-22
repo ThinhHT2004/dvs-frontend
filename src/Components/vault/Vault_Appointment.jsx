@@ -431,7 +431,7 @@ const Vault = () => {
           "Vault",
           "Settings",
           "Calculate",
-          "Check Certificates",
+          "Check Diamonds",
           "Diamonds Appraisal",
           "Sign Out",
         ]}

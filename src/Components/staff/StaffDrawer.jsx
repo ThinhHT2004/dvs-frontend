@@ -96,7 +96,7 @@ const iconMapping = {
   "Sign Out": <SignOutIcon />,
   "Services": <LocalOfferIcon />,
   "Calculate": <CalculateIcon />,
-  "Check Certificates": <LibraryAddCheckIcon />,
+  "Check Diamonds": <LibraryAddCheckIcon />,
   "Settings": <ManageAccountsIcon />,
   "Staffs": <ManageAccountsIcon />,
   "Vault": <SourceIcon />,

@@ -153,9 +153,6 @@ const Calculate = () => {
 
     if (oldPrice == 0) change = 0;
 
-    console.log(oldPrice)
-    console.log(newPrice);
-
     if (newPrice === 0.00 || oldPrice === 0.00) {
       return (
         <Typography variant="h6" fontWeight="bold" sx={{ color: "grey" }}>
@@ -212,7 +209,6 @@ const Calculate = () => {
     return shape + " " + carat + " Carat " + color + " " + clarity;
   }
 
-  console.log(diamonds);
 
   function handleSearch() {
     const data = {
@@ -226,7 +222,6 @@ const Calculate = () => {
       polish,
       fluorescence,
     };
-    console.log(data);
     try {
       publicApi
         .get("/diamond/search/" + advanced + "/" + 1 + "?", {
@@ -234,7 +229,6 @@ const Calculate = () => {
         })
         .then((resp) => {
           setDiamonds(resp.data)
-          console.log(resp.data)
         });
 
 
