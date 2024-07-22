@@ -233,7 +233,7 @@ const Calculate = () => {
 
 
       publicApi
-        .get("/diamond/search/" + advanced + "/" + 3 + "?", {
+        .get("/diamond/search/" + advanced + "/" + 30 + "?", {
           params: data,
         })
         .then((resp) => setOldDiamonds(resp.data));
